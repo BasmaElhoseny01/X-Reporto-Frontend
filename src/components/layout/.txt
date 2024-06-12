@@ -1,0 +1,1 @@
+layout/: Layout components like Header, Footer, Sidebar, etc.

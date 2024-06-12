@@ -1,0 +1,1 @@
+common/: Reusable components like buttons, form elements, etc.
