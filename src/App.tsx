@@ -1,4 +1,4 @@
-/* eslint-disable no-empty-pattern */
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React, { useEffect } from "react";
 
 import { ConfigProvider } from "antd";
@@ -6,9 +6,7 @@ import { ThemeProvider } from "styled-components";
 
 //  Styles
 import theme from "./styles/theme";
-
-// Components
-import Button from "./components/common/Button/Button";
+import Home from "./pages/Home";
 
 interface AppProps {
   // Define props here
@@ -26,23 +24,12 @@ const App: React.FC<AppProps> = ({}) => {
   return (
     <ConfigProvider theme={theme}>
       <ThemeProvider theme={theme}>
-        <Button
-          label="Button"
-          onClick={() => console.log("Button clicked")}
-          type="primary"
-        />
-
-        <Button
-          label="Button"
-          onClick={() => console.log("Button clicked")}
-          type="dashed"
-        />
-
-        <Button
-          label="Button"
-          onClick={() => console.log("Button clicked")}
-          type="default"
-        />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="about" element={<h1>about</h1>} />
+          </Routes>
+        </BrowserRouter>
       </ThemeProvider>
     </ConfigProvider>
   );
