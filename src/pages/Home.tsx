@@ -1,9 +1,11 @@
-import React from 'react'
+import React from "react";
 
-function Home() {
-  return (
-    <div>Home</div>
-  )
+interface HomeProps {
+  // Define props here
 }
 
-export default Home
+const Home: React.FC<HomeProps> = ({}) => {
+  return <div>{/* Component JSX here */}</div>;
+};
+
+export default Home;

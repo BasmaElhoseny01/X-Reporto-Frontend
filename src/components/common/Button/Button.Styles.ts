@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
-// Components
-import { Button } from "antd";
-
 // Theme
 import { palette } from "../../../styles/theme";
 
+// Components
+import { Button } from "antd";
+
 export const StyledButton = styled(Button)`
-  background-color: ${palette.warn};
-  color: ${palette.primary};
+  background-color: ${palette.primary};
+  color: ${palette.error};
 `;
