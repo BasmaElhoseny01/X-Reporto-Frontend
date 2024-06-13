@@ -1,0 +1,63 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+        "@typescript-eslint",
+        "react",
+        "react-hooks"
+    ],
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended"
+    ],
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    },
+    "rules": {
+        // Additional rules or overrides here
+        // console warning
+        "no-console": "off",
+        "quotes": [
+            "error",
+            "double"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        // enforce camelCase naming convention for variables and functions
+        "@typescript-eslint/naming-convention": [
+            "error",
+            {
+                "selector": "variable",
+                "format": [
+                    "camelCase",
+                    "PascalCase"
+                ]
+            },
+            {
+                "selector": "function",
+                "format": [
+                    "camelCase",
+                    "PascalCase"
+                ]
+            }
+        ],
+        "no-empty-pattern": "off",
+        "@typescript-eslint/no-empty-interface": "off"
+    },
+    "overrides": [
+        // {
+        //     "files": [
+        //         "**/*.ts",
+        //         "**/*.tsx"
+        //     ],
+        //     "rules": {
+        //         "@typescript-eslint/no-empty-interface": "off"
+        //     }
+        // }
+    ]
+}

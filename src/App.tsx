@@ -1,5 +1,5 @@
 /* eslint-disable no-empty-pattern */
-import React from "react";
+import React, { useEffect } from "react";
 
 import { ConfigProvider } from "antd";
 import { ThemeProvider } from "styled-components";
@@ -15,6 +15,14 @@ interface AppProps {
 }
 
 const App: React.FC<AppProps> = ({}) => {
+  useEffect(() => {
+    // Naming convention
+    // let name = "App";
+    // console.log("App mounted");
+    // name = "App";
+    // console.log(name);
+  });
+
   return (
     <ConfigProvider theme={theme}>
       <ThemeProvider theme={theme}>
