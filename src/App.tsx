@@ -8,11 +8,11 @@ import { ThemeProvider } from "styled-components";
 import theme from "./styles/theme";
 import Home from "./pages/Home";
 
-interface AppProps {
-  // Define props here
-}
+// interface AppProps {
+//   // Define props here
+// }
 
-const App: React.FC<AppProps> = ({}) => {
+function App() {
   useEffect(() => {
     // Naming convention
     // let name = "App";
@@ -33,6 +33,5 @@ const App: React.FC<AppProps> = ({}) => {
       </ThemeProvider>
     </ConfigProvider>
   );
-};
-
+}
 export default App;

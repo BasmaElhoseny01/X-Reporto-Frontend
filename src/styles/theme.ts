@@ -1,16 +1,20 @@
 // https://ant.design/docs/react/customize-theme#seedtoken
 
 export const palette = {
-  primary: "#00b96b", // Primary color (e.g., for buttons, links)
-  secondary: "#ff0000", // Secondary color (e.g., for accents)
+  primary: "#1890FF",
+  secondary: "#E6F7FF",
+  dark: "#001529",
 
-  success: "#52c41a", // Success
-  error: "#ff4d4f", // Error
-  warn: "#faad14", // Warning
-  info: "#1677ff", // Info (e.g., for alerts)
-  link: "#1677ff", // Link (e.g., for links)
+  success: "#389E0D", // Success
+  error: "#FF4D4F", // Error
+  warn: "#FFA318", // Warning
+  info: "#1890FF", // Info (e.g., for alerts)
+  link: "#1890FF", // Link (e.g., for links)
 
   black: "#000000", // Black (e.g., for text)
+
+  grey_light: "#f0f0f0",
+  grey_silver: "#bfbfbf",
 
   grey50: "#f2f2f2", // Very light grey (e.g., for backgrounds)
   grey100: "#e0e0e0", // Light grey (e.g., for borders)
@@ -35,11 +39,11 @@ export const theme = {
 
     colorTextBase: palette.black,
 
-    borderRadius: 2,  // border-radius for base components default[6]
+    borderRadius: 2, // border-radius for base components default[6]
 
-    fontFamily: "fantasy",
+    fontFamily: "Roboto", 
     // [Defaults]
-    // fontSize: 14, // base font size default[14]
+    fontSize: 14, // base font size default[14]
 
     // Alias Token
     // colorBgContainer: "#f6ffed",

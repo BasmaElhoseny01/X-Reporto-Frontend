@@ -10,12 +10,8 @@ interface ButtonProps {
   type?: "primary" | "default" | "dashed" | "text" | "link";
 }
 
-const Button: React.FC<ButtonProps> = ({ label, onClick, type }) => {
-  return (
-    <StyledButton onClick={onClick} type={type}>
-      {label}
-    </StyledButton>
-  );
-};
+function Button(props: ButtonProps) {
+  return <StyledButton>{props.label}</StyledButton>;
+}
 
 export default Button;
