@@ -1,4 +1,4 @@
-export function convertToLongDate(date: Date): string {
+export function ConvertToLongDate(date: Date): string {
   const options: Intl.DateTimeFormatOptions = {
     weekday: "long", // Full day of the week (e.g., "Monday")
     year: "numeric", // Full numeric representation of the year (e.g., "2024")
@@ -11,5 +11,5 @@ export function convertToLongDate(date: Date): string {
 
 // // Example usage:
 // const currentDate = new Date(); // Assuming today's date is 2024-06-13
-// const longDate = convertToLongDate(currentDate);
+// const longDate = ConvertToLongDate(currentDate);
 // console.log(longDate); // Output: "Monday, June 13, 2024"

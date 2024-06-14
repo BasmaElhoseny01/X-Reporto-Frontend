@@ -7,6 +7,7 @@ import { palette } from "../../../styles/theme";
 import { Button } from "antd";
 
 export const StyledButton = styled(Button)`
-  background-color: ${palette.primary};
-  color: ${palette.error};
+  /* background-color: ${palette.primary}; */
+  /* background-color: "red"; */
+  /* color: ${palette.error}; */
 `;

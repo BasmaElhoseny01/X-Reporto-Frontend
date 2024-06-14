@@ -1,5 +1,6 @@
-[] Left Side Bar (General)
+[] Left Side Bar (General)  + Spacing
 [] Table (General With x, y var) + Empty
+[] Redux
 
 ------------------------
 Customize Header to be for Admin Employee Doctor
@@ -10,16 +11,7 @@ Customize Header to be for Admin Employee Doctor
 ----------------------
 By Employee Only
 [] New Patient
-[] New Study
-
-
-
-
-
-
-
-
-
+[] New X-Ray
 
 
 

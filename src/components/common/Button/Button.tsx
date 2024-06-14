@@ -2,7 +2,6 @@ import React from "react";
 
 // Styles
 import { StyledButton } from "./Button.Styles";
-
 interface ButtonProps {
   // Define props here
   onClick: () => void;
