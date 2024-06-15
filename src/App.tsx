@@ -11,6 +11,7 @@ import Home from "./pages/Home";
 import { Content } from "antd/es/layout/layout";
 import Header from "./components/layout/Header/Header";
 import Sider from "antd/es/layout/Sider";
+// import Drawer from "./components/common/Drawer/Drawer";
 
 // interface AppProps {
 //   // Define props here
