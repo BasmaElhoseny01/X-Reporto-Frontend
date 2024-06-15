@@ -3,17 +3,15 @@ import styled from "styled-components";
 // Theme
 import { palette } from "../../../styles/theme";
 
-// Components
+// Ant Design
 import { Header as AntdHeader } from "antd/es/layout/layout";
 import { Avatar, Flex } from "antd";
 
 export const HeaderContainer = styled(AntdHeader)`
     background-color: transparent;
-
     border-bottom: 1px solid ;
 
     padding: 5px 2rem;
-
 
     display: flex;
     justify-content: space-between;
@@ -25,7 +23,6 @@ export const HeaderLeftContainer = styled(Flex)`
     align-items: center;
     justify-content: space-between;
 
-    /* Add margin to right between children */
     & > * {
         margin-right: 3rem;
     }  
@@ -39,21 +36,17 @@ export const HeaderLeftContainer = styled(Flex)`
 
 export const HeaderRightContainer = styled(Flex)`
     width:40%;
+
     align-items: center;
     justify-content: flex-end;
-
 `;
 
-
 export const LightDarkSwitchContainer = styled(Flex)`
+    width: 150px;
+
     justify-content: space-between;
     align-items: center;
 
-
-    width: 150px;
-
-
-    /* Styles child with casll ane A */
     & > .ant-typography {
         margin-bottom: 0;
     }
@@ -80,6 +73,7 @@ export const LightDarkSwitchContainer = styled(Flex)`
 export const StyledAvatar = styled(Avatar)`
     background-color: ${palette.secondary};
     color: ${palette.primary};
+    
     font-size: 18px !important;
 
     cursor: pointer;

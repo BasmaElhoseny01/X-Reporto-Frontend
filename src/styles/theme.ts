@@ -1,5 +1,3 @@
-// https://ant.design/docs/react/customize-theme#seedtoken
-
 export const palette = {
   primary: "#1890FF",
   secondary: "#E6F7FF",
@@ -22,7 +20,6 @@ export const palette = {
   grey300: "#9e9e9e", // Dark grey (e.g., for disabled elements)
 
   white: "#ffffff", // White (e.g., for backgrounds, text)
-  // Add more colors as needed for your design system
 };
 
 const baseTheme = {
@@ -37,6 +34,7 @@ const baseTheme = {
 export const lightTheme = {
   token: {
     ...baseTheme,
+
     // Seed Token
     colorPrimary: palette.primary,
 
@@ -46,39 +44,13 @@ export const lightTheme = {
     colorInfo: palette.info,
     colorLink: palette.link,
 
+    // Text Colors
     colorTextBase: palette.black,
 
     // Background and Component Colors
     colorBgBase: palette.white, // Light mode background
     colorBgContainer: palette.white, // Light mode container background
     colorBgNavBar: palette.dark, // Light mode navbar background
-
-    // borderRadius: 2, // border-radius for base components default[6]
-
-    // // fontFamily: "Roboto",
-    // fontFamily: "Arial",
-    // // [Defaults]
-    // fontSize: 14, // base font size default[14]
-
-    // // colorTextBase: palette.black,
-
-    // // // Background and Component Colors
-    // // colorBgBase: palette.white, // Light mode background
-    // // colorBgContainer: palette.white, // Light mode container background
-    // // colorBgNavBar: palette.dark, // Light mode navbar background
-
-    // // Alias Token
-    // // colorBgContainer: "#f6ffed",
-
-    // // [Defaults]
-    // // fontSizeHeading1:38,
-    // // fontSizeHeading2:30,
-    // // fontSizeHeading3:24,
-    // // fontSizeHeading4:20,
-    // // fontSizeHeading5:16,
-    // // fontSizeSM:12,
-    // // fontSizeLG:16,
-    // // fontSizeXL:20,
   },
 };
 
@@ -94,20 +66,12 @@ export const darkTheme = {
     colorInfo: palette.info,
     colorLink: palette.link,
 
+    // Text Colors
     colorTextBase: palette.white,
 
     // Background and Component Colors
     colorBgBase: palette.dark, // Dark mode background
     colorBgContainer: palette.dark, // Dark mode container background
     colorBgNavBar: palette.primary, // Dark mode navbar background
-
-    // borderRadius: 2, // border-radius for base components default[6]
-
-    // // Typography
-    // fontFamily: "Arial",
-    // fontSize: 14, // base font size default[14]
-
-    // Alias Token
-    // colorBgContainer: "#f6ffed",
   },
 };

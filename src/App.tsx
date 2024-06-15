@@ -1,19 +1,25 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React, { useEffect } from "react";
 
-import { ConfigProvider, Layout } from "antd";
-import { ThemeProvider } from "styled-components";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-//  Styles
-import { lightTheme, darkTheme } from "./styles/theme";
-import Home from "./pages/Home";
-import { Content } from "antd/es/layout/layout";
-import Header from "./components/layout/Header/Header";
-// import Sider from "antd/es/layout/Sider";
-import SideBar from "./components/layout/SideBar/SideBar";
+// Redux
 import { useSelector } from "react-redux";
 import { RootState } from "./state/Reducers";
-// import Drawer from "./components/common/Drawer/Drawer";
+
+// Theme
+import { ThemeProvider } from "styled-components";
+import { lightTheme, darkTheme } from "./styles/theme";
+
+// Ant Design
+import { ConfigProvider, Layout } from "antd";
+import { Content } from "antd/es/layout/layout";
+
+// Components
+import Header from "./components/layout/Header/Header";
+import SideBar from "./components/layout/SideBar/SideBar";
+
+// Pages
+import Home from "./pages/Home";
 
 // interface AppProps {
 //   // Define props here
@@ -34,7 +40,6 @@ function App() {
     <ConfigProvider theme={currentTheme == "light" ? lightTheme : darkTheme}>
       <ThemeProvider theme={darkTheme}>
         <Layout>
-          {/* <Sider>Sider</Sider> */}
           <SideBar />
           <Layout>
             <Content>
