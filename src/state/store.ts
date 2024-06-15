@@ -5,16 +5,12 @@ import thunk from "redux-thunk";
 import rootReducer from "./Reducers";
 
 const persistConfig = {
-    key: "root",
-    storage,
+  key: "root",
+  storage,
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-export const store = createStore(
-    persistedReducer,
-    {},
-    applyMiddleware(thunk)
-);
+export const store = createStore(persistedReducer, {}, applyMiddleware(thunk));
 
 export const persistor = persistStore(store);
