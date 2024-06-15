@@ -1,4 +1,5 @@
 // import { Header } from "antd/es/layout/layout";
+import { Button } from "antd";
 import React from "react";
 
 // interface HomeProps {
@@ -6,7 +7,11 @@ import React from "react";
 // }
 
 function Home() {
-  return <div>Home</div>;
+  return (
+    <div>
+      <Button>basma</Button>
+    </div>
+  );
 }
 
 export default Home;

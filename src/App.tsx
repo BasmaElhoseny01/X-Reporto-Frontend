@@ -5,7 +5,8 @@ import { ConfigProvider, Layout } from "antd";
 import { ThemeProvider } from "styled-components";
 
 //  Styles
-import theme from "./styles/theme";
+// import theme from "./styles/theme";
+import {darkTheme} from "./styles/theme";
 import Home from "./pages/Home";
 import { Content } from "antd/es/layout/layout";
 import Header from "./components/layout/Header/Header";
@@ -25,8 +26,8 @@ function App() {
   });
 
   return (
-    <ConfigProvider theme={theme}>
-      <ThemeProvider theme={theme}>
+    <ConfigProvider theme={darkTheme}>
+      <ThemeProvider theme={darkTheme}>
         <Layout>
           <Sider>Sider</Sider>
           <Layout>

@@ -25,9 +25,18 @@ export const palette = {
   // Add more colors as needed for your design system
 };
 
+const baseTheme = {
+  borderRadius: 2,
+
+  // Typography
+  fontFamily: "Arial",
+  fontSize: 14,
+};
+
 // // Create the theme object
-export const theme = {
+export const lightTheme = {
   token: {
+    ...baseTheme,
     // Seed Token
     colorPrimary: palette.primary,
 
@@ -39,26 +48,66 @@ export const theme = {
 
     colorTextBase: palette.black,
 
-    borderRadius: 2, // border-radius for base components default[6]
+    // Background and Component Colors
+    colorBgBase: palette.white, // Light mode background
+    colorBgContainer: palette.white, // Light mode container background
+    colorBgNavBar: palette.dark, // Light mode navbar background
 
-    // fontFamily: "Roboto",
-    fontFamily: "Arial", 
-    // [Defaults]
-    fontSize: 14, // base font size default[14]
+    // borderRadius: 2, // border-radius for base components default[6]
 
-    // Alias Token
-    // colorBgContainer: "#f6ffed",
+    // // fontFamily: "Roboto",
+    // fontFamily: "Arial",
+    // // [Defaults]
+    // fontSize: 14, // base font size default[14]
 
-    // [Defaults]
-    // fontSizeHeading1:38,
-    // fontSizeHeading2:30,
-    // fontSizeHeading3:24,
-    // fontSizeHeading4:20,
-    // fontSizeHeading5:16,
-    // fontSizeSM:12,
-    // fontSizeLG:16,
-    // fontSizeXL:20,
+    // // colorTextBase: palette.black,
+
+    // // // Background and Component Colors
+    // // colorBgBase: palette.white, // Light mode background
+    // // colorBgContainer: palette.white, // Light mode container background
+    // // colorBgNavBar: palette.dark, // Light mode navbar background
+
+    // // Alias Token
+    // // colorBgContainer: "#f6ffed",
+
+    // // [Defaults]
+    // // fontSizeHeading1:38,
+    // // fontSizeHeading2:30,
+    // // fontSizeHeading3:24,
+    // // fontSizeHeading4:20,
+    // // fontSizeHeading5:16,
+    // // fontSizeSM:12,
+    // // fontSizeLG:16,
+    // // fontSizeXL:20,
   },
 };
 
-export default theme;
+export const darkTheme = {
+  token: {
+    ...baseTheme,
+    // Seed Token
+    colorPrimary: palette.primary,
+
+    colorSuccess: palette.success,
+    colorError: palette.error,
+    colorWarning: palette.warn,
+    colorInfo: palette.info,
+    colorLink: palette.link,
+
+    colorTextBase: palette.white,
+
+    // Background and Component Colors
+    colorBgBase: palette.dark, // Dark mode background
+    colorBgContainer: palette.dark, // Dark mode container background
+    colorBgNavBar: palette.primary, // Dark mode navbar background
+
+    // borderRadius: 2, // border-radius for base components default[6]
+
+    // // Typography
+    // fontFamily: "Arial",
+    // fontSize: 14, // base font size default[14]
+
+    // Alias Token
+    // colorBgContainer: "#f6ffed",
+  },
+};

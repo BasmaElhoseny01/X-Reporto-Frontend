@@ -8,12 +8,10 @@ import { Header as AntdHeader } from "antd/es/layout/layout";
 import { Avatar, Flex } from "antd";
 
 export const HeaderContainer = styled(AntdHeader)`
-
     background-color: transparent;
-    /* background-color: red; */
 
+    border-bottom: 1px solid ;
 
-    /* border-bottom: 1px solid ${palette.neutral}; */
     padding: 5px 2rem;
 
 
@@ -24,9 +22,6 @@ export const HeaderContainer = styled(AntdHeader)`
 
 
 export const HeaderLeftContainer = styled(Flex)`
-    /* width:20%; */
-    /* background-color: aliceblue; */
-    /* display: flex; */
     align-items: center;
     justify-content: space-between;
 
@@ -39,11 +34,8 @@ export const HeaderLeftContainer = styled(Flex)`
 
 export const HeaderRightContainer = styled(Flex)`
     width:40%;
-    /* justify-content: flex-end; */
-    justify-content: flex-end;
     align-items: center;
-    /* background-color: aliceblue; */
-
+    justify-content: flex-end;
 
 `;
 
