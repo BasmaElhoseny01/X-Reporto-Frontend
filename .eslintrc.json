@@ -20,10 +20,10 @@
         // Additional rules or overrides here
         // console warning
         "no-console": "off",
-        "quotes": [
-            "error",
-            "double"
-        ],
+        // "quotes": [
+        //     "error",
+        //     "double"
+        // ],
         "semi": [
             "error",
             "always"

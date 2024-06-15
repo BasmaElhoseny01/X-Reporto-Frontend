@@ -1,12 +1,15 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React, { useEffect } from "react";
 
-import { ConfigProvider } from "antd";
+import { ConfigProvider, Layout } from "antd";
 import { ThemeProvider } from "styled-components";
 
 //  Styles
 import theme from "./styles/theme";
 import Home from "./pages/Home";
+import { Content } from "antd/es/layout/layout";
+import Header from "./components/layout/Header/Header";
+import Sider from "antd/es/layout/Sider";
 
 // interface AppProps {
 //   // Define props here
@@ -24,12 +27,20 @@ function App() {
   return (
     <ConfigProvider theme={theme}>
       <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="about" element={<h1>about</h1>} />
-          </Routes>
-        </BrowserRouter>
+        <Layout>
+          <Sider>Sider</Sider>
+          <Layout>
+            <Content>
+              <Header />
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="about" element={<h1>about</h1>} />
+                </Routes>
+              </BrowserRouter>
+            </Content>
+          </Layout>
+        </Layout>
       </ThemeProvider>
     </ConfigProvider>
   );

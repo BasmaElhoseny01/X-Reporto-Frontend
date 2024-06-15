@@ -41,7 +41,8 @@ export const theme = {
 
     borderRadius: 2, // border-radius for base components default[6]
 
-    fontFamily: "Roboto", 
+    // fontFamily: "Roboto",
+    fontFamily: "Arial", 
     // [Defaults]
     fontSize: 14, // base font size default[14]
 
