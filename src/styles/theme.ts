@@ -1,7 +1,8 @@
 export const palette = {
   primary: "#1890FF",
   secondary: "#E6F7FF",
-  dark: "#001529",
+  // dark: "#001529",
+  dark: "#1C2222",
 
   success: "#389E0D", // Success
   error: "#FF4D4F", // Error
@@ -48,7 +49,7 @@ export const lightTheme = {
     colorTextBase: palette.black,
 
     // Background and Component Colors
-    colorBgBase: palette.white, // Light mode background
+    colorBgLayout: palette.white, // Light mode background
     colorBgContainer: palette.white, // Light mode container background
     colorBgNavBar: palette.dark, // Light mode navbar background
   },
@@ -70,7 +71,7 @@ export const darkTheme = {
     colorTextBase: palette.white,
 
     // Background and Component Colors
-    colorBgBase: palette.dark, // Dark mode background
+    colorBgLayout: palette.dark, // Dark mode layout background
     colorBgContainer: palette.dark, // Dark mode container background
     colorBgNavBar: palette.primary, // Dark mode navbar background
   },

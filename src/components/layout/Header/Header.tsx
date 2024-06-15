@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 
 // Redux
@@ -10,7 +9,6 @@ import { RootState } from "../../../state/Reducers";
 import { Switch } from "antd";
 import Paragraph from "antd/es/typography/Paragraph";
 
-
 // Styled Components
 import {
   HeaderContainer,
@@ -19,7 +17,6 @@ import {
   LightDarkSwitchContainer,
   StyledAvatar,
 } from "./Header.Styles";
-
 
 // Assets
 import Logo from "../../../assets/images/logo.svg";
@@ -31,12 +28,19 @@ function Header() {
   const dispatch = useDispatch();
   const currentTheme = useSelector((state: RootState) => state.theme);
 
+  // Call UseEffect to change theme
+  React.useEffect(() => {
+    console.log("Theme changed to: ", currentTheme);
+  }, [currentTheme]);
+
   // Toggle theme function
   const toggleTheme = (checked: boolean) => {
     const newTheme = checked ? "light" : "dark";
 
     // Dispatch action to change theme
     ChangeTheme(newTheme)(dispatch);
+
+    console.log("Theme changed to: ", newTheme);
   };
 
   return (
@@ -56,7 +60,7 @@ function Header() {
           <Switch
             checkedChildren={<img src={Sun} alt="sun" />}
             unCheckedChildren={<img src={Moon} alt="moon" />}
-            defaultChecked
+            defaultChecked={currentTheme === "light"}
             onChange={toggleTheme}
           />
 

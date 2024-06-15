@@ -26,19 +26,20 @@ import Home from "./pages/Home";
 // }
 
 function App() {
+  const currentTheme = useSelector((state: RootState) => state.theme);
+
   useEffect(() => {
     // Naming convention
     // let name = "App";
     // console.log("App mounted");
     // name = "App";
     // console.log(name);
+    // Set theme to light
   });
-
-  const currentTheme = useSelector((state: RootState) => state.theme);
 
   return (
     <ConfigProvider theme={currentTheme == "light" ? lightTheme : darkTheme}>
-      <ThemeProvider theme={darkTheme}>
+      <ThemeProvider theme={currentTheme == "light" ? lightTheme : darkTheme}>
         <Layout>
           <SideBar />
           <Layout>

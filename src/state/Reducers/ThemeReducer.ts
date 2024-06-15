@@ -1,7 +1,7 @@
 import { Action } from "../Actions/index";
 import { ActionType } from "../ActionType";
 
-const initialState: "light" | "dark" = "dark"; // or whatever your default theme is
+const initialState: "light" | "dark" = "light"; // or whatever your default theme is
 
 const themeReducer = (
   state: "light" | "dark" = initialState,
