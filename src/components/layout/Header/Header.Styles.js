@@ -26,8 +26,13 @@ export const HeaderLeftContainer = styled(Flex)`
     justify-content: space-between;
 
     /* Add margin to right between children */
-     & > * {
+    & > * {
         margin-right: 3rem;
+    }  
+
+    /* Logo Size */
+    & > img {
+        height: 50px;
     }  
 
 `;

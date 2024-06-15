@@ -5,13 +5,14 @@ import { ConfigProvider, Layout } from "antd";
 import { ThemeProvider } from "styled-components";
 
 //  Styles
-// import theme from "./styles/theme";
-import { darkTheme } from "./styles/theme";
+import { lightTheme, darkTheme } from "./styles/theme";
 import Home from "./pages/Home";
 import { Content } from "antd/es/layout/layout";
 import Header from "./components/layout/Header/Header";
 // import Sider from "antd/es/layout/Sider";
 import SideBar from "./components/layout/SideBar/SideBar";
+import { useSelector } from "react-redux";
+import { RootState } from "./state/Reducers";
 // import Drawer from "./components/common/Drawer/Drawer";
 
 // interface AppProps {
@@ -27,8 +28,10 @@ function App() {
     // console.log(name);
   });
 
+  const currentTheme = useSelector((state: RootState) => state.theme);
+
   return (
-    <ConfigProvider theme={darkTheme}>
+    <ConfigProvider theme={currentTheme == "light" ? lightTheme : darkTheme}>
       <ThemeProvider theme={darkTheme}>
         <Layout>
           {/* <Sider>Sider</Sider> */}
