@@ -6,11 +6,12 @@ import { ThemeProvider } from "styled-components";
 
 //  Styles
 // import theme from "./styles/theme";
-import {darkTheme} from "./styles/theme";
+import { darkTheme } from "./styles/theme";
 import Home from "./pages/Home";
 import { Content } from "antd/es/layout/layout";
 import Header from "./components/layout/Header/Header";
-import Sider from "antd/es/layout/Sider";
+// import Sider from "antd/es/layout/Sider";
+import SideBar from "./components/layout/SideBar/SideBar";
 // import Drawer from "./components/common/Drawer/Drawer";
 
 // interface AppProps {
@@ -30,7 +31,8 @@ function App() {
     <ConfigProvider theme={darkTheme}>
       <ThemeProvider theme={darkTheme}>
         <Layout>
-          <Sider>Sider</Sider>
+          {/* <Sider>Sider</Sider> */}
+          <SideBar />
           <Layout>
             <Content>
               <Header />
