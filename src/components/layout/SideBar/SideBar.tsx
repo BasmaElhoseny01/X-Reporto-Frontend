@@ -64,6 +64,8 @@ const items: MenuItem[] = [
 const SideBar = () => {
   const [collapsed, setCollapsed] = useState(true);
   const drawer = useSelector((state: MainState) => state.drawer);
+  const websiteTheme = useSelector((state: MainState) => state.theme);
+
   const dispatch = useDispatch();
   const { ChangeDrawer } = bindActionCreators(actionsCreators, dispatch);  
   const onCollapse = (collapsed: boolean) => {
@@ -79,12 +81,13 @@ const SideBar = () => {
     onMouseEnter={()=>setCollapsed(false)}
     onMouseLeave={()=>setCollapsed(true)}
     trigger={null}
+    theme={websiteTheme}
     style={{overflow: 'auto', height: '100vh', left: 0}}
     >
       <Menu
         defaultSelectedKeys={[drawer.toString()]}
         mode="inline"
-        theme="dark"
+        theme={websiteTheme}
         inlineCollapsed={collapsed}
         items={items}
         onClick={onMenuClick}
