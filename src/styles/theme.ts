@@ -36,7 +36,7 @@ export const lightTheme = {
   token: {
     ...baseTheme,
 
-    // Seed Token
+    // // Seed Token
     colorPrimary: palette.primary,
 
     colorSuccess: palette.success,
