@@ -33,6 +33,11 @@ function Home() {
       },
     ],
     api: "https://jsonplaceholder.typicode.com/todos",
+
+    // eslint-disable-next-line
+    action: (record:any, rowIndex:any) => {
+      console.log(record, rowIndex);
+    },
   };
   return (
     <div>
@@ -61,7 +66,7 @@ function Home() {
         <PrimaryButton icon={<SearchOutlined />}>Basma</PrimaryButton>
         <SecondaryButton icon={<SearchOutlined />}>Basma</SecondaryButton>
       </div>
-      <GeneralTable columns={GeneralTableData.columns} api={GeneralTableData.api} />
+      <GeneralTable columns={GeneralTableData.columns} api={GeneralTableData.api} action={GeneralTableData.action}/>
     </div>
   );
 }

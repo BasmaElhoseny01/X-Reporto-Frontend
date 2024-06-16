@@ -11,6 +11,9 @@ type GeneralTableColumn = {
 type GeneralTableProps = {
   columns: GeneralTableColumn[];
   api: string;
+
+  // eslint-disable-next-line
+  action: (record: any, rowIndex: any) => void;
 }
 
 const GeneralTable = (props:GeneralTableProps) => {
@@ -56,6 +59,14 @@ const GeneralTable = (props:GeneralTableProps) => {
             setPageSize(pageSize);
           },
           position: ['bottomCenter'],
+        }}
+        onRow={(record, rowIndex) => {
+          return {
+            onClick: () => {
+              props.action(record, rowIndex);
+            },
+            style: { cursor: 'pointer' } 
+          };
         }}
       />
     </>
