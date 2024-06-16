@@ -82,7 +82,7 @@ const SideBar = () => {
     onMouseLeave={()=>setCollapsed(true)}
     trigger={null}
     theme={websiteTheme}
-    style={{overflow: 'auto', height: '100vh', left: 0}}
+    style={{overflow: 'auto',height: "auto", scrollbarWidth: "none", left: 0}}
     >
       <Menu
         defaultSelectedKeys={[drawer.toString()]}
@@ -91,6 +91,7 @@ const SideBar = () => {
         inlineCollapsed={collapsed}
         items={items}
         onClick={onMenuClick}
+        style={{marginTop: '10px', height: '100%'}}
       />
     </Sider>
   );
