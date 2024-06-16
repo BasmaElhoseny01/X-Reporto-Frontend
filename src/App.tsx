@@ -7,6 +7,7 @@ import { ThemeProvider } from "styled-components";
 //  Styles
 import theme from "./styles/theme";
 import Home from "./pages/Home";
+// import Drawer from "./components/common/Drawer/Drawer";
 
 // interface AppProps {
 //   // Define props here
@@ -24,12 +25,15 @@ function App() {
   return (
     <ConfigProvider theme={theme}>
       <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="about" element={<h1>about</h1>} />
-          </Routes>
-        </BrowserRouter>
+        <div className="MainComtainer">
+          {/* <Drawer /> */}
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="about" element={<h1>about</h1>} />
+            </Routes>
+          </BrowserRouter>
+        </div>
       </ThemeProvider>
     </ConfigProvider>
   );
