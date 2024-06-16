@@ -29,3 +29,12 @@ export const ChangeId = (state:number) => {
         });
     };
 };
+
+export const ChangeDrawer = (state:number) => {
+    return (dispatch : Dispatch<Action>) => {
+        dispatch({
+            type: ActionType.CHANGE_DRAWER,
+            payload: state,
+        });
+    };
+};

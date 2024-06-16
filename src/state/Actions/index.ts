@@ -13,4 +13,9 @@ interface Id{
     payload: number; 
 }
 
-export type Action = Token|UserName|Id;
+interface Drawer{
+  type: ActionType.CHANGE_DRAWER;
+  payload: number;
+}
+
+export type Action = Token|UserName|Id|Drawer;
