@@ -6,13 +6,39 @@ import SecondaryButton from "../components/common/SecondaryButton/SecondaryButto
 
 // Ant Design
 import { SearchOutlined, DeleteOutlined } from "@ant-design/icons";
+import GeneralTable from "../components/common/Table/Table";
 
 function Home() {
+ 
+  // for testing
+  const GeneralTableData={
+    columns: [
+      {
+        title: "ID",
+        dataIndex: "id",
+        key: "name",
+      },
+      {
+        title: "User ID",
+        dataIndex: "userId",
+        key: "2",
+      },
+      {
+        key: "3",
+        title: "Status",
+        dataIndex: "completed",
+        render: (completed: boolean) => {
+          return completed ? "Completed" : "Not Completed";
+        },
+      },
+    ],
+    api: "https://jsonplaceholder.typicode.com/todos",
+  };
   return (
     <div>
       <div
         style={{
-          height: "500px",
+          // height: "500px",
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-around",
@@ -35,6 +61,7 @@ function Home() {
         <PrimaryButton icon={<SearchOutlined />}>Basma</PrimaryButton>
         <SecondaryButton icon={<SearchOutlined />}>Basma</SecondaryButton>
       </div>
+      <GeneralTable columns={GeneralTableData.columns} api={GeneralTableData.api} />
     </div>
   );
 }

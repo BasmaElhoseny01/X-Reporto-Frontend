@@ -13,9 +13,14 @@ interface Id {
   payload: number;
 }
 
+interface Drawer{
+  type: ActionType.CHANGE_DRAWER;
+  payload: number;
+}
+
 interface Theme {
   type: ActionType.CHANGE_THEME;
   payload: string;
 }
 
-export type Action = Token | UserName | Id | Theme;
+export type Action = Token | UserName | Id | Theme|Drawer;
