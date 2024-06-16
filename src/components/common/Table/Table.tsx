@@ -37,39 +37,30 @@ const GeneralTable = (props:GeneralTableProps) => {
     }, [page, pageSize]);
 
   return (
-    <>
-      <style>
-          {`
-            .ant-select-item-option {
-              color: black !important;
-            }
-          `}
-        </style>
-      <Table
-        columns={props.columns}
-        dataSource={dataSource}
-        loading={loading}
-        style={{color: "black !important"}}
-        pagination={{ 
-          current: page,
-          pageSize: pageSize,
-          total: dataSource.length,
-          onChange: (page, pageSize) => {
-            setPage(page);
-            setPageSize(pageSize);
+    <Table
+      columns={props.columns}
+      dataSource={dataSource}
+      loading={loading}
+      style={{color: "black !important"}}
+      pagination={{ 
+        current: page,
+        pageSize: pageSize,
+        total: dataSource.length,
+        onChange: (page, pageSize) => {
+          setPage(page);
+          setPageSize(pageSize);
+        },
+        position: ['bottomCenter'],
+      }}
+      onRow={(record, rowIndex) => {
+        return {
+          onClick: () => {
+            props.action(record, rowIndex);
           },
-          position: ['bottomCenter'],
-        }}
-        onRow={(record, rowIndex) => {
-          return {
-            onClick: () => {
-              props.action(record, rowIndex);
-            },
-            style: { cursor: 'pointer' } 
-          };
-        }}
-      />
-    </>
+          style: { cursor: 'pointer' } 
+        };
+      }}
+    />
 
   );
 };
