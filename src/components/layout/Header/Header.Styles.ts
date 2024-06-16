@@ -9,7 +9,7 @@ import { Avatar, Flex } from "antd";
 
 export const HeaderContainer = styled(AntdHeader)`
   background-color: transparent;
-  border-bottom: 1px solid;
+  /* border-bottom: 1px solid; */
 
   padding: 5px 2rem;
 

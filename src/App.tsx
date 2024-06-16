@@ -20,6 +20,7 @@ import SideBar from "./components/layout/SideBar/SideBar";
 
 // Pages
 import Home from "./pages/Home";
+import Examples from "./pages/Examples";
 
 // interface AppProps {
 //   // Define props here
@@ -73,6 +74,7 @@ function App() {
               <BrowserRouter>
                 <Routes>
                   <Route path="/" element={<Home />} />
+                  <Route path="examples" element={<Examples />} />
                   <Route path="about" element={<h1>about</h1>} />
                 </Routes>
               </BrowserRouter>

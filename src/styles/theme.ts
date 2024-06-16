@@ -2,7 +2,8 @@ export const palette = {
   primary: "#1890FF",
   secondary: "#E6F7FF",
   // dark: "#001529",
-  dark: "#1C2222",
+  // dark: "#1C2222",
+  dark: "#000C17",
 
   success: "#389E0D", // Success
   error: "#FF4D4F", // Error

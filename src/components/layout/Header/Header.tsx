@@ -20,7 +20,7 @@ import {
 
 // Assets
 import Logo from "../../../assets/images/logo.svg";
-// import LogoDark from "../../../assets/images/logo-dark.svg";
+import LogoDark from "../../../assets/images/logo-dark.svg";
 import Sun from "../../../assets/images/sun.svg";
 import Moon from "../../../assets/images/moon.svg";
 
@@ -50,8 +50,7 @@ function Header() {
         {currentTheme === "light" ? (
           <img src={Logo} alt="logo" height="40px" />
         ) : (
-          // <img src={LogoDark} alt="logo-dark" height="40px" />
-          <img src={Logo} alt="logo-dark" height="40px" />
+          <img src={LogoDark} alt="logo-dark" height="40px" />
         )}
 
         {/* Switch Dark Light Mode */}
