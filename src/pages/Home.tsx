@@ -1,50 +1,42 @@
-// import { Header } from "antd/es/layout/layout";
-import { Button } from "antd";
 import React from "react";
 
-// interface HomeProps {
-//   // Define props here
-// }
+// Components
+import PrimaryButton from "../components/common/PrimaryButton/PrimaryButton";
+import SecondaryButton from "../components/common/SecondaryButton/SecondaryButton";
+
+// Ant Design
+import { SearchOutlined, DeleteOutlined } from "@ant-design/icons";
 
 function Home() {
   return (
     <div>
-      <Button>basma</Button>
+      <div
+        style={{
+          height: "500px",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-around",
+          padding: "2rem",
+        }}
+      >
+        <PrimaryButton>Basma</PrimaryButton>
+        <SecondaryButton>Basma</SecondaryButton>
+
+        <PrimaryButton danger icon={<DeleteOutlined />}>
+          Basma
+        </PrimaryButton>
+        <SecondaryButton danger icon={<DeleteOutlined />}>
+          Basma
+        </SecondaryButton>
+
+        <PrimaryButton disabled>Basma</PrimaryButton>
+        <SecondaryButton disabled>Basma</SecondaryButton>
+
+        <PrimaryButton icon={<SearchOutlined />}>Basma</PrimaryButton>
+        <SecondaryButton icon={<SearchOutlined />}>Basma</SecondaryButton>
+      </div>
     </div>
   );
 }
 
 export default Home;
-
-// import React from "react";
-// import Button from "../components/common/Button/Button";
-
-// interface HomeProps {
-//   // Define props here
-// }
-
-// const Home: React.FC<HomeProps> = ({}) => {
-//   return (
-//     <div>
-//       <Button
-//         label="Button"
-//         onClick={() => console.log("Button clicked")}
-//         type="primary"
-//       />
-
-//       <Button
-//         label="Button"
-//         onClick={() => console.log("Button clicked")}
-//         type="dashed"
-//       />
-
-//       <Button
-//         label="Button"
-//         onClick={() => console.log("Button clicked")}
-//         type="default"
-//       />
-//     </div>
-//   );
-// };
-
-// export default Home;

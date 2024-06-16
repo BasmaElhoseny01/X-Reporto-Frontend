@@ -1,35 +1,47 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React, { useEffect } from "react";
 
-import { ConfigProvider, Layout } from "antd";
-import { ThemeProvider } from "styled-components";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-//  Styles
-// import theme from "./styles/theme";
-import { darkTheme } from "./styles/theme";
-import Home from "./pages/Home";
+// Redux
+import { useSelector } from "react-redux";
+import { RootState } from "./state/Reducers";
+
+// Theme
+import { ThemeProvider } from "styled-components";
+import { lightTheme, darkTheme } from "./styles/theme";
+
+// Ant Design
+import { ConfigProvider, Layout } from "antd";
 import { Content } from "antd/es/layout/layout";
+
+// Components
 import Header from "./components/layout/Header/Header";
 import SideBar from "./components/layout/SideBar/SideBar";
+
+// Pages
+import Home from "./pages/Home";
 
 // interface AppProps {
 //   // Define props here
 // }
 
 function App() {
+  const currentTheme = useSelector((state: RootState) => state.theme);
+
   useEffect(() => {
     // Naming convention
     // let name = "App";
     // console.log("App mounted");
     // name = "App";
     // console.log(name);
+    // Set theme to light
   });
 
   return (
-    <ConfigProvider theme={darkTheme}>
-      <ThemeProvider theme={darkTheme}>
+    <ConfigProvider theme={currentTheme == "light" ? lightTheme : darkTheme}>
+      <ThemeProvider theme={currentTheme == "light" ? lightTheme : darkTheme}>
         <Layout>
-            <SideBar />          
+          <SideBar />
           <Layout>
             <Content>
               <Header />
