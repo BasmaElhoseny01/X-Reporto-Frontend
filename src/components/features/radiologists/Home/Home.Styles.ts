@@ -64,7 +64,8 @@ export const ActivityCardsContainer = styled(Flex)`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+  justify-content: center;
 
-  height: 100%;
+  height: 80%;
   /* width: 100%; */
 `;

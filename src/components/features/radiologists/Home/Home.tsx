@@ -50,13 +50,15 @@ function Home() {
         {/* Max only 8  */}
         <ActivityCardsContainer>
           <ActivityCard type="submit" />
-          <ActivityCard type="view" />
-          <ActivityCard type="view" />
-          {/* <ActivityCard type="draft" /> */}
-          {/* <ActivityCard type="submit" />
           <ActivityCard type="draft" />
           <ActivityCard type="view" />
-          <ActivityCard type="draft" /> */}
+          {/* <ActivityCard type="view" /> */}
+          {/* <ActivityCard type="submit" /> */}
+          {/* <ActivityCard type="submit" /> */}
+          {/* <ActivityCard type="submit" /> */}
+          {/* <ActivityCard type="submit" /> */}
+          {/* <ActivityCard type="submit" /> */}
+          {/* <ActivityCard type="draft" /> */}
         </ActivityCardsContainer>
       </HomeBottomContainer>
     </HomeContainer>
