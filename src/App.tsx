@@ -73,13 +73,28 @@ function App() {
           <SideBar />
           <MainContainer>
             <Header />
-            <ContentContainer style={{ height: "100%", overflow: "clip" }}>
+            <ContentContainer>
               <BrowserRouter>
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="patient/new" element={<NewPatientPage />} />
                   <Route path="examples" element={<Examples />} />
-                  <Route path="about" element={<div>about</div>} />
+                  <Route
+                    path="about"
+                    element={
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          height: "100%",
+                          justifyContent: "flex-end",
+                        }}
+                      >
+                        <div>basma</div>
+                        <div>basma</div>
+                      </div>
+                    }
+                  />
                 </Routes>
               </BrowserRouter>
             </ContentContainer>

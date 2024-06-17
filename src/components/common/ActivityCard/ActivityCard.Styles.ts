@@ -11,6 +11,7 @@ export const ActivityCardContainer = styled(Flex)<{ isDarkTheme: boolean }>`
   background-color: ${(props) =>
     props.isDarkTheme ? `${palette.navy}60` : `${palette.grey_light}60`};
 
+  width: 30%;
   height: 50px;
 
   padding: 5px;

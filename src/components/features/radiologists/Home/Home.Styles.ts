@@ -16,7 +16,7 @@ export const HomeContainer = styled(Flex)`
 `;
 
 export const HomeTopContainer = styled(Flex)`
-  background-color: #aaa;
+  /* background-color: #aaa; */
 
   display: flex;
   flex-direction: row;
@@ -25,7 +25,7 @@ export const HomeTopContainer = styled(Flex)`
 `;
 
 export const HomeBottomContainer = styled(Flex)`
-  background-color: #ccc;
+  /* background-color: #ccc; */
   display: flex;
   flex-direction: column;
 
