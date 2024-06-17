@@ -3,5 +3,8 @@ import styled from "styled-components";
 
 export const LineHeaderStyled = styled.hr`
   border-top: 1px solid ${palette.grey50};
-  /* margin-right: 2%; */
+  width: 95%;
+  margin-bottom: 15px;
+
+  margin-left: 0px;
 `;

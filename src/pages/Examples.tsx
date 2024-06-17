@@ -8,6 +8,7 @@ import GeneralTable from "../components/common/Table/Table";
 // Ant Design
 import { SearchOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Popconfirm, PopconfirmProps, message } from "antd";
+import LinkButton from "../components/common/LinkButton/LinkButton";
 
 function Examples() {
   const [messageApi, contextHolder] = message.useMessage();
@@ -126,6 +127,8 @@ function Examples() {
 
         <PrimaryButton loading>Basma</PrimaryButton>
         <SecondaryButton loading>Basma</SecondaryButton>
+
+        <LinkButton>View</LinkButton>
 
         {/* *********************************************************** */}
         {/* Messages */}
