@@ -12,7 +12,6 @@ import { lightTheme, darkTheme } from "./styles/theme";
 
 // Ant Design
 import { ConfigProvider, Layout, theme } from "antd";
-import { Content } from "antd/es/layout/layout";
 
 // Components
 import Header from "./components/layout/Header/Header";
@@ -22,6 +21,7 @@ import SideBar from "./components/layout/SideBar/SideBar";
 import Home from "./pages/Home";
 import NewPatientPage from "./pages/NewPatientPage";
 import Examples from "./pages/Examples";
+import { MainContainer } from "./AppStyles";
 
 // interface AppProps {
 //   // Define props here
@@ -70,7 +70,7 @@ function App() {
         <Layout>
           <SideBar />
           <Layout>
-            <Content>
+            <MainContainer>
               <Header />
               <BrowserRouter>
                 <Routes>
@@ -80,7 +80,7 @@ function App() {
                   <Route path="about" element={<h1>about</h1>} />
                 </Routes>
               </BrowserRouter>
-            </Content>
+            </MainContainer>
           </Layout>
         </Layout>
       </ThemeProvider>

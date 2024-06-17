@@ -15,7 +15,7 @@ interface Id {
 
 interface Drawer{
   type: ActionType.CHANGE_DRAWER;
-  payload: number;
+  payload: string;
 }
 
 interface Theme {
