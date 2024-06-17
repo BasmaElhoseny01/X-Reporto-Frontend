@@ -4,6 +4,7 @@ export const palette = {
   // dark: "#001529",
   // dark: "#1C2222",
   dark: "#000C17",
+  navy: "#001529",
 
   success: "#389E0D", // Success
   error: "#FF4D4F", // Error

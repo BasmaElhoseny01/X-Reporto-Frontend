@@ -72,7 +72,8 @@ function App() {
           <SideBar />
           <Layout>
             {/* @BasmaElhoseny01 Remove this */}
-            <Content style={{ height: "100vh" }}>
+            {/* <Content style={{ height: "100vh" }}> */}
+            <Content>
               <Header />
               <BrowserRouter>
                 <Routes>

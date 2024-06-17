@@ -7,9 +7,10 @@ import { palette } from "../../../styles/theme";
 import { Flex } from "antd";
 import AntdLink from "antd/es/typography/Link";
 
-export const ActivityCardContainer = styled(Flex)`
-  /* background-color: ${palette.grey_light}20; */
-  background-color: ${palette.grey_light}50;
+export const ActivityCardContainer = styled(Flex)<{ isDarkTheme: boolean }>`
+  background-color: ${(props) =>
+    // props.isDarkTheme ? `${palette.black}50` : `${palette.grey_light}50`};
+    props.isDarkTheme ? `${palette.navy}60` : `${palette.grey_light}60`};
 
   height: 50px;
 

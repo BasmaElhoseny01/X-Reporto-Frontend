@@ -16,22 +16,43 @@ export const HomeContainer = styled(Flex)`
 `;
 
 export const HomeTopContainer = styled(Flex)`
-  background-color: #abc;
+  /* background-color: #aaa; */
 
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 
   height: 50%;
 `;
 
 export const HomeBottomContainer = styled(Flex)`
-  background-color: #ccc;
+  /* background-color: #ccc; */
   display: flex;
   flex-direction: column;
 
   height: 50%;
+  margin-top: -45px;
 `;
 
+export const HomeTopLeftContainer = styled(Flex)`
+  /* background-color: #abc; */
+
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+`;
+
+export const HomeTopRightContainer = styled(Flex)`
+  /* background-color: #cab; */
+
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+  width: 50%;
+
+  z-index: 10;
+`;
 export const HomeTopTitleContainer = styled(Flex)`
   display: flex;
   flex-direction: column;

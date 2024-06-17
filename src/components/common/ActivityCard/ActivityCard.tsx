@@ -9,6 +9,8 @@ import DraftActivityCard from "./DraftActivityCard/DraftActivityCard";
 
 // Styled Components
 import { ActivityCardContainer } from "./ActivityCard.Styles";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../state/Reducers";
 
 // Assets
 
@@ -20,8 +22,10 @@ interface ActivityCardProps {
 function ActivityCard(props: ActivityCardProps) {
   const { type } = props;
 
+  const currentTheme = useSelector((state: RootState) => state.theme);
+
   return (
-    <ActivityCardContainer>
+    <ActivityCardContainer isDarkTheme={currentTheme == "dark"}>
       {type === "submit" ? (
         <SubmitActivityCard />
       ) : type === "view" ? (
