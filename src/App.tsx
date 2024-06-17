@@ -13,6 +13,9 @@ import { lightTheme, darkTheme } from "./styles/theme";
 // Ant Design
 import { ConfigProvider, Layout, theme } from "antd";
 
+// Styled Components
+import { ContentContainer, MainContainer } from "./AppStyles";
+
 // Components
 import Header from "./components/layout/Header/Header";
 import SideBar from "./components/layout/SideBar/SideBar";
@@ -21,7 +24,6 @@ import SideBar from "./components/layout/SideBar/SideBar";
 import Home from "./pages/Home";
 import NewPatientPage from "./pages/NewPatientPage";
 import Examples from "./pages/Examples";
-import { MainContainer } from "./AppStyles";
 
 // interface AppProps {
 //   // Define props here
@@ -69,19 +71,19 @@ function App() {
       <ThemeProvider theme={currentTheme == "light" ? lightTheme : darkTheme}>
         <Layout>
           <SideBar />
-          <Layout>
-            <MainContainer>
-              <Header />
+          <MainContainer>
+            <Header />
+            <ContentContainer style={{ height: "100%", overflow: "clip" }}>
               <BrowserRouter>
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="patient/new" element={<NewPatientPage />} />
                   <Route path="examples" element={<Examples />} />
-                  <Route path="about" element={<h1>about</h1>} />
+                  <Route path="about" element={<div>about</div>} />
                 </Routes>
               </BrowserRouter>
-            </MainContainer>
-          </Layout>
+            </ContentContainer>
+          </MainContainer>
         </Layout>
       </ThemeProvider>
     </ConfigProvider>

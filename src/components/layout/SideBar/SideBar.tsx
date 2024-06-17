@@ -20,7 +20,7 @@ import { actionsCreators, MainState } from "../../../state";
 type MenuItem = Required<MenuProps>["items"][number];
 
 const items: MenuItem[] = [
-  { key: "Home", icon: <HomeOutlined />, label: "Home" },
+  { key: "", icon: <HomeOutlined />, label: "Home" },
   {
     key: "sub1",
     label: "Dashboard",
@@ -36,10 +36,10 @@ const items: MenuItem[] = [
     label: "Patients",
     icon: <UsergroupDeleteOutlined />,
     children: [
-      { key: "Patients/All", label: "All" },
-      { key: "Patients/Archived", label: "Archived" },
-      { key: "Patients/NewPatient", label: "New Patient" },
-      { key: "Patients/ViewPatient", label: "View Patient" },
+      { key: "patients", label: "All" },
+      { key: "patients/archived", label: "Archived" },
+      { key: "patient", label: "View Patient" },
+      { key: "patient/new", label: "New Patient" },
     ],
   },
   {
@@ -47,17 +47,21 @@ const items: MenuItem[] = [
     label: "Reports",
     icon: <FileTextOutlined />,
     children: [
-      { key: "Reports/WorkList", label: "Work list" },
-      { key: "Reports/Completed", label: "Completed" },
-      { key: "Reports/NewX-Ray", label: "New X-Ray" },
-      { key: "Reports/ViewX-Ray", label: "View X-Ray" },
+      { key: "reports/WorkList", label: "Work list" },
+      { key: "reports/Completed", label: "Completed" },
+      { key: "report", label: "View X-Ray" },
+      { key: "report/new", label: "New X-Ray" },
     ],
   },
   { key: "Profile", icon: <ProfileOutlined />, label: "Profile" },
   { key: "Results", icon: <CheckCircleOutlined />, label: "Results" },
   { key: "Exception", icon: <WarningOutlined />, label: "Exception" },
   { key: "Account", icon: <UserOutlined />, label: "Account" },
-  { key: "GraphicEditor", icon: <HighlightOutlined />, label: "Graphic Editor" },
+  {
+    key: "GraphicEditor",
+    icon: <HighlightOutlined />,
+    label: "Graphic Editor",
+  },
 ];
 
 const SideBar = () => {

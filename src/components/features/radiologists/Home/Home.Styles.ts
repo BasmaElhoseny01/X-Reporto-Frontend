@@ -16,7 +16,7 @@ export const HomeContainer = styled(Flex)`
 `;
 
 export const HomeTopContainer = styled(Flex)`
-  /* background-color: #aaa; */
+  background-color: #aaa;
 
   display: flex;
   flex-direction: row;
@@ -25,12 +25,12 @@ export const HomeTopContainer = styled(Flex)`
 `;
 
 export const HomeBottomContainer = styled(Flex)`
-  /* background-color: #ccc; */
+  background-color: #ccc;
   display: flex;
   flex-direction: column;
 
   height: 50%;
-  margin-top: -45px;
+  /* margin-top: -45px; */
 `;
 
 export const HomeTopLeftContainer = styled(Flex)`
@@ -66,5 +66,5 @@ export const ActivityCardsContainer = styled(Flex)`
   flex-wrap: wrap;
 
   height: 100%;
-  width: 100%;
+  /* width: 100%; */
 `;
