@@ -15,11 +15,11 @@ function PrimaryButton(props: PrimaryButtonProps) {
   const { children, ...rest } = props;
 
   return currentTheme === "light" ? (
-    <Button type="primary" {...rest}>
+    <Button type="primary" {...rest} size="middle">
       {children}
     </Button>
   ) : (
-    <PrimaryButtonDark type="primary" {...rest}>
+    <PrimaryButtonDark type="primary" {...rest} size="middle">
       {children}
     </PrimaryButtonDark>
   );
