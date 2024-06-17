@@ -1,4 +1,9 @@
 import React from "react";
+
+// Ant Design
+import Title from "antd/es/typography/Title";
+
+// Styled Components
 import {
   HomeContainer,
   HomeTopContainer,
@@ -8,11 +13,13 @@ import {
   HomeTopLeftContainer,
   HomeTopRightContainer,
 } from "./Home.Styles";
-import Title from "antd/es/typography/Title";
-import LineHeader from "../../../common/LineHeader/LineHeader";
-import ActivityCard from "../../../common/ActivityCard/ActivityCard";
-import Statistics from "./Statistics/Statistics";
 
+// Components
+import LineHeader from "../../../common/LineHeader/LineHeader";
+import Statistics from "./Statistics/Statistics";
+import ActivityCard from "../../../common/ActivityCard/ActivityCard";
+
+// Assets
 import Poster from "../../../../assets/images/home_poster.svg";
 
 function Home() {
@@ -20,6 +27,7 @@ function Home() {
     <HomeContainer>
       <HomeTopContainer>
         <HomeTopLeftContainer>
+          {/* Welcome */}
           <HomeTopTitleContainer>
             <Title level={2}>Welcome, Dr. Rousseau!</Title>
             <Title level={5} style={{ fontWeight: 500, marginTop: "-10px" }}>
@@ -34,7 +42,9 @@ function Home() {
           <img src={Poster} alt="poster" height={"100%"} />
         </HomeTopRightContainer>
       </HomeTopContainer>
+
       <HomeBottomContainer>
+        {/* Recent Activity */}
         <Title level={3}>Recent Activity</Title>
         <LineHeader />
         {/* Max only 8  */}

@@ -21,7 +21,6 @@ interface StatisticCardProps {
     | "your_submitted"
     | "all_pending"
     | "all_new"
-    | "all_submitted";
 
   text: string;
 

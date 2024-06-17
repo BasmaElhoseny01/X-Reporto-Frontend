@@ -20,7 +20,6 @@ import SideBar from "./components/layout/SideBar/SideBar";
 
 // Pages
 import Home from "./pages/Home";
-import HomeTwo from "./components/features/radiologists/Home/HomeTwo";
 import NewPatientPage from "./pages/NewPatientPage";
 import Examples from "./pages/Examples";
 
@@ -78,7 +77,6 @@ function App() {
               <BrowserRouter>
                 <Routes>
                   <Route path="/" element={<Home />} />
-                  <Route path="/home" element={<HomeTwo />} />
                   <Route path="patient/new" element={<NewPatientPage />} />
                   <Route path="examples" element={<Examples />} />
                   <Route path="about" element={<h1>about</h1>} />

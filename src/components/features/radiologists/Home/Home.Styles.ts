@@ -68,29 +68,3 @@ export const ActivityCardsContainer = styled(Flex)`
   height: 100%;
   width: 100%;
 `;
-export const HomeTwoContainer = styled(Flex)`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-
-  width: 100%;
-  height: 100%;
-`;
-
-export const HomeTwoTopContainer = styled(Flex)`
-  background-color: #ccc;
-`;
-
-export const HomeTwoBottomContainer = styled(Flex)`
-  background-color: #abc;
-  flex: 1;
-
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-
-  justify-content: flex-start;
-  align-items: flex-start;
-
-  /* width: 100%; */
-`;

@@ -1,5 +1,9 @@
 import React from "react";
 
+// Redux
+import { useSelector } from "react-redux";
+import { RootState } from "../../../state/Reducers";
+
 // Ant Design
 
 // Components
@@ -9,8 +13,6 @@ import DraftActivityCard from "./DraftActivityCard/DraftActivityCard";
 
 // Styled Components
 import { ActivityCardContainer } from "./ActivityCard.Styles";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../state/Reducers";
 
 // Assets
 
