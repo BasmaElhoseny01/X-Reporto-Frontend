@@ -20,15 +20,15 @@ import { actionsCreators, MainState } from "../../../state";
 type MenuItem = Required<MenuProps>["items"][number];
 
 const items: MenuItem[] = [
-  { key: "1", icon: <HomeOutlined />, label: "Home" },
+  { key: "Home", icon: <HomeOutlined />, label: "Home" },
   {
     key: "sub1",
     label: "Dashboard",
     icon: <DashboardOutlined />,
     children: [
-      { key: "2", label: "Analysis" },
-      { key: "3", label: "Workplace" },
-      { key: "4", label: "Monitor" },
+      { key: "Analysis", label: "Analysis" },
+      { key: "Workplace", label: "Workplace" },
+      { key: "Monitor", label: "Monitor" },
     ],
   },
   {
@@ -36,10 +36,10 @@ const items: MenuItem[] = [
     label: "Patients",
     icon: <UsergroupDeleteOutlined />,
     children: [
-      { key: "5", label: "All" },
-      { key: "6", label: "Archived" },
-      { key: "7", label: "New Patient" },
-      { key: "8", label: "View Patient" },
+      { key: "Patients/All", label: "All" },
+      { key: "Patients/Archived", label: "Archived" },
+      { key: "Patients/NewPatient", label: "New Patient" },
+      { key: "Patients/ViewPatient", label: "View Patient" },
     ],
   },
   {
@@ -47,17 +47,17 @@ const items: MenuItem[] = [
     label: "Reports",
     icon: <FileTextOutlined />,
     children: [
-      { key: "9", label: "Worklist" },
-      { key: "10", label: "Completed" },
-      { key: "11", label: "New X-Ray" },
-      { key: "12", label: "View X-Ray" },
+      { key: "Reports/WorkList", label: "Work list" },
+      { key: "Reports/Completed", label: "Completed" },
+      { key: "Reports/NewX-Ray", label: "New X-Ray" },
+      { key: "Reports/ViewX-Ray", label: "View X-Ray" },
     ],
   },
-  { key: "13", icon: <ProfileOutlined />, label: "Profile" },
-  { key: "14", icon: <CheckCircleOutlined />, label: "Results" },
-  { key: "15", icon: <WarningOutlined />, label: "Exception" },
-  { key: "16", icon: <UserOutlined />, label: "Account" },
-  { key: "17", icon: <HighlightOutlined />, label: "Graphic Editor" },
+  { key: "Profile", icon: <ProfileOutlined />, label: "Profile" },
+  { key: "Results", icon: <CheckCircleOutlined />, label: "Results" },
+  { key: "Exception", icon: <WarningOutlined />, label: "Exception" },
+  { key: "Account", icon: <UserOutlined />, label: "Account" },
+  { key: "GraphicEditor", icon: <HighlightOutlined />, label: "Graphic Editor" },
 ];
 
 const SideBar = () => {
@@ -71,7 +71,8 @@ const SideBar = () => {
     setCollapsed(collapsed);
   };
   const onMenuClick: MenuProps["onClick"] = (e) => {
-    ChangeDrawer(Number(e.key));
+    ChangeDrawer(e.key);
+    window.location.pathname = `/${e.key}`;
   };
 
   return (
@@ -91,7 +92,7 @@ const SideBar = () => {
       }}
     >
       <Menu
-        defaultSelectedKeys={[drawer.toString()]}
+        defaultSelectedKeys={[drawer]}
         mode="inline"
         theme={websiteTheme}
         inlineCollapsed={collapsed}

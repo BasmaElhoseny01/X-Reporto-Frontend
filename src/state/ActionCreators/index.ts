@@ -39,7 +39,7 @@ export const ChangeTheme = (state: "light" | "dark") => {
   };
 };
 
-export const ChangeDrawer = (state:number) => {
+export const ChangeDrawer = (state:string) => {
     return (dispatch : Dispatch<Action>) => {
         dispatch({
             type: ActionType.CHANGE_DRAWER,
