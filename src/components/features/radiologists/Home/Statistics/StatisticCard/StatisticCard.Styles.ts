@@ -13,7 +13,7 @@ export const StatisticCardContainer = styled(Flex)`
   align-items: flex-start;
   
   width: 50%;
-  height: 150px;
+  height: 100px;
   
   padding: 20px;
 `;

@@ -26,14 +26,13 @@ function Statistics() {
         count={105}
         action={() => console.log("New Cases")}
       />
-
       <StatisticCard
         status="all_submitted"
         text="All Submitted Reports"
         count={210}
         action={() => console.log("All Submitted Reports")}
-      /> */}
-
+      />
+*/}
       <StatisticCard
         status="your_pending"
         text="Your Pending Reports"

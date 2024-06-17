@@ -7,8 +7,7 @@ import styled from "styled-components";
 import { Flex } from "antd";
 
 export const StatisticsContainer = styled(Flex)`
-  width: 80%;
-  /* background-color: aliceblue; */
+  width: 40%;
 
   display: flex;
   flex-direction: row;

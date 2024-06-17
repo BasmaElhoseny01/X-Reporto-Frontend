@@ -7,26 +7,69 @@ import styled from "styled-components";
 import { Flex } from "antd";
 
 export const HomeContainer = styled(Flex)`
+  /* background-color: aliceblue; */
+
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
 
-  width: 100%;
-
-  background-color: aliceblue;
   height: 100%;
 `;
 
-export const HomeLeftSideContainer = styled(Flex)`
+export const HomeTopContainer = styled(Flex)`
+  background-color: #abc;
+
   display: flex;
   flex-direction: column;
 
-  width: 50%;
+  height: 50%;
 `;
 
-export const HomeRightSideContainer = styled(Flex)`
+export const HomeBottomContainer = styled(Flex)`
+  background-color: #ccc;
   display: flex;
   flex-direction: column;
 
-  width: 50%;
+  height: 50%;
+`;
+
+export const HomeTopTitleContainer = styled(Flex)`
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+`;
+
+export const ActivityCardsContainer = styled(Flex)`
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  height: 100%;
+  width: 100%;
+`;
+export const HomeTwoContainer = styled(Flex)`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  width: 100%;
+  height: 100%;
+`;
+
+export const HomeTwoTopContainer = styled(Flex)`
+  background-color: #ccc;
+`;
+
+export const HomeTwoBottomContainer = styled(Flex)`
+  background-color: #abc;
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  /* width: 100%; */
 `;

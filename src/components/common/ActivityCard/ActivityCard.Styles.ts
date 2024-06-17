@@ -11,12 +11,10 @@ export const ActivityCardContainer = styled(Flex)`
   /* background-color: ${palette.grey_light}20; */
   background-color: ${palette.grey_light}50;
 
-  width: 90%;
-  /* width: 40%; */
   height: 50px;
 
   padding: 5px;
-  margin: 5px 0;
+  margin: 5px 5px;
 
   display: flex;
   flex-direction: row;
