@@ -26,6 +26,7 @@ import NewPatientPage from "./pages/NewPatientPage";
 import Examples from "./pages/Examples";
 import AllPatient from "./pages/AllPatient";
 import ReportWorkList from "./pages/ReportWorklist";
+import ReportCompleted from "./pages/ReportCompleted";
 
 // interface AppProps {
 //   // Define props here
@@ -103,6 +104,7 @@ function App() {
                   </Route>
                   <Route path="reports">
                     <Route path="WorkList" element={<ReportWorkList/>} />
+                    <Route path="Completed" element={<ReportCompleted/>} />
                   </Route>
                   
                 </Routes>
