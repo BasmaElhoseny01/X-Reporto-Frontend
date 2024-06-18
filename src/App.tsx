@@ -25,6 +25,7 @@ import Home from "./pages/Home";
 import NewPatientPage from "./pages/NewPatientPage";
 import Examples from "./pages/Examples";
 import AllPatient from "./pages/AllPatient";
+import ReportWorkList from "./pages/ReportWorklist";
 
 // interface AppProps {
 //   // Define props here
@@ -99,7 +100,9 @@ function App() {
 
                   <Route path="patients">
                     <Route index element={<AllPatient/>} />
-                    <Route path="new" element={<h1>new patient</h1>} />
+                  </Route>
+                  <Route path="reports">
+                    <Route path="WorkList" element={<ReportWorkList/>} />
                   </Route>
                   
                 </Routes>
