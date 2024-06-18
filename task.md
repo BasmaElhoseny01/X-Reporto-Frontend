@@ -5,14 +5,14 @@
 [✓] Switching between Pages
 [✓] Patients All List
 [✓] Patients All List (Empty)
-[] Patients Archived List **
-[] Patients Archived List (Empty) **
+[✓] Patients Archived List **
+[✓] Patients Archived List (Empty) **
 [✓] Reports WorkList
 [✓] Reports WorkList (Empty)
-[] Reports Archived **
-[] Reports Archived (Empty) **
-[] Reports Completed List
-[] Reports Completed List (Empty)
+[✓] Reports Archived **
+[✓] Reports Archived (Empty) **
+[✓] Reports Completed List
+[✓] Reports Completed List (Empty)
 
 
 ---
