@@ -9,6 +9,8 @@ import GeneralTable from "../components/common/Table/Table";
 import { SearchOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Popconfirm, PopconfirmProps, message } from "antd";
 import LinkButton from "../components/common/LinkButton/LinkButton";
+import { useSelector } from "react-redux";
+import { MainState } from "../state";
 
 function Examples() {
   const [messageApi, contextHolder] = message.useMessage();
@@ -66,17 +68,25 @@ function Examples() {
 
   //----------------------------------------------------------------------------------------------------
   // General Table Data
+  const tableSearch = useSelector((state: MainState) => state.tableSearch);
   const GeneralTableData = {
     columns: [
       {
         title: "ID",
         dataIndex: "id",
         key: "name",
+        // eslint-disable-next-line
+        sorter : (a: any, b: any) => a.id - b.id,
       },
       {
         title: "User ID",
         dataIndex: "userId",
         key: "2",
+        filteredValue: [tableSearch],
+        // eslint-disable-next-line
+        onFilter: (value: any, record: any) =>{
+          return  record.userId.toString().toLowerCase().includes(value.toLowerCase());
+        },
       },
       {
         key: "3",
@@ -89,9 +99,13 @@ function Examples() {
     ],
     api: "https://jsonplaceholder.typicode.com/todos",
 
+    title: "General Table",
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
       console.log(record, rowIndex);
+    },
+    addNew: () => {
+      console.log("Add New");
     },
   };
   return (
@@ -104,7 +118,7 @@ function Examples() {
           flexDirection: "row",
           justifyContent: "space-around",
           flexWrap: "wrap",
-          padding: "2rem",
+          padding: "1rem",
         }}
       >
         {/* *********************************************************** */}
@@ -175,6 +189,9 @@ function Examples() {
         columns={GeneralTableData.columns}
         api={GeneralTableData.api}
         action={GeneralTableData.action}
+        addNew={GeneralTableData.addNew}
+        title={GeneralTableData.title}
+        filterColumns={{ ID: "ID" }}
       />
     </div>
   );

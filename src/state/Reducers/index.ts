@@ -6,6 +6,7 @@ import UserNameReducer from "./UserNameReducer";
 import ThemeReducer from "./ThemeReducer";
 import IdReducer from "./IdReducer";
 import DrawerReducer from "./DrawerReducer";
+import TableSearchReducer from "./TableSearchReducer";
 
 // Define RootState interface by combining all state slices
 export interface RootState {
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   id: IdReducer,
   drawer: DrawerReducer,
   theme: ThemeReducer,
+  tableSearch: TableSearchReducer,
 });
 
 export default rootReducer;

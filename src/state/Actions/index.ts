@@ -23,4 +23,9 @@ interface Theme {
   payload: string;
 }
 
-export type Action = Token | UserName | Id | Theme|Drawer;
+interface TableSearch {
+  type: ActionType.CHANGE_TABLE_SEARCH;
+  payload: string;
+}
+
+export type Action = Token | UserName | Id | Theme|Drawer|TableSearch;

@@ -47,3 +47,13 @@ export const ChangeDrawer = (state:string) => {
         });
     };
 };
+
+export const ChangeTableSearch = (state:string) => {
+    return (dispatch : Dispatch<Action>) => {
+        dispatch({
+            type: ActionType.CHANGE_TABLE_SEARCH,
+            payload: state,
+        });
+    };
+};
+

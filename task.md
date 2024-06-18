@@ -1,8 +1,8 @@
 [✓] Left Side Bar (General) + Spacing
 [✓] Table (General With x, y var) + Empty
 [✓] Redux
-[] Fix Content Side Scrolling
-[] Switching between Pages
+[✓] Fix Content Side Scrolling
+[✓] Switching between Pages
 [] Patients All List
 [] Patients All List (Empty)
 [] Patients Archived List **
