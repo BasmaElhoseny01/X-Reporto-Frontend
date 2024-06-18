@@ -24,6 +24,7 @@ import SideBar from "./components/layout/SideBar/SideBar";
 import Home from "./pages/Home";
 import NewPatientPage from "./pages/NewPatientPage";
 import Examples from "./pages/Examples";
+import AllPatient from "./pages/AllPatient";
 
 // interface AppProps {
 //   // Define props here
@@ -95,6 +96,12 @@ function App() {
                       </div>
                     }
                   />
+
+                  <Route path="patients">
+                    <Route index element={<AllPatient/>} />
+                    <Route path="new" element={<h1>new patient</h1>} />
+                  </Route>
+                  
                 </Routes>
               </BrowserRouter>
             </ContentContainer>

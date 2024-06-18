@@ -63,6 +63,7 @@ const GeneralTable = (props:GeneralTableProps) => {
         placeholder="Search"  
         onChange={(e) => ChangeTable(e.target.value)}
         onSearch={(value) => ChangeTable(value)}
+        allowClear
         />
       </Flex>
       <Flex style={{justifyContent: "space-between"}}>
