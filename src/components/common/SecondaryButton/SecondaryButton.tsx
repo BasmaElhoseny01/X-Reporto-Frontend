@@ -16,11 +16,11 @@ function SecondaryButton(props: SecondaryButtonProps) {
   const { children, ...rest } = props;
 
   return currentTheme === "light" ? (
-    <Button type="default" {...rest}>
+    <Button type="default" {...rest} size="middle">
       {children}
     </Button>
   ) : (
-    <SecondaryButtonDark type="default" {...rest}>
+    <SecondaryButtonDark type="default" {...rest} size="middle">
       {children}
     </SecondaryButtonDark>
   );
