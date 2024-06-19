@@ -13,6 +13,7 @@
 [✓] Reports Archived (Empty) **
 [✓] Reports Completed List
 [✓] Reports Completed List (Empty)
+[] All Doctors
 
 
 ---

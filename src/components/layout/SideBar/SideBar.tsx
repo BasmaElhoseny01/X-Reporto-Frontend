@@ -9,6 +9,7 @@ import {
   UserOutlined,
   HighlightOutlined,
   FileTextOutlined,
+  ExperimentOutlined
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Menu } from "antd";
@@ -62,6 +63,7 @@ const items: MenuItem[] = [
     icon: <HighlightOutlined />,
     label: "Graphic Editor",
   },
+  { key: "Doctors", icon: <ExperimentOutlined />, label: "Doctors" },
 ];
 
 const SideBar = () => {

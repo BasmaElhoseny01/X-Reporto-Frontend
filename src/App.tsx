@@ -28,6 +28,7 @@ import AllPatient from "./pages/AllPatient";
 import ReportWorkList from "./pages/ReportWorklist";
 import ReportCompleted from "./pages/ReportCompleted";
 import PatientArchived from "./pages/PatientArchived";
+import AllDoctors from "./pages/AllDoctors";
 
 // interface AppProps {
 //   // Define props here
@@ -108,6 +109,8 @@ function App() {
                     <Route path="WorkList" element={<ReportWorkList/>} />
                     <Route path="Completed" element={<ReportCompleted/>} />
                   </Route>
+                  
+                  <Route path="doctors" element={<AllDoctors/>} />
                   
                 </Routes>
               </BrowserRouter>
