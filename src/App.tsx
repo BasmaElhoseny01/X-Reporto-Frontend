@@ -24,6 +24,9 @@ import SideBar from "./components/layout/SideBar/SideBar";
 import Home from "./pages/Home";
 import NewPatientPage from "./pages/NewPatientPage";
 import Examples from "./pages/Examples";
+import CornerStone from "./pages/CornerStone";
+import Annotation from "./pages/Annotation";
+import DrawarPage from "./pages/DrawarPage";
 
 // interface AppProps {
 //   // Define props here
@@ -78,6 +81,8 @@ function App() {
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="patient/new" element={<NewPatientPage />} />
+                  <Route path="annotation" element={<Annotation />} />
+                  <Route path="drawer" element={<DrawarPage />} />
                   <Route path="examples" element={<Examples />} />
                   <Route
                     path="about"
@@ -95,6 +100,7 @@ function App() {
                       </div>
                     }
                   />
+                  <Route path="/corner" element={<CornerStone />} />
                 </Routes>
               </BrowserRouter>
             </ContentContainer>

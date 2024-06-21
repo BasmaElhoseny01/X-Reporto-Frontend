@@ -34,6 +34,14 @@ By Employee Only
 [] View Patient + Actions
 [] View Patient (Empty)
 
+
+-------
+[] View Management for X-Ray
+[] Info Tab
+[] X-Ray Tab  (Make BB as a separate Component)
+[] Report Tab
+[] Template **
+
 /////////////
 Archive
 Template For Doctor
