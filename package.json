@@ -14,7 +14,6 @@
     "antd-button-color": "^1.0.4",
     "antd-phone-input": "^0.3.7",
     "axios": "^1.7.2",
-    "cornerstone-core": "^2.6.1",
     "cornerstone-math": "^0.1.10",
     "cornerstone-tools": "^6.0.10",
     "dicom-parser": "^1.8.21",
