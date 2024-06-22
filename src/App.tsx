@@ -22,17 +22,18 @@ import SideBar from "./components/layout/SideBar/SideBar";
 
 // Pages
 import Home from "./pages/Home";
-import NewPatientPage from "./pages/NewPatientPage";
 
 import ReportWorkList from "./pages/ReportWorklist";
 import ReportCompleted from "./pages/ReportCompleted";
+import NewXRay from "./components/features/xrays/NewXRay/NewXRay";
+import ViewXRayPage from "./pages/ViewXRayPage";
 
 import AllPatient from "./pages/AllPatient";
 import PatientArchived from "./pages/PatientArchived";
+import NewPatientPage from "./pages/NewPatientPage";
+import ViewPatientPage from "./pages/ViewPatientPage";
 
 import AllDoctors from "./pages/AllDoctors";
-
-import ViewXRayPage from "./pages/ViewXRayPage";
 
 import Examples from "./pages/Examples";
 import Annotation from "./pages/Annotation";
@@ -90,20 +91,26 @@ function App() {
               <BrowserRouter>
                 <Routes>
                   <Route path="/" element={<Home />} />
-                  <Route path="patient/new" element={<NewPatientPage />} />
-                  <Route path="report/:Id" element={<ViewXRayPage />} />
+
                   <Route path="patients">
                     <Route index element={<AllPatient />} />
                     <Route path="archived" element={<PatientArchived />} />
+                    <Route path="new" element={<NewPatientPage />} />
+                    <Route path="/:Id" element={<ViewPatientPage />} />
                   </Route>
+
                   <Route path="reports">
                     <Route path="WorkList" element={<ReportWorkList />} />
                     <Route path="Completed" element={<ReportCompleted />} />
+                    <Route path="new" element={<NewXRay />} />
+                    <Route path="/:Id" element={<ViewXRayPage />} />
                   </Route>
 
-                  <Route path="doctors" element={<AllDoctors />} />
+                  <Route path="doctors">
+                    <Route index element={<AllDoctors />} />
+                  </Route>
 
-          
+
                   <Route path="annotation" element={<Annotation />} />
                   <Route path="drawer" element={<DrawarPage />} />
                   <Route path="examples" element={<Examples />} />

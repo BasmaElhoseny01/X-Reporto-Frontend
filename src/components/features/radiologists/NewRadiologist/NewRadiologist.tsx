@@ -15,14 +15,14 @@ import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
 
 // Styled Components
 import {
-  NewPatientContainer,
+  NewRadiologistContainer,
   FormContainer,
   InputFieldsContainer,
   SubmitContainer,
-} from "./NewPatients.Styles";
+} from "./NewRadiologist.style";
 
-interface NewPatientFormValues {
-  patientName: string;
+interface NewRadiologistFormValues {
+  RadiologistName: string;
   birthDate: string;
   age: number;
   email: string;
@@ -30,21 +30,21 @@ interface NewPatientFormValues {
   gender: "male" | "female";
 }
 
-function NewPatients() {
+function NewRadiologist() {
   const [form] = Form.useForm();
 
   const onFinish = async (values: unknown) => {
-    const formValues = values as NewPatientFormValues;
+    const formValues = values as NewRadiologistFormValues;
     console.log("Form values:", formValues);
 
     try {
-      const response = await axios.post('/api/patients', formValues);
+      const response = await axios.post('/api/Radiologists', formValues);
       console.log("API response:", response.data);
-      message.success("Patient added successfully");
+      message.success("Radiologist added successfully");
       form.resetFields();
     } catch (error) {
       console.error("API error:", error);
-      message.error("Failed to add patient");
+      message.error("Failed to add Radiologist");
     }
   };
 
@@ -70,8 +70,8 @@ function NewPatients() {
   };
 
   return (
-    <NewPatientContainer>
-      <Title level={2}>New Patients</Title>
+    <NewRadiologistContainer>
+      <Title level={2}>New Radiologist</Title>
       <LineHeader />
       <FormContainer
         form={form}
@@ -80,13 +80,13 @@ function NewPatients() {
       >
         <InputFieldsContainer>
           <Form.Item
-            name="patientName"
-            label="Patient Name"
+            name="RadiologistName"
+            label="Radiologist Name"
             labelCol={{ span: 24 }}
             wrapperCol={{ span: 24 }}
             rules={[{ required: true, message: "Name is required" }]}
           >
-            <Input placeholder="Patient Name" />
+            <Input placeholder="Radiologist Name" />
           </Form.Item>
 
           <Form.Item
@@ -150,8 +150,8 @@ function NewPatients() {
           <PrimaryButton htmlType="submit" size="large" style={{ width: "6%" }}>Add</PrimaryButton>
         </SubmitContainer>
       </FormContainer>
-    </NewPatientContainer>
+    </NewRadiologistContainer>
   );
 }
 
-export default NewPatients;
+export default NewRadiologist;

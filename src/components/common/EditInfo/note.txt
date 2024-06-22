@@ -1,0 +1,188 @@
+import React from 'react';
+// import { useEffect, useState } from 'react';
+// import { Descriptions } from 'antd';
+// import type { DescriptionsProps } from 'antd';
+// import axios from 'axios';
+import { Form, Input } from "antd";
+import {EditOutlined } from "@ant-design/icons";
+
+import Title from "antd/es/typography/Title";
+import PhoneInput from "antd-phone-input";
+
+
+
+// Components
+import LineHeader from "../../../components/common/LineHeader/LineHeader";
+import SecondaryButton from "../../../components/common/SecondaryButton/SecondaryButton";
+import PrimaryButton from "../../../components/common/PrimaryButton/PrimaryButton";
+// Styled Components
+import {
+    ViewPatientContainer,
+    FormContainer,
+    InputFieldsContainer,
+    SubmitContainer,
+    InputFeild
+  } from "./EditInfo.style";
+
+function EditInfo() {
+    const [form] = Form.useForm();
+
+  const onFinish = (values: unknown) => {
+    console.log("Form values:", values);
+  };
+
+  const onCancel = () => {
+    form.resetFields();
+  };
+
+  return (
+    <ViewPatientContainer>
+      <Title level={2}>View Patients</Title>
+      <LineHeader />
+      <FormContainer
+        form={form}
+        onFinish={onFinish}
+        initialValues={{ gender: "male" }}
+      >
+        <InputFieldsContainer>
+        <Form.Item
+            name="id"
+            label="ID"
+            labelCol={{ span: 24 }}
+            wrapperCol={{ span: 24 }}
+            rules={[{ required: true, message: "ID is required" }]}
+          >
+            <InputFeild placeholder="ID" suffix={<EditOutlined />}/>
+          </Form.Item>
+
+          <Form.Item
+            name="patientName"
+            label="Patient Name"
+            labelCol={{ span: 24 }}
+            wrapperCol={{ span: 24 }}
+            rules={[{ required: true, message: "Name is required" }]}
+          >
+            <Input placeholder="Patient Name" suffix={<EditOutlined />}/>
+          </Form.Item>
+
+          <Form.Item
+            name="birthDate"
+            label="Birth Date"
+            labelCol={{ span: 24 }}
+            wrapperCol={{ span: 24 }}
+            rules={[{ required: true, message: "Birth Date is required" }]}
+          >
+            <Input placeholder="Birth Date" type="date" suffix={<EditOutlined />}/>
+          </Form.Item>
+
+          <Form.Item
+            name="age"
+            label="Age"
+            labelCol={{ span: 24 }}
+            wrapperCol={{ span: 24 }}
+            rules={[{ required: true, message: "Age is required" }]}
+          >
+            <Input placeholder="Age" type="number" suffix={<EditOutlined />} />
+          </Form.Item>
+
+          <Form.Item
+            name="email"
+            label="Email"
+            labelCol={{ span: 24 }}
+            wrapperCol={{ span: 24 }}
+            rules={[
+              { required: true, message: "Email is required" },
+              { type: "email", message: "Email is invalid" },
+            ]}
+          >
+            <Input placeholder="Email" type="email" suffix={<EditOutlined />} />
+          </Form.Item>
+
+          <Form.Item
+            name="phone"
+            label="Phone"
+            labelCol={{ span: 24 }}
+            wrapperCol={{ span: 24 }}
+            rules={[{ required: true, message: "Phone is required" }]}
+          >
+            <PhoneInput enableSearch suffix={<EditOutlined />} />
+          </Form.Item>
+
+          <Form.Item
+            name="gender"
+            label="Gender"
+            labelCol={{ span: 24 }}
+            wrapperCol={{ span: 24 }}
+            rules={[{ required: true, message: "Gender is required" }]}
+          >
+         <Input placeholder="Gender" type="gender" suffix={<EditOutlined />} />
+
+          </Form.Item>
+        </InputFieldsContainer>
+
+        <SubmitContainer>
+          <SecondaryButton onClick={onCancel} htmlType="button">Cancel</SecondaryButton>
+          <PrimaryButton htmlType="submit">Save</PrimaryButton>
+        </SubmitContainer>
+      </FormContainer>
+    </ViewPatientContainer>
+  );
+   
+}
+
+export default EditInfo;
+ // const items: DescriptionsProps['items'] = [
+    //         {
+    //             label: 'UserName',
+    //             children: 'Zhou Maomao',
+    //         },
+    //         {
+    //             label: 'Telephone',
+    //             children: '1810000000',
+    //         },
+    //         {
+    //             label: 'Live',
+    //             children: 'Hangzhou, Zhejiang',
+    //         },
+    //         {
+    //             label: 'Remark',
+    //             children: 'empty',
+    //         },
+    //         {
+    //             label: 'Address',
+    //             children: 'No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China',
+    //         },
+    //     ];
+
+
+    // const [data, setData] = useState<DescriptionsProps['items']>([]);
+
+    // useEffect(() => {
+    //     const apiUrl = 'https://api.example.com/userinfo';
+
+    //     const fetchData = async () => {
+    //         try {
+    //             const response = await axios.get(apiUrl);
+    //             const result = response.data;
+
+    //             const items: DescriptionsProps['items'] = [
+    //                 { label: 'UserName', children: result.userName },
+    //                 { label: 'Telephone', children: result.telephone },
+    //                 { label: 'Live', children: result.live },
+    //                 { label: 'Remark', children: result.remark },
+    //                 { label: 'Address', children: result.address },
+    //             ];
+
+    //             setData(items);
+    //         } catch (error) {
+    //             console.error('Error fetching data:', error);
+    //         }
+    //     };
+
+    //     fetchData();
+    // }, []);
+
+    // return (
+    //     // <Descriptions title="User Info" layout="vertical" items={data} colon={false} />
+    //     // <Descriptions title="User Info" layout="vertical" items={items} colon={false} />
+    // );
