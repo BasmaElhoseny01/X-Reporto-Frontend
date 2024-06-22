@@ -1,3 +1,4 @@
+Hosny Tasks:
 [✓] Left Side Bar (General) + Spacing
 [✓] Table (General With x, y var) + Empty
 [✓] Redux
@@ -13,43 +14,46 @@
 [✓] Reports Archived (Empty) **
 [✓] Reports Completed List
 [✓] Reports Completed List (Empty)
-[] All Doctors
-
+[✓] All Doctors
+[] Templates List
 ---
 
+Basma Tasks:
 Customize Header to be for Admin Employee Doctor
 [✓] Header
 [✓] Switch Light/Dark Mode [WITH HEADER]
 [✓] Buttons (Primary Filled & Secondary) + With Icons + Delete + Disabled
 [✓] Check Dark Mode for Buttons
-[] Home Radiologist
-[] UI X-ray
+[✓] Home Radiologist
+[✓] UI X-ray
 
 ---
-
+Zeinab Tasks
 By Employee Only
 [✓] New Patient
 [✓] New X-Ray
 [] New Doctor \*\*
 [] View Patient + Actions
 [] View Patient (Empty)
+[] Template New *
+[] Template View *
 
 ---
 
 [] Fix Flow Management for X-Ray Tabs (Right Side Bar)
 
-[] X-Ray View Tab
+[] X-Ray View Tab  
+    https://konvajs.org/docs/react/Filters.html 
+    https://github.com/swimmingkiim/react-image-editor
 
 [] Info Tab
 
 [] Report Tab
 
-[] Templates List
-[] Template New
-[] Template View
 
 [] Home Admin
 [] Home Employee
+
 /////////////
 Archive
 Template For Doctor
