@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 // Components
 import PrimaryButton from "../components/common/PrimaryButton/PrimaryButton";
@@ -7,7 +7,7 @@ import GeneralTable from "../components/common/Table/Table";
 
 // Ant Design
 import { SearchOutlined, DeleteOutlined } from "@ant-design/icons";
-import { Popconfirm, PopconfirmProps, message } from "antd";
+import { Input, Popconfirm, PopconfirmProps, Tooltip, message } from "antd";
 import LinkButton from "../components/common/LinkButton/LinkButton";
 import { useSelector } from "react-redux";
 import { MainState } from "../state";
@@ -67,6 +67,20 @@ function Examples() {
   };
 
   //----------------------------------------------------------------------------------------------------
+  // Editable Text
+  const [isEditing, setIsEditing] = useState(false);
+  const [editableText, setEditableText] = useState("text");
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleSave = () => {
+    setIsEditing(false);
+    // Here you might want to save the edited text using a callback or other method
+  };
+
+  //----------------------------------------------------------------------------------------------------
   // General Table Data
   const tableSearch = useSelector((state: MainState) => state.tableSearch);
   const GeneralTableData = {
@@ -108,6 +122,7 @@ function Examples() {
       console.log("Add New");
     },
   };
+
   return (
     <div>
       {contextHolder}
@@ -182,6 +197,22 @@ function Examples() {
           <PrimaryButton>Open Popconfirm with Promise</PrimaryButton>
         </Popconfirm>
       </div>
+
+      {/* ********************************************************* */}
+      {/* Tools */}
+      <Tooltip title="Click to edit">
+        {isEditing ? (
+          <Input
+            value={editableText}
+            onChange={(e) => setEditableText(e.target.value)}
+            onBlur={handleSave}
+            onPressEnter={handleSave}
+            autoFocus
+          />
+        ) : (
+          <span onClick={handleEdit}>{editableText}</span>
+        )}
+      </Tooltip>
 
       {/* ********************************************************* */}
       {/* General Table */}

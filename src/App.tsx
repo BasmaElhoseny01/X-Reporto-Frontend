@@ -23,12 +23,20 @@ import SideBar from "./components/layout/SideBar/SideBar";
 // Pages
 import Home from "./pages/Home";
 import NewPatientPage from "./pages/NewPatientPage";
-import Examples from "./pages/Examples";
-import AllPatient from "./pages/AllPatient";
+
 import ReportWorkList from "./pages/ReportWorklist";
 import ReportCompleted from "./pages/ReportCompleted";
+
+import AllPatient from "./pages/AllPatient";
 import PatientArchived from "./pages/PatientArchived";
+
 import AllDoctors from "./pages/AllDoctors";
+
+import ViewXRayPage from "./pages/ViewXRayPage";
+
+import Examples from "./pages/Examples";
+import Annotation from "./pages/Annotation";
+import DrawarPage from "./pages/DrawarPage";
 
 // interface AppProps {
 //   // Define props here
@@ -83,6 +91,21 @@ function App() {
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="patient/new" element={<NewPatientPage />} />
+                  <Route path="report/:Id" element={<ViewXRayPage />} />
+                  <Route path="patients">
+                    <Route index element={<AllPatient />} />
+                    <Route path="archived" element={<PatientArchived />} />
+                  </Route>
+                  <Route path="reports">
+                    <Route path="WorkList" element={<ReportWorkList />} />
+                    <Route path="Completed" element={<ReportCompleted />} />
+                  </Route>
+
+                  <Route path="doctors" element={<AllDoctors />} />
+
+          
+                  <Route path="annotation" element={<Annotation />} />
+                  <Route path="drawer" element={<DrawarPage />} />
                   <Route path="examples" element={<Examples />} />
                   <Route
                     path="about"
@@ -100,18 +123,6 @@ function App() {
                       </div>
                     }
                   />
-
-                  <Route path="patients">
-                    <Route index element={<AllPatient/>} />
-                    <Route path="archived" element={<PatientArchived/>} />
-                  </Route>
-                  <Route path="reports">
-                    <Route path="WorkList" element={<ReportWorkList/>} />
-                    <Route path="Completed" element={<ReportCompleted/>} />
-                  </Route>
-                  
-                  <Route path="doctors" element={<AllDoctors/>} />
-                  
                 </Routes>
               </BrowserRouter>
             </ContentContainer>

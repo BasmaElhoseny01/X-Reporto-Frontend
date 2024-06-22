@@ -15,7 +15,6 @@
 [✓] Reports Completed List (Empty)
 [] All Doctors
 
-
 ---
 
 Customize Header to be for Admin Employee Doctor
@@ -23,7 +22,7 @@ Customize Header to be for Admin Employee Doctor
 [✓] Switch Light/Dark Mode [WITH HEADER]
 [✓] Buttons (Primary Filled & Secondary) + With Icons + Delete + Disabled
 [✓] Check Dark Mode for Buttons
-[] Home
+[] Home Radiologist
 [] UI X-ray
 
 ---
@@ -31,10 +30,26 @@ Customize Header to be for Admin Employee Doctor
 By Employee Only
 [✓] New Patient
 [✓] New X-Ray
-[] New Doctor **
+[] New Doctor \*\*
 [] View Patient + Actions
 [] View Patient (Empty)
 
+---
+
+[] Fix Flow Management for X-Ray Tabs (Right Side Bar)
+
+[] X-Ray View Tab
+
+[] Info Tab
+
+[] Report Tab
+
+[] Templates List
+[] Template New
+[] Template View
+
+[] Home Admin
+[] Home Employee
 /////////////
 Archive
 Template For Doctor

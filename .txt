@@ -1,0 +1,1 @@
+npm install cornerstone-core cornerstone-tools cornerstone-math dicom-parser
