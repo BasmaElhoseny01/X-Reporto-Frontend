@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
 
 // Redux
@@ -93,9 +92,10 @@ function ViewXRay() {
   return (
     <ViewXRayContainer>
       <Layout style={{ width: "100%", height: "100%" }}>
-        <Content>
+        <Content style={{ flex: 1 }}>
           <XRaySection />
         </Content>
+
         {
           <Sider
             width={isSmallScreen ? "100%" : "50%"}

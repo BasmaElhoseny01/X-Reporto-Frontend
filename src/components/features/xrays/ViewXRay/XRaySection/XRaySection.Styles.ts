@@ -7,8 +7,8 @@ import styled from "styled-components";
 import { Flex } from "antd";
 
 export const XRaySectionContainer = styled(Flex)`
-  background-color: aliceblue;
+  background-color: #223344;
 
-  width: 100%;
+  flex: 1;
   height: 100%;
 `;

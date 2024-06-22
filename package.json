@@ -63,6 +63,7 @@
     "@eslint/js": "^9.4.0",
     "@types/cornerstone-core": "^2.3.3",
     "@types/eslint__js": "^8.42.3",
+    "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^7.13.0",
     "@typescript-eslint/parser": "^7.13.0",
     "ajv": "^7.2.4",

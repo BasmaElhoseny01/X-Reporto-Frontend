@@ -36,7 +36,7 @@ import ViewPatientPage from "./pages/ViewPatientPage";
 import AllDoctors from "./pages/AllDoctors";
 
 import Examples from "./pages/Examples";
-import Annotation from "./pages/Annotation";
+import DrawRectangleOnImage from "./pages/DrawRectangleOnImage";
 import DrawarPage from "./pages/DrawarPage";
 import XRayArchived from "./pages/XRayArchived";
 
@@ -113,7 +113,7 @@ function App() {
                     
                   </Route>
 
-                  <Route path="annotation" element={<Annotation />} />
+                  <Route path="annotation" element={<DrawRectangleOnImage />} />
                   <Route path="drawer" element={<DrawarPage />} />
                   <Route path="examples" element={<Examples />} />
                   <Route
