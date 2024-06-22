@@ -92,7 +92,7 @@ function ViewXRay() {
   return (
     <ViewXRayContainer>
       <Layout style={{ width: "100%", height: "100%" }}>
-        <Content style={{ flex: 1 }}>
+        <Content style={{ flex: 1 }} id="xray-content">
           <XRaySection />
         </Content>
 

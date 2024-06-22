@@ -47,12 +47,20 @@ function XRaySection() {
   const [annotations, setAnnotations] = useState(initialAnnotations);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   // const [newAnnotation, setNewAnnotation] = useState<Box[]>([]);
   // const [annotations, setAnnotations] = useState<Box[]>([]);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    // Get element with id xray-content
+    const element = document.getElementById("xray-content");
+    if (element) {
+      const { width, height } = element.getBoundingClientRect();
+      setCanvasMeasures({ width, height });
+
+      console.log("Dimensions", width, height);
+    }
+  }, []);
 
   const handleMouseDown = (event: KonvaEventObject<MouseEvent>) => {
     if (selectedId === null && newAnnotation.length === 0) {
@@ -102,9 +110,9 @@ function XRaySection() {
     <XRaySectionContainer>
       <Stage
         // width={canvasMeasures.width}
-        width={500}
+        width={canvasMeasures.width}
         // height={canvasMeasures.height}
-        height={500}
+        height={canvasMeasures.height}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
         onMouseMove={handleMouseMove}
@@ -137,7 +145,6 @@ function XRaySection() {
             );
           })}
         </Layer>
-        {/* <img src={XRay} width={"100%"} /> */}
       </Stage>
     </XRaySectionContainer>
   );
