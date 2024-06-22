@@ -7,11 +7,13 @@ import styled from "styled-components";
 import { Flex } from "antd";
 
 export const XRaySectionContainer = styled(Flex)`
-  background-color: #223344;
+  /* background-color: #223344; */
+  border: 1px solid #000;
+  padding: 5px;
 
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-around;
   align-items: center;
 
   flex: 1;

@@ -5,7 +5,7 @@ import { Layout } from "antd";
 import { Content } from "antd/es/layout/layout";
 
 export const MainContainer = styled(Layout)`
-  padding: 24px 16px;
+  padding: 0px 16px 10px 16px;
   height: 100vh;
 `;
 

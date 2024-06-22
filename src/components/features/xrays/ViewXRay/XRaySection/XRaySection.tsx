@@ -20,7 +20,10 @@ import XRay from "../../../../../assets/images/resized.jpg";
 import { Layer, Stage } from "react-konva";
 import ImageFromUrl from "../../../../common/ImageFromURL/ImageFromURL";
 import Annotation from "./Annotation/Annotation";
+import ToolBar from "./ToolBar/ToolBar";
+import { Tools } from "./XRaySection.types";
 
+// Initial BBs
 const initialAnnotations = [
   {
     x: 10,
@@ -37,11 +40,18 @@ const initialAnnotations = [
     id: generateId(),
   },
 ];
+
 function XRaySection() {
   const [canvasMeasures, setCanvasMeasures] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
+    // width: window.innerWidth,
+    // height: window.innerHeight,
+    width: 0,
+    height: 0,
   });
+
+  //
+  const [tools, setTools] = useState<Tools>({ navTool: "select" });
+
   const [selectedId, selectAnnotation] = useState<string | null>(null);
   const [newAnnotation, setNewAnnotation] = useState<Box[]>([]);
   const [annotations, setAnnotations] = useState(initialAnnotations);
@@ -53,13 +63,13 @@ function XRaySection() {
 
   useEffect(() => {
     // Get element with id xray-content
-    const element = document.getElementById("xray-content");
-    if (element) {
-      const { width, height } = element.getBoundingClientRect();
-      setCanvasMeasures({ width, height });
-
-      console.log("Dimensions", width, height);
-    }
+    // const element = document.getElementById("xray-content");
+    // if (element) {
+    //   const { width, height } = element.getBoundingClientRect();
+    //   setCanvasMeasures({ width, height });
+    //   console.log("Dimensions", width, height);
+    // }
+    console.log("Dimensions", canvasMeasures);
   }, []);
 
   const handleMouseDown = (event: KonvaEventObject<MouseEvent>) => {
@@ -108,6 +118,7 @@ function XRaySection() {
   const annotationsToDraw = [...annotations, ...newAnnotation];
   return (
     <XRaySectionContainer>
+      <ToolBar tools={tools} setTools={setTools} />
       <Stage
         // width={canvasMeasures.width}
         width={canvasMeasures.width}

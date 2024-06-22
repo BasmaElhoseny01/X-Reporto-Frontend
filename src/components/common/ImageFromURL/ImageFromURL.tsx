@@ -23,6 +23,8 @@ const ImageFromUrl: React.FC<ImageFromUrlProps> = ({
     const imageToLoad = new window.Image();
     imageToLoad.src = imageUrl;
     imageToLoad.addEventListener("load", () => {
+      // Resize image width to be 1000px
+
       setImage(imageToLoad);
       setCanvasMeasures({
         width: imageToLoad.width,
