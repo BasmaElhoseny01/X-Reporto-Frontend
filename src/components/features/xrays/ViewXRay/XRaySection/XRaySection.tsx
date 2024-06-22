@@ -6,14 +6,14 @@ import { XRaySectionContainer } from "./XRaySection.Styles";
 import { KonvaEventObject } from "konva/lib/Node";
 
 let idCounter = 0;
-const generateId = () => ++idCounter;
+const generateId = () => (++idCounter).toString();
 
 type Box = {
   x: number;
   y: number;
   width: number;
   height: number;
-  id: number;
+  id: string;
 };
 
 import XRay from "../../../../../assets/images/resized.jpg";
@@ -42,7 +42,7 @@ function XRaySection() {
     width: window.innerWidth,
     height: window.innerHeight,
   });
-  const [selectedId, selectAnnotation] = useState<number | null>(null);
+  const [selectedId, selectAnnotation] = useState<string | null>(null);
   const [newAnnotation, setNewAnnotation] = useState<Box[]>([]);
   const [annotations, setAnnotations] = useState(initialAnnotations);
 
