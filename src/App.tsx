@@ -23,8 +23,8 @@ import SideBar from "./components/layout/SideBar/SideBar";
 // Pages
 import Home from "./pages/Home";
 
-import ReportWorkList from "./pages/ReportWorklist";
-import ReportCompleted from "./pages/ReportCompleted";
+import XRayWorkList from "./pages/XRayWorklist";
+import XRayCompleted from "./pages/XRayCompleted";
 import NewXRay from "./components/features/xrays/NewXRay/NewXRay";
 import ViewXRayPage from "./pages/ViewXRayPage";
 
@@ -38,6 +38,7 @@ import AllDoctors from "./pages/AllDoctors";
 import Examples from "./pages/Examples";
 import Annotation from "./pages/Annotation";
 import DrawarPage from "./pages/DrawarPage";
+import XRayArchived from "./pages/XRayArchived";
 
 // interface AppProps {
 //   // Define props here
@@ -100,16 +101,17 @@ function App() {
                   </Route>
 
                   <Route path="reports">
-                    <Route path="WorkList" element={<ReportWorkList />} />
-                    <Route path="Completed" element={<ReportCompleted />} />
+                    <Route path="WorkList" element={<XRayWorkList />} />
+                    <Route path="Completed" element={<XRayCompleted />} />
+                    <Route path="archived" element={<XRayArchived />} />
                     <Route path="new" element={<NewXRay />} />
                     <Route path="/:Id" element={<ViewXRayPage />} />
                   </Route>
 
                   <Route path="doctors">
                     <Route index element={<AllDoctors />} />
+                    
                   </Route>
-
 
                   <Route path="annotation" element={<Annotation />} />
                   <Route path="drawer" element={<DrawarPage />} />

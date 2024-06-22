@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { MainState } from "../state";
 import GeneralTable from "../components/common/Table/Table";
 
-function ReportWorkList() {
+function XRayCompleted() {
   const tableSearch = useSelector((state: MainState) => state.tableSearch);
   const GeneralTableData = {
     columns: [
@@ -13,10 +13,12 @@ function ReportWorkList() {
         key: "xid",
         filteredValue: [tableSearch],
         // eslint-disable-next-line
-        onFilter: (value: any, record: any) =>{
-          return  record.userId.toString().toLowerCase().includes(value.toLowerCase());
+        onFilter: (value: any, record: any) => {
+          return record.userId
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase());
         },
-        
       },
       {
         title: "Patient ID",
@@ -24,10 +26,12 @@ function ReportWorkList() {
         key: "pid",
         filteredValue: [tableSearch],
         // eslint-disable-next-line
-        onFilter: (value: any, record: any) =>{
-          return  record.userId.toString().toLowerCase().includes(value.toLowerCase());
+        onFilter: (value: any, record: any) => {
+          return record.userId
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase());
         },
-        
       },
       {
         title: "Patient Name",
@@ -35,37 +39,44 @@ function ReportWorkList() {
         key: "name",
         filteredValue: [tableSearch],
         // eslint-disable-next-line
-        onFilter: (value: any, record: any) =>{
-          return  record.userId.toString().toLowerCase().includes(value.toLowerCase());
+        onFilter: (value: any, record: any) => {
+          return record.userId
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase());
         },
       },
       {
-        key: "Created At",
-        title: "created_at",
+        key: "created_at",
+        title: "Created At",
         dataIndex: "created_at",
         // eslint-disable-next-line
-        sorter : (a: any, b: any) => a.id - b.id,
+        sorter: (a: any, b: any) => a.id - b.id,
       },
       {
-        title: "Assigned To",
-        dataIndex: "assigned_to",
-        key: "assigned_to",
-        filteredValue: [tableSearch],
+        key: "submitted_at",
+        title: "Submitted At",
+        dataIndex: "submitted_at",
         // eslint-disable-next-line
-        onFilter: (value: any, record: any) =>{
-          return  record.userId.toString().toLowerCase().includes(value.toLowerCase());
-        },
+        sorter: (a: any, b: any) => a.id - b.id,
       },
       {
-        title: "Last Reviewed By",
-        dataIndex: "last_reviewed_by",
-        key: "last_reviewed_by",
+        key: "submitted_by",
+        title: "Submitted By",
+        dataIndex: "submitted_by",
+        // eslint-disable-next-line
+        sorter: (a: any, b: any) => a.id - b.id,
       },
     ],
 
     api: "",
-    title: "WorkList",
-    filterColumns : { "Patient Name": "Patient Name" , "Assigned To": "Assigned To" , "Patient ID":"Patient ID" , "X-Ray ID":"X-Ray ID"},
+    title: "Completed Reports",
+    filterColumns: {
+      "Patient Name": "Patient Name",
+      "Assigned To": "Assigned To",
+      "Patient ID": "Patient ID",
+      "X-Ray ID": "X-Ray ID",
+    },
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
       console.log(record, rowIndex);
@@ -73,7 +84,6 @@ function ReportWorkList() {
     addNew: () => {
       window.location.pathname = "/new";
     },
-
   };
 
   return (
@@ -88,4 +98,4 @@ function ReportWorkList() {
   );
 }
 
-export default ReportWorkList;
+export default XRayCompleted;

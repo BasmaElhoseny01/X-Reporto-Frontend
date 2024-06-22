@@ -16,6 +16,8 @@ Hosny Tasks:
 [✓] Reports Completed List (Empty)
 [✓] All Doctors
 
+[] Archived Doctors + Add to Side Bar
+[] Fix Routes Merged Table Routes
 [] Info Tab
 ---
 

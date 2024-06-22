@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { MainState } from "../state";
 import GeneralTable from "../components/common/Table/Table";
 
-function ReportArchived() {
+function XRayArchived() {
   const tableSearch = useSelector((state: MainState) => state.tableSearch);
   const GeneralTableData = {
     columns: [
@@ -13,10 +13,12 @@ function ReportArchived() {
         key: "xid",
         filteredValue: [tableSearch],
         // eslint-disable-next-line
-        onFilter: (value: any, record: any) =>{
-          return  record.userId.toString().toLowerCase().includes(value.toLowerCase());
+        onFilter: (value: any, record: any) => {
+          return record.userId
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase());
         },
-        
       },
       {
         title: "Patient ID",
@@ -24,10 +26,12 @@ function ReportArchived() {
         key: "pid",
         filteredValue: [tableSearch],
         // eslint-disable-next-line
-        onFilter: (value: any, record: any) =>{
-          return  record.userId.toString().toLowerCase().includes(value.toLowerCase());
+        onFilter: (value: any, record: any) => {
+          return record.userId
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase());
         },
-        
       },
       {
         title: "Patient Name",
@@ -35,8 +39,11 @@ function ReportArchived() {
         key: "name",
         filteredValue: [tableSearch],
         // eslint-disable-next-line
-        onFilter: (value: any, record: any) =>{
-          return  record.userId.toString().toLowerCase().includes(value.toLowerCase());
+        onFilter: (value: any, record: any) => {
+          return record.userId
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase());
         },
       },
       {
@@ -44,7 +51,7 @@ function ReportArchived() {
         title: "created_at",
         dataIndex: "created_at",
         // eslint-disable-next-line
-        sorter : (a: any, b: any) => a.id - b.id,
+        sorter: (a: any, b: any) => a.id - b.id,
       },
       {
         title: "Assigned To",
@@ -52,8 +59,11 @@ function ReportArchived() {
         key: "assigned_to",
         filteredValue: [tableSearch],
         // eslint-disable-next-line
-        onFilter: (value: any, record: any) =>{
-          return  record.userId.toString().toLowerCase().includes(value.toLowerCase());
+        onFilter: (value: any, record: any) => {
+          return record.userId
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase());
         },
       },
       {
@@ -65,7 +75,12 @@ function ReportArchived() {
 
     api: "",
     title: "WorkList",
-    filterColumns : { "Patient Name": "Patient Name" , "Assigned To": "Assigned To" , "Patient ID":"Patient ID" , "X-Ray ID":"X-Ray ID"},
+    filterColumns: {
+      "Patient Name": "Patient Name",
+      "Assigned To": "Assigned To",
+      "Patient ID": "Patient ID",
+      "X-Ray ID": "X-Ray ID",
+    },
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
       console.log(record, rowIndex);
@@ -73,7 +88,6 @@ function ReportArchived() {
     addNew: () => {
       window.location.pathname = "/new";
     },
-
   };
 
   return (
@@ -88,4 +102,4 @@ function ReportArchived() {
   );
 }
 
-export default ReportArchived;
+export default XRayArchived;
