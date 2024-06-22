@@ -1,15 +1,10 @@
 import React, { useState } from "react";
 import {
-  DashboardOutlined,
   HomeOutlined,
   UsergroupDeleteOutlined,
-  ProfileOutlined,
-  CheckCircleOutlined,
-  WarningOutlined,
   UserOutlined,
-  HighlightOutlined,
   FileTextOutlined,
-  ExperimentOutlined
+  ExperimentOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Menu } from "antd";
@@ -21,17 +16,7 @@ import { actionsCreators, MainState } from "../../../state";
 type MenuItem = Required<MenuProps>["items"][number];
 
 const items: MenuItem[] = [
-  { key: "", icon: <HomeOutlined />, label: "Home" },
-  {
-    key: "sub1",
-    label: "Dashboard",
-    icon: <DashboardOutlined />,
-    children: [
-      { key: "Analysis", label: "Analysis" },
-      { key: "Workplace", label: "Workplace" },
-      { key: "Monitor", label: "Monitor" },
-    ],
-  },
+  { key: "Home", icon: <HomeOutlined />, label: "Home" },
   {
     key: "sub2",
     label: "Patients",
@@ -39,7 +24,6 @@ const items: MenuItem[] = [
     children: [
       { key: "patients", label: "All" },
       { key: "patients/archived", label: "Archived" },
-      { key: "patient", label: "View Patient" },
       { key: "patient/new", label: "New Patient" },
     ],
   },
@@ -50,20 +34,12 @@ const items: MenuItem[] = [
     children: [
       { key: "reports/WorkList", label: "Work list" },
       { key: "reports/Completed", label: "Completed" },
-      { key: "report", label: "View X-Ray" },
+      { key: "reports/archived", label: "Archived" },
       { key: "report/new", label: "New X-Ray" },
     ],
   },
-  { key: "Profile", icon: <ProfileOutlined />, label: "Profile" },
-  { key: "Results", icon: <CheckCircleOutlined />, label: "Results" },
-  { key: "Exception", icon: <WarningOutlined />, label: "Exception" },
-  { key: "Account", icon: <UserOutlined />, label: "Account" },
-  {
-    key: "GraphicEditor",
-    icon: <HighlightOutlined />,
-    label: "Graphic Editor",
-  },
   { key: "Doctors", icon: <ExperimentOutlined />, label: "Doctors" },
+  { key: "Account", icon: <UserOutlined />, label: "Account" },
 ];
 
 const SideBar = () => {

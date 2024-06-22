@@ -43,3 +43,20 @@ Archive**\***
 
 Docotor Type
 Employee (Secertary) --> ADD ALL &aRchive
+
+
+<!-- Drawer -->
+Home
+Patients
+    All 
+    Archived
+    New
+Reports
+    WorkList
+    Completed
+    Archived
+    New
+
+Radiologists
+
+Profile *(Sabry)
