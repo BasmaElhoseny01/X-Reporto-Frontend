@@ -15,7 +15,8 @@ Hosny Tasks:
 [✓] Reports Completed List
 [✓] Reports Completed List (Empty)
 [✓] All Doctors
-[] Templates List
+
+[] Info Tab
 ---
 
 Basma Tasks:
@@ -26,6 +27,11 @@ Customize Header to be for Admin Employee Doctor
 [✓] Check Dark Mode for Buttons
 [✓] Home Radiologist
 [✓] UI X-ray
+[] Fix Flow Management for X-Ray Tabs (Right Side Bar)
+
+[] X-Ray View Tab  
+    https://konvajs.org/docs/react/Filters.html 
+    https://github.com/swimmingkiim/react-image-editor
 
 ---
 Zeinab Tasks
@@ -35,25 +41,18 @@ By Employee Only
 [] New Doctor \*\*
 [] View Patient + Actions
 [] View Patient (Empty)
-[] Template New *
-[] Template View *
-
----
-
-[] Fix Flow Management for X-Ray Tabs (Right Side Bar)
-
-[] X-Ray View Tab  
-    https://konvajs.org/docs/react/Filters.html 
-    https://github.com/swimmingkiim/react-image-editor
-
-[] Info Tab
 
 [] Report Tab
+[] Template New 
+[] Template View
+---
 
 
+
+
+[] Templates List (Hosny)
 [] Home Admin
 [] Home Employee
-
 /////////////
 Archive
 Template For Doctor

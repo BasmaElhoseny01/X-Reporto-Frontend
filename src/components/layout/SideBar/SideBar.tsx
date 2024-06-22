@@ -16,7 +16,7 @@ import { actionsCreators, MainState } from "../../../state";
 type MenuItem = Required<MenuProps>["items"][number];
 
 const items: MenuItem[] = [
-  { key: "Home", icon: <HomeOutlined />, label: "Home" },
+  { key: "", icon: <HomeOutlined />, label: "Home" },
   {
     key: "sub2",
     label: "Patients",
