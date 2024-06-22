@@ -97,7 +97,7 @@ function App() {
                     <Route index element={<AllPatient />} />
                     <Route path="archived" element={<PatientArchived />} />
                     <Route path="new" element={<NewPatientPage />} />
-                    <Route path="/:Id" element={<ViewPatientPage />} />
+                    <Route path=":Id" element={<ViewPatientPage />} />
                   </Route>
 
                   <Route path="reports">
@@ -105,7 +105,7 @@ function App() {
                     <Route path="Completed" element={<XRayCompleted />} />
                     <Route path="archived" element={<XRayArchived />} />
                     <Route path="new" element={<NewXRay />} />
-                    <Route path="/:Id" element={<ViewXRayPage />} />
+                    <Route path=":Id" element={<ViewXRayPage />} />
                   </Route>
 
                   <Route path="doctors">

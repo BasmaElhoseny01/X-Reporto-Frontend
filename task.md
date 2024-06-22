@@ -40,11 +40,11 @@ Zeinab Tasks
 By Employee Only
 [✓] New Patient
 [✓] New X-Ray
-[] New Doctor \*\*
+[] New Doctor **
 [] View Patient + Actions
 [] View Patient (Empty)
 
-[] Report Tab
+[] Report Tab (Text Editor)
 [] Template New 
 [] Template View
 ---
