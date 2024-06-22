@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Row, Col, Flex, Form } from "antd";
 import Button from "antd-button-color";
 
-export const NewPatientContainer = styled(Flex)`
+export const NewRadiologistContainer = styled(Flex)`
   display: flex;
   flex-direction: column;
 

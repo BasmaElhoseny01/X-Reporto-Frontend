@@ -23,6 +23,8 @@ import SideBar from "./components/layout/SideBar/SideBar";
 // Pages
 import Home from "./pages/Home";
 import NewPatientPage from "./pages/NewPatientPage";
+import ViewPatientPage from "./pages/ViewPatientPage";
+import NewXRay from "./components/features/xrays/NewXRay/NewXRay";
 import Examples from "./pages/Examples";
 
 // interface AppProps {
@@ -77,8 +79,10 @@ function App() {
               <BrowserRouter>
                 <Routes>
                   <Route path="/" element={<Home />} />
-                  <Route path="patient/new" element={<NewPatientPage />} />
-                  <Route path="examples" element={<Examples />} />
+                  <Route path="patient/new" element={<NewPatientPage/>} />
+                  <Route path="/report/new" element={<NewXRay/>} />
+                  <Route path="patient" element={<ViewPatientPage/>} />
+                  <Route path="examples" element={<Examples/>} />
                   <Route
                     path="about"
                     element={
