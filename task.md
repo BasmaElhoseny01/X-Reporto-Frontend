@@ -19,6 +19,7 @@ Hosny Tasks:
 [] Archived Doctors + Add to Side Bar
 [] Fix Routes Merged Table Routes
 [] Info Tab
+[] All Templates (Hosny) + Add col for Template ID
 ---
 
 Basma Tasks:
@@ -52,7 +53,6 @@ By Employee Only
 
 
 
-[] Templates List (Hosny)
 [] Home Admin
 [] Home Employee
 /////////////
