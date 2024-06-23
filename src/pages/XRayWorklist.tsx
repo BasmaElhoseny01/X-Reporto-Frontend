@@ -86,7 +86,7 @@ function XRayWorkList() {
       window.location.pathname = `reports/${record.id}`;
     },
     addNew: () => {
-      window.location.pathname = "reports/new-worklist";
+      window.location.pathname = "reports/new";
     },
   };
 

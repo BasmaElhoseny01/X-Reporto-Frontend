@@ -83,7 +83,7 @@ function XRayCompleted() {
       window.location.pathname = `reports/${record.id}`;
     },
     addNew: () => {
-      window.location.pathname = "reports/new-completed";
+      window.location.pathname = "reports/new";
     },
   };
 

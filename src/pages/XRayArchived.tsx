@@ -86,7 +86,7 @@ function XRayArchived() {
       window.location.pathname = `reports/${record.id}`;
     },
     addNew: () => {
-      window.location.pathname = "reports/new-archived";
+      window.location.pathname = "reports/new";
     },
   };
 

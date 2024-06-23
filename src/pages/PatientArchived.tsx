@@ -54,7 +54,7 @@ function PatientArchived() {
       window.location.pathname = `patients/${record.id}`;
     },
     addNew: () => {
-      window.location.pathname = "patients/new-archived";
+      window.location.pathname = "patients/new";
     },
 
   };
