@@ -2,10 +2,11 @@ import React from "react";
 
 // Context
 import { useTools } from "../ToolProvider";
+import { useAnnotations } from "../AnnotationProvider";
+import { useStageProperties } from "../StagePropertiesProvider";
 
 // Styled Components
 import { ToolBarContainer, VerticalDivider } from "./ToolBar.Styles";
-import { useAnnotations } from "../AnnotationProvider";
 
 // Components
 import ToolBarIcon from "../../../../../common/ToolBarIcon/ToolBarIcon";
@@ -13,6 +14,8 @@ import ToolBarIcon from "../../../../../common/ToolBarIcon/ToolBarIcon";
 // Assets
 import Select from "../../../../../../assets/images/select.svg";
 import SelectSelected from "../../../../../../assets/images/select-selected.svg";
+import Zoom from "../../../../../../assets/images/zoom.svg";
+import ZoomSelected from "../../../../../../assets/images/zoom-selected.svg";
 import Draw from "../../../../../../assets/images/draw.svg";
 import DrawSelected from "../../../../../../assets/images/draw-selected.svg";
 import Move from "../../../../../../assets/images/move.svg";
@@ -28,9 +31,21 @@ function ToolBar() {
   const { selectedAnnotation, handleSelectAnnotation, handleRemoveAnnotation } =
     useAnnotations();
 
+  const { handleSetStageProperties } = useStageProperties();
+
   const updateNavTool = (tool: string) => {
     console.log("tool", tool);
-    handleChangeNavTool(tool as "select" | "draw" | "move");
+    handleChangeNavTool(tool as "select" | "zoom" | "draw" | "move");
+
+    // Reset Zoom
+    if (tool !== "zoom") {
+      console.log("reset zoom");
+      handleSetStageProperties({
+        stageScale: 1,
+        stageX: 0,
+        stageY: 0,
+      });
+    }
   };
   return (
     <ToolBarContainer>
@@ -40,6 +55,16 @@ function ToolBar() {
         tip="select"
         selected={navTool == "select"}
         onClick={() => updateNavTool("select")}
+      />
+      <ToolBarIcon
+        img={navTool == "zoom" ? ZoomSelected : Zoom}
+        tip="zoom"
+        selected={navTool == "zoom"}
+        onClick={() => {
+          // Deselect annotation
+          handleSelectAnnotation(null);
+          updateNavTool("zoom");
+        }}
       />
       <ToolBarIcon
         img={navTool == "draw" ? DrawSelected : Draw}

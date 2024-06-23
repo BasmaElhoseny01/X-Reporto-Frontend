@@ -1,5 +1,7 @@
+export type NavTools = "select" | "zoom" | "draw" | "move";
+
 export type Tools = {
-  navTool: "select" | "draw" | "move";
+  navTool: NavTools;
   hideBoxes: boolean;
 };
 
@@ -9,4 +11,10 @@ export type Box = {
   width: number;
   height: number;
   id: string;
+};
+
+export type stagePropertiesType = {
+  stageScale: number;
+  stageX: number;
+  stageY: number;
 };

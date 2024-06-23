@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useState } from "react";
 
 // Types
-import { Tools } from "./XRaySection.types";
+import { Tools, NavTools } from "./XRaySection.types";
 // Define the context type, including the function to change the tool
 interface ToolsContextType extends Tools {
-  handleChangeNavTool: (tool: "select" | "draw" | "move") => void;
+  handleChangeNavTool: (tool: NavTools) => void;
   handleToggleHideBoxes: () => void;
 }
 
@@ -33,7 +33,7 @@ function ToolProvider(props: ToolProviderProps) {
     hideBoxes: false,
   });
 
-  const handleChangeNavTool = (tool: "select" | "draw" | "move") => {
+  const handleChangeNavTool = (tool: NavTools) => {
     setTools((prevTools) => {
       const newTools = { ...prevTools, navTool: tool };
       return newTools;
