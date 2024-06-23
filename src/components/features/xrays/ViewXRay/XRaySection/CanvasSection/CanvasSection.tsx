@@ -63,7 +63,7 @@ function CanvasSection() {
   const handleMouseEnter = (event: KonvaEventObject<MouseEvent>) => {
     const stage = event.target.getStage();
     if (stage) {
-      if (navTool === "select") {
+      if (navTool === "select" || navTool === "move") {
         stage.container().style.cursor = "default";
       } else if (navTool === "draw") {
         stage.container().style.cursor = "crosshair";
@@ -151,8 +151,11 @@ function CanvasSection() {
               shapeProps={annotation}
               isSelected={annotation.id === selectedId}
               onSelect={() => {
-                selectAnnotation(annotation.id);
+                if (navTool === "select") {
+                  selectAnnotation(annotation.id);
+                }
               }}
+              onMouseLeave={handleMouseEnter}
               onChange={(newAttrs) => {
                 const rects = annotations.slice();
                 rects[i] = newAttrs;

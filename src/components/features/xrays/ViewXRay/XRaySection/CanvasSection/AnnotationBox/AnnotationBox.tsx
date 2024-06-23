@@ -13,6 +13,7 @@ interface AnnotationBoxProps {
 
   isSelected: boolean;
   onSelect: () => void;
+  onMouseLeave: (event: KonvaEventObject<MouseEvent>) => void;
   onChange: (newAttrs: any) => void;
 }
 // Context
@@ -22,7 +23,7 @@ import { useTools } from "../../ToolProvider";
 import { palette } from "../../../../../../../styles/theme";
 
 function AnnotationBox(props: AnnotationBoxProps) {
-  const { shapeProps, isSelected, onSelect, onChange } = props;
+  const { shapeProps, isSelected, onSelect, onChange, onMouseLeave } = props;
 
   // Tool Provider
   const { navTool } = useTools();
@@ -45,27 +46,31 @@ function AnnotationBox(props: AnnotationBoxProps) {
     if (stage) {
       if (navTool === "select") {
         stage.container().style.cursor = "pointer";
-      } else if (navTool === "move") {
-        stage.container().style.cursor = "move";
       } else if (navTool === "draw") {
         stage.container().style.cursor = "crosshair";
+      } else if (navTool === "move") {
+        stage.container().style.cursor = "move";
       }
     }
   };
 
-  const onMouseLeave = (event: KonvaEventObject<MouseEvent>) => {
-    const stage = event.target.getStage();
-    if (stage) {
-      if (navTool === "select") {
-        stage.container().style.cursor = "context-menu";
-      } else if (navTool === "move") {
-        stage.container().style.cursor = "context-menu";
-      } else if (navTool === "draw") {
-        stage.container().style.cursor = "crosshair";
-      }
-      // stage.container().style.cursor = "crosshair";
-    }
-  };
+  // const onMouseLeave = (event: KonvaEventObject<MouseEvent>) => {
+  //   const stage = event.target.getStage();
+  //   if (stage) {
+  //     if (navTool) {
+  //       stage.container().style.cursor = "text";
+  //     }
+
+  //     // if (navTool === "select") {
+  //     //   stage.container().style.cursor = "context-menu";
+  //     // } else if (navTool === "move") {
+  //     //   stage.container().style.cursor = "context-menu";
+  //     // } else if (navTool === "draw") {
+  //     //   stage.container().style.cursor = "crosshair";
+  //     // }
+  //     // stage.container().style.cursor = "crosshair";
+  //   }
+  // };
 
   return (
     <>
@@ -75,7 +80,7 @@ function AnnotationBox(props: AnnotationBoxProps) {
         onMouseDown={onSelect}
         ref={shapeRef}
         {...shapeProps}
-        draggable
+        draggable={navTool === "move"}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         onDragEnd={(event: any) => {
