@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 
 // Third Party Components
 import Konva from "konva";
-import { Rect, Transformer } from "react-konva";
+import { Group, Rect, Text, Transformer } from "react-konva";
 import { KonvaEventObject } from "konva/lib/Node";
 
 // Utils
@@ -55,7 +55,7 @@ function AnnotationBox(props: AnnotationBoxProps) {
   };
 
   return (
-    <>
+    <Group>
       <Rect
         fill={isSelected ? `${hexToRgba(palette.primary, 0.1)}` : "transparent"}
         stroke={isSelected ? `${palette.primary}` : `${palette.error}`}
@@ -95,6 +95,15 @@ function AnnotationBox(props: AnnotationBoxProps) {
           });
         }}
       />
+      <Text
+        text="Label Text" // Replace with your dynamic label text
+        x={shapeProps.x} // Center text horizontally
+        y={shapeProps.y - 20} // Place text above the rectangle
+        fontSize={14} // Adjust font size as needed
+        align="center"
+        width={shapeProps.width}
+        fill={isSelected ? `${palette.primary}` : `${palette.error}`}
+      />
       {isSelected && navTool === "move" && (
         <Transformer
           ref={transformRef}
@@ -111,7 +120,7 @@ function AnnotationBox(props: AnnotationBoxProps) {
           rotateEnabled={false} // Disable rotation explicitly
         />
       )}
-    </>
+    </Group>
   );
 }
 
