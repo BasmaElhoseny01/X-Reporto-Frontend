@@ -151,7 +151,7 @@ function CanvasSection() {
               shapeProps={annotation}
               isSelected={annotation.id === selectedId}
               onSelect={() => {
-                if (navTool === "select") {
+                if (navTool !== "draw") {
                   selectAnnotation(annotation.id);
                 }
               }}

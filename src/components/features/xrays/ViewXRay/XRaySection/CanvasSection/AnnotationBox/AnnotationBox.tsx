@@ -54,24 +54,6 @@ function AnnotationBox(props: AnnotationBoxProps) {
     }
   };
 
-  // const onMouseLeave = (event: KonvaEventObject<MouseEvent>) => {
-  //   const stage = event.target.getStage();
-  //   if (stage) {
-  //     if (navTool) {
-  //       stage.container().style.cursor = "text";
-  //     }
-
-  //     // if (navTool === "select") {
-  //     //   stage.container().style.cursor = "context-menu";
-  //     // } else if (navTool === "move") {
-  //     //   stage.container().style.cursor = "context-menu";
-  //     // } else if (navTool === "draw") {
-  //     //   stage.container().style.cursor = "crosshair";
-  //     // }
-  //     // stage.container().style.cursor = "crosshair";
-  //   }
-  // };
-
   return (
     <>
       <Rect
@@ -113,7 +95,22 @@ function AnnotationBox(props: AnnotationBoxProps) {
           });
         }}
       />
-      {isSelected && <Transformer ref={transformRef} />}
+      {isSelected && navTool === "move" && (
+        <Transformer
+          ref={transformRef}
+          enabledAnchors={[
+            "top-left",
+            "top-right",
+            "bottom-left",
+            "bottom-right",
+            "top-center",
+            "bottom-center",
+            "middle-left",
+            "middle-right",
+          ]}
+          rotateEnabled={false} // Disable rotation explicitly
+        />
+      )}
     </>
   );
 }
