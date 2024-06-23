@@ -96,7 +96,7 @@ function ToolBar() {
         selected={false}
         onClick={() => {
           if (selectedAnnotation) {
-            handleRemoveAnnotation(selectedAnnotation);
+            handleRemoveAnnotation(selectedAnnotation.id);
           }
         }}
       />

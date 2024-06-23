@@ -23,33 +23,19 @@ import { Vector2d } from "konva/lib/types";
 let idCounter = 0;
 const generateId = () => (++idCounter).toString();
 
-// Initial BBs
-const initialAnnotations = [
-  {
-    id: generateId(),
-    title: "BB0",
-    finding: "Finding 0",
-    box: {
-      x: 10,
-      y: 10,
-      width: 100,
-      height: 50,
-    },
-  },
-  {
-    id: generateId(),
-    title: "BB1",
-    finding: "Finding 1",
-    box: {
-      x: 150,
-      y: 150,
-      width: 50,
-      height: 50,
-    },
-  },
-];
-
 function CanvasSection() {
+  // UseStates
+  const [canvasMeasures, setCanvasMeasures] = useState({
+    // width: window.innerWidth,
+    // height: window.innerHeight,
+    width: 0,
+    height: 0,
+  });
+  const [newAnnotation, setNewAnnotation] = useState<Region[]>([]);
+
+  // Context Providers
+  const { navTool, hideBoxes } = useTools();
+  const { stageProperties, handleSetStageProperties } = useStageProperties();
   const {
     selectedAnnotation,
     handleSelectAnnotation,
@@ -58,28 +44,7 @@ function CanvasSection() {
     handleSetAnnotations,
   } = useAnnotations();
 
-  // UseStates
-  const [canvasMeasures, setCanvasMeasures] = useState({
-    // width: window.innerWidth,
-    // height: window.innerHeight,
-    width: 0,
-    height: 0,
-  });
-  // const [stageProperties, setStageProperties] = useState<stagePropertiesType>({
-  //   stageScale: 1,
-  //   stageX: 0,
-  //   stageY: 0,
-  // });
-
-  const [newAnnotation, setNewAnnotation] = useState<Region[]>([]);
-
-  // Context Providers
-  const { navTool, hideBoxes } = useTools();
-  const { stageProperties, handleSetStageProperties } = useStageProperties();
-
-  useEffect(() => {
-    handleSetAnnotations(initialAnnotations);
-  }, []);
+  useEffect(() => {}, []);
 
   const adjustPointerPosition = (pointerPosition: Vector2d) => {
     const { stageScale, stageX, stageY } = stageProperties;
@@ -274,7 +239,7 @@ function CanvasSection() {
                 key={i}
                 shapeProps={annotation.box}
                 title={annotation.title}
-                isSelected={annotation.id === selectedAnnotation}
+                isSelected={annotation.id === selectedAnnotation?.id}
                 onSelect={() => {
                   if (navTool !== "draw" && navTool !== "zoom") {
                     handleSelectAnnotation(annotation.id);

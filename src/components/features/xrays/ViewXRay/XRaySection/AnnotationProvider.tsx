@@ -1,10 +1,10 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 // Types
 import { Region } from "./XRaySection.types";
 
 interface AnnotationsContextType {
-  selectedAnnotation: string | null;
+  selectedAnnotation: Region | null;
   handleSelectAnnotation: (id: string | null) => void;
 
   annotations: Region[];
@@ -34,13 +34,43 @@ type AnnotationsProviderProps = {
 function AnnotationProvider(props: AnnotationsProviderProps) {
   const { children } = props;
 
-  const [selectedAnnotation, setSelectedAnnotation] = useState<string | null>(
+  const [selectedAnnotation, setSelectedAnnotation] = useState<Region | null>(
     null
   );
   const [annotations, setAnnotations] = useState<Region[]>([]);
 
+  useEffect(() => {
+    const initialAnnotations = [
+      {
+        id: "01",
+        title: "Lung",
+        finding:
+          "Lung volumes are slightly lower with associated crowding of bronchovascular structures.",
+        box: {
+          x: 100,
+          y: 100,
+          width: 100,
+          height: 50,
+        },
+      },
+      {
+        id: "02",
+        title: "Heart",
+        finding: "Heart is slightly enlarged.",
+        box: {
+          x: 250,
+          y: 150,
+          width: 50,
+          height: 50,
+        },
+      },
+    ];
+    setAnnotations(initialAnnotations);
+  }, []);
+
   const handleSelectAnnotation = (id: string | null) => {
-    setSelectedAnnotation(id);
+    const annotation = annotations.find((annotation) => annotation.id === id);
+    setSelectedAnnotation(annotation ? annotation : null);
   };
 
   const handleSetAnnotations = (newAnnotations: Region[]) => {

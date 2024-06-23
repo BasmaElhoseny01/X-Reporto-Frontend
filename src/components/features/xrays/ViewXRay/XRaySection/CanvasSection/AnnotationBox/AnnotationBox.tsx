@@ -42,10 +42,6 @@ function AnnotationBox(props: AnnotationBoxProps) {
   const transformRef = useRef<Konva.Transformer>(null);
 
   useEffect(() => {
-    console.log("isSelected", isSelected);
-    console.log("shapeRef", shapeRef.current);
-    console.log("transformRef", transformRef.current);
-    console.log("shapeProps", shapeProps);
     if (isSelected) {
       // we need to attach transformer manually
       if (transformRef.current && shapeRef.current) {

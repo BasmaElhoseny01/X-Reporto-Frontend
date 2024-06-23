@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 // Ant Design
@@ -12,6 +12,9 @@ import { BBFindingsContainer } from "./BBFindings.Styles";
 // Components
 import LineHeader from "../../../../../common/LineHeader/LineHeader";
 import FindingText from "./FindingText/FindingText";
+
+// Context
+import { useAnnotations } from "../AnnotationProvider";
 
 type BBFindingsProps = {
   //   region: string;
@@ -31,52 +34,57 @@ function BBFindings(props: BBFindingsProps) {
   //   const [editableStr, setEditableStr] = useState<string>(
   //     "lung volumes are slightly lower with associated crowding of bronchovascular structures."
   //   );
-  const [region, setRegion] = useState<string>("Lung");
-  const [finding, setFinding] = useState<string>(
-    "Lung volumes are slightly lower with associated crowding of bronchovascular structures."
-  );
 
-  const [allFindings, setAllFindings] = useState<Region[]>([
-    {
-      id: "1",
-      title: "Lung",
-      finding:
-        "Lung volumes are slightly lower with associated crowding of bronchovascular structures.",
-    },
-    {
-      id: "2",
-      title: "Heart",
-      finding: "Heart is normal in size and shape.",
-    },
-    {
-      id: "3",
-      title: "Diaphragm",
-      finding: "Diaphragm is normal in shape and position.",
-    },
-  ]);
+  const { selectedAnnotation, handleSelectAnnotation, annotations } =
+    useAnnotations();
 
   return (
     <BBFindingsContainer>
-      <Title level={4} editable={{ onChange: setRegion }}>
-        {region}
-      </Title>
-      <LineHeader />
-      <Text
-        editable={{ onChange: setFinding }}
-        style={{
-          fontSize: "18px",
-        }}
-      >
-        {finding}
-      </Text>
+      {selectedAnnotation && (
+        <>
+          <Title
+            level={4}
+            editable={{ onChange: () => console.log("Editing") }}
+          >
+            {selectedAnnotation.title}
+          </Title>
+          <LineHeader />
+          <Text
+            editable={{ onChange: () => console.log("Editing Findings") }}
+            style={{
+              fontSize: "18px",
+            }}
+          >
+            {selectedAnnotation.finding}
+          </Text>
+        </>
+      )}
+
+      {!selectedAnnotation && (
+        <>
+          <Title level={4}>No Findings</Title>
+          <LineHeader />
+          <Paragraph>
+            No findings have been added. Please click on the image to add
+            findings.
+          </Paragraph>
+        </>
+      )}
 
       {/* All findings in 1 paragraph */}
       <Title level={4}>All Findings</Title>
       <LineHeader />
       <Paragraph>
-        {allFindings.map((item) => (
-          <FindingText key={item.id} {...item} />
+        {annotations.map((region) => (
+          <FindingText
+            key={region.id}
+            region={region}
+            selected={region.id == selectedAnnotation?.id}
+          />
         ))}
+        {/* {allFindings.map((item) => (
+          <FindingText key={item.id} {...item} />
+        ))} */}
       </Paragraph>
     </BBFindingsContainer>
   );
