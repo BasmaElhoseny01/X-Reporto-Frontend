@@ -31,6 +31,7 @@ const initialAnnotations = [
     width: 100,
     height: 50,
     id: generateId(),
+    title: "BB0",
   },
   {
     x: 150,
@@ -38,6 +39,7 @@ const initialAnnotations = [
     width: 50,
     height: 50,
     id: generateId(),
+    title: "BB1",
   },
 ];
 
@@ -102,18 +104,17 @@ function CanvasSection() {
         const adjustedPointerPosition = adjustPointerPosition(pointerPosition);
         const { x, y } = adjustedPointerPosition;
 
-        // Check if the click is inside the canvas
-        if (
-          x >= 0 &&
-          y >= 0 &&
-          x <= canvasMeasures.width &&
-          y <= canvasMeasures.height
-        ) {
-          const id = generateId();
-          setNewAnnotation([{ x, y, width: 0, height: 0, id }]);
-
-          console.log("Down: newAnnotation", newAnnotation);
-        }
+        // // Check if the click is inside the canvas
+        // if (
+        //   x >= 0 &&
+        //   y >= 0 &&
+        //   x <= canvasMeasures.width &&
+        //   y <= canvasMeasures.height
+        // ) {
+        const id = generateId();
+        setNewAnnotation([{ x, y, width: 0, height: 0, id, title: id }]);
+        console.log("Down: newAnnotation", newAnnotation);
+        // }
       }
       if (pointerPosition && navTool === "zoom") {
         console.log("Zoom in", pointerPosition);
@@ -133,8 +134,6 @@ function CanvasSection() {
       navTool === "draw"
     ) {
       handleAddAnnotation(newAnnotation[0]);
-      // annotations.push(...newAnnotation);
-      // setAnnotations(annotations);
       setNewAnnotation([]);
       console.log("Up: annotations", annotations);
     } else if (navTool === "zoom") {
@@ -158,24 +157,26 @@ function CanvasSection() {
         // Adjust pointer position to canvas scale (For zoomed canvas)
         const adjustedPointerPosition = adjustPointerPosition(pointerPosition);
         const { x, y } = adjustedPointerPosition;
-        // Check if the click is inside the canvas
-        if (
-          x >= 0 &&
-          y >= 0 &&
-          x <= canvasMeasures.width &&
-          y <= canvasMeasures.height
-        ) {
-          const id = generateId();
-          setNewAnnotation([
-            {
-              x: sx,
-              y: sy,
-              width: x - sx,
-              height: y - sy,
-              id,
-            },
-          ]);
-        }
+        // // Check if the click is inside the canvas
+        // if (
+        //   x >= 0 &&
+        //   y >= 0 &&
+        //   x <= canvasMeasures.width &&
+        //   y <= canvasMeasures.height
+        // ) {
+
+        const id = generateId();
+        setNewAnnotation([
+          {
+            x: sx,
+            y: sy,
+            width: x - sx,
+            height: y - sy,
+            id,
+            title: id,
+          },
+        ]);
+        // }
       }
     } else if (navTool === "zoom") {
       const stage = event.target.getStage();
@@ -205,6 +206,7 @@ function CanvasSection() {
           x: pointerPosition.x / oldScale - stage.x() / oldScale,
           y: pointerPosition.y / oldScale - stage.y() / oldScale,
         };
+
         const newScale =
           event.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
 

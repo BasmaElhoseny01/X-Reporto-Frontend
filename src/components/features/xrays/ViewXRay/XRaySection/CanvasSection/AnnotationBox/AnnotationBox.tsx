@@ -7,20 +7,25 @@ import { KonvaEventObject } from "konva/lib/Node";
 
 // Utils
 import { hexToRgba } from "../../../../../../../utils";
+
+// Types
+import { Box } from "../../XRaySection.types";
+
+// Context
+import { useTools } from "../../ToolProvider";
+
+// Styles
+import { palette } from "../../../../../../../styles/theme";
+
 // Props
 interface AnnotationBoxProps {
-  shapeProps: any;
+  shapeProps: Box;
 
   isSelected: boolean;
   onSelect: () => void;
   onMouseLeave: (event: KonvaEventObject<MouseEvent>) => void;
   onChange: (newAttrs: any) => void;
 }
-// Context
-import { useTools } from "../../ToolProvider";
-
-// Styles
-import { palette } from "../../../../../../../styles/theme";
 
 function AnnotationBox(props: AnnotationBoxProps) {
   const { shapeProps, isSelected, onSelect, onChange, onMouseLeave } = props;
@@ -96,12 +101,20 @@ function AnnotationBox(props: AnnotationBoxProps) {
         }}
       />
       <Text
-        text="Label Text" // Replace with your dynamic label text
-        x={shapeProps.x} // Center text horizontally
-        y={shapeProps.y - 20} // Place text above the rectangle
+        text={shapeProps.title} // Replace with your dynamic label text
+        x={
+          shapeProps.width < 0 ? shapeProps.x + shapeProps.width : shapeProps.x
+        } // Center text horizontally
+        // x={shapeProps.x} // Center text horizontally
+        // y={shapeProps.y - 20} // Place text above the rectangle
+        y={
+          shapeProps.height < 0
+            ? shapeProps.y + shapeProps.height - 20
+            : shapeProps.y - 20
+        } // Place text above the rectangle
         fontSize={14} // Adjust font size as needed
         align="center"
-        width={shapeProps.width}
+        width={Math.abs(shapeProps.width)} // Center text horizontally
         fill={isSelected ? `${palette.primary}` : `${palette.error}`}
       />
       {isSelected && navTool === "move" && (

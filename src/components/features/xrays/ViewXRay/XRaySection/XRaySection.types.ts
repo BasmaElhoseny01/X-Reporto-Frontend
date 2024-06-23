@@ -11,6 +11,7 @@ export type Box = {
   width: number;
   height: number;
   id: string;
+  title: string;
 };
 
 export type stagePropertiesType = {
