@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { Flex } from "antd";
 
 export const ReportSectionContainer = styled(Flex)`
-  background-color: #abc;
+  background-color: #22334400;
 
   width: 100%;
   height: 100%;

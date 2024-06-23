@@ -6,8 +6,6 @@ import { ToolBarContainer } from "./ToolBar.Styles";
 // Components
 import ToolBarIcon from "../../../../../common/ToolBarIcon/ToolBarIcon";
 
-// Types
-import { Tools } from "../XRaySection.types";
 
 // Assets
 import Select from "../../../../../../assets/images/select.svg";
@@ -16,37 +14,35 @@ import Draw from "../../../../../../assets/images/draw.svg";
 import DrawSelected from "../../../../../../assets/images/draw-selected.svg";
 import Move from "../../../../../../assets/images/move.svg";
 import MoveSelected from "../../../../../../assets/images/move-selected.svg";
+import { useTools } from "../ToolProvider";
 
-type ToolBarProps = {
-  tools: Tools;
-  setTools: React.Dispatch<React.SetStateAction<Tools>>;
-};
+function ToolBar() {
+  const { navTool, handleChangeNavTool } = useTools();
 
-function ToolBar(props: ToolBarProps) {
-  const { tools, setTools } = props;
+  // const { tools, setTools } = props;
 
   const updateNavTool = (tool: string) => {
     console.log("tool", tool);
-    setTools({ ...tools, navTool: tool as "select" | "draw" | "move" });
+    handleChangeNavTool(tool as "select" | "draw" | "move");
   };
   return (
     <ToolBarContainer>
       <ToolBarIcon
-        img={tools.navTool == "select" ? SelectSelected : Select}
+        img={navTool == "select" ? SelectSelected : Select}
         tip="select"
-        selected={tools.navTool == "select"}
+        selected={navTool == "select"}
         onClick={() => updateNavTool("select")}
       />
       <ToolBarIcon
-        img={tools.navTool == "draw" ? DrawSelected : Draw}
+        img={navTool == "draw" ? DrawSelected : Draw}
         tip="draw"
-        selected={tools.navTool == "draw"}
+        selected={navTool == "draw"}
         onClick={() => updateNavTool("draw")}
       />
       <ToolBarIcon
-        img={tools.navTool == "move" ? MoveSelected : Move}
+        img={navTool == "move" ? MoveSelected : Move}
         tip="move"
-        selected={tools.navTool == "move"}
+        selected={navTool == "move"}
         onClick={() => updateNavTool("move")}
       />
 
