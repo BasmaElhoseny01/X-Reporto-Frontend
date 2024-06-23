@@ -6,7 +6,7 @@ import { KonvaEventObject } from "konva/lib/Node";
 
 // Components
 import ImageFromUrl from "./ImageFromURL/ImageFromURL";
-import Annotation from "./Annotation/Annotation";
+import AnnotationBox from "./AnnotationBox/AnnotationBox";
 
 // Assets
 import XRay from "../../../../../../assets/images/resized.jpg";
@@ -121,7 +121,7 @@ function CanvasSection() {
         />
         {annotationsToDraw.map((annotation, i) => {
           return (
-            <Annotation
+            <AnnotationBox
               key={i}
               shapeProps={annotation}
               isSelected={annotation.id === selectedId}

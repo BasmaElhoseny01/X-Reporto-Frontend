@@ -21,4 +21,11 @@ export const ToolBarIconButton = styled(Flex)<{ isSelected?: boolean }>`
     /* margin-right: -2px; */
     /* margin-bottom: -3px; */
   }
+
+  &:hover {
+    background-color: ${(props) =>
+      props.isSelected ? `${palette.secondary}90` : `${palette.grey_light}`};
+
+    cursor: pointer;
+  }
 `;
