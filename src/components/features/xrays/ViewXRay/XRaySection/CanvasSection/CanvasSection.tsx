@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // Third Party Components
 import { Layer, Stage } from "react-konva";
@@ -10,18 +10,13 @@ import AnnotationBox from "./AnnotationBox/AnnotationBox";
 
 // Context
 import { useTools } from "../ToolProvider";
+import { useAnnotations } from "../AnnotationProvider";
 
 // Assets
 import XRay from "../../../../../../assets/images/resized.jpg";
 
 // Types
-type Box = {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  id: string;
-};
+import { Box } from "../XRaySection.types";
 
 let idCounter = 0;
 const generateId = () => (++idCounter).toString();
@@ -31,20 +26,27 @@ const initialAnnotations = [
   {
     x: 10,
     y: 10,
-    width: 0,
-    height: 0,
+    width: 100,
+    height: 50,
     id: generateId(),
   },
   {
     x: 150,
     y: 150,
-    width: 0,
-    height: 0,
+    width: 50,
+    height: 50,
     id: generateId(),
   },
 ];
 
 function CanvasSection() {
+  const {
+    selectedAnnotation,
+    handleSelectAnnotation,
+    annotations,
+    handleAddAnnotation,
+    handleSetAnnotations,
+  } = useAnnotations();
   // UseStates
   const [canvasMeasures, setCanvasMeasures] = useState({
     // width: window.innerWidth,
@@ -53,12 +55,16 @@ function CanvasSection() {
     height: 0,
   });
 
-  const [selectedId, selectAnnotation] = useState<string | null>(null);
   const [newAnnotation, setNewAnnotation] = useState<Box[]>([]);
-  const [annotations, setAnnotations] = useState(initialAnnotations);
+  // const [selectedAnnotation, selectAnnotation] = useState<string | null>(null);
+  // const [annotations, setAnnotations] = useState(initialAnnotations);
 
   // Tool Provider
   const { navTool } = useTools();
+
+  useEffect(() => {
+    handleSetAnnotations(initialAnnotations);
+  });
 
   const handleMouseEnter = (event: KonvaEventObject<MouseEvent>) => {
     const stage = event.target.getStage();
@@ -72,7 +78,7 @@ function CanvasSection() {
   };
 
   const handleMouseDown = (event: KonvaEventObject<MouseEvent>) => {
-    if (selectedId === null && newAnnotation.length === 0) {
+    if (selectedAnnotation === null && newAnnotation.length === 0) {
       const pointerPosition = event.target.getStage()?.getPointerPosition();
       if (pointerPosition && navTool === "draw") {
         const { x, y } = pointerPosition;
@@ -86,12 +92,13 @@ function CanvasSection() {
 
   const handleMouseUp = () => {
     if (
-      selectedId === null &&
+      selectedAnnotation === null &&
       newAnnotation.length === 1 &&
       navTool === "draw"
     ) {
-      annotations.push(...newAnnotation);
-      setAnnotations(annotations);
+      handleAddAnnotation(newAnnotation[0]);
+      // annotations.push(...newAnnotation);
+      // setAnnotations(annotations);
       setNewAnnotation([]);
       console.log("Up: annotations", annotations);
     }
@@ -99,7 +106,7 @@ function CanvasSection() {
 
   const handleMouseMove = (event: KonvaEventObject<MouseEvent>) => {
     if (
-      selectedId === null &&
+      selectedAnnotation === null &&
       newAnnotation.length === 1 &&
       navTool === "draw"
     ) {
@@ -141,7 +148,7 @@ function CanvasSection() {
           imageUrl={XRay}
           onMouseDown={() => {
             // deselect when clicked on empty area
-            selectAnnotation(null);
+            handleSelectAnnotation(null);
           }}
         />
         {annotationsToDraw.map((annotation, i) => {
@@ -149,17 +156,18 @@ function CanvasSection() {
             <AnnotationBox
               key={i}
               shapeProps={annotation}
-              isSelected={annotation.id === selectedId}
+              isSelected={annotation.id === selectedAnnotation}
               onSelect={() => {
                 if (navTool !== "draw") {
-                  selectAnnotation(annotation.id);
+                  handleSelectAnnotation(annotation.id);
                 }
               }}
               onMouseLeave={handleMouseEnter}
               onChange={(newAttrs) => {
                 const rects = annotations.slice();
                 rects[i] = newAttrs;
-                setAnnotations(rects);
+                // setAnnotations(rects);
+                handleSetAnnotations(rects);
               }}
             />
           );

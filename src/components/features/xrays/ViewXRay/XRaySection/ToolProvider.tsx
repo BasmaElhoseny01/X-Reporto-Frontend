@@ -32,7 +32,10 @@ function ToolProvider(props: ToolProviderProps) {
   const [tools, setTools] = useState<Tools>({ navTool: "select" });
 
   const handleChangeNavTool = (tool: "select" | "draw" | "move") => {
-    setTools({ ...tools, navTool: tool });
+    setTools((prevTools) => {
+      const newTools = { ...prevTools, navTool: tool };
+      return newTools;
+    });
   };
 
   return (
