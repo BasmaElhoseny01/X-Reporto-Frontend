@@ -9,11 +9,9 @@ import { Layout } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { Content } from "antd/es/layout/layout";
 import type { MenuProps } from "antd";
-// import {
-//   AppstoreOutlined,
-//   MailOutlined,
-//   SettingOutlined,
-// } from "@ant-design/icons";
+
+// Context
+import { useView } from "./ViewProvider";
 
 // Styled Components
 import { MenuContainer, ViewXRayContainer } from "./ViewXRay.Styles";
@@ -49,9 +47,13 @@ const items: MenuItem[] = [
 ];
 
 function ViewXRay() {
-  // States for the Sider
-  const [infoCollapsed, setInfoCollapsed] = useState(true);
-  const [reportCollapsed, setReportCollapsed] = useState(true);
+  const {
+    infoCollapsed,
+    handleSetInfoCollapsed,
+    reportCollapsed,
+    handleSetReportCollapsed,
+  } = useView();
+
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   // Get Theme for the Sider from teh current theme
@@ -70,22 +72,24 @@ function ViewXRay() {
   }, []);
 
   const onSideBarClick: MenuProps["onClick"] = (e) => {
-    console.log("click", e);
     if (e.key == "info") {
       // Collapse Report
-      setReportCollapsed(true);
+      handleSetReportCollapsed(true);
       // UnCollapse Info
-      setInfoCollapsed(false);
+      handleSetInfoCollapsed(false);
     } else if (e.key == "report") {
       // Collapse Info
-      setInfoCollapsed(true);
+      handleSetInfoCollapsed(true);
       // UnCollapse Report
-      setReportCollapsed(false);
+      handleSetReportCollapsed(false);
+      // setReportCollapsed(false);
     } else if (e.key == "x-ray") {
       // Collapse Info
-      setInfoCollapsed(true);
+      handleSetInfoCollapsed(true);
+      // setInfoCollapsed(true);
       // Collapse Report
-      setReportCollapsed(true);
+      handleSetReportCollapsed(true);
+      // setReportCollapsed(true);
     }
   };
 

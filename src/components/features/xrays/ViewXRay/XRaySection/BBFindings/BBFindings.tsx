@@ -26,19 +26,29 @@ import SecondaryButton from "../../../../../common/SecondaryButton/SecondaryButt
 // Assets
 import BotBlue from "../../../../../../assets/images/bot-blue.svg";
 import BotRed from "../../../../../../assets/images/bot-red.svg";
+import { Empty } from "antd";
 
 function BBFindings() {
-  const { selectedAnnotation, annotations } = useAnnotations();
+  const {
+    selectedAnnotation,
+    annotations,
+    handleCEditAnnotationTitle,
+    handleEditAnnotationFinding,
+  } = useAnnotations();
 
   return (
     <BBFindingsSectionContainer>
+      <Title level={2}>Region Findings</Title>
       <BBFindingContainer>
         {selectedAnnotation && (
           <>
             <BBFindingTitleContainer>
               <Title
-                level={4}
-                editable={{ onChange: () => console.log("Editing") }}
+                level={3}
+                editable={{
+                  onChange: (newTitle) =>
+                    handleCEditAnnotationTitle(selectedAnnotation.id, newTitle),
+                }}
               >
                 {selectedAnnotation.title}
               </Title>
@@ -46,7 +56,13 @@ function BBFindings() {
             </BBFindingTitleContainer>
             <LineHeader />
             <Text
-              editable={{ onChange: () => console.log("Editing Findings") }}
+              editable={{
+                onChange: (newFinding) =>
+                  handleEditAnnotationFinding(
+                    selectedAnnotation.id,
+                    newFinding
+                  ),
+              }}
               style={{
                 fontSize: "18px",
               }}
@@ -65,20 +81,15 @@ function BBFindings() {
         )}
 
         {!selectedAnnotation && (
-          <>
-            <Title level={4}>No Findings</Title>
-            <LineHeader />
-            <Paragraph>
-              No findings have been added. Please click on the image to add
-              findings.
-            </Paragraph>
-          </>
+          <Empty
+            style={{ width: "100%", height: "100%" }}
+            description="No Region Selected"
+          />
         )}
       </BBFindingContainer>
-
       {/* All findings in 1 paragraph */}
       <BBAllFindingsContainer>
-        <Title level={4}>All Findings</Title>
+        <Title level={3}>All Findings</Title>
         <LineHeader />
         <Paragraph>
           {annotations.map((region) => (

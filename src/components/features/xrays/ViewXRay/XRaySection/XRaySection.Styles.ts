@@ -7,8 +7,6 @@ import styled from "styled-components";
 import { Flex } from "antd";
 
 export const XRaySectionContainer = styled(Flex)`
-  /* background-color: #223344; */
-  border: 1px solid #000;
   padding: 5px;
 
   display: flex;
@@ -34,7 +32,7 @@ export const XRayContainer = styled(Flex)`
 
 export const BBFindingsContainer = styled(Flex)`
   border: 1px solid #000;
-  padding: 5px;
+  padding: 0px 5px;
 
   /* display: flex;
   flex-direction: column;

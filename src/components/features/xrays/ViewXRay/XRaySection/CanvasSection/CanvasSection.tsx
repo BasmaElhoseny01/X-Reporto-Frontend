@@ -12,6 +12,7 @@ import AnnotationBox from "./AnnotationBox/AnnotationBox";
 import { useTools } from "../ToolProvider";
 import { useAnnotations } from "../AnnotationProvider";
 import { useStageProperties } from "../StagePropertiesProvider";
+import { useView } from "../../ViewProvider";
 
 // Assets
 import XRay from "../../../../../../assets/images/resized.jpg";
@@ -43,6 +44,7 @@ function CanvasSection() {
     handleAddAnnotation,
     handleSetAnnotations,
   } = useAnnotations();
+  const { handleSetInfoCollapsed, handleSetReportCollapsed } = useView();
 
   useEffect(() => {}, []);
 
@@ -245,6 +247,11 @@ function CanvasSection() {
                 onSelect={() => {
                   if (navTool !== "draw" && navTool !== "zoom") {
                     handleSelectAnnotation(annotation.id);
+
+                    // Collapse Info
+                    handleSetInfoCollapsed(true);
+                    // UnCollapse Report
+                    handleSetReportCollapsed(true);
                   }
                 }}
                 onMouseLeave={handleMouseEnter}

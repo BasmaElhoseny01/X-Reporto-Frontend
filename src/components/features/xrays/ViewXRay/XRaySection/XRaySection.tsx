@@ -4,12 +4,14 @@ import React from "react";
 import ToolProvider from "./ToolProvider";
 import AnnotationProvider from "./AnnotationProvider";
 import StagePropertiesProvider from "./StagePropertiesProvider";
+import { useView } from "../ViewProvider";
 
 // Antd Components
 
 // Components
 import ToolBar from "./ToolBar/ToolBar";
 import CanvasSection from "./CanvasSection/CanvasSection";
+import BBFindings from "./BBFindings/BBFindings";
 
 // Styled Components
 import {
@@ -17,9 +19,10 @@ import {
   BBFindingsContainer,
   XRayContainer,
 } from "./XRaySection.Styles";
-import BBFindings from "./BBFindings/BBFindings";
 
 function XRaySection() {
+  const { infoCollapsed, reportCollapsed } = useView();
+
   return (
     <ToolProvider>
       <AnnotationProvider>
@@ -29,9 +32,13 @@ function XRaySection() {
               <ToolBar />
               <CanvasSection />
             </XRayContainer>
-            <BBFindingsContainer>
-              <BBFindings  />
-            </BBFindingsContainer>
+            {infoCollapsed && reportCollapsed && (
+              <>
+                <BBFindingsContainer>
+                  <BBFindings />
+                </BBFindingsContainer>
+              </>
+            )}
           </XRaySectionContainer>
         </StagePropertiesProvider>
       </AnnotationProvider>

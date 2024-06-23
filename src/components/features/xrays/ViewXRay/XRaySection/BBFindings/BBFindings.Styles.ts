@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
 // Theme
-// import { palette } from "../../../../styles/theme";
+import { palette } from "../../../../../../styles/theme";
 
 // Ant Design
 import { Flex } from "antd";
 
 export const BBFindingsSectionContainer = styled(Flex)`
-  padding: 5px;
+  padding: 0px 5px;
 
   display: flex;
   flex-direction: column;
@@ -37,6 +37,12 @@ export const BBAllFindingsContainer = styled(Flex)`
 
   width: 100%;
   flex: 2;
+`;
+
+export const VerticalDivider = styled.div`
+  height: 80%;
+  border-left: 2px solid ${palette.grey300};
+  margin: 0 10px;
 `;
 
 export const BBFindingTitleContainer = styled(Flex)`

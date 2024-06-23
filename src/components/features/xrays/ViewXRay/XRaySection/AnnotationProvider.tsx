@@ -11,6 +11,9 @@ interface AnnotationsContextType {
   handleSetAnnotations: (newAnnotations: Region[]) => void;
   handleAddAnnotation: (newAnnotation: Region) => void;
   handleRemoveAnnotation: (id: string) => void;
+
+  handleCEditAnnotationTitle: (id: string, title: string) => void;
+  handleEditAnnotationFinding: (id: string, finding: string) => void;
 }
 // Create context with initial state
 const AnnotationsContext = createContext<AnnotationsContextType | undefined>(
@@ -70,17 +73,34 @@ function AnnotationProvider(props: AnnotationsProviderProps) {
     setAnnotations(initialAnnotations);
   }, []);
 
-  const handleSelectAnnotation = (id: string | null) => {
-    const annotation = annotations.find((annotation) => annotation.id === id);
-    setSelectedAnnotation(annotation ? annotation : null);
-  };
-
   const handleSetAnnotations = (newAnnotations: Region[]) => {
     setAnnotations(newAnnotations);
   };
   const handleAddAnnotation = (newAnnotation: Region) => {
     annotations.push(newAnnotation);
     setAnnotations(annotations);
+  };
+
+  const handleSelectAnnotation = (id: string | null) => {
+    const annotation = annotations.find((annotation) => annotation.id === id);
+    setSelectedAnnotation(annotation ? annotation : null);
+  };
+
+  const handleCEditAnnotationTitle = (id: string, title: string) => {
+    const annotation = annotations.find((annotation) => annotation.id === id);
+    if (annotation) {
+      annotation.title = title;
+      setAnnotations([...annotations]);
+    }
+  };
+
+  const handleEditAnnotationFinding = (id: string, finding: string) => {
+    const annotation = annotations.find((annotation) => annotation.id === id);
+    if (annotation) {
+      annotation.finding = finding;
+      annotation.ai = false;
+      setAnnotations([...annotations]);
+    }
   };
 
   const handleRemoveAnnotation = (id: string) => {
@@ -98,6 +118,8 @@ function AnnotationProvider(props: AnnotationsProviderProps) {
         handleSetAnnotations,
         handleAddAnnotation,
         handleRemoveAnnotation,
+        handleCEditAnnotationTitle,
+        handleEditAnnotationFinding,
       }}
     >
       {children}
