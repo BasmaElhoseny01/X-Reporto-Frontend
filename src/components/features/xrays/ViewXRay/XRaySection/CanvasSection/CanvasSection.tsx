@@ -64,7 +64,7 @@ function CanvasSection() {
 
   useEffect(() => {
     handleSetAnnotations(initialAnnotations);
-  });
+  }, []);
 
   const handleMouseEnter = (event: KonvaEventObject<MouseEvent>) => {
     const stage = event.target.getStage();

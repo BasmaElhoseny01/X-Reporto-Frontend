@@ -8,8 +8,9 @@ interface AnnotationsContextType {
   handleSelectAnnotation: (id: string | null) => void;
 
   annotations: Box[];
-  handleAddAnnotation: (newAnnotation: Box) => void;
   handleSetAnnotations: (newAnnotations: Box[]) => void;
+  handleAddAnnotation: (newAnnotation: Box) => void;
+  handleRemoveAnnotation: (id: string) => void;
 }
 // Create context with initial state
 const AnnotationsContext = createContext<AnnotationsContextType | undefined>(
@@ -50,14 +51,21 @@ function AnnotationProvider(props: AnnotationsProviderProps) {
     setAnnotations(annotations);
   };
 
+  const handleRemoveAnnotation = (id: string) => {
+    const newAnnotations = annotations.filter(
+      (annotation) => annotation.id !== id
+    );
+    setAnnotations(newAnnotations);
+  };
   return (
     <AnnotationsContext.Provider
       value={{
         selectedAnnotation,
         handleSelectAnnotation,
         annotations,
-        handleAddAnnotation,
         handleSetAnnotations,
+        handleAddAnnotation,
+        handleRemoveAnnotation,
       }}
     >
       {children}

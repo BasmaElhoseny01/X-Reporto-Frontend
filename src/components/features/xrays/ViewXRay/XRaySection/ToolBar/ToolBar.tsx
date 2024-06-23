@@ -5,6 +5,7 @@ import { useTools } from "../ToolProvider";
 
 // Styled Components
 import { ToolBarContainer } from "./ToolBar.Styles";
+import { useAnnotations } from "../AnnotationProvider";
 
 // Components
 import ToolBarIcon from "../../../../../common/ToolBarIcon/ToolBarIcon";
@@ -20,6 +21,8 @@ import Delete from "../../../../../../assets/images/delete.svg";
 
 function ToolBar() {
   const { navTool, handleChangeNavTool } = useTools();
+  const { selectedAnnotation, handleSelectAnnotation, handleRemoveAnnotation } =
+    useAnnotations();
 
   const updateNavTool = (tool: string) => {
     console.log("tool", tool);
@@ -43,7 +46,11 @@ function ToolBar() {
         img={navTool == "move" ? MoveSelected : Move}
         tip="move"
         selected={navTool == "move"}
-        onClick={() => updateNavTool("move")}
+        onClick={() => {
+          // Deselect annotation
+          handleSelectAnnotation(null);
+          updateNavTool("move");
+        }}
       />
 
       {/* Vertical Divider */}
@@ -58,7 +65,11 @@ function ToolBar() {
         img={Delete}
         tip="delete"
         selected={false}
-        onClick={() => console.log("delete")}
+        onClick={() => {
+          if (selectedAnnotation) {
+            handleRemoveAnnotation(selectedAnnotation);
+          }
+        }}
       />
     </ToolBarContainer>
   );
