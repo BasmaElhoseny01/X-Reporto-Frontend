@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   HomeOutlined,
   UsergroupDeleteOutlined,
@@ -16,15 +16,15 @@ import { actionsCreators, MainState } from "../../../state";
 type MenuItem = Required<MenuProps>["items"][number];
 
 const items: MenuItem[] = [
-  { key: "", icon: <HomeOutlined />, label: "Home" },
+  { key: "/", icon: <HomeOutlined />, label: "Home" },
   {
     key: "sub2",
-    label: "Patients",
+    label: "patients",
     icon: <UsergroupDeleteOutlined />,
     children: [
-      { key: "patients", label: "All" },
-      { key: "patients/archived", label: "Archived" },
-      { key: "patient/new", label: "New Patient" },
+      { key: "/patients", label: "All" },
+      { key: "/patients/archived", label: "Archived" },
+      { key: "/patient/new", label: "New Patient" },
     ],
   },
   {
@@ -32,14 +32,22 @@ const items: MenuItem[] = [
     label: "Reports",
     icon: <FileTextOutlined />,
     children: [
-      { key: "reports/WorkList", label: "Work list" },
-      { key: "reports/Completed", label: "Completed" },
-      { key: "reports/archived", label: "Archived" },
-      { key: "report/new", label: "New X-Ray" },
+      { key: "/reports/workList", label: "Work list" },
+      { key: "/reports/completed", label: "Completed" },
+      { key: "/reports/archived", label: "Archived" },
+      { key: "/report/new", label: "New X-Ray" },
     ],
   },
-  { key: "Doctors", icon: <ExperimentOutlined />, label: "Doctors" },
-  { key: "Account", icon: <UserOutlined />, label: "Account" },
+  {
+    key: "sub4",
+    label: "Doctors",
+    icon: <ExperimentOutlined />,
+    children: [
+      { key: "/doctors", label: "All" },
+      { key: "/doctors/archived", label: "Archived" },
+    ],
+  },
+  { key: "/account", icon: <UserOutlined />, label: "Account" },
 ];
 
 const SideBar = () => {
@@ -54,8 +62,13 @@ const SideBar = () => {
   };
   const onMenuClick: MenuProps["onClick"] = (e) => {
     ChangeDrawer(e.key);
-    window.location.pathname = `/${e.key}`;
+    window.location.pathname = `${e.key}`;
   };
+
+  useEffect(() => {
+    ChangeDrawer(window.location.pathname.toLocaleLowerCase());
+    console.log(drawer);
+  },[window.location.pathname,drawer]);
 
   return (
     <Sider
@@ -74,7 +87,8 @@ const SideBar = () => {
       }}
     >
       <Menu
-        defaultSelectedKeys={[drawer]}
+        // defaultSelectedKeys={[drawer]}
+        selectedKeys={[drawer]}
         mode="inline"
         theme={websiteTheme}
         inlineCollapsed={collapsed}

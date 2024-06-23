@@ -39,6 +39,7 @@ import Examples from "./pages/Examples";
 import Annotation from "./pages/Annotation";
 import DrawarPage from "./pages/DrawarPage";
 import XRayArchived from "./pages/XRayArchived";
+import ArchivedDoctor from "./pages/ArchivedDoctor";
 
 // interface AppProps {
 //   // Define props here
@@ -101,8 +102,8 @@ function App() {
                   </Route>
 
                   <Route path="reports">
-                    <Route path="WorkList" element={<XRayWorkList />} />
-                    <Route path="Completed" element={<XRayCompleted />} />
+                    <Route path="workList" element={<XRayWorkList />} />
+                    <Route path="completed" element={<XRayCompleted />} />
                     <Route path="archived" element={<XRayArchived />} />
                     <Route path="new" element={<NewXRay />} />
                     <Route path=":Id" element={<ViewXRayPage />} />
@@ -110,7 +111,7 @@ function App() {
 
                   <Route path="doctors">
                     <Route index element={<AllDoctors />} />
-                    
+                    <Route path="archived" element={<ArchivedDoctor />} />
                   </Route>
 
                   <Route path="annotation" element={<Annotation />} />
