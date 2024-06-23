@@ -1,15 +1,15 @@
 import React, { createContext, useContext, useState } from "react";
 
 // Types
-import { Box } from "./XRaySection.types";
+import { Region } from "./XRaySection.types";
 
 interface AnnotationsContextType {
   selectedAnnotation: string | null;
   handleSelectAnnotation: (id: string | null) => void;
 
-  annotations: Box[];
-  handleSetAnnotations: (newAnnotations: Box[]) => void;
-  handleAddAnnotation: (newAnnotation: Box) => void;
+  annotations: Region[];
+  handleSetAnnotations: (newAnnotations: Region[]) => void;
+  handleAddAnnotation: (newAnnotation: Region) => void;
   handleRemoveAnnotation: (id: string) => void;
 }
 // Create context with initial state
@@ -37,16 +37,16 @@ function AnnotationProvider(props: AnnotationsProviderProps) {
   const [selectedAnnotation, setSelectedAnnotation] = useState<string | null>(
     null
   );
-  const [annotations, setAnnotations] = useState<Box[]>([]);
+  const [annotations, setAnnotations] = useState<Region[]>([]);
 
   const handleSelectAnnotation = (id: string | null) => {
     setSelectedAnnotation(id);
   };
 
-  const handleSetAnnotations = (newAnnotations: Box[]) => {
+  const handleSetAnnotations = (newAnnotations: Region[]) => {
     setAnnotations(newAnnotations);
   };
-  const handleAddAnnotation = (newAnnotation: Box) => {
+  const handleAddAnnotation = (newAnnotation: Region) => {
     annotations.push(newAnnotation);
     setAnnotations(annotations);
   };

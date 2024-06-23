@@ -50,7 +50,7 @@ const items: MenuItem[] = [
 
 function ViewXRay() {
   // States for the Sider
-  const [infoCollapsed, setInfoCollapsed] = useState(false);
+  const [infoCollapsed, setInfoCollapsed] = useState(true);
   const [reportCollapsed, setReportCollapsed] = useState(true);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 

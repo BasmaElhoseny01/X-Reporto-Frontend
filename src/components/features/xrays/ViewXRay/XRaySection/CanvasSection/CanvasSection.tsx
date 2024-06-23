@@ -17,7 +17,7 @@ import { useStageProperties } from "../StagePropertiesProvider";
 import XRay from "../../../../../../assets/images/resized.jpg";
 
 // Types
-import { Box } from "../XRaySection.types";
+import { Region } from "../XRaySection.types";
 import { Vector2d } from "konva/lib/types";
 
 let idCounter = 0;
@@ -26,20 +26,26 @@ const generateId = () => (++idCounter).toString();
 // Initial BBs
 const initialAnnotations = [
   {
-    x: 10,
-    y: 10,
-    width: 100,
-    height: 50,
     id: generateId(),
     title: "BB0",
+    finding: "Finding 0",
+    box: {
+      x: 10,
+      y: 10,
+      width: 100,
+      height: 50,
+    },
   },
   {
-    x: 150,
-    y: 150,
-    width: 50,
-    height: 50,
     id: generateId(),
     title: "BB1",
+    finding: "Finding 1",
+    box: {
+      x: 150,
+      y: 150,
+      width: 50,
+      height: 50,
+    },
   },
 ];
 
@@ -65,7 +71,7 @@ function CanvasSection() {
   //   stageY: 0,
   // });
 
-  const [newAnnotation, setNewAnnotation] = useState<Box[]>([]);
+  const [newAnnotation, setNewAnnotation] = useState<Region[]>([]);
 
   // Context Providers
   const { navTool, hideBoxes } = useTools();
@@ -112,7 +118,19 @@ function CanvasSection() {
         //   y <= canvasMeasures.height
         // ) {
         const id = generateId();
-        setNewAnnotation([{ x, y, width: 0, height: 0, id, title: id }]);
+        setNewAnnotation([
+          {
+            id,
+            title: `Region(${id})`,
+            finding: "",
+            box: {
+              x,
+              y,
+              width: 0,
+              height: 0,
+            },
+          },
+        ]);
         console.log("Down: newAnnotation", newAnnotation);
         // }
       }
@@ -150,8 +168,8 @@ function CanvasSection() {
       newAnnotation.length === 1 &&
       navTool === "draw"
     ) {
-      const sx = newAnnotation[0].x;
-      const sy = newAnnotation[0].y;
+      const sx = newAnnotation[0].box.x;
+      const sy = newAnnotation[0].box.y;
       const pointerPosition = event.target.getStage()?.getPointerPosition();
       if (pointerPosition) {
         // Adjust pointer position to canvas scale (For zoomed canvas)
@@ -168,12 +186,15 @@ function CanvasSection() {
         const id = generateId();
         setNewAnnotation([
           {
-            x: sx,
-            y: sy,
-            width: x - sx,
-            height: y - sy,
             id,
-            title: id,
+            title: `Region(${id})`,
+            finding: "",
+            box: {
+              x: sx,
+              y: sy,
+              width: x - sx,
+              height: y - sy,
+            },
           },
         ]);
         // }
@@ -221,7 +242,6 @@ function CanvasSection() {
   };
 
   const annotationsToDraw = [...annotations, ...newAnnotation];
-
   return (
     <Stage
       // width={canvasMeasures.width}
@@ -252,7 +272,8 @@ function CanvasSection() {
             return (
               <AnnotationBox
                 key={i}
-                shapeProps={annotation}
+                shapeProps={annotation.box}
+                title={annotation.title}
                 isSelected={annotation.id === selectedAnnotation}
                 onSelect={() => {
                   if (navTool !== "draw" && navTool !== "zoom") {
@@ -262,7 +283,7 @@ function CanvasSection() {
                 onMouseLeave={handleMouseEnter}
                 onChange={(newAttrs) => {
                   const rects = annotations.slice();
-                  rects[i] = newAttrs;
+                  rects[i].box = newAttrs;
                   // setAnnotations(rects);
                   handleSetAnnotations(rects);
                 }}

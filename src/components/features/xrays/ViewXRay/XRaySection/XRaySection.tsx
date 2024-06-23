@@ -5,12 +5,19 @@ import ToolProvider from "./ToolProvider";
 import AnnotationProvider from "./AnnotationProvider";
 import StagePropertiesProvider from "./StagePropertiesProvider";
 
+// Antd Components
+
 // Components
 import ToolBar from "./ToolBar/ToolBar";
 import CanvasSection from "./CanvasSection/CanvasSection";
 
 // Styled Components
-import { XRaySectionContainer } from "./XRaySection.Styles";
+import {
+  XRaySectionContainer,
+  BBFindingsContainer,
+  XRayContainer,
+} from "./XRaySection.Styles";
+import BBFindings from "./BBFindings/BBFindings";
 
 function XRaySection() {
   return (
@@ -18,8 +25,13 @@ function XRaySection() {
       <AnnotationProvider>
         <StagePropertiesProvider>
           <XRaySectionContainer>
-            <ToolBar />
-            <CanvasSection />
+            <XRayContainer>
+              <ToolBar />
+              <CanvasSection />
+            </XRayContainer>
+            <BBFindingsContainer>
+              <BBFindings  />
+            </BBFindingsContainer>
           </XRaySectionContainer>
         </StagePropertiesProvider>
       </AnnotationProvider>

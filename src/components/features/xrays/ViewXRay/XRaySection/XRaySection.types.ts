@@ -10,8 +10,13 @@ export type Box = {
   y: number;
   width: number;
   height: number;
+};
+
+export type Region = {
   id: string;
   title: string;
+  finding: string;
+  box: Box;
 };
 
 export type stagePropertiesType = {

@@ -1,9 +1,12 @@
 import React, { useEffect, useRef } from "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 // Third Party Components
 import Konva from "konva";
 import { Group, Rect, Text, Transformer } from "react-konva";
 import { KonvaEventObject } from "konva/lib/Node";
+
+// Antd Components
 
 // Utils
 import { hexToRgba } from "../../../../../../../utils";
@@ -20,15 +23,17 @@ import { palette } from "../../../../../../../styles/theme";
 // Props
 interface AnnotationBoxProps {
   shapeProps: Box;
+  title: string;
 
   isSelected: boolean;
   onSelect: () => void;
   onMouseLeave: (event: KonvaEventObject<MouseEvent>) => void;
-  onChange: (newAttrs: any) => void;
+  onChange: (newAttrs: Box) => void;
 }
 
 function AnnotationBox(props: AnnotationBoxProps) {
-  const { shapeProps, isSelected, onSelect, onChange, onMouseLeave } = props;
+  const { shapeProps, title, isSelected, onSelect, onChange, onMouseLeave } =
+    props;
 
   // Tool Provider
   const { navTool } = useTools();
@@ -37,6 +42,10 @@ function AnnotationBox(props: AnnotationBoxProps) {
   const transformRef = useRef<Konva.Transformer>(null);
 
   useEffect(() => {
+    console.log("isSelected", isSelected);
+    console.log("shapeRef", shapeRef.current);
+    console.log("transformRef", transformRef.current);
+    console.log("shapeProps", shapeProps);
     if (isSelected) {
       // we need to attach transformer manually
       if (transformRef.current && shapeRef.current) {
@@ -64,6 +73,7 @@ function AnnotationBox(props: AnnotationBoxProps) {
       <Rect
         fill={isSelected ? `${hexToRgba(palette.primary, 0.1)}` : "transparent"}
         stroke={isSelected ? `${palette.primary}` : `${palette.error}`}
+        strokeWidth={isSelected ? 4 : 2}
         onMouseDown={onSelect}
         ref={shapeRef}
         {...shapeProps}
@@ -83,38 +93,42 @@ function AnnotationBox(props: AnnotationBoxProps) {
           // but in the store we have only width and height
           // to match the data better we will reset scale on transform end
           const node = shapeRef.current;
-          const scaleX = node?.scaleX() ?? 1;
-          const scaleY = node?.scaleY() ?? 1;
+          if (node) {
+            const scaleX = node.scaleX() ?? 1;
+            const scaleY = node.scaleY() ?? 1;
 
-          // we will reset it back
-          node?.scaleX(1);
-          node?.scaleY(1);
-          onChange({
-            ...shapeProps,
-            x: node?.x(),
-            y: node?.y(),
-            // set minimal value
-            // set minimal value
-            width: Math.max(5, (node?.width() ?? 5) * scaleX),
-            height: Math.max(5, (node?.height() ?? 5) * scaleY),
-          });
+            // we will reset it back
+            node.scaleX(1);
+            node.scaleY(1);
+            onChange({
+              ...shapeProps,
+              x: node.x(),
+              y: node.y(),
+              // set minimal value
+              // set minimal value
+              width: Math.max(5, (node.width() ?? 5) * scaleX),
+              height: Math.max(5, (node.height() ?? 5) * scaleY),
+            });
+          }
         }}
       />
       <Text
-        text={shapeProps.title} // Replace with your dynamic label text
+        text={title} // Replace with your dynamic label text
         x={
-          shapeProps.width < 0 ? shapeProps.x + shapeProps.width : shapeProps.x
+          shapeProps?.width < 0
+            ? shapeProps?.x + shapeProps?.width
+            : shapeProps?.x
         } // Center text horizontally
         // x={shapeProps.x} // Center text horizontally
         // y={shapeProps.y - 20} // Place text above the rectangle
         y={
-          shapeProps.height < 0
-            ? shapeProps.y + shapeProps.height - 20
-            : shapeProps.y - 20
+          shapeProps?.height < 0
+            ? shapeProps?.y + shapeProps?.height - 20
+            : shapeProps?.y - 20
         } // Place text above the rectangle
         fontSize={14} // Adjust font size as needed
         align="center"
-        width={Math.abs(shapeProps.width)} // Center text horizontally
+        width={Math.abs(shapeProps?.width)} // Center text horizontally
         fill={isSelected ? `${palette.primary}` : `${palette.error}`}
       />
       {isSelected && navTool === "move" && (
