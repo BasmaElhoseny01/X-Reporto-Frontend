@@ -115,10 +115,18 @@ function CanvasSection() {
           console.log("Down: newAnnotation", newAnnotation);
         }
       }
+      if (pointerPosition && navTool === "zoom") {
+        console.log("Zoom in", pointerPosition);
+        const stage = event.target.getStage();
+        if (stage) {
+          stage.setPointersPositions(event.evt);
+          stage.startDrag();
+        }
+      }
     }
   };
 
-  const handleMouseUp = () => {
+  const handleMouseUp = (event: KonvaEventObject<MouseEvent>) => {
     if (
       selectedAnnotation === null &&
       newAnnotation.length === 1 &&
@@ -129,6 +137,11 @@ function CanvasSection() {
       // setAnnotations(annotations);
       setNewAnnotation([]);
       console.log("Up: annotations", annotations);
+    } else if (navTool === "zoom") {
+      const stage = event.target.getStage();
+      if (stage && stage.isDragging()) {
+        stage.stopDrag();
+      }
     }
   };
 
@@ -164,6 +177,16 @@ function CanvasSection() {
           ]);
         }
       }
+    } else if (navTool === "zoom") {
+      const stage = event.target.getStage();
+      if (stage && stage.isDragging()) {
+        const dragMoveDist = stage.getPointerPosition() || { x: 0, y: 0 };
+        handleSetStageProperties({
+          stageScale: stageProperties.stageScale,
+          stageX: dragMoveDist.x,
+          stageY: dragMoveDist.y,
+        });
+      }
     }
   };
 
@@ -191,11 +214,6 @@ function CanvasSection() {
           stageX: -(mousePointTo.x - pointerPosition.x / newScale) * newScale,
           stageY: -(mousePointTo.y - pointerPosition.y / newScale) * newScale,
         });
-        // setStageProperties({
-        //   stageScale: newScale,
-        //   stageX: -(mousePointTo.x - pointerPosition.x / newScale) * newScale,
-        //   stageY: -(mousePointTo.y - pointerPosition.y / newScale) * newScale,
-        // });
       }
     }
   };
