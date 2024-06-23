@@ -1,92 +1,96 @@
 import React from "react";
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
+// Context
+import { useAnnotations } from "../AnnotationProvider";
+
 // Ant Design
 import Title from "antd/es/typography/Title";
 import Paragraph from "antd/es/typography/Paragraph";
 import Text from "antd/es/typography/Text";
 
 // Styled Components
-import { BBFindingsContainer } from "./BBFindings.Styles";
+import {
+  BBFindingsSectionContainer,
+  BBFindingTitleContainer,
+  BBFindingButtonsContainer,
+  BBAllFindingsContainer,
+  BBFindingContainer,
+} from "./BBFindings.Styles";
 
 // Components
 import LineHeader from "../../../../../common/LineHeader/LineHeader";
 import FindingText from "./FindingText/FindingText";
+import SecondaryButton from "../../../../../common/SecondaryButton/SecondaryButton";
 
-// Context
-import { useAnnotations } from "../AnnotationProvider";
+// Assets
+import BotBlue from "../../../../../../assets/images/bot-blue.svg";
+import BotRed from "../../../../../../assets/images/bot-red.svg";
 
-type BBFindingsProps = {
-  //   region: string;
-  //   setRegion: (value: string) => void;
-  //   finding: string;
-  //   setFinding: (value: string) => void;
-};
-
-type Region = {
-  id: string;
-  title: string;
-  finding: string;
-};
-
-function BBFindings(props: BBFindingsProps) {
-  //   const { region, setRegion, finding, setFinding } = props;
-  //   const [editableStr, setEditableStr] = useState<string>(
-  //     "lung volumes are slightly lower with associated crowding of bronchovascular structures."
-  //   );
-
-  const { selectedAnnotation, handleSelectAnnotation, annotations } =
-    useAnnotations();
+function BBFindings() {
+  const { selectedAnnotation, annotations } = useAnnotations();
 
   return (
-    <BBFindingsContainer>
-      {selectedAnnotation && (
-        <>
-          <Title
-            level={4}
-            editable={{ onChange: () => console.log("Editing") }}
-          >
-            {selectedAnnotation.title}
-          </Title>
-          <LineHeader />
-          <Text
-            editable={{ onChange: () => console.log("Editing Findings") }}
-            style={{
-              fontSize: "18px",
-            }}
-          >
-            {selectedAnnotation.finding}
-          </Text>
-        </>
-      )}
+    <BBFindingsSectionContainer>
+      <BBFindingContainer>
+        {selectedAnnotation && (
+          <>
+            <BBFindingTitleContainer>
+              <Title
+                level={4}
+                editable={{ onChange: () => console.log("Editing") }}
+              >
+                {selectedAnnotation.title}
+              </Title>
+              <img src={selectedAnnotation.ai ? BotBlue : BotRed} />
+            </BBFindingTitleContainer>
+            <LineHeader />
+            <Text
+              editable={{ onChange: () => console.log("Editing Findings") }}
+              style={{
+                fontSize: "18px",
+              }}
+            >
+              {selectedAnnotation.finding}
+            </Text>
+            <BBFindingButtonsContainer>
+              <SecondaryButton
+                onClick={() => console.log("Reset Finding")}
+                disabled={selectedAnnotation.ai}
+              >
+                Reset AI
+              </SecondaryButton>
+            </BBFindingButtonsContainer>
+          </>
+        )}
 
-      {!selectedAnnotation && (
-        <>
-          <Title level={4}>No Findings</Title>
-          <LineHeader />
-          <Paragraph>
-            No findings have been added. Please click on the image to add
-            findings.
-          </Paragraph>
-        </>
-      )}
+        {!selectedAnnotation && (
+          <>
+            <Title level={4}>No Findings</Title>
+            <LineHeader />
+            <Paragraph>
+              No findings have been added. Please click on the image to add
+              findings.
+            </Paragraph>
+          </>
+        )}
+      </BBFindingContainer>
 
       {/* All findings in 1 paragraph */}
-      <Title level={4}>All Findings</Title>
-      <LineHeader />
-      <Paragraph>
-        {annotations.map((region) => (
-          <FindingText
-            key={region.id}
-            region={region}
-            selected={region.id == selectedAnnotation?.id}
-          />
-        ))}
-        {/* {allFindings.map((item) => (
-          <FindingText key={item.id} {...item} />
-        ))} */}
-      </Paragraph>
-    </BBFindingsContainer>
+      <BBAllFindingsContainer>
+        <Title level={4}>All Findings</Title>
+        <LineHeader />
+        <Paragraph>
+          {annotations.map((region) => (
+            <FindingText
+              key={region.id}
+              region={region}
+              selected={region.id == selectedAnnotation?.id}
+            />
+          ))}
+        </Paragraph>
+      </BBAllFindingsContainer>
+    </BBFindingsSectionContainer>
   );
 }
 

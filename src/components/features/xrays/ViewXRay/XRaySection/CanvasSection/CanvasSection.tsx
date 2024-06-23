@@ -88,6 +88,7 @@ function CanvasSection() {
             id,
             title: `Region(${id})`,
             finding: "",
+            ai: false,
             box: {
               x,
               y,
@@ -154,6 +155,7 @@ function CanvasSection() {
             id,
             title: `Region(${id})`,
             finding: "",
+            ai: false,
             box: {
               x: sx,
               y: sy,

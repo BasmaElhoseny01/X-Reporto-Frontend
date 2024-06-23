@@ -46,6 +46,7 @@ function AnnotationProvider(props: AnnotationsProviderProps) {
         title: "Lung",
         finding:
           "Lung volumes are slightly lower with associated crowding of bronchovascular structures.",
+        ai: true,
         box: {
           x: 100,
           y: 100,
@@ -57,6 +58,7 @@ function AnnotationProvider(props: AnnotationsProviderProps) {
         id: "02",
         title: "Heart",
         finding: "Heart is slightly enlarged.",
+        ai: true,
         box: {
           x: 250,
           y: 150,

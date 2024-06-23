@@ -16,6 +16,7 @@ export type Region = {
   id: string;
   title: string;
   finding: string;
+  ai: boolean;
   box: Box;
 };
 
