@@ -19,7 +19,7 @@ Hosny Tasks:
 [✓] Archived Doctors + Add to Side Bar
 [✓] Fix Routes Merged Table Routes
 [] Info Tab
-[] All Templates (Hosny) + Add col for Template ID
+[✓] All Templates (Hosny) + Add col for Template ID
 ---
 
 Basma Tasks:

@@ -5,6 +5,7 @@ import {
   UserOutlined,
   FileTextOutlined,
   ExperimentOutlined,
+  HighlightOutlined
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Menu } from "antd";
@@ -48,6 +49,16 @@ const items: MenuItem[] = [
       { key: "/doctors/new", label: "New" },
     ],
   },
+  {
+    key: "sub5",
+    label: "Templates",
+    icon: <HighlightOutlined />,
+    children: [
+      { key: "/templates", label: "All" },
+      { key: "/templates/new", label: "New" },
+    ],
+  },
+  
   { key: "/account", icon: <UserOutlined />, label: "Account" },
 ];
 

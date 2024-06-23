@@ -40,6 +40,7 @@ import Annotation from "./pages/Annotation";
 import DrawarPage from "./pages/DrawarPage";
 import XRayArchived from "./pages/XRayArchived";
 import ArchivedDoctor from "./pages/ArchivedDoctor";
+import AllTemplates from "./pages/AllTemplates";
 
 // interface AppProps {
 //   // Define props here
@@ -112,6 +113,11 @@ function App() {
                   <Route path="doctors">
                     <Route index element={<AllDoctors />} />
                     <Route path="archived" element={<ArchivedDoctor />} />
+                  </Route>
+                  <Route path="templates" >
+                    <Route index element={<AllTemplates />} />
+                    {/* <Route path="new" element={<NewXRay />} />
+                    <Route path=":Id" element={<ViewXRayPage />} /> */}
                   </Route>
 
                   <Route path="annotation" element={<Annotation />} />
