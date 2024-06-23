@@ -8,6 +8,9 @@ import { KonvaEventObject } from "konva/lib/Node";
 import ImageFromUrl from "./ImageFromURL/ImageFromURL";
 import AnnotationBox from "./AnnotationBox/AnnotationBox";
 
+// Context
+import { useTools } from "../ToolProvider";
+
 // Assets
 import XRay from "../../../../../../assets/images/resized.jpg";
 
@@ -28,15 +31,15 @@ const initialAnnotations = [
   {
     x: 10,
     y: 10,
-    width: 100,
-    height: 100,
+    width: 0,
+    height: 0,
     id: generateId(),
   },
   {
     x: 150,
     y: 150,
-    width: 100,
-    height: 100,
+    width: 0,
+    height: 0,
     id: generateId(),
   },
 ];
@@ -54,10 +57,24 @@ function CanvasSection() {
   const [newAnnotation, setNewAnnotation] = useState<Box[]>([]);
   const [annotations, setAnnotations] = useState(initialAnnotations);
 
+  // Tool Provider
+  const { navTool } = useTools();
+
+  const handleMouseEnter = (event: KonvaEventObject<MouseEvent>) => {
+    const stage = event.target.getStage();
+    if (stage) {
+      if (navTool === "select") {
+        stage.container().style.cursor = "default";
+      } else if (navTool === "draw") {
+        stage.container().style.cursor = "crosshair";
+      }
+    }
+  };
+
   const handleMouseDown = (event: KonvaEventObject<MouseEvent>) => {
     if (selectedId === null && newAnnotation.length === 0) {
       const pointerPosition = event.target.getStage()?.getPointerPosition();
-      if (pointerPosition) {
+      if (pointerPosition && navTool === "draw") {
         const { x, y } = pointerPosition;
         const id = generateId();
         setNewAnnotation([{ x, y, width: 0, height: 0, id }]);
@@ -68,7 +85,11 @@ function CanvasSection() {
   };
 
   const handleMouseUp = () => {
-    if (selectedId === null && newAnnotation.length === 1) {
+    if (
+      selectedId === null &&
+      newAnnotation.length === 1 &&
+      navTool === "draw"
+    ) {
       annotations.push(...newAnnotation);
       setAnnotations(annotations);
       setNewAnnotation([]);
@@ -77,7 +98,11 @@ function CanvasSection() {
   };
 
   const handleMouseMove = (event: KonvaEventObject<MouseEvent>) => {
-    if (selectedId === null && newAnnotation.length === 1) {
+    if (
+      selectedId === null &&
+      newAnnotation.length === 1 &&
+      navTool === "draw"
+    ) {
       const sx = newAnnotation[0].x;
       const sy = newAnnotation[0].y;
       const pointerPosition = event.target.getStage()?.getPointerPosition();
@@ -105,10 +130,10 @@ function CanvasSection() {
       width={canvasMeasures.width}
       // height={canvasMeasures.height}
       height={canvasMeasures.height}
+      onMouseEnter={handleMouseEnter}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseMove={handleMouseMove}
-      // onMouseEnter={handleMouseEnter}
     >
       <Layer>
         <ImageFromUrl

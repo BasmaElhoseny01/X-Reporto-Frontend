@@ -19,8 +19,6 @@ import { useTools } from "../ToolProvider";
 function ToolBar() {
   const { navTool, handleChangeNavTool } = useTools();
 
-  // const { tools, setTools } = props;
-
   const updateNavTool = (tool: string) => {
     console.log("tool", tool);
     handleChangeNavTool(tool as "select" | "draw" | "move");

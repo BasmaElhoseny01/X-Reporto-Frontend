@@ -15,12 +15,17 @@ interface AnnotationBoxProps {
   onSelect: () => void;
   onChange: (newAttrs: any) => void;
 }
+// Context
+import { useTools } from "../../ToolProvider";
 
 // Styles
 import { palette } from "../../../../../../../styles/theme";
 
 function AnnotationBox(props: AnnotationBoxProps) {
   const { shapeProps, isSelected, onSelect, onChange } = props;
+
+  // Tool Provider
+  const { navTool } = useTools();
 
   const shapeRef = useRef<Konva.Rect>(null);
   const transformRef = useRef<Konva.Transformer>(null);
@@ -38,14 +43,27 @@ function AnnotationBox(props: AnnotationBoxProps) {
   const onMouseEnter = (event: KonvaEventObject<MouseEvent>) => {
     const stage = event.target.getStage();
     if (stage) {
-      stage.container().style.cursor = "move";
+      if (navTool === "select") {
+        stage.container().style.cursor = "pointer";
+      } else if (navTool === "move") {
+        stage.container().style.cursor = "move";
+      } else if (navTool === "draw") {
+        stage.container().style.cursor = "crosshair";
+      }
     }
   };
 
   const onMouseLeave = (event: KonvaEventObject<MouseEvent>) => {
     const stage = event.target.getStage();
     if (stage) {
-      stage.container().style.cursor = "crosshair";
+      if (navTool === "select") {
+        stage.container().style.cursor = "context-menu";
+      } else if (navTool === "move") {
+        stage.container().style.cursor = "context-menu";
+      } else if (navTool === "draw") {
+        stage.container().style.cursor = "crosshair";
+      }
+      // stage.container().style.cursor = "crosshair";
     }
   };
 
@@ -89,45 +107,6 @@ function AnnotationBox(props: AnnotationBoxProps) {
             height: Math.max(5, (node?.height() ?? 5) * scaleY),
           });
         }}
-      />
-      <Rect
-      // fill="transparent"
-      // stroke="blue"
-      // onMouseDown={onSelect}
-      // ref={shapeRef}
-      // {...shapeProps}
-      // draggable
-      // onMouseEnter={onMouseEnter}
-      // onMouseLeave={onMouseLeave}
-      // onDragEnd={(event) => {
-      //   onChange({
-      //     ...shapeProps,
-      //     x: event.target.x(),
-      //     y: event.target.y(),
-      //   });
-      // }}
-      // onTransformEnd={() => {
-      //   // transformer is changing scale of the node
-      //   // and NOT its width or height
-      //   // but in the store we have only width and height
-      //   // to match the data better we will reset scale on transform end
-      //   const node = shapeRef.current;
-      //   const scaleX = node?.scaleX() ?? 1;
-      //   const scaleY = node?.scaleY() ?? 1;
-
-      //   // we will reset it back
-      //   node?.scaleX(1);
-      //   node?.scaleY(1);
-      //   onChange({
-      //     ...shapeProps,
-      //     x: node?.x(),
-      //     y: node?.y(),
-      //     // set minimal value
-      //     // set minimal value
-      //     width: Math.max(5, (node?.width() ?? 5) * scaleX),
-      //     height: Math.max(5, (node?.height() ?? 5) * scaleY),
-      //   });
-      // }}
       />
       {isSelected && <Transformer ref={transformRef} />}
     </>
