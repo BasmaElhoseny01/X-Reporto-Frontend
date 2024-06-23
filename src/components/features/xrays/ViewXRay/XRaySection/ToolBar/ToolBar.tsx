@@ -4,7 +4,7 @@ import React from "react";
 import { useTools } from "../ToolProvider";
 
 // Styled Components
-import { ToolBarContainer } from "./ToolBar.Styles";
+import { ToolBarContainer, VerticalDivider } from "./ToolBar.Styles";
 import { useAnnotations } from "../AnnotationProvider";
 
 // Components
@@ -19,8 +19,12 @@ import Move from "../../../../../../assets/images/move.svg";
 import MoveSelected from "../../../../../../assets/images/move-selected.svg";
 import Delete from "../../../../../../assets/images/delete.svg";
 
+import HideBoxes from "../../../../../../assets/images/hide-boxes.svg";
+import HideBoxesSelected from "../../../../../../assets/images/hide-boxes-selected.svg";
+
 function ToolBar() {
-  const { navTool, handleChangeNavTool } = useTools();
+  const { navTool, handleChangeNavTool, hideBoxes, handleToggleHideBoxes } =
+    useTools();
   const { selectedAnnotation, handleSelectAnnotation, handleRemoveAnnotation } =
     useAnnotations();
 
@@ -30,6 +34,7 @@ function ToolBar() {
   };
   return (
     <ToolBarContainer>
+      {/* NavTools Section */}
       <ToolBarIcon
         img={navTool == "select" ? SelectSelected : Select}
         tip="select"
@@ -40,7 +45,11 @@ function ToolBar() {
         img={navTool == "draw" ? DrawSelected : Draw}
         tip="draw"
         selected={navTool == "draw"}
-        onClick={() => updateNavTool("draw")}
+        onClick={() => {
+          // Deselect annotation
+          handleSelectAnnotation(null);
+          updateNavTool("draw");
+        }}
       />
       <ToolBarIcon
         img={navTool == "move" ? MoveSelected : Move}
@@ -53,14 +62,9 @@ function ToolBar() {
         }}
       />
 
-      {/* Vertical Divider */}
-      <div
-        style={{
-          height: "80%",
-          borderLeft: "2px solid #e8e8e8",
-          margin: "0 10px",
-        }}
-      />
+      <VerticalDivider />
+
+      {/* Section */}
       <ToolBarIcon
         img={Delete}
         tip="delete"
@@ -69,6 +73,18 @@ function ToolBar() {
           if (selectedAnnotation) {
             handleRemoveAnnotation(selectedAnnotation);
           }
+        }}
+      />
+
+      <VerticalDivider />
+
+      {/* ViewTools Section */}
+      <ToolBarIcon
+        img={hideBoxes ? HideBoxesSelected : HideBoxes}
+        tip="hide boxes"
+        selected={false}
+        onClick={() => {
+          handleToggleHideBoxes();
         }}
       />
     </ToolBarContainer>

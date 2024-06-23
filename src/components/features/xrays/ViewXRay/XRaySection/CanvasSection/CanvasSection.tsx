@@ -60,7 +60,7 @@ function CanvasSection() {
   // const [annotations, setAnnotations] = useState(initialAnnotations);
 
   // Tool Provider
-  const { navTool } = useTools();
+  const { navTool, hideBoxes } = useTools();
 
   useEffect(() => {
     handleSetAnnotations(initialAnnotations);
@@ -151,27 +151,28 @@ function CanvasSection() {
             handleSelectAnnotation(null);
           }}
         />
-        {annotationsToDraw.map((annotation, i) => {
-          return (
-            <AnnotationBox
-              key={i}
-              shapeProps={annotation}
-              isSelected={annotation.id === selectedAnnotation}
-              onSelect={() => {
-                if (navTool !== "draw") {
-                  handleSelectAnnotation(annotation.id);
-                }
-              }}
-              onMouseLeave={handleMouseEnter}
-              onChange={(newAttrs) => {
-                const rects = annotations.slice();
-                rects[i] = newAttrs;
-                // setAnnotations(rects);
-                handleSetAnnotations(rects);
-              }}
-            />
-          );
-        })}
+        {!hideBoxes &&
+          annotationsToDraw.map((annotation, i) => {
+            return (
+              <AnnotationBox
+                key={i}
+                shapeProps={annotation}
+                isSelected={annotation.id === selectedAnnotation}
+                onSelect={() => {
+                  if (navTool !== "draw") {
+                    handleSelectAnnotation(annotation.id);
+                  }
+                }}
+                onMouseLeave={handleMouseEnter}
+                onChange={(newAttrs) => {
+                  const rects = annotations.slice();
+                  rects[i] = newAttrs;
+                  // setAnnotations(rects);
+                  handleSetAnnotations(rects);
+                }}
+              />
+            );
+          })}
       </Layer>
     </Stage>
   );

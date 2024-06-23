@@ -1,12 +1,11 @@
 import React, { createContext, useContext, useState } from "react";
 
-export type Tools = {
-  navTool: "select" | "draw" | "move";
-};
-
+// Types
+import { Tools } from "./XRaySection.types";
 // Define the context type, including the function to change the tool
 interface ToolsContextType extends Tools {
   handleChangeNavTool: (tool: "select" | "draw" | "move") => void;
+  handleToggleHideBoxes: () => void;
 }
 
 // Create context with initial state
@@ -29,7 +28,10 @@ type ToolProviderProps = {
 function ToolProvider(props: ToolProviderProps) {
   const { children } = props;
 
-  const [tools, setTools] = useState<Tools>({ navTool: "select" });
+  const [tools, setTools] = useState<Tools>({
+    navTool: "select",
+    hideBoxes: false,
+  });
 
   const handleChangeNavTool = (tool: "select" | "draw" | "move") => {
     setTools((prevTools) => {
@@ -38,8 +40,17 @@ function ToolProvider(props: ToolProviderProps) {
     });
   };
 
+  const handleToggleHideBoxes = () => {
+    setTools((prevTools) => {
+      const newTools = { ...prevTools, hideBoxes: !prevTools.hideBoxes };
+      return newTools;
+    });
+  };
+
   return (
-    <ToolsContext.Provider value={{ ...tools, handleChangeNavTool }}>
+    <ToolsContext.Provider
+      value={{ ...tools, handleChangeNavTool, handleToggleHideBoxes }}
+    >
       {children}
     </ToolsContext.Provider>
   );
