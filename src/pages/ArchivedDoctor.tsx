@@ -51,10 +51,10 @@ function ArchivedDoctor() {
     filterColumns : { "Doctor Name": "Doctor Name"},
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
-      console.log(record, rowIndex);
+      window.location.pathname = `doctors/archived-${record.id}`;
     },
     addNew: () => {
-      window.location.pathname = "/new-archived";
+      window.location.pathname = "doctors/new-archived";
     },
 
   };

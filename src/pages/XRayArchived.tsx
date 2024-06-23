@@ -83,10 +83,10 @@ function XRayArchived() {
     },
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
-      console.log(record, rowIndex);
+      window.location.pathname = `reports/${record.id}`;
     },
     addNew: () => {
-      window.location.pathname = "/new";
+      window.location.pathname = "reports/new-archived";
     },
   };
 

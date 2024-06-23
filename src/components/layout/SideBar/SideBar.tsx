@@ -24,7 +24,7 @@ const items: MenuItem[] = [
     children: [
       { key: "/patients", label: "All" },
       { key: "/patients/archived", label: "Archived" },
-      { key: "/patient/new", label: "New Patient" },
+      { key: "/patients/new", label: "New Patient" },
     ],
   },
   {
