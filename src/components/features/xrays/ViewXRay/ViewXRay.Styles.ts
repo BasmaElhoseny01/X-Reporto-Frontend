@@ -18,7 +18,7 @@ export const ViewXRayContainer = styled(Flex)`
 export const MenuContainer = styled(Menu)`
   /* background-color: green; */
   border-inline-end: 0;
-
+  height: 100%;
   & .ant-menu-root {
     /* border-inline-end: None; */
     border-inline-end: 0;
