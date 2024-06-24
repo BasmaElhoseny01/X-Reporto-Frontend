@@ -17,12 +17,13 @@ import type { MenuProps } from "antd";
 // } from "@ant-design/icons";
 
 // Styled Components
-import { MenuContainer, ViewXRayContainer } from "./ViewXRay.Styles";
+import { ViewXRayContainer } from "./ViewXRay.Styles";
 
 // Components
 import XRaySection from "./XRaySection/XRaySection";
 import InfoSection from "./InfoSection/InfoSection";
 import ReportSection from "./ReportSection/ReportSection";
+import { Menu, Tooltip } from 'antd';
 
 // Assets
 // import XRay from "../../../../assets/images/x-ray.svg";
@@ -105,18 +106,32 @@ function ViewXRay() {
             theme={websiteTheme}
             collapsedWidth={0}
             trigger={null}
-            style={{ height: "max-Content" }}
+            // style={{ height: "max-Content" }}
           >
-            <Flex>
-              <MenuContainer
-                onClick={onSideBarClick}
-                selectedKeys={[type]}
-                items={items}
-                mode="inline"
-                inlineCollapsed={true}
-                theme={websiteTheme}
-              />
-            </Flex> 
+            <Menu onClick={onSideBarClick} selectedKeys={[type]} mode="inline" theme={websiteTheme}>
+              <Menu.Item key="x-ray" icon={
+                <Tooltip title="X-Ray" placement="left">
+                  <PictureOutlined />
+                </Tooltip>
+              }>
+                {/* Optionally, you can also wrap this label with Tooltip if needed */}
+                X-Ray
+              </Menu.Item>
+              <Menu.Item key="info" icon={
+                <Tooltip title="Info" placement="left">
+                  <BarsOutlined />
+                </Tooltip>
+              }>
+                Info
+              </Menu.Item>
+              <Menu.Item key="report" icon={
+                <Tooltip title="Report" placement="left">
+                  <FileTextOutlined />
+                </Tooltip>
+              }>
+                Report
+              </Menu.Item>
+            </Menu>
           </Sider>
           
       </Layout>
