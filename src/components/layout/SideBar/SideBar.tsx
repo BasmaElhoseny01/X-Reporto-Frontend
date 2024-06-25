@@ -5,7 +5,8 @@ import {
   UserOutlined,
   FileTextOutlined,
   ExperimentOutlined,
-  HighlightOutlined
+  HighlightOutlined,
+  LogoutOutlined
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Menu } from "antd";
@@ -61,6 +62,7 @@ const items: MenuItem[] = [
   },
   
   { key: "/account", icon: <UserOutlined />, label: "Account" },
+  { key: "/LogOut", icon: <LogoutOutlined />, label: "Logout" },
 ];
 
 const SideBar = () => {
@@ -69,19 +71,27 @@ const SideBar = () => {
   const websiteTheme = useSelector((state: MainState) => state.theme);
 
   const dispatch = useDispatch();
-  const { ChangeDrawer } = bindActionCreators(actionsCreators, dispatch);
+  const { ChangeDrawer,ChangeToken,ChangeUserName,ChangeId } = bindActionCreators(actionsCreators, dispatch);
   const onCollapse = (collapsed: boolean) => {
     setCollapsed(collapsed);
   };
   const onMenuClick: MenuProps["onClick"] = (e) => {
-    ChangeDrawer(e.key);
-    window.location.pathname = `${e.key}`;
+    if (e.key === "/LogOut") {
+      ChangeToken("");
+      ChangeUserName("");
+      ChangeId(0);
+      window.location.pathname = "/";
+    }
+    else{
+      ChangeDrawer(e.key);
+      window.location.pathname = `${e.key}`;
+    }
   };
 
   useEffect(() => {
     ChangeDrawer(window.location.pathname.toLocaleLowerCase());
     console.log(drawer);
-  },[window.location.pathname,drawer]);
+  },[drawer]);
 
   return (
     <Sider
@@ -93,7 +103,7 @@ const SideBar = () => {
       trigger={null}
       theme={websiteTheme}
       style={{
-        overflow: "auto",
+        overflow: "hidden",
         height: "auto",
         scrollbarWidth: "none",
         left: 0,
@@ -107,7 +117,7 @@ const SideBar = () => {
         inlineCollapsed={collapsed}
         items={items}
         onClick={onMenuClick}
-        style={{ marginTop: "10px", height: "100%" }}
+        style={{ marginTop: "0px", height: "100%" }}
       />
     </Sider>
   );
