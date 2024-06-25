@@ -32,7 +32,6 @@ import {
   BarsOutlined,
 } from "@ant-design/icons";
 
-
 function ViewXRay() {
   // Context
   const { siderType, handleSetSiderType } = useView();
@@ -82,10 +81,7 @@ function ViewXRay() {
             ) : // Show the Report Section only if the type is report
             siderType === "report" ? (
               <ReportSection />
-            ) : (
-              // Show the XRay Section by default
-              <XRaySection />
-            )
+            ) : null
           }
         </Content>
         <Sider
@@ -120,8 +116,7 @@ function ViewXRay() {
                   <BarsOutlined />
                 </Tooltip>
               }
-            >
-            </Menu.Item>
+            ></Menu.Item>
             <Menu.Item
               key="report"
               icon={
@@ -129,8 +124,7 @@ function ViewXRay() {
                   <FileTextOutlined />
                 </Tooltip>
               }
-            >
-            </Menu.Item>
+            ></Menu.Item>
           </Menu>
         </Sider>
       </Layout>
