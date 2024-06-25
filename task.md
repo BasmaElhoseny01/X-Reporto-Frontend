@@ -20,6 +20,9 @@ Hosny Tasks:
 [✓] Fix Routes Merged Table Routes
 [✓] Info Tab
 [✓] All Templates (Hosny) + Add col for Template ID
+
+Complete Feat:
+[] Authentication
 ---
 
 Basma Tasks:
@@ -30,23 +33,34 @@ Customize Header to be for Admin Employee Doctor
 [✓] Check Dark Mode for Buttons
 [✓] Home Radiologist
 [✓] UI X-ray
-[] Fix Flow Management for X-Ray Tabs (Right Side Bar)
+[✓] Fix Flow Management for X-Ray Tabs (Right Side Bar)
 
 [] X-Ray View Tab  
     https://konvajs.org/docs/react/Filters.html 
     https://github.com/swimmingkiim/react-image-editor
+
+Complete Feat:
+[] BE Home
+[] BE Draw
+[] Employee Home
 ---
 
 Zeinab Tasks:
 By Employee Only
 [✓] New Patient
-[] View Patient + Actions
+[✓] View Patient + Actions
 [✓] New X-Ray
-[] New Doctor
-[] View Doctor
+[✓] New Doctor
+[✓] View Doctor
 [✓] Report Tab (Text Editor)
-[] Template New 
-[] Template View
+[✓] Template New 
+[✓] Template View
+
+
+Complete Feat:
+[] View Doctors
+[] View Patients
+[] View Templates
 ---
 
 
