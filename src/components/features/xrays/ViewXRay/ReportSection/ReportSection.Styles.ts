@@ -1,14 +1,27 @@
+// import { palette } from "../../../styles/theme";
+import { Row ,Flex} from "antd";
 import styled from "styled-components";
+import JoditEditor from 'jodit-react';
 
-// Theme
-// import { palette } from "../../../../styles/theme";
-
-// Ant Design
-import { Flex } from "antd";
-
-export const ReportSectionContainer = styled(Flex)`
-  background-color: #22334400;
-
-  width: 100%;
-  height: 100%;
+export const ReportDiv = styled.div`
+    // display: flex;
 `;
+export const ReportHeader = styled(Row)`
+    display: flex;
+    justify-content: space-between;
+`;
+export const ButtonContainer = styled(Flex)`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+  flex: 1; 
+  width: 100%;
+
+  & > * {
+    margin: 0px 10px;
+  }
+`;
+export const ReportEditor = styled(JoditEditor)`
+    height: 50vh;
+    `;
