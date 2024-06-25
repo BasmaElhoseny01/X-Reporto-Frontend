@@ -19,13 +19,14 @@ type MenuItem = Required<MenuProps>["items"][number];
 
 const items: MenuItem[] = [
   { key: "/", icon: <HomeOutlined />, label: "Home" },
+  { key: "/account", icon: <UserOutlined />, label: "Account" },
   {
     key: "sub2",
     label: "patients",
     icon: <UsergroupDeleteOutlined />,
     children: [
       { key: "/patients", label: "All" },
-      { key: "/patients/archived", label: "Archived" },
+      // { key: "/patients/archived", label: "Archived" },
       { key: "/patients/new", label: "New Patient" },
     ],
   },
@@ -38,6 +39,7 @@ const items: MenuItem[] = [
       { key: "/reports/completed", label: "Completed" },
       { key: "/reports/archived", label: "Archived" },
       { key: "/reports/new", label: "New X-Ray" },
+      { key: "/reports/unassign", label: "Un Assigned"}
     ],
   },
   {
@@ -46,9 +48,8 @@ const items: MenuItem[] = [
     icon: <ExperimentOutlined />,
     children: [
       { key: "/doctors", label: "All" },
-      { key: "/doctors/archived", label: "Archived" },
+      // { key: "/doctors/archived", label: "Archived" },
       { key: "/doctors/new", label: "New" },
-      { key: "/doctors/unassign", label: "Un Assigned"}
     ],
   },
   {
@@ -61,7 +62,6 @@ const items: MenuItem[] = [
     ],
   },
   
-  { key: "/account", icon: <UserOutlined />, label: "Account" },
   { key: "/LogOut", icon: <LogoutOutlined />, label: "Logout" },
 ];
 

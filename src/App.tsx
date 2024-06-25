@@ -29,7 +29,7 @@ import NewXRay from "./components/features/xrays/NewXRay/NewXRay";
 import ViewXRayPage from "./pages/ViewXRayPage";
 
 import AllPatient from "./pages/AllPatient";
-import PatientArchived from "./pages/PatientArchived";
+// import PatientArchived from "./pages/PatientArchived";
 import NewPatientPage from "./pages/NewPatientPage";
 import ViewPatientPage from "./pages/ViewPatientPage";
 
@@ -39,7 +39,7 @@ import NewRadiologist from "./components/features/radiologists/NewRadiologist/Ne
 import Examples from "./pages/Examples";
 import DrawarPage from "./pages/DrawarPage";
 import XRayArchived from "./pages/XRayArchived";
-import ArchivedDoctor from "./pages/ArchivedDoctor";
+// import ArchivedDoctor from "./pages/ArchivedDoctor";
 import AllTemplates from "./pages/AllTemplates";
 import UnAssigend from "./pages/Unassigned";
 import SigninPage from "./pages/Signin";
@@ -108,7 +108,6 @@ function App() {
 
                       <Route path="patients">
                         <Route index element={<AllPatient />} />
-                        <Route path="archived" element={<PatientArchived />} />
                         <Route path="new" element={<NewPatientPage />} />
                         <Route path=":Id" element={<ViewPatientPage />} />
                       </Route>
@@ -118,13 +117,12 @@ function App() {
                         <Route path="completed" element={<XRayCompleted />} />
                         <Route path="archived" element={<XRayArchived />} />
                         <Route path="new" element={<NewXRay />} />
+                        <Route path="unassign" element={<UnAssigend />} />
                         <Route path=":Id" element={<ViewXRayPage />} />
                       </Route>
 
                       <Route path="doctors">
                         <Route index element={<AllDoctors />} />
-                        <Route path="archived" element={<ArchivedDoctor />} />
-                        <Route path="unassign" element={<UnAssigend />} />
                         <Route path="new" element={<NewRadiologist />} />
                         <Route path=":Id" element={<ViewRadiologist />} />
                       </Route>
