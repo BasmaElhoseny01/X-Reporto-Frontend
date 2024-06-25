@@ -35,16 +35,15 @@ Customize Header to be for Admin Employee Doctor
 [] X-Ray View Tab  
     https://konvajs.org/docs/react/Filters.html 
     https://github.com/swimmingkiim/react-image-editor
-
 ---
-Zeinab Tasks
+
+Zeinab Tasks:
 By Employee Only
 [✓] New Patient
-[✓] New X-Ray
-[] New Doctor **
 [] View Patient + Actions
-[] View Patient (Empty)
-
+[✓] New X-Ray
+[] New Doctor
+[] View Doctor
 [] Report Tab (Text Editor)
 [] Template New 
 [] Template View
