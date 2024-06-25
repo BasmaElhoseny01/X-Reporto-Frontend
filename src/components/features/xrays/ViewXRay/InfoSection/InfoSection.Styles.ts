@@ -126,3 +126,12 @@ export const CardDate = styled(Flex)`
   font-size: 12px;
   padding: 4px 15px;
 `;
+
+export const NotFoundContainer = styled(Flex)`
+  width: 100%;
+  padding: 5px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 20px;
+`;
