@@ -34,6 +34,7 @@ import NewPatientPage from "./pages/NewPatientPage";
 import ViewPatientPage from "./pages/ViewPatientPage";
 
 import AllDoctors from "./pages/AllDoctors";
+import NewRadiologist from "./components/features/radiologists/NewRadiologist/NewRadiologist";
 
 import Examples from "./pages/Examples";
 import DrawarPage from "./pages/DrawarPage";
@@ -42,6 +43,9 @@ import ArchivedDoctor from "./pages/ArchivedDoctor";
 import AllTemplates from "./pages/AllTemplates";
 import UnAssigend from "./pages/Unassigned";
 import SigninPage from "./pages/Signin";
+import ViewRadiologist from "./components/features/radiologists/ViewRadiologist/ViewRadiologist";
+import NewTemplates from "./components/features/templates/NewTemplates/NewTemplates";
+import ViewTemplate from "./components/features/templates/ViewTemplate/ViewTemplate";
 
 // interface AppProps {
 //   // Define props here
@@ -121,11 +125,14 @@ function App() {
                         <Route index element={<AllDoctors />} />
                         <Route path="archived" element={<ArchivedDoctor />} />
                         <Route path="unassign" element={<UnAssigend />} />
+                        <Route path="new" element={<NewRadiologist />} />
+                        <Route path=":Id" element={<ViewRadiologist />} />
                       </Route>
+
                       <Route path="templates">
                         <Route index element={<AllTemplates />} />
-                        {/* <Route path="new" element={<NewXRay />} />
-                      <Route path=":Id" element={<ViewXRayPage />} /> */}
+                        <Route path="new" element={<NewTemplates />} />
+                        <Route path=":Id" element={<ViewTemplate />} />
                       </Route>
 
                       {/* <Route path="annotation" element={<Annotation />} /> */}

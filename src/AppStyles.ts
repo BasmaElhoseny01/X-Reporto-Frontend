@@ -11,5 +11,6 @@ export const MainContainer = styled(Layout)`
 
 export const ContentContainer = styled(Content)`
   height: 100%;
+  /* flex: 1; */
   /* overflow-y: scroll; */
 `;

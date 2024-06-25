@@ -38,10 +38,11 @@ export const InputFieldsContainer = styled(Flex)`
 `;
 
 export const SubmitContainer = styled(Flex)`
- width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 28%;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  flex: 1;
 `;
 
 const LineHeader = styled.hr`

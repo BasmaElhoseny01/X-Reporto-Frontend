@@ -18,7 +18,7 @@ Hosny Tasks:
 
 [✓] Archived Doctors + Add to Side Bar
 [✓] Fix Routes Merged Table Routes
-[] Info Tab
+[✓] Info Tab
 [✓] All Templates (Hosny) + Add col for Template ID
 ---
 
@@ -44,7 +44,7 @@ By Employee Only
 [✓] New X-Ray
 [] New Doctor
 [] View Doctor
-[] Report Tab (Text Editor)
+[✓] Report Tab (Text Editor)
 [] Template New 
 [] Template View
 ---
