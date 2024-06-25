@@ -6,7 +6,10 @@ import PatientHistory from "./PatientHistory";
 import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../../../common/SecondaryButton/SecondaryButton";
 
-function InfoSection() {
+type InfoSectionProps = {
+  viewReport: () => void;
+};
+function InfoSection(props: InfoSectionProps) {
   return (
     <InfoSectionContainer>
       <Title justify="flex-start">
@@ -22,7 +25,7 @@ function InfoSection() {
       <PatientHistory />
       <ActionsContainer>
         <SecondaryButton style={{margin:"10px 10px 0",padding:5}}> Save as draft </SecondaryButton>
-        <PrimaryButton style={{margin:"10px 10px 0",padding:5}}> View Report </PrimaryButton>
+        <PrimaryButton style={{margin:"10px 10px 0",padding:5}} onClick={props.viewReport}> View Report </PrimaryButton>
       </ActionsContainer>
     </InfoSectionContainer>
   );

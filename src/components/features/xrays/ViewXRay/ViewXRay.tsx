@@ -92,7 +92,7 @@ function ViewXRay() {
             <XRaySection />
             {
               // Show the Info Section only if the type is info
-              type === "info" ? <InfoSection />:
+              type === "info" ? <InfoSection viewReport={()=>setType("report")}/>:
               // Show the Report Section only if the type is report
               type === "report" ? <ReportSection />:
               // Show the XRay Section by default
