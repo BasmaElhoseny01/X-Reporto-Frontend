@@ -3,72 +3,64 @@ import { useSelector } from "react-redux";
 import { MainState } from "../state";
 import GeneralTable from "../components/common/Table/Table";
 
-function AllPatient() {
+
+function AllTemplates() {
   const tableSearch = useSelector((state: MainState) => state.tableSearch);
   const GeneralTableData = {
     columns: [
       {
-        title: "Patient Name",
-        dataIndex: "patient_name",
-        key: "patient_name",
+        title: "Template title",
+        dataIndex: "template_name",
+        key: "template_name",
         filteredValue: [tableSearch],
         // eslint-disable-next-line
         onFilter: (value: any, record: any) =>{
           return  record.userId.toString().toLowerCase().includes(value.toLowerCase());
-        }, 
+        },
+        
       },
       {
-        title: "User ID",
+        title: "ID",
         dataIndex: "id",
         key: "id",
         // eslint-disable-next-line
         sorter : (a: any, b: any) => a.id - b.id,
       },
       {
-        title: "E-Mail",
-        dataIndex: "email",
-        key: "email",
+        key: "doctor_id",
+        title: "Doctor Id",
+        dataIndex: "doctor_id",
         filteredValue: [tableSearch],
         // eslint-disable-next-line
         onFilter: (value: any, record: any) =>{
           return  record.userId.toString().toLowerCase().includes(value.toLowerCase());
-        }, 
+        },
       },
       {
-        key: "phone_number",
-        title: "Phone Number",
-        dataIndex: "phone_number",
-      },
-      {
-        key: "gender",
-        title: "Gender",
-        dataIndex: "gender",
-      },
-      {
-        title: "Date of Birth",
-        dataIndex: "birth_date",
-        key: "birth_date",
+        title: "Created At",
+        dataIndex: "created_at",
+        key: "created_at",
         // eslint-disable-next-line
         sorter : (a: any, b: any) => a.id - b.id,
       },
       {
-        title: "Age",
-        dataIndex: "age",
-        key: "age",
+        title: "Last Edit",
+        dataIndex: "last_edited_at",
+        key: "last_edited_at",
         // eslint-disable-next-line
         sorter : (a: any, b: any) => a.id - b.id,
       },
     ],
 
-    api: "api/v1/patients",
-    title: "All Patients",
-    filterColumns : { "Patient Name": "Patient Name", "E-Mail": "E-Mail", "User ID": "User ID"},
+    api: "api/v1/templates",
+    title: "All Templates",
+    filterColumns : { "Template title": "Template title","ID":"ID"},
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
-      window.location.pathname = `patients/${record.id}`;
+      window.location.pathname = `templates/${record.id}`;
     },
     addNew: () => {
-      window.location.pathname = "patients/new";
+      window.location.pathname = "templates/new";
     },
 
   };
@@ -85,4 +77,4 @@ function AllPatient() {
   );
 }
 
-export default AllPatient;
+export default AllTemplates;

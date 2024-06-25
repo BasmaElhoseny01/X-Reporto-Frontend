@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { MainState } from "../../../../state";
 
 // Ant Design
-import { Layout } from "antd";
+import { Flex, Layout } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { Content } from "antd/es/layout/layout";
 import type { MenuProps } from "antd";
@@ -14,48 +14,47 @@ import type { MenuProps } from "antd";
 import { useView } from "./ViewProvider";
 
 // Styled Components
-import { MenuContainer, ViewXRayContainer } from "./ViewXRay.Styles";
+import { ViewXRayContainer } from "./ViewXRay.Styles";
 
 // Components
 import XRaySection from "./XRaySection/XRaySection";
 import InfoSection from "./InfoSection/InfoSection";
 import ReportSection from "./ReportSection/ReportSection";
+import { Menu, Tooltip } from 'antd';
 
 // Assets
-import XRay from "../../../../assets/images/x-ray.svg";
-import HeartBeat from "../../../../assets/images/heart-beat.svg";
-import MedicalReport from "../../../../assets/images/medical-report.svg";
-
+// import XRay from "../../../../assets/images/x-ray.svg";
+// import HeartBeat from "../../../../assets/images/heart-beat.svg";
+// import MedicalReport from "../../../../assets/images/medical-report.svg";
+import {
+  FileTextOutlined,
+  PictureOutlined,
+  BarsOutlined
+} from "@ant-design/icons";
 type MenuItem = Required<MenuProps>["items"][number];
 
 const items: MenuItem[] = [
   {
     key: "x-ray",
-    icon: <img src={XRay} alt="x-ray" />,
-    label: "X-Ray",
+    icon: <PictureOutlined alt="x-ray" />,
+    // label: "X-Ray",
   },
   {
     key: "info",
-    icon: <img src={HeartBeat} alt="info" />,
-    label: "Info",
+    icon: <BarsOutlined />,
+    // label: "Info",
   },
   {
     key: "report",
-    icon: <img src={MedicalReport} alt="report" />,
-    label: "Report",
+    icon: <FileTextOutlined alt="report" />,
+    // label: "Report",
   },
 ];
 
 function ViewXRay() {
-  const {
-    infoCollapsed,
-    handleSetInfoCollapsed,
-    reportCollapsed,
-    handleSetReportCollapsed,
-  } = useView();
-
+  // States for the Sider
   const [isSmallScreen, setIsSmallScreen] = useState(false);
-
+  const [type, setType] = useState("info");
   // Get Theme for the Sider from teh current theme
   const websiteTheme = useSelector((state: MainState) => state.theme);
 
@@ -74,64 +73,64 @@ function ViewXRay() {
   const onSideBarClick: MenuProps["onClick"] = (e) => {
     if (e.key == "info") {
       // Collapse Report
-      handleSetReportCollapsed(true);
-      // UnCollapse Info
-      handleSetInfoCollapsed(false);
+      setType("info");
     } else if (e.key == "report") {
-      // Collapse Info
-      handleSetInfoCollapsed(true);
-      // UnCollapse Report
-      handleSetReportCollapsed(false);
-      // setReportCollapsed(false);
+      setType("report");
     } else if (e.key == "x-ray") {
-      // Collapse Info
-      handleSetInfoCollapsed(true);
-      // setInfoCollapsed(true);
-      // Collapse Report
-      handleSetReportCollapsed(true);
-      // setReportCollapsed(true);
+      setType("x-ray");
     }
   };
 
   return (
     <ViewXRayContainer>
       <Layout style={{ width: "100%", height: "100%" }}>
-        <Content style={{ flex: 1 }} id="xray-content">
-          <XRaySection />
+        <Content style={{display:'flex'}}>
+            <XRaySection />
+            {
+              // Show the Info Section only if the type is info
+              type === "info" ? <InfoSection viewReport={()=>setType("report")}/>:
+              // Show the Report Section only if the type is report
+              type === "report" ? <ReportSection />:
+              // Show the XRay Section by default
+              <XRaySection />
+            }
         </Content>
-
-        {
           <Sider
-            width={isSmallScreen ? "100%" : "50%"}
+            width={isSmallScreen ? "10%" : "5%"}
             collapsible
-            collapsed={infoCollapsed}
+            collapsed={false}
             theme={websiteTheme}
             collapsedWidth={0}
             trigger={null}
+            // style={{ height: "max-Content" }}
           >
-            <InfoSection />
+            <Menu onClick={onSideBarClick} selectedKeys={[type]} mode="inline" theme={websiteTheme}>
+              <Menu.Item key="x-ray" icon={
+                <Tooltip title="X-Ray" placement="left">
+                  <PictureOutlined />
+                </Tooltip>
+              }>
+                {/* Optionally, you can also wrap this label with Tooltip if needed */}
+                X-Ray
+              </Menu.Item>
+              <Menu.Item key="info" icon={
+                <Tooltip title="Info" placement="left">
+                  <BarsOutlined />
+                </Tooltip>
+              }>
+                Info
+              </Menu.Item>
+              <Menu.Item key="report" icon={
+                <Tooltip title="Report" placement="left">
+                  <FileTextOutlined />
+                </Tooltip>
+              }>
+                Report
+              </Menu.Item>
+            </Menu>
           </Sider>
-        }
-        {
-          <Sider
-            width={isSmallScreen ? "100%" : "50%"}
-            collapsible
-            collapsed={reportCollapsed}
-            theme={websiteTheme}
-            collapsedWidth={0}
-            trigger={null}
-          >
-            <ReportSection />
-          </Sider>
-        }
+          
       </Layout>
-      <MenuContainer
-        onClick={onSideBarClick}
-        defaultSelectedKeys={["info"]}
-        items={items}
-        mode="inline"
-        inlineCollapsed={true}
-      />
     </ViewXRayContainer>
   );
 }

@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // Redux
 import { useSelector } from "react-redux";
-import { RootState } from "./state/Reducers";
+import { MainState, RootState } from "./state/Reducers";
 
 // Theme
 import { ThemeProvider } from "styled-components";
@@ -38,6 +38,10 @@ import AllDoctors from "./pages/AllDoctors";
 import Examples from "./pages/Examples";
 import DrawarPage from "./pages/DrawarPage";
 import XRayArchived from "./pages/XRayArchived";
+import ArchivedDoctor from "./pages/ArchivedDoctor";
+import AllTemplates from "./pages/AllTemplates";
+import UnAssigend from "./pages/Unassigned";
+import SigninPage from "./pages/Signin";
 
 // interface AppProps {
 //   // Define props here
@@ -71,6 +75,8 @@ function App() {
   //   }
   // };
 
+  const token =useSelector((state:MainState)=>state.token);
+
   return (
     // <ConfigProvider theme={currentTheme == "light" ? lightTheme : darkTheme}>
     <ConfigProvider
@@ -84,55 +90,68 @@ function App() {
     >
       <ThemeProvider theme={currentTheme == "light" ? lightTheme : darkTheme}>
         <Layout>
-          <SideBar />
-          <MainContainer>
-            <Header />
-            <ContentContainer>
-              <BrowserRouter>
-                <Routes>
-                  <Route path="/" element={<Home />} />
+        {
+          token === "" ?<SigninPage/>: 
+          <>
+            <SideBar />
+            <MainContainer>
+              <Header />
+              <ContentContainer>
+                <BrowserRouter>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
 
-                  <Route path="patients">
-                    <Route index element={<AllPatient />} />
-                    <Route path="archived" element={<PatientArchived />} />
-                    <Route path="new" element={<NewPatientPage />} />
-                    <Route path=":Id" element={<ViewPatientPage />} />
-                  </Route>
+                    <Route path="patients">
+                      <Route index element={<AllPatient />} />
+                      <Route path="archived" element={<PatientArchived />} />
+                      <Route path="new" element={<NewPatientPage />} />
+                      <Route path=":Id" element={<ViewPatientPage />} />
+                    </Route>
 
-                  <Route path="reports">
-                    <Route path="WorkList" element={<XRayWorkList />} />
-                    <Route path="Completed" element={<XRayCompleted />} />
-                    <Route path="archived" element={<XRayArchived />} />
-                    <Route path="new" element={<NewXRay />} />
-                    <Route path=":Id" element={<ViewXRayPage />} />
-                  </Route>
+                    <Route path="reports">
+                      <Route path="workList" element={<XRayWorkList />} />
+                      <Route path="completed" element={<XRayCompleted />} />
+                      <Route path="archived" element={<XRayArchived />} />
+                      <Route path="new" element={<NewXRay />} />
+                      <Route path=":Id" element={<ViewXRayPage />} />
+                    </Route>
 
-                  <Route path="doctors">
-                    <Route index element={<AllDoctors />} />
-                  </Route>
+                    <Route path="doctors">
+                      <Route index element={<AllDoctors />} />
+                      <Route path="archived" element={<ArchivedDoctor />} />
+                      <Route path="unassign" element={<UnAssigend />} />
+                    </Route>
+                    <Route path="templates" >
+                      <Route index element={<AllTemplates />} />
+                      {/* <Route path="new" element={<NewXRay />} />
+                      <Route path=":Id" element={<ViewXRayPage />} /> */}
+                    </Route>
 
-                  <Route path="drawer" element={<DrawarPage />} />
-                  <Route path="examples" element={<Examples />} />
-                  <Route
-                    path="about"
-                    element={
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          height: "100%",
-                          justifyContent: "flex-end",
-                        }}
-                      >
-                        <div>basma</div>
-                        <div>basma</div>
-                      </div>
-                    }
-                  />
-                </Routes>
-              </BrowserRouter>
-            </ContentContainer>
-          </MainContainer>
+                    <Route path="annotation" element={<Annotation />} />
+                    <Route path="drawer" element={<DrawarPage />} />
+                    <Route path="examples" element={<Examples />} />
+                    <Route
+                      path="about"
+                      element={
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            height: "100%",
+                            justifyContent: "flex-end",
+                          }}
+                        >
+                          <div>basma</div>
+                          <div>basma</div>
+                        </div>
+                      }
+                    />
+                  </Routes>
+                </BrowserRouter>
+              </ContentContainer>
+            </MainContainer>
+          </>
+        }
         </Layout>
       </ThemeProvider>
     </ConfigProvider>
