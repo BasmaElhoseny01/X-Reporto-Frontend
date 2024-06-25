@@ -3,14 +3,15 @@ import { useSelector } from "react-redux";
 import { MainState } from "../state";
 import GeneralTable from "../components/common/Table/Table";
 
+
 function AllTemplates() {
   const tableSearch = useSelector((state: MainState) => state.tableSearch);
   const GeneralTableData = {
     columns: [
       {
         title: "Template title",
-        dataIndex: "name",
-        key: "name",
+        dataIndex: "template_name",
+        key: "template_name",
         filteredValue: [tableSearch],
         // eslint-disable-next-line
         onFilter: (value: any, record: any) =>{
@@ -20,15 +21,15 @@ function AllTemplates() {
       },
       {
         title: "ID",
-        dataIndex: "ID",
+        dataIndex: "id",
         key: "id",
         // eslint-disable-next-line
         sorter : (a: any, b: any) => a.id - b.id,
       },
       {
-        key: "Created By",
-        title: "created_by",
-        dataIndex: "created_by",
+        key: "doctor_id",
+        title: "Doctor Id",
+        dataIndex: "doctor_id",
         filteredValue: [tableSearch],
         // eslint-disable-next-line
         onFilter: (value: any, record: any) =>{
@@ -42,9 +43,16 @@ function AllTemplates() {
         // eslint-disable-next-line
         sorter : (a: any, b: any) => a.id - b.id,
       },
+      {
+        title: "Last Edit",
+        dataIndex: "last_edited_at",
+        key: "last_edited_at",
+        // eslint-disable-next-line
+        sorter : (a: any, b: any) => a.id - b.id,
+      },
     ],
 
-    api: "",
+    api: "api/v1/templates",
     title: "All Templates",
     filterColumns : { "Template title": "Template title","ID":"ID"},
     // eslint-disable-next-line

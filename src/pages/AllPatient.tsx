@@ -9,21 +9,35 @@ function AllPatient() {
     columns: [
       {
         title: "Patient Name",
-        dataIndex: "name",
-        key: "name",
+        dataIndex: "patient_name",
+        key: "patient_name",
         filteredValue: [tableSearch],
         // eslint-disable-next-line
         onFilter: (value: any, record: any) =>{
           return  record.userId.toString().toLowerCase().includes(value.toLowerCase());
-        },
-        
+        }, 
       },
       {
         title: "User ID",
-        dataIndex: "UID",
+        dataIndex: "id",
         key: "id",
         // eslint-disable-next-line
         sorter : (a: any, b: any) => a.id - b.id,
+      },
+      {
+        title: "E-Mail",
+        dataIndex: "email",
+        key: "email",
+        filteredValue: [tableSearch],
+        // eslint-disable-next-line
+        onFilter: (value: any, record: any) =>{
+          return  record.userId.toString().toLowerCase().includes(value.toLowerCase());
+        }, 
+      },
+      {
+        key: "phone_number",
+        title: "Phone Number",
+        dataIndex: "phone_number",
       },
       {
         key: "gender",
@@ -32,8 +46,8 @@ function AllPatient() {
       },
       {
         title: "Date of Birth",
-        dataIndex: "dob",
-        key: "dob",
+        dataIndex: "birth_date",
+        key: "birth_date",
         // eslint-disable-next-line
         sorter : (a: any, b: any) => a.id - b.id,
       },
@@ -46,9 +60,9 @@ function AllPatient() {
       },
     ],
 
-    api: "",
+    api: "api/v1/patients",
     title: "All Patients",
-    filterColumns : { "Patient Name": "Patient Name"},
+    filterColumns : { "Patient Name": "Patient Name", "E-Mail": "E-Mail", "User ID": "User ID"},
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
       window.location.pathname = `patients/${record.id}`;
