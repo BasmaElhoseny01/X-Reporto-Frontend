@@ -47,6 +47,7 @@ const items: MenuItem[] = [
       { key: "/doctors", label: "All" },
       { key: "/doctors/archived", label: "Archived" },
       { key: "/doctors/new", label: "New" },
+      { key: "/doctors/unassign", label: "Un Assigned"}
     ],
   },
   {

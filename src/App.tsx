@@ -41,6 +41,7 @@ import DrawarPage from "./pages/DrawarPage";
 import XRayArchived from "./pages/XRayArchived";
 import ArchivedDoctor from "./pages/ArchivedDoctor";
 import AllTemplates from "./pages/AllTemplates";
+import UnAssigend from "./pages/Unassigned";
 
 // interface AppProps {
 //   // Define props here
@@ -113,6 +114,7 @@ function App() {
                   <Route path="doctors">
                     <Route index element={<AllDoctors />} />
                     <Route path="archived" element={<ArchivedDoctor />} />
+                    <Route path="unassign" element={<UnAssigend />} />
                   </Route>
                   <Route path="templates" >
                     <Route index element={<AllTemplates />} />
