@@ -1,12 +1,16 @@
 import React, { createContext, useContext, useState } from "react";
+import { SideBarTypes } from "./ViewXRay.Types";
 
 // Define the context type, including the function to change the tool
 type ViewContextType = {
-  infoCollapsed: boolean;
-  reportCollapsed: boolean;
+  siderType: SideBarTypes;
+  handleSetSiderType: (selected: SideBarTypes) => void;
 
-  handleSetInfoCollapsed: (collapse: boolean) => void;
-  handleSetReportCollapsed: (collapse: boolean) => void;
+  // infoCollapsed: boolean;
+  // reportCollapsed: boolean;
+
+  // handleSetInfoCollapsed: (collapse: boolean) => void;
+  // handleSetReportCollapsed: (collapse: boolean) => void;
 };
 
 // Create context with initial state
@@ -29,25 +33,33 @@ type ViewProviderProps = {
 function ViewProvider(props: ViewProviderProps) {
   const { children } = props;
 
-  // States for the Sider
-  const [infoCollapsed, setInfoCollapsed] = useState(true);
-  const [reportCollapsed, setReportCollapsed] = useState(true);
+  const [siderType, setSiderType] = useState<SideBarTypes>("info");
 
-  const handleSetInfoCollapsed = (collapse: boolean) => {
-    setInfoCollapsed(collapse);
+  const handleSetSiderType = (selected: SideBarTypes) => {
+    setSiderType(selected);
   };
 
-  const handleSetReportCollapsed = (collapse: boolean) => {
-    setReportCollapsed(collapse);
-  };
+  // // States for the Sider
+  // const [infoCollapsed, setInfoCollapsed] = useState(true);
+  // const [reportCollapsed, setReportCollapsed] = useState(true);
+
+  // const handleSetInfoCollapsed = (collapse: boolean) => {
+  //   setInfoCollapsed(collapse);
+  // };
+
+  // const handleSetReportCollapsed = (collapse: boolean) => {
+  //   setReportCollapsed(collapse);
+  // };
 
   return (
     <ViewContext.Provider
       value={{
-        infoCollapsed,
-        reportCollapsed,
-        handleSetInfoCollapsed,
-        handleSetReportCollapsed,
+        // infoCollapsed,
+        // reportCollapsed,
+        // handleSetInfoCollapsed,
+        // handleSetReportCollapsed,
+        siderType,
+        handleSetSiderType,
       }}
     >
       {children}

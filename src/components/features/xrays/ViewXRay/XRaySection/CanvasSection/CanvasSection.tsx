@@ -44,7 +44,9 @@ function CanvasSection() {
     handleAddAnnotation,
     handleSetAnnotations,
   } = useAnnotations();
-  const { handleSetInfoCollapsed, handleSetReportCollapsed } = useView();
+
+  // const { handleSetInfoCollapsed, handleSetReportCollapsed } = useView();
+  const { handleSetSiderType } = useView();
 
   useEffect(() => {}, []);
 
@@ -248,10 +250,12 @@ function CanvasSection() {
                   if (navTool !== "draw" && navTool !== "zoom") {
                     handleSelectAnnotation(annotation.id);
 
+                    handleSetSiderType("info");
+
                     // Collapse Info
-                    handleSetInfoCollapsed(true);
+                    // handleSetInfoCollapsed(true);
                     // UnCollapse Report
-                    handleSetReportCollapsed(true);
+                    // handleSetReportCollapsed(true);
                   }
                 }}
                 onMouseLeave={handleMouseEnter}

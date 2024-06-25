@@ -21,7 +21,8 @@ import {
 } from "./XRaySection.Styles";
 
 function XRaySection() {
-  const { infoCollapsed, reportCollapsed } = useView();
+  // const { infoCollapsed, reportCollapsed } = useView();
+  const { siderType } = useView();
 
   return (
     <ToolProvider>
@@ -32,7 +33,7 @@ function XRaySection() {
               <ToolBar />
               <CanvasSection />
             </XRayContainer>
-            {infoCollapsed && reportCollapsed && (
+            {siderType != "info" && siderType != "report" && (
               <>
                 <BBFindingsContainer>
                   <BBFindings />
