@@ -59,6 +59,7 @@ function ViewHistory({ onSearch }: SearchInputProps) {
     action: (record: any, rowIndex: any) => {
       console.log(record, rowIndex);
     },
+    filterColumns:[]
   };
 
   return (
@@ -85,7 +86,7 @@ function ViewHistory({ onSearch }: SearchInputProps) {
         action={GeneralTableData.action}
         addNew={GeneralTableData.addNew}
         title={GeneralTableData.title}
-        filterColumns={{ ID: "ID" }}
+        filterColumns={GeneralTableData.filterColumns}
       />
     </div>
   );

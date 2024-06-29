@@ -14,7 +14,7 @@ function AllPatient() {
         filteredValue: [tableSearch],
         // eslint-disable-next-line
         onFilter: (value: any, record: any) =>{
-          return  record.userId.toString().toLowerCase().includes(value.toLowerCase());
+          return  record.patient_name.toString().toLowerCase().includes(value.toLowerCase());
         }, 
       },
       {
@@ -23,21 +23,6 @@ function AllPatient() {
         key: "id",
         // eslint-disable-next-line
         sorter : (a: any, b: any) => a.id - b.id,
-      },
-      {
-        title: "E-Mail",
-        dataIndex: "email",
-        key: "email",
-        filteredValue: [tableSearch],
-        // eslint-disable-next-line
-        onFilter: (value: any, record: any) =>{
-          return  record.userId.toString().toLowerCase().includes(value.toLowerCase());
-        }, 
-      },
-      {
-        key: "phone_number",
-        title: "Phone Number",
-        dataIndex: "phone_number",
       },
       {
         key: "gender",
@@ -60,9 +45,9 @@ function AllPatient() {
       },
     ],
 
-    api: "api/v1/patients",
+    api: "/api/v1/patients/?",
     title: "All Patients",
-    filterColumns : { "Patient Name": "Patient Name", "E-Mail": "E-Mail", "User ID": "User ID"},
+    filterColumns : ["email","phone_number","studies"],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
       window.location.pathname = `patients/${record.id}`;

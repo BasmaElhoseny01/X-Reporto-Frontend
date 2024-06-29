@@ -35,11 +35,11 @@ const items: MenuItem[] = [
     label: "Reports",
     icon: <FileTextOutlined />,
     children: [
+      { key: "/reports/unassign", label: "Un Assigned"},
       { key: "/reports/worklist", label: "Work list" },
       { key: "/reports/completed", label: "Completed" },
       { key: "/reports/archived", label: "Archived" },
       { key: "/reports/new", label: "New X-Ray" },
-      { key: "/reports/unassign", label: "Un Assigned"}
     ],
   },
   {

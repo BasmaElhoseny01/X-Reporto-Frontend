@@ -8,13 +8,26 @@ function XRayWorkList() {
   const GeneralTableData = {
     columns: [
       {
-        title: "X-Ray ID",
-        dataIndex: "xid",
-        key: "xid",
+        title: "Name",
+        dataIndex: "study_name",
+        key: "study_name",
         filteredValue: [tableSearch],
         // eslint-disable-next-line
         onFilter: (value: any, record: any) => {
-          return record.userId
+          return record.study_name
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase());
+        },
+      },
+      {
+        title: "X-Ray ID",
+        dataIndex: "id",
+        key: "id",
+        filteredValue: [tableSearch],
+        // eslint-disable-next-line
+        onFilter: (value: any, record: any) => {
+          return record.id
             .toString()
             .toLowerCase()
             .includes(value.toLowerCase());
@@ -22,25 +35,25 @@ function XRayWorkList() {
       },
       {
         title: "Patient ID",
-        dataIndex: "pid",
-        key: "pid",
+        dataIndex: "patient_id",
+        key: "patient_id",
         filteredValue: [tableSearch],
         // eslint-disable-next-line
         onFilter: (value: any, record: any) => {
-          return record.userId
+          return record.patient_id
             .toString()
             .toLowerCase()
             .includes(value.toLowerCase());
         },
       },
       {
-        title: "Patient Name",
-        dataIndex: "name",
-        key: "name",
+        title: "Doctor ID",
+        dataIndex: "doctor_id",
+        key: "doctor_id",
         filteredValue: [tableSearch],
         // eslint-disable-next-line
         onFilter: (value: any, record: any) => {
-          return record.userId
+          return record.doctor_id
             .toString()
             .toLowerCase()
             .includes(value.toLowerCase());
@@ -54,33 +67,22 @@ function XRayWorkList() {
         sorter: (a: any, b: any) => a.id - b.id,
       },
       {
-        title: "Assigned To",
-        dataIndex: "assigned_to",
-        key: "assigned_to",
-        filteredValue: [tableSearch],
+        title: "Severity",
+        dataIndex: "severity",
+        key: "severity",
         // eslint-disable-next-line
-        onFilter: (value: any, record: any) => {
-          return record.userId
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase());
-        },
+        sorter: (a: any, b: any) => a.id - b.id,
       },
       {
-        title: "Last Reviewed By",
-        dataIndex: "last_reviewed_by",
-        key: "last_reviewed_by",
+        title: "Last Edited At",
+        dataIndex: "last_edited_at",
+        key: "last_edited_at",
       },
     ],
 
-    api: "",
+    api: "/api/v1/studies/?status=in_progress&",
     title: "WorkList",
-    filterColumns: {
-      "Patient Name": "Patient Name",
-      "Assigned To": "Assigned To",
-      "Patient ID": "Patient ID",
-      "X-Ray ID": "X-Ray ID",
-    },
+    filterColumns: ["status","notes","last_view_at","updated_at","employee_id"],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
       window.location.pathname = `reports/${record.id}`;

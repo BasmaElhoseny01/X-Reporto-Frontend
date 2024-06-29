@@ -8,13 +8,26 @@ function XRayCompleted() {
   const GeneralTableData = {
     columns: [
       {
-        title: "X-Ray ID",
-        dataIndex: "xid",
-        key: "xid",
+        title: "Name",
+        dataIndex: "study_name",
+        key: "study_name",
         filteredValue: [tableSearch],
         // eslint-disable-next-line
         onFilter: (value: any, record: any) => {
-          return record.userId
+          return record.study_name
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase());
+        },
+      },
+      {
+        title: "X-Ray ID",
+        dataIndex: "id",
+        key: "id",
+        filteredValue: [tableSearch],
+        // eslint-disable-next-line
+        onFilter: (value: any, record: any) => {
+          return record.id
             .toString()
             .toLowerCase()
             .includes(value.toLowerCase());
@@ -22,64 +35,56 @@ function XRayCompleted() {
       },
       {
         title: "Patient ID",
-        dataIndex: "pid",
-        key: "pid",
+        dataIndex: "patient_id",
+        key: "patient_id",
         filteredValue: [tableSearch],
         // eslint-disable-next-line
         onFilter: (value: any, record: any) => {
-          return record.userId
+          return record.patient_id
             .toString()
             .toLowerCase()
             .includes(value.toLowerCase());
         },
       },
       {
-        title: "Patient Name",
-        dataIndex: "name",
-        key: "name",
+        title: "Doctor ID",
+        dataIndex: "doctor_id",
+        key: "doctor_id",
         filteredValue: [tableSearch],
         // eslint-disable-next-line
         onFilter: (value: any, record: any) => {
-          return record.userId
+          return record.doctor_id
             .toString()
             .toLowerCase()
             .includes(value.toLowerCase());
         },
       },
       {
-        key: "created_at",
-        title: "Created At",
+        key: "Created At",
+        title: "created_at",
         dataIndex: "created_at",
         // eslint-disable-next-line
         sorter: (a: any, b: any) => a.id - b.id,
       },
       {
-        key: "submitted_at",
-        title: "Submitted At",
-        dataIndex: "submitted_at",
+        title: "Severity",
+        dataIndex: "severity",
+        key: "severity",
         // eslint-disable-next-line
         sorter: (a: any, b: any) => a.id - b.id,
       },
       {
-        key: "submitted_by",
-        title: "Submitted By",
-        dataIndex: "submitted_by",
-        // eslint-disable-next-line
-        sorter: (a: any, b: any) => a.id - b.id,
+        title: "Last Edited At",
+        dataIndex: "last_edited_at",
+        key: "last_edited_at",
       },
     ],
 
-    api: "",
-    title: "Completed Reports",
-    filterColumns: {
-      "Patient Name": "Patient Name",
-      "Assigned To": "Assigned To",
-      "Patient ID": "Patient ID",
-      "X-Ray ID": "X-Ray ID",
-    },
+    api: "/api/v1/studies/?status=completed&",
+    title: "WorkList",
+    filterColumns: ["status","notes","last_view_at","updated_at","employee_id"],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
-      console.log(record, rowIndex);
       window.location.pathname = `reports/${record.id}`;
     },
     addNew: () => {

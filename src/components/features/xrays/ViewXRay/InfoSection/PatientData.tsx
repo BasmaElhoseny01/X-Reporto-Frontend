@@ -2,32 +2,39 @@ import React from "react";
 import { InputRowContainer, InputText, InputTitle, PatientDataContainer } from "./InfoSection.Styles";
 import { Flex } from "antd";
 
-function PatientData() {
+type PatientDataProps = {
+  name: string;
+  id: number;
+  gender: string;
+  dateOfBirth: string;
+  age: number;
+}
+function PatientData(props: PatientDataProps) {
 
   return (
   <Flex vertical>
     <PatientDataContainer>
       <InputRowContainer>
         <InputTitle>Name</InputTitle>
-        <InputText > Ahmed Hosny </InputText>
+        <InputText > {props.name} </InputText>
       </InputRowContainer>
       <InputRowContainer>
         <InputTitle>ID</InputTitle>
-        <InputText > 11952463 </InputText>
+        <InputText > {props.id} </InputText>
       </InputRowContainer>
       <InputRowContainer>
         <InputTitle>Gender</InputTitle>
-        <InputText > male </InputText>
+        <InputText > {props.gender} </InputText>
       </InputRowContainer>
     </PatientDataContainer>
     <PatientDataContainer>
       <InputRowContainer>
         <InputTitle>Date of birth</InputTitle>
-        <InputText > 4/8/2001 </InputText>
+        <InputText > {props.dateOfBirth} </InputText>
       </InputRowContainer>
       <InputRowContainer>
         <InputTitle>Age</InputTitle>
-        <InputText > 23 </InputText>
+        <InputText > {props.age} </InputText>
       </InputRowContainer>
     </PatientDataContainer>
   </Flex>
