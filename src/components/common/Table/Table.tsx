@@ -86,7 +86,6 @@ const GeneralTable = (props:GeneralTableProps) => {
       columns={props.columns}
       dataSource={dataSource}
       loading={loading}
-      style={{color: "black !important"}}
       pagination={{ 
         current: page,
         pageSize: 5,
@@ -99,8 +98,16 @@ const GeneralTable = (props:GeneralTableProps) => {
       }}
       onRow={(record, rowIndex) => {
         return {
-          onClick: () => {
-            props.action(record, rowIndex);
+          onClick: (event) => {
+            // check if the click is on the row or on the action button
+            const target = event.target as HTMLElement;
+            if (target.tagName === "TD") {
+              // console.log(record, rowIndex);
+              props.action(record, rowIndex);
+            }
+            else {
+              return;
+            }
           },
           style: { cursor: 'pointer' } 
         };

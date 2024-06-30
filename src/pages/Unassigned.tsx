@@ -2,8 +2,11 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { MainState } from "../state";
 import GeneralTable from "../components/common/Table/Table";
+import axios from '../services/apiService';
+import { Button } from "antd";
 
 function UnAssigend() {
+  const token = useSelector((state: MainState) => state.token);
   const tableSearch = useSelector((state: MainState) => state.tableSearch);
   const GeneralTableData = {
     columns: [
@@ -78,10 +81,40 @@ function UnAssigend() {
         dataIndex: "last_edited_at",
         key: "last_edited_at",
       },
+      {
+        title: "Action",
+        dataIndex: "unassigned",
+        key: "last_edited_at",
+        render: (text: any, record: any) => {
+          return (
+            <Button
+              type="link"
+              style={{ padding: "0px" }}
+              onClick={() => {
+                console.log(record);
+                // prevent action when user click on the row              
+                axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+                axios
+                  .post(`/api/v1/studies/${record.id}/assign`)
+                  .then((response) => {
+                    if(response.status === 200) {
+                      window.location.reload();
+                    }
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+              }}
+            >
+              Assign
+            </Button>
+          );
+        },
+      },
     ],
 
     api: "/api/v1/studies/?status=new&",
-    title: "WorkList",
+    title: "Unassigned X-Rays",
     filterColumns: ["status","notes","last_view_at","updated_at","employee_id"],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {

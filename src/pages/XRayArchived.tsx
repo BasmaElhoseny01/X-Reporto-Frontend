@@ -2,9 +2,12 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { MainState } from "../state";
 import GeneralTable from "../components/common/Table/Table";
+import { Button } from "antd";
+import axios from "../services/apiService";
 
 function XRayArchived() {
   const tableSearch = useSelector((state: MainState) => state.tableSearch);
+  const token = useSelector((state: MainState) => state.token);
   const GeneralTableData = {
     columns: [
       {
@@ -77,6 +80,35 @@ function XRayArchived() {
         title: "Last Edited At",
         dataIndex: "last_edited_at",
         key: "last_edited_at",
+      },
+      {
+        title: "Action",
+        dataIndex: "unassigned",
+        key: "last_edited_at",
+        render: (text: any, record: any) => {
+          return (
+            <Button
+              type="link"
+              style={{ padding: "0px" }}
+              onClick={() => {
+                // prevent action when user click on the row              
+                axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+                axios
+                  .post(`/api/v1/studies/${record.id}/unarchive`)
+                  .then((response) => {
+                    if(response.status === 200) {
+                      window.location.reload();
+                    }
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+              }}
+            >
+              Un Archive
+            </Button>
+          );
+        },
       },
     ],
 
