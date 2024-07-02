@@ -1,6 +1,5 @@
 import { palette } from "../../../styles/theme";
 import styled from "styled-components";
-import JoditEditor from 'jodit-react';
 
 // Ant Design
 import {Flex} from "antd";
@@ -30,11 +29,5 @@ export const ButtonContainer = styled(Flex)`
   & > * {
     margin: 0px 10px;
   }
-`;
-export const ReportEditor = styled(JoditEditor)`
-    // // width: 50%;
-    // // background-color: #f0f2f5;
-    // // height: 80%;
-    // overflow-y: scroll;
 `;
 // export { LineHeader, InputRow, ButtonCol, AddButton, FlexButton, ButtonRow };

@@ -10,7 +10,7 @@ export const ViewXRayContainer = styled(Flex)`
   background-color: #ff0000;
 
   display: flex;
-  flex-direction: row;
+  // flex-direction: row;
 
   flex: 1;
   height: 100%;

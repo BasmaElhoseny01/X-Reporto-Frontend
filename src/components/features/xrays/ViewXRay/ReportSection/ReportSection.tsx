@@ -9,14 +9,14 @@ import PrimaryButton from '../../../../common/PrimaryButton/PrimaryButton';
 import axios from 'axios';
 
 function ReportSection() {
-  const [selectedValue, setSelectedValue] = useState<string>(defaultTemplate);
+  const [selectedValue, setSelectedValue] = useState<string>("-1");
   const [content, setContent] = useState<string>(defaultTemplate);
   const editor = useRef(null);
-  const handleSelectionChange = (value: string | unknown): void => {
-    const newValue = value as string;
-    setSelectedValue(newValue); // Update selected value
-    setContent(newValue); // Update content with selected template value
+  const handleSelectionChange = (value: string, labelValue: string): void => {
+    setSelectedValue(labelValue); // Update selected value
+        setContent(value); // Update content with selected template value
   };
+
   const config = useMemo(
     () => ({
       readonly: false,
@@ -53,7 +53,7 @@ function ReportSection() {
   return (
     <ReportDiv>
       <ReportHeader>
-        <Title level={2}>Report</Title>
+        <Title level={2} style={{margin:"1%"}}>Report</Title>
         <SelectionTemplate
           selectedValue={selectedValue}
           handleSelectionChange={handleSelectionChange}

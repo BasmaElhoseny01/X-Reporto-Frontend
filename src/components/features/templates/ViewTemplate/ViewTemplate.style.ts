@@ -2,7 +2,7 @@
 import styled from "styled-components";
 
 // Ant Design
-import {Flex} from "antd";
+import { Flex } from "antd";
 export const ButtonContainer = styled(Flex)`
   display: flex;
   flex-direction: row;
@@ -18,4 +18,19 @@ export const ButtonContainer = styled(Flex)`
   & > * {
     margin: 0px 10px;
   }
+`;
+export const ViewTemplateContainer = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: flex-start;
+//   align-items: flex-start;
+
+//   // padding: 20px;
+//   width: 100%;
+//   height: 100vh;
+      height: 100%;
+
+overflow-y: scroll;
+
+
 `;

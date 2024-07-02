@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Row, Col, Flex, Form } from "antd";
 import Button from "antd-button-color";
 
-export const NewRadiologistContainer = styled(Flex)`
+export const NewEmployeeContainer = styled(Flex)`
   display: flex;
   flex-direction: column;
 
@@ -38,10 +38,11 @@ export const InputFieldsContainer = styled(Flex)`
 `;
 
 export const SubmitContainer = styled(Flex)`
- width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 28%;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  flex: 1;
 `;
 
 const LineHeader = styled.hr`

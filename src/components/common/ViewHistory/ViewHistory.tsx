@@ -1,32 +1,37 @@
-import React, { useState, ChangeEvent } from "react";
-import GeneralTable from "../../../common/Table/Table";
-import {
-  ButtonContainer,
-  SearchContainer,
-  SearchInputContainer,
-} from "../../../common/SearchInput/SearchInput.Style";
-import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
-import { PlusOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom"; // Import useNavigate hook for navigation
+import React, {  useEffect } from "react";
+// useState, ChangeEvent,
+import GeneralTable from "../../common/Table/Table";
+// import {
+//   ButtonContainer,
+//   SearchContainer,
+//   SearchInputContainer,
+// } from "../../common/SearchInput/SearchInput.Style";
+// import PrimaryButton from "../../common/PrimaryButton/PrimaryButton";
+// import { PlusOutlined } from "@ant-design/icons";
+// import { useNavigate } from "react-router-dom"; // Import useNavigate hook for navigation
 
-interface SearchInputProps {
-  onSearch: (value: string) => void;
+interface ViewHistorytProps {
+  studies:[]
 }
 
-function ViewHistory({ onSearch }: SearchInputProps) {
-  const [inputValue, setInputValue] = useState<string>("");
-  const navigate = useNavigate(); // Initialize useNavigate hook
+function ViewHistory(props: ViewHistorytProps) {
+  // const [inputValue, setInputValue] = useState<string>("");
+  // const navigate = useNavigate(); // Initialize useNavigate hook
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-    // console.log(inputValue);
-  };
-  const handleSearch = (value: string) => {
-    onSearch(value);
-  };
-  const handleAddXray = () => {
-    navigate("/report/new");
-  };
+  // const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   setInputValue(e.target.value);
+  //   // console.log(inputValue);
+  // };
+  // const handleSearch = (value: string) => {
+  //   // onSearch(value);
+  //   console.log("Search Value", value);
+  // };
+  // const handleAddXray = () => {
+  //   navigate("/report/new");
+  // };
+  useEffect(() => {
+    console.log("Studies", props.studies);
+  }, [props.studies]);
   // General Table Data
   const GeneralTableData = {
     columns: [
@@ -63,7 +68,7 @@ function ViewHistory({ onSearch }: SearchInputProps) {
 
   return (
     <div>
-      <SearchContainer>
+      {/* <SearchContainer>
         <SearchInputContainer
           placeholder="input search text"
           allowClear
@@ -78,7 +83,7 @@ function ViewHistory({ onSearch }: SearchInputProps) {
             Add X-ray
           </PrimaryButton>
         </ButtonContainer>
-      </SearchContainer>
+      </SearchContainer> */}
       <GeneralTable
         columns={GeneralTableData.columns}
         api={GeneralTableData.api}

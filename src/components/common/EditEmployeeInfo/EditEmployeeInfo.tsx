@@ -1,29 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { Descriptions, Form, Input, Radio ,message} from 'antd';
-import { EditButton, ButtonContainer } from './EditInfo.style';
-import SecondaryButton from '../../../components/common/SecondaryButton/SecondaryButton';
-import PrimaryButton from '../../../components/common/PrimaryButton/PrimaryButton';
-import Title from 'antd/es/typography/Title';
-import LineHeader from '../../../components/common/LineHeader/LineHeader';
-import { baseUrl, token } from "../../../types/api";
+import { Descriptions, Form, Input, Radio, message } from 'antd';
+import { EditButton, ButtonContainer } from './EditEmployeeInfo.style';
+import SecondaryButton from '../SecondaryButton/SecondaryButton';
+import PrimaryButton from '../PrimaryButton/PrimaryButton';
+// import Title from 'antd/es/typography/Title';
+// import LineHeader from '../LineHeader/LineHeader';
 import ViewHistory from '../../common/ViewHistory/ViewHistory';
 import { format, parseISO, isValid } from 'date-fns';
 import axios from 'axios';
+import { baseUrl, token } from "../../../types/api";
 
 interface UserData {
   id: number;
-  patient_name: string;
+  employee_name: string;
   email: string;
   age: number;
   birth_date: string;
   phone_number: string;
   gender: string;
   created_at: string;
-  studies: [ ]
+  studies: []; // Update this type as needed
+  role: string;
+  type: string;
+  employee_id: number;
+  username: string;
 }
 
-interface EditInfoProps {
+interface EditEmployeeInfoProps {
   idValue: string;
+  type: string;
 }
 
 function calculateAge(birthDate: string): number {
@@ -47,35 +52,39 @@ function formatDateTime(dateString: string): string {
   return 'Invalid Date';
 }
 
-function EditInfo(props: EditInfoProps) {
+function EditEmployeeInfo (props: EditEmployeeInfoProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [form] = Form.useForm();
   const [data, setData] = useState<UserData>({
     id: 0,
-    patient_name: '',
+    employee_name: '',
     email: '',
     age: 0,
     birth_date: '',
     phone_number: '',
     gender: '',
     created_at: '',
-    studies: [ ]
+    studies: [],
+    role: 'user',
+    type: 'employee',
+    employee_id: 0,
+    username: ''
   });
 
   useEffect(() => {
     if (props.idValue) {
-      axios.get(`${baseUrl}patients/${props.idValue}`, {
+      axios.get(`${baseUrl}employees/${props.idValue}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         }
       })
-      .then(response => {
-        setData(response.data);
-        form.setFieldsValue(response.data);
-      })
-      .catch(error => {
-        console.error("Error fetching user data:", error);
-      });
+        .then(response => {
+          setData(response.data);
+          form.setFieldsValue(response.data);
+        })
+        .catch(error => {
+          console.error("Error fetching user data:", error);
+        });
     }
   }, [props.idValue, form]);
 
@@ -92,8 +101,13 @@ function EditInfo(props: EditInfoProps) {
     values.id = data.id;
     values.age = calculateAge(values.birth_date);
     values.created_at = data.created_at;
+    values.role = data.role;
+    values.type = data.type;
+    values.employee_id = data.employee_id;
+    values.username = data.username;
+
     try {
-      await axios.put(`${baseUrl}patients/${data.id}`, values, {
+      await axios.put(`${baseUrl}employees/${data.id}`, values, {
         headers: {
           Authorization: `Bearer ${token}`,
         }
@@ -105,7 +119,6 @@ function EditInfo(props: EditInfoProps) {
       console.error('Error updating user data:', error);
       message.error('Failed to update data. Please try again.');
     }
-    
   };
 
   const handleCancel = () => {
@@ -116,23 +129,24 @@ function EditInfo(props: EditInfoProps) {
     <div>
       <Form form={form} layout="vertical" initialValues={data} onFinish={onFinish}>
         <Descriptions layout="vertical" colon={false}>
-          <Descriptions.Item label="Patient ID">{data.id}</Descriptions.Item>
-          <Descriptions.Item label="Patient Name">
+          <Descriptions.Item label="Employee ID">{data.id}</Descriptions.Item>
+          <Descriptions.Item label="Employee Name">
             {isEditing ? (
               <Form.Item
-                name="patient_name"
+                name="employee_name"
                 labelCol={{ span: 24 }}
                 wrapperCol={{ span: 24 }}
                 rules={[{ required: true, message: 'Name is required' }]}
               >
-                <Input placeholder="Patient Name" />
+                <Input placeholder="Employee Name" />
               </Form.Item>
             ) : (
               <>
-                {data.patient_name} <EditButton onClick={handleEdit} />
+                {data.employee_name} <EditButton onClick={handleEdit} />
               </>
             )}
           </Descriptions.Item>
+          <Descriptions.Item label="UesrName">{data.username}</Descriptions.Item>
           <Descriptions.Item label="Birth Date">
             {isEditing ? (
               <Form.Item
@@ -165,13 +179,13 @@ function EditInfo(props: EditInfoProps) {
               </>
             )}
           </Descriptions.Item>
-          <Descriptions.Item label="Phone">
+          <Descriptions.Item label="Phone Number">
             {isEditing ? (
               <Form.Item
                 name="phone_number"
                 labelCol={{ span: 24 }}
                 wrapperCol={{ span: 24 }}
-                rules={[{ required: true, message: 'Phone is required' }]}
+                rules={[{ required: true, message: 'Phone Number is required' }]}
               >
                 <Input />
               </Form.Item>
@@ -214,11 +228,10 @@ function EditInfo(props: EditInfoProps) {
           </ButtonContainer>
         )}
       </Form>
-      <Title level={4}>History</Title>
-          <LineHeader />
-          <ViewHistory studies={data.studies} />
+      {/* <Title level={4}>History</Title>
+      <LineHeader /> */}
+      <ViewHistory studies={data.studies} />
     </div>
   );
 }
-
-export default EditInfo;
+export default EditEmployeeInfo;
