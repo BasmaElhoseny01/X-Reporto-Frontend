@@ -15,7 +15,7 @@ function Card(props: CardProps) {
   return (
     <CardContainer>
         <CardSubContainer>
-          <Image width={40} src={process.env.REACT_APP_BASE_URL + "/" + props.xray_path} />
+          <Image width={40} src={process.env.REACT_APP_BASE_URL + "/download/" + props.xray_path} />
           <ImageDetails>
             <LinkButton onClick={()=>window.location.pathname=`/reports/${props.id}`}>{props.id}</LinkButton>
             <CardDate>Created at : {props.created_at}</CardDate>

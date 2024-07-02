@@ -126,6 +126,7 @@ function XRayArchived() {
 
   return (
     <GeneralTable
+      key={GeneralTableData.title}
       columns={GeneralTableData.columns}
       api={GeneralTableData.api}
       title={GeneralTableData.title}

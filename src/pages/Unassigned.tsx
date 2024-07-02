@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { MainState } from "../state";
 import GeneralTable from "../components/common/Table/Table";
@@ -8,6 +8,22 @@ import { Button } from "antd";
 function UnAssigend() {
   const token = useSelector((state: MainState) => state.token);
   const tableSearch = useSelector((state: MainState) => state.tableSearch);
+  const [me, setMe] = React.useState({} as any);
+
+  useEffect(() => {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    axios
+      .get("/api/v1/employees/me")
+      .then((response) => {
+        setMe(response.data);
+        console.log(me);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [token]);
+
   const GeneralTableData = {
     columns: [
       {
@@ -50,19 +66,6 @@ function UnAssigend() {
         },
       },
       {
-        title: "Doctor ID",
-        dataIndex: "doctor_id",
-        key: "doctor_id",
-        filteredValue: [tableSearch],
-        // eslint-disable-next-line
-        onFilter: (value: any, record: any) => {
-          return record.doctor_id
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase());
-        },
-      },
-      {
         key: "Created At",
         title: "created_at",
         dataIndex: "created_at",
@@ -89,7 +92,8 @@ function UnAssigend() {
           return (
             <Button
               type="link"
-              style={{ padding: "0px" }}
+              style={{ padding: "0px",textDecoration: "underline"}}
+              disabled={me.type !== "doctor"}
               onClick={() => {
                 console.log(record);
                 // prevent action when user click on the row              
@@ -127,6 +131,7 @@ function UnAssigend() {
 
   return (
     <GeneralTable
+      key={GeneralTableData.title}
       columns={GeneralTableData.columns}
       api={GeneralTableData.api}
       title={GeneralTableData.title}
