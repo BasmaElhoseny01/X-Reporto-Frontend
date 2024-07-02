@@ -46,6 +46,8 @@ import SigninPage from "./pages/Signin";
 import ViewEmployee from "./components/features/employee/ViewEmployee/ViewEmployee";
 import NewTemplates from "./components/features/templates/NewTemplates/NewTemplates";
 import ViewTemplate from "./components/features/templates/ViewTemplate/ViewTemplate";
+// import { bindActionCreators } from "redux";
+// import { actionsCreators } from "./state";
 
 // interface AppProps {
 //   // Define props here
@@ -80,7 +82,10 @@ function App() {
   // };
 
   const token = useSelector((state: MainState) => state.token);
-
+  // const {ChangeToken} = bindActionCreators(actionsCreators,useDispatch());  
+  // ChangeToken("");
+  // console.log(token);
+  
   return (
     // <ConfigProvider theme={currentTheme == "light" ? lightTheme : darkTheme}>
     <ConfigProvider

@@ -9,12 +9,23 @@ function AllDoctors() {
     columns: [
       {
         title: "Doctor Name",
-        dataIndex: "name",
-        key: "name",
+        dataIndex: "employee_name",
+        key: "employee_name",
         filteredValue: [tableSearch],
         // eslint-disable-next-line
         onFilter: (value: any, record: any) =>{
-          return  record.userId.toString().toLowerCase().includes(value.toLowerCase());
+          return  record.employee_name.toString().toLowerCase().includes(value.toLowerCase());
+        },
+        
+      },
+      {
+        title: "UserName",
+        dataIndex: "username",
+        key: "username",
+        filteredValue: [tableSearch],
+        // eslint-disable-next-line
+        onFilter: (value: any, record: any) =>{
+          return  record.username.toString().toLowerCase().includes(value.toLowerCase());
         },
         
       },
@@ -32,8 +43,8 @@ function AllDoctors() {
       },
       {
         title: "Date of Birth",
-        dataIndex: "dob",
-        key: "dob",
+        dataIndex: "birth_date",
+        key: "birth_date",
         // eslint-disable-next-line
         sorter : (a: any, b: any) => a.id - b.id,
       },
@@ -44,11 +55,18 @@ function AllDoctors() {
         // eslint-disable-next-line
         sorter : (a: any, b: any) => a.id - b.id,
       },
+      {
+        title: "Create At",
+        dataIndex: "created_at",
+        key: "created_at",
+        // eslint-disable-next-line
+        sorter : (a: any, b: any) => a.id - b.id,
+      },
     ],
 
-    api: "",
+    api: "/api/v1/employees/?type=doctor&",
     title: "All Doctors",
-    filterColumns : { "Doctor Name": "Doctor Name"},
+    filterColumns :["role","type","phone_number","email","employee_id"],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
       window.location.pathname = `doctors/${record.id}`;

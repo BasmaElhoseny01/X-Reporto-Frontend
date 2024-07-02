@@ -15,7 +15,7 @@ function AllTemplates() {
         filteredValue: [tableSearch],
         // eslint-disable-next-line
         onFilter: (value: any, record: any) =>{
-          return  record.userId.toString().toLowerCase().includes(value.toLowerCase());
+          return  record.template_name.toString().toLowerCase().includes(value.toLowerCase());
         },
         
       },
@@ -33,7 +33,7 @@ function AllTemplates() {
         filteredValue: [tableSearch],
         // eslint-disable-next-line
         onFilter: (value: any, record: any) =>{
-          return  record.userId.toString().toLowerCase().includes(value.toLowerCase());
+          return  record.doctor_id.toString().toLowerCase().includes(value.toLowerCase());
         },
       },
       {
@@ -52,9 +52,9 @@ function AllTemplates() {
       },
     ],
 
-    api: "api/v1/templates",
+    api: "api/v1/templates/?",
     title: "All Templates",
-    filterColumns : { "Template title": "Template title","ID":"ID"},
+    filterColumns : [],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
       window.location.pathname = `templates/${record.id}`;
@@ -67,6 +67,7 @@ function AllTemplates() {
 
   return (
     <GeneralTable
+      key={GeneralTableData.title}
       columns={GeneralTableData.columns}
       api={GeneralTableData.api}
       title={GeneralTableData.title}

@@ -121,6 +121,7 @@ function Examples() {
     addNew: () => {
       console.log("Add New");
     },
+    filterColumns:[]
   };
 
   return (
@@ -222,7 +223,7 @@ function Examples() {
         action={GeneralTableData.action}
         addNew={GeneralTableData.addNew}
         title={GeneralTableData.title}
-        filterColumns={{ ID: "ID" }}
+        filterColumns = {GeneralTableData.filterColumns}
       />
     </div>
   );

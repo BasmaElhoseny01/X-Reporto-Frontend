@@ -1,12 +1,13 @@
 import { Flex, Input, Table, Typography } from "antd";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../../../services/apiService";
 import PrimaryButton from "../PrimaryButton/PrimaryButton";
 import { PlusOutlined } from "@ant-design/icons";
 import LineHeader from "../LineHeader/LineHeader";
 import { bindActionCreators } from "redux";
 import { ChangeTableSearch } from "../../../state/ActionCreators";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { MainState } from "../../../state";
 
 type GeneralTableColumn = {
   title: string;
@@ -23,7 +24,8 @@ type GeneralTableProps = {
   columns: GeneralTableColumn[];
   api: string;
   title: string;
-  filterColumns: { [key: string]: string };
+  // eslint-disable-next-line
+  filterColumns: String[];
   // eslint-disable-next-line
   action: (record: any, rowIndex: any) => void;
   addNew: () => void;
@@ -34,13 +36,21 @@ const GeneralTable = (props:GeneralTableProps) => {
   const [page, setPage] = useState(1);
   const[dataSource, setDataSource] = useState([]);
   const[loading, setLoading] = useState(true);
+  const token = useSelector((state: MainState) => state.token);
 
   useEffect(() => {
     setLoading(true);
-    // axios.get(`${props.api}?page=${page}&pageSize=${pageSize}`)
-    axios.get(`${props.api}`)
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    axios.get(`${props.api}skip=${5*(page-1)}&limit=5`)
     .then((response) => {
+      response.data.map((ele:any) => {
+        props.filterColumns.map(filter=>{
+          delete ele[filter.toString()];
+        });
+      });
+      console.log(response.data);
       setDataSource(response.data);
+      console.log(response.data);
     }).catch((error) => {
       console.log(error);
     }).finally(() => {
@@ -76,7 +86,6 @@ const GeneralTable = (props:GeneralTableProps) => {
       columns={props.columns}
       dataSource={dataSource}
       loading={loading}
-      style={{color: "black !important"}}
       pagination={{ 
         current: page,
         pageSize: 5,
@@ -89,8 +98,16 @@ const GeneralTable = (props:GeneralTableProps) => {
       }}
       onRow={(record, rowIndex) => {
         return {
-          onClick: () => {
-            props.action(record, rowIndex);
+          onClick: (event) => {
+            // check if the click is on the row or on the action button
+            const target = event.target as HTMLElement;
+            if (target.tagName === "TD") {
+              // console.log(record, rowIndex);
+              props.action(record, rowIndex);
+            }
+            else {
+              return;
+            }
           },
           style: { cursor: 'pointer' } 
         };

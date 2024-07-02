@@ -59,7 +59,7 @@ function ViewHistory(props: ViewHistorytProps) {
     addNew: () => {
       console.log("Add New");
     },
-
+    filterColumns:[],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
       console.log(record, rowIndex);
@@ -90,7 +90,7 @@ function ViewHistory(props: ViewHistorytProps) {
         action={GeneralTableData.action}
         addNew={GeneralTableData.addNew}
         title={GeneralTableData.title}
-        filterColumns={{ "": "" }}
+        filterColumns={GeneralTableData.filterColumns}
       />
     </div>
   );

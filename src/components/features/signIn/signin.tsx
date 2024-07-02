@@ -11,13 +11,21 @@ import Moon from "../../../assets/images/moon.svg";
 import { useDispatch, useSelector } from 'react-redux';
 import { actionsCreators, MainState } from '../../../state';
 import { bindActionCreators } from 'redux';
+import axios from '../../../services/apiService';
 
 function Signin() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onFinish = (values: any) => {
     console.log('Success:', values);
-    ChangeToken(values);
-    ChangeDrawer("/");
+    axios.post('/api/v1/login',{
+      username:values.username,
+      password:values.password
+    }).then((res)=>{
+      ChangeToken(res.data.access_token);
+      ChangeDrawer("/");
+    }).catch((err)=>{
+      console.log(err);
+    });
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onFinishFailed = (errorInfo: any) => {

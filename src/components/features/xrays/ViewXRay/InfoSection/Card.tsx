@@ -4,18 +4,25 @@ import LinkButton from "../../../../common/LinkButton/LinkButton";
 import { Image } from "antd";
 import {FolderOpenFilled} from "@ant-design/icons";
 
-function Card() {
+type CardProps = {
+  id:number;
+  created_at:string;
+  xray_path:string;
+  status:string;
+};
+function Card(props: CardProps) {
+  console.log(process.env.REACT_APP_BASE_URL + "/" + props.xray_path);
   return (
     <CardContainer>
         <CardSubContainer>
-          <Image width={40} src={process.env.PUBLIC_URL+"/test.jpg"} />
+          <Image width={40} src={process.env.REACT_APP_BASE_URL + "/download/" + props.xray_path} />
           <ImageDetails>
-            <LinkButton  >12321655615</LinkButton>
-            <CardDate>Created at : 13-5-2024 5:00pm</CardDate>
+            <LinkButton onClick={()=>window.location.pathname=`/reports/${props.id}`}>{props.id}</LinkButton>
+            <CardDate>Created at : {props.created_at}</CardDate>
           </ImageDetails>
         </CardSubContainer>
         <CardSecondSubContainer>
-          <SubTitle>New</SubTitle>
+          <SubTitle>{props.status}</SubTitle>
           <FolderOpenFilled style={{ fontSize: 20 }} />
         </CardSecondSubContainer>
       </CardContainer>

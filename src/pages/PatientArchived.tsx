@@ -48,7 +48,7 @@ function PatientArchived() {
 
     api: "",
     title: "Archived Patients",
-    filterColumns : { "Patient Name": "Patient Name"},
+    filterColumns : [],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
       window.location.pathname = `patients/${record.id}`;

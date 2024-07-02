@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
 import { ChangeTheme } from "../../../state/ActionCreators/index";
-import { RootState } from "../../../state/Reducers";
+import { MainState, RootState } from "../../../state/Reducers";
 
 // Ant Design
 import { Switch } from "antd";
@@ -27,7 +27,13 @@ import Moon from "../../../assets/images/moon.svg";
 function Header() {
   const dispatch = useDispatch();
   const currentTheme = useSelector((state: RootState) => state.theme);
+  const token = useSelector((state: MainState) => state.token);
 
+  useEffect(() => {
+    if(token===""){
+      window.location.href = "/";
+    }
+  }, [token]);
   // Call UseEffect to change theme
   React.useEffect(() => {
     console.log("Theme changed to: ", currentTheme);
