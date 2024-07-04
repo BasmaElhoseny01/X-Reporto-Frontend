@@ -5,13 +5,15 @@ import JoditEditor from 'jodit-react';
 
 export const ReportDiv = styled.div`
     // display: flex;
+    width: 50vw;
+    overflow-y: scroll;
 `;
 export const ReportHeader = styled(Row)`
     display: flex;
     justify-content: space-between;
 `;
 export const ButtonContainer = styled(Flex)`
-  display: flex;
+  // display: flex;
   flex-direction: row;
   justify-content: flex-end;
   align-items: flex-end;
@@ -19,7 +21,7 @@ export const ButtonContainer = styled(Flex)`
   width: 100%;
 
   & > * {
-    margin: 0px 10px;
+    margin: 10px 10px;
   }
 `;
 export const ReportEditor = styled(JoditEditor)`

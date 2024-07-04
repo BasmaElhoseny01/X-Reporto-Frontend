@@ -34,7 +34,7 @@ import NewPatientPage from "./pages/NewPatientPage";
 import ViewPatientPage from "./pages/ViewPatientPage";
 
 import AllDoctors from "./pages/AllDoctors";
-import NewRadiologist from "./components/features/radiologists/NewRadiologist/NewRadiologist";
+import NewEmployee from "./components/features/employee/NewEmployee/NewEmployee";
 
 import Examples from "./pages/Examples";
 import DrawarPage from "./pages/DrawarPage";
@@ -43,7 +43,7 @@ import XRayArchived from "./pages/XRayArchived";
 import AllTemplates from "./pages/AllTemplates";
 import UnAssigend from "./pages/Unassigned";
 import SigninPage from "./pages/Signin";
-import ViewRadiologist from "./components/features/radiologists/ViewRadiologist/ViewRadiologist";
+import ViewEmployee from "./components/features/employee/ViewEmployee/ViewEmployee";
 import NewTemplates from "./components/features/templates/NewTemplates/NewTemplates";
 import ViewTemplate from "./components/features/templates/ViewTemplate/ViewTemplate";
 // import { bindActionCreators } from "redux";
@@ -128,8 +128,8 @@ function App() {
 
                       <Route path="doctors">
                         <Route index element={<AllDoctors />} />
-                        <Route path="new" element={<NewRadiologist />} />
-                        <Route path=":Id" element={<ViewRadiologist />} />
+                        <Route path="new" element={<NewEmployee type="doctors" />} />
+                        <Route path=":Id" element={<ViewEmployee type="doctors" />} />
                       </Route>
 
                       <Route path="templates">

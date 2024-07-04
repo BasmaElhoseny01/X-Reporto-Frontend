@@ -1,5 +1,4 @@
-import React from "react";
-import axios from "axios";
+import React ,{useEffect} from "react";
 
 // Third Party Components
 import PhoneInput from "antd-phone-input";
@@ -12,39 +11,79 @@ import { Form, Input, Radio, message } from "antd";
 import LineHeader from "../../../common/LineHeader/LineHeader";
 import SecondaryButton from "../../../common/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
+import { useNavigate } from 'react-router-dom'; // Import useNavigate hook for navigation
 
+import { useSelector } from "react-redux";
+import { MainState } from "../../../../state/Reducers";
+
+import axios from '../../../../services/apiService';
 // Styled Components
 import {
-  NewRadiologistContainer,
+  NewEmployeeContainer,
   FormContainer,
   InputFieldsContainer,
   SubmitContainer,
-} from "./NewRadiologist.style";
+} from "./NewEmployee.style";
 
-interface NewRadiologistFormValues {
-  RadiologistName: string;
-  birthDate: string;
+interface NewEmployeeFormValues {
+  employee_name: string;
+  role: "user";
+  type: "employee"|"doctor";
   age: number;
-  email: string;
-  phone: string;
+  birth_date: string;
+  created_at: string;
   gender: "male" | "female";
+  phone_number: string;
+  email: string;
+  employee_id: number;
+  password: string;
+  username: string;
 }
 
-function NewRadiologist() {
+interface NewEmployeeProps {
+  type: string;
+}
+
+
+function NewEmployee(props: NewEmployeeProps) {
   const [form] = Form.useForm();
+  const navigate = useNavigate(); // Initialize useNavigate hook
+  const token = useSelector((state: MainState) => state.token);
+  const [me, setMe] = React.useState({} as any);
+
+  useEffect(() => {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    axios
+      .get("/api/v1/employees/me")
+      .then((response) => {
+        setMe(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [token]);
 
   const onFinish = async (values: unknown) => {
-    const formValues = values as NewRadiologistFormValues;
+    const formValues = values as NewEmployeeFormValues;
+    formValues.phone_number = (formValues.phone_number as any).countryCode + (formValues.phone_number as any).areaCode + (formValues.phone_number as any).phoneNumber;
+    formValues.type = props.type=="doctors" ? 'doctor' : 'employee';
+    formValues.employee_id =me.id;
     console.log("Form values:", formValues);
 
     try {
-      const response = await axios.post('/api/Radiologists', formValues);
+      const response = await axios.post(`api/v1/employees`, formValues, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the headers
+          'Content-Type': 'application/json' // Optional: Include if required by your API
+        }
+      });
       console.log("API response:", response.data);
-      message.success("Radiologist added successfully");
-      form.resetFields();
+      message.success(`${props.type=="doctors" ? 'Radiologist' : 'Employee'} added successfully`);
+      navigate('/doctors'); // Replace with your actual route
+
     } catch (error) {
       console.error("API error:", error);
-      message.error("Failed to add Radiologist");
+      message.error(`Failed to add ${props.type=="doctors" ? 'Radiologist' : 'Employee'}`);
     }
   };
 
@@ -70,33 +109,33 @@ function NewRadiologist() {
   };
 
   return (
-    <NewRadiologistContainer>
-      <Title level={2}>New Radiologist</Title>
+    <NewEmployeeContainer>
+      <Title level={2}>New {props.type=="doctors" ? 'Radiologist' : 'Employee'}</Title>
       <LineHeader />
       <FormContainer
         form={form}
         onFinish={onFinish}
-        initialValues={{ gender: "male" }}
+        initialValues={{ gender: "male", role: "user", type: "employee", created_at: new Date().toISOString() }}
       >
         <InputFieldsContainer>
           <Form.Item
-            name="RadiologistName"
-            label="Radiologist Name"
+            name="employee_name"
+            label="Employee Name"
             labelCol={{ span: 24 }}
             wrapperCol={{ span: 24 }}
             rules={[{ required: true, message: "Name is required" }]}
           >
-            <Input placeholder="Radiologist Name" />
+            <Input placeholder="Employee Name" />
           </Form.Item>
 
           <Form.Item
-            name="birthDate"
+            name="birth_date"
             label="Birth Date"
             labelCol={{ span: 24 }}
             wrapperCol={{ span: 24 }}
             rules={[{ required: true, message: "Birth Date is required" }]}
           >
-            <Input placeholder="Birth Date" type="date" onChange={handleBirthDateChange} />
+             <Input placeholder="Birth Date" type="date"  onChange={handleBirthDateChange}/>
           </Form.Item>
 
           <Form.Item
@@ -122,8 +161,8 @@ function NewRadiologist() {
           </Form.Item>
 
           <Form.Item
-            name="phone"
-            label="Phone"
+            name="phone_number"
+            label="Phone Number"
             labelCol={{ span: 24 }}
             wrapperCol={{ span: 24 }}
             rules={[{ required: true, message: "Phone is required" }]}
@@ -143,6 +182,38 @@ function NewRadiologist() {
               <Radio.Button value="female">Female</Radio.Button>
             </Radio.Group>
           </Form.Item>
+          
+          {/* <Form.Item
+            name="type"
+            label="Type"
+            labelCol={{ span: 24 }}
+            wrapperCol={{ span: 24 }}
+            rules={[{ required: true, message: "Type is required" }]}
+          >
+            <Radio.Group buttonStyle="solid">
+              <Radio.Button value="employee">Employee</Radio.Button>
+              <Radio.Button value="doctor">Doctor</Radio.Button>
+            </Radio.Group>
+          </Form.Item> */}
+          <Form.Item
+            name="username"
+            label="Username"
+            labelCol={{ span: 24 }}
+            wrapperCol={{ span: 24 }}
+            rules={[{ required: true, message: "Username is required" }]}
+          >
+            <Input placeholder="Username" />
+          </Form.Item>
+
+          <Form.Item
+            name="password"
+            label="Password"
+            labelCol={{ span: 24 }}
+            wrapperCol={{ span: 24 }}
+            rules={[{ required: true, message: "Password is required" }]}
+          >
+            <Input.Password placeholder="Password" />
+          </Form.Item>
         </InputFieldsContainer>
 
         <SubmitContainer gap="middle">
@@ -150,8 +221,8 @@ function NewRadiologist() {
           <PrimaryButton htmlType="submit" size="large" style={{ width: "6%" }}>Add</PrimaryButton>
         </SubmitContainer>
       </FormContainer>
-    </NewRadiologistContainer>
+    </NewEmployeeContainer>
   );
 }
 
-export default NewRadiologist;
+export default NewEmployee;

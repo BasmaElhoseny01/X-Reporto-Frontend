@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { LineHeader, InputRow, FormItem, TextAreaRow, NoteItem, UploadRow, UploadItem, StyledDragger, NewXRayContainer, FormContainer, ButtonRow, FlexButton } from "./NewXRay.style";
 import { message, Input, Form } from "antd";
 import SecondaryButton from "../../../common/SecondaryButton/SecondaryButton";
@@ -6,20 +6,25 @@ import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
 import Title from "antd/es/typography/Title";
 import { InboxOutlined } from "@ant-design/icons";
 import type { UploadProps, UploadFile } from "antd";
-import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from "react-redux";
+import { MainState } from "../../../../state/Reducers";
+import axios from '../../../../services/apiService';
 
 // Define the structure of the form values
 interface FormValues {
-    patientID: string;
+    patient_id: string;
     patientName: string;
-    note: string;
+    study_name: string;
+    notes: string;
     uploadXRay: UploadFile[];
 }
 
 function NewXRay() {
+    const navigate = useNavigate(); // Initialize useNavigate hook
     const [form] = Form.useForm<FormValues>();
     const [fileList, setFileList] = useState<UploadFile[]>([]);
-    // const [isFetchingName, setIsFetchingName] = useState(false);
+    const token = useSelector((state: MainState) => state.token);
 
     const props: UploadProps = {
         onRemove: (file) => {
@@ -38,28 +43,80 @@ function NewXRay() {
         fileList,
     };
 
-    const onFinish = async (values: FormValues) => {
+    const uploadXRayFile = async (studyId: number, formValues: FormValues) => {
         const formData = new FormData();
-        formData.append("patientID", values.patientID);
-        formData.append("patientName", values.patientName);
-        formData.append("note", values.note);
         fileList.forEach((file) => {
-            formData.append("uploadXRay", file as unknown as File); // Cast UploadFile to File
+            formData.append('file', file as any);
         });
-        console.log("Form values:", values);
+
         try {
-            const response = await axios.post("/api/xray/upload", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
+            console.log("Uploading X-Ray file...");
+            const responseUpload = await axios.post(
+                `api/v1/studies/${studyId}/upload_image`,
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+            console.log("Updateload response:", responseUpload.data);
+            const response = await axios.put(
+                `api/v1/studies/${studyId}`,
+                {
+                    study_name: formValues.study_name,
+                    patient_id: formValues.patient_id,
+                    notes: formValues.notes,
+                    xray_path: responseUpload.data.xray_path,
+                    doctor_id: 2,
                 },
-            });
-            message.success("X-Ray uploaded successfully!");
-            console.log("API response:", response.data);
-            form.resetFields();
-            setFileList([]);
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`, // Include the token in the headers
+                        'Content-Type': 'application/json' // Optional: Include if required by your API
+                    }
+                }
+            );
+            console.log("Upload response:", response.data);
+            message.success("X-Ray uploaded successfully");
+            navigate('/reports'); // Replace with your actual route
+
         } catch (error) {
-            message.error("Failed to upload X-Ray. Please try again.");
+            console.error("Upload error:", error);
+            message.error("Failed to upload X-Ray");
+        }
+    };
+
+    const onFinish = async (values: FormValues) => {
+        const formValues = values as FormValues;
+        formValues.study_name = "Chest X-Ray";
+        console.log("Form values:", formValues);
+        try {
+            const response = await axios.post(
+                `api/v1/studies`,
+                {
+                    study_name: formValues.study_name,
+                    patient_id: formValues.patient_id,
+                    notes: formValues.notes,
+                    doctor_id: 2,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`, // Include the token in the headers
+                        'Content-Type': 'application/json' // Optional: Include if required by your API
+                    }
+                }
+            );
+            console.log("API response:", response.data);
+            message.success("Patient added successfully");
+
+            // Upload X-Ray file after creating the study
+            const studyId = response.data.id; // Assuming the response contains the study ID
+            await uploadXRayFile(studyId, formValues);
+
+        } catch (error) {
             console.error("API error:", error);
+            message.error("Failed to add Xray");
         }
     };
 
@@ -68,30 +125,21 @@ function NewXRay() {
         setFileList([]);
     };
 
-    useEffect(() => {
-        // const fetchPatientName = async (patientID: string) => {
-        //     if (patientID) {
-        //         // setIsFetchingName(true);
-        //         try {
-        //             const response = await axios.get(`/api/patient/${patientID}`);
-        //             form.setFieldsValue({ patientName: response.data.name });
-        //         } catch (error) {
-        //             message.error("Failed to fetch patient name. Please try again.");
-        //             console.error("API error:", error);
-        //         } finally {
-        //             // setIsFetchingName(false);
-        //         }
-        //     }
-        // };
-
-    //     const unsubscribe = form.getFieldInstance('patientID').addListener('change', () => {
-    //         const patientID = form.getFieldValue('patientID');
-    //         fetchPatientName(patientID);
-    //     }
-    // );
-
-        // return () => unsubscribe();
-    }, [form]);
+    const handlePatientIDChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const patientID = event.target.value;
+        await axios.get(`api/v1/patients/${patientID}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include the token in the headers
+                    'Content-Type': 'application/json' // Optional: Include if required by your API
+                }
+            }).then(response => {
+                form.setFieldsValue({ patientName: response.data.patient_name });
+            }).catch(error => {
+                message.error("Failed to fetch patient name. Please try again.");
+                console.error("API error:", error);
+            });
+    };
 
     return (
         <NewXRayContainer>
@@ -100,13 +148,13 @@ function NewXRay() {
             <FormContainer form={form} onFinish={(values) => onFinish(values as FormValues)}>
                 <InputRow>
                     <FormItem
-                        name="patientID"
+                        name="patient_id"
                         label="Patient ID"
                         labelCol={{ span: 24 }}
                         wrapperCol={{ span: 24 }}
                         rules={[{ required: true, message: "Patient ID is required" }]}
                     >
-                        <Input placeholder="Patient ID" size="large" />
+                        <Input placeholder="Patient ID" size="large" onChange={handlePatientIDChange} />
                     </FormItem>
 
                     <FormItem
@@ -117,11 +165,12 @@ function NewXRay() {
                     >
                         <Input placeholder="Patient Name" size="large" disabled />
                     </FormItem>
+
                 </InputRow>
                 <InputRow>
                     <NoteItem
-                        name="note"
-                        label="Note"
+                        name="notes"
+                        label="Notes"
                         labelCol={{ span: 24 }}
                         wrapperCol={{ span: 24 }}
                     >

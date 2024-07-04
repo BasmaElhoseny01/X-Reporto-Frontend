@@ -1,39 +1,40 @@
-import { Row, Flex } from "antd";
+import { Col,Row, Flex } from "antd";
 import styled from "styled-components";
 import JoditEditor from 'jodit-react';
 
 export const ReportDiv = styled.div`
-    padding: 20px;
+    // padding: 20px;
+      height: 100%;
+    overflow-y: scroll;
 `;
 
-export const TemplateData = styled(Row)`
+export const TemplateDataCol = styled(Col)`
     display: flex;
-    width: 65%;
+    width: 100%;
     justify-content: space-between;
     border-radius: 1%;
+`;
+export const TemplateDataRow = styled(Row)`
+width: 30%;
+    display: flex;
+    justify-content: space-between;
 `;
 
 export const TemplateEditor = styled(Row)`
     display: flex;
-    width: 65%;
+    width: 10%;
     flex: 1;
-    // height: 10;
+    background-color: #f0f2f5;
 `;
 
 export const ButtonContainer = styled(Flex)`
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: flex-end;
-    flex: 1;
     width: 100%;
-    margin-top: 15%;
-    & > * {
-        margin: 0px 1%;
-    }
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
 `;
 
 export const ReportEditor = styled(JoditEditor)`
-    // width: 100%;
-    // background-color: #f0f2f5;
+height: 100%;
+width: 80%;
 `;
