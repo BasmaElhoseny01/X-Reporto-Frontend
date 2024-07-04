@@ -8,9 +8,11 @@ import Title from 'antd/es/typography/Title';
 import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
 import LineHeader from '../../../common/LineHeader/LineHeader';
 import EditInfoTemplate from '../../../common/EditInfoTemplate/EditInfoTemplate';
-import axios from 'axios';
 import { message } from 'antd';
-import { baseUrl, token } from "../../../../types/api";
+import { useSelector } from "react-redux";
+import { MainState } from "../../../../state/Reducers";
+
+import axios from '../../../../services/apiService';
 
 
 interface RouteParams extends Record<string, string | undefined> {
@@ -21,22 +23,34 @@ function ViewTemplate() {
     const navigate = useNavigate(); // Initialize useNavigate hook
     const { Id } = useParams<RouteParams>();
     const [templateID, setTemplateID] = useState<string>('');
-
+    const token = useSelector((state: MainState) => state.token);
+    const [me, setMe] = React.useState({} as any);
+  
+    useEffect(() => {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      axios
+        .get("/api/v1/employees/me")
+        .then((response) => {
+          setMe(response.data);
+          console.log(me);
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }, [token]);
     useEffect(() => {
         if (Id) {
             setTemplateID(Id);
         }
     }, [Id]);
     const handleNewTemplate = () => {
-        // Perform any necessary actions before navigating
-        // Example: Saving data, validation, etc.
-
         // Navigate to the desired route using history.push
         navigate('/templates/new'); // Replace with your actual route
     };
     const handleDeleteTemplate = () => {
         if (templateID) {
-            axios.delete(`${baseUrl}templates/${templateID}`, {
+            axios.delete(`api/v1/templates/${templateID}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }

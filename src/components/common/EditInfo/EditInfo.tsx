@@ -3,12 +3,11 @@ import { Descriptions, Form, Input, Radio ,message} from 'antd';
 import { EditButton, ButtonContainer } from './EditInfo.style';
 import SecondaryButton from '../../../components/common/SecondaryButton/SecondaryButton';
 import PrimaryButton from '../../../components/common/PrimaryButton/PrimaryButton';
-import Title from 'antd/es/typography/Title';
-import LineHeader from '../../../components/common/LineHeader/LineHeader';
-import { baseUrl, token } from "../../../types/api";
-import ViewHistory from '../../common/ViewHistory/ViewHistory';
 import { format, parseISO, isValid } from 'date-fns';
-import axios from 'axios';
+import { useSelector } from "react-redux";
+import { MainState } from "../../../state";
+
+import axios from '../../../services/apiService';
 
 interface UserData {
   id: number;
@@ -31,11 +30,11 @@ function calculateAge(birthDate: string): number {
   const birth = new Date(birthDate);
   let age = today.getFullYear() - birth.getFullYear();
   const monthDiff = today.getMonth() - birth.getMonth();
-
+  
   if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
     age--;
   }
-
+  
   return age;
 }
 
@@ -50,6 +49,22 @@ function formatDateTime(dateString: string): string {
 function EditInfo(props: EditInfoProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [form] = Form.useForm();
+  const token = useSelector((state: MainState) => state.token);
+  const [me, setMe] = React.useState({} as any);
+
+  useEffect(() => {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    axios
+      .get("/api/v1/employees/me")
+      .then((response) => {
+        setMe(response.data);
+        console.log(me);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [token]);
   const [data, setData] = useState<UserData>({
     id: 0,
     patient_name: '',
@@ -64,7 +79,7 @@ function EditInfo(props: EditInfoProps) {
 
   useEffect(() => {
     if (props.idValue) {
-      axios.get(`${baseUrl}patients/${props.idValue}`, {
+      axios.get(`api/v1/patients/${props.idValue}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         }
@@ -92,8 +107,9 @@ function EditInfo(props: EditInfoProps) {
     values.id = data.id;
     values.age = calculateAge(values.birth_date);
     values.created_at = data.created_at;
+    values.doctor_id = me.id;
     try {
-      await axios.put(`${baseUrl}patients/${data.id}`, values, {
+      await axios.put(`api/v1/patients/${data.id}`, values, {
         headers: {
           Authorization: `Bearer ${token}`,
         }
@@ -214,9 +230,6 @@ function EditInfo(props: EditInfoProps) {
           </ButtonContainer>
         )}
       </Form>
-      <Title level={4}>History</Title>
-          <LineHeader />
-          <ViewHistory studies={data.studies} />
     </div>
   );
 }

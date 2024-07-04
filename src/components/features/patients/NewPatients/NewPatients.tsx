@@ -1,5 +1,4 @@
-import React from "react";
-// import axios from "axios";
+import React ,{useEffect} from "react";
 
 // Third Party Components
 import PhoneInput from "antd-phone-input";
@@ -12,9 +11,11 @@ import { Form, Input, Radio ,message } from "antd";
 import LineHeader from "../../../common/LineHeader/LineHeader";
 import SecondaryButton from "../../../common/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
-import { baseUrl, token } from "../../../../types/api";
 import { useNavigate } from 'react-router-dom'; // Import useNavigate hook for navigation
-import axios from "axios";
+import { useSelector } from "react-redux";
+import { MainState } from "../../../../state/Reducers";
+
+import axios from '../../../../services/apiService';
 
 // Styled Components
 import {
@@ -36,6 +37,22 @@ interface NewPatientFormValues {
 function NewPatients() {
   const navigate = useNavigate(); // Initialize useNavigate hook
   const [form] = Form.useForm();
+  const token = useSelector((state: MainState) => state.token);
+  const [me, setMe] = React.useState({} as any);
+
+  useEffect(() => {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    axios
+      .get("/api/v1/employees/me")
+      .then((response) => {
+        setMe(response.data);
+        console.log(me);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [token]);
 
   const onFinish = async (values: unknown) => {
     const formValues = values as NewPatientFormValues;
@@ -45,7 +62,7 @@ function NewPatients() {
     try {
       // change formValues.phone to string
       const response = await axios.post(
-        `${baseUrl}patients`,
+        `api/v1/patients`,
         {
           "patient_name": formValues.patientName,
           "age": formValues.age,
@@ -53,7 +70,7 @@ function NewPatients() {
           "birth_date": formValues.birthDate,
           "gender": formValues.gender,
           "phone_number": formValues.phone.toString(),
-          "employee_id": 2,
+          "employee_id": me.id,
           "created_at": "2024-06-26T20:31:24.258262",
 
         },

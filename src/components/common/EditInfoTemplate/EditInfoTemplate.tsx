@@ -5,8 +5,10 @@ import SecondaryButton from '../SecondaryButton/SecondaryButton';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import { baseUrl, token } from "../../../types/api";
 import { format, parseISO, isValid } from 'date-fns';
-import axios from 'axios';
+import { useSelector } from "react-redux";
+import { MainState } from "../../../state/Reducers";
 
+import axios from '../../../services/apiService';
 interface UserData {
   id: number;
   template_name: string;
@@ -24,6 +26,22 @@ function EditInfoTemplate(props: EditInfoTemplateProps) {
   const editor = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
   const [form] = Form.useForm();
+  const token = useSelector((state: MainState) => state.token);
+  const [me, setMe] = React.useState({} as any);
+
+  useEffect(() => {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    axios
+      .get("/api/v1/employees/me")
+      .then((response) => {
+        setMe(response.data);
+        console.log(me);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [token]);
   const config = useMemo(
     () => ({
       readonly: false,
@@ -38,19 +56,19 @@ function EditInfoTemplate(props: EditInfoTemplateProps) {
     const fetchData = async () => {
       if (props.templateID) {
         try {
-          const responseGet = await axios.get(`${baseUrl}templates/${props.templateID}`, {
+          const responseGet = await axios.get(`api/v1/templates/${props.templateID}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             }
           });
           
-          const responseContent = await axios.get(`${baseUrl}templates/${responseGet.data.id}/download_template`, {
+          const responseContent = await axios.get(`api/v1/templates/${responseGet.data.id}/download_template`, {
             headers: {
               Authorization: `Bearer ${token}`, // Include the token in the headers
             }
           });
 
-          const responseCreatedBy = await axios.get(`${baseUrl}employees/${responseGet.data.doctor_id}`, {
+          const responseCreatedBy = await axios.get(`api/v1/employees/${responseGet.data.doctor_id}`, {
             headers: {
               Authorization: `Bearer ${token}`, // Include the token in the headers
             }
@@ -59,7 +77,7 @@ function EditInfoTemplate(props: EditInfoTemplateProps) {
           setData({ ...responseGet.data, created_by: responseCreatedBy.data.employee_name, content: responseContent.data });
           setContent(responseContent.data);
           console.log("responseGet.data", responseContent.data);
-          console.log(`${baseUrl}templates/${responseGet.data.id}/download_template`);
+          console.log(`api/v1/templates/${responseGet.data.id}/download_template`);
           form.setFieldsValue({ ...responseGet.data, content: responseContent.data, created_by: responseCreatedBy.data.employee_name });
         } catch (error) {
           console.error(`Error downloading template`, error);
@@ -85,7 +103,7 @@ function EditInfoTemplate(props: EditInfoTemplateProps) {
           const formData = new FormData();
           formData.append('file', blob, `${values.template_name}.docx`);
           const uploadResponse = await axios.post(
-            `${baseUrl}templates/${data.id}/upload_template`,
+            `api/v1/templates/${data.id}/upload_template`,
             formData,
             {
               headers: {
@@ -101,9 +119,9 @@ function EditInfoTemplate(props: EditInfoTemplateProps) {
           const updateTemplatePayload = {
             template_name: values.template_name,
             template_path: templatePath,
-            doctor_id: 2
+            doctor_id: me.id
           };
-          await axios.put(`${baseUrl}templates/${data.id}`, updateTemplatePayload, {
+          await axios.put(`api/v1/templates/${data.id}`, updateTemplatePayload, {
             headers: {
               Authorization: `Bearer ${token}`, // Include the token in the headers
             }

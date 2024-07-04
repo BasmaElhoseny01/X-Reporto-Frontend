@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo,useEffect} from "react";
 import { Typography, Form, Input, message } from 'antd';
 const { Title } = Typography;
 import { ButtonContainer, ReportEditor, ReportDiv, TemplateDataCol, TemplateDataRow } from "./NewTemplates.style";
@@ -6,8 +6,10 @@ import LineHeader from '../../../../components/common/LineHeader/LineHeader';
 import SelectionTemplate, { defaultTemplate } from "../../../../components/common/SelectionTemplate/SelectionTemplate";
 import SecondaryButton from '../../../../components/common/SecondaryButton/SecondaryButton';
 import PrimaryButton from '../../../../components/common/PrimaryButton/PrimaryButton';
-import { baseUrl, token } from "../../../../types/api";
-import axios from 'axios';
+import { useSelector } from "react-redux";
+import { MainState } from "../../../../state/Reducers";
+
+import axios from '../../../../services/apiService';
 
 
 interface FormValues {
@@ -21,6 +23,22 @@ function NewTemplates() {
     const [selectedValue, setSelectedValue] = useState<string>("-1");
     const [content, setContent] = useState<string>(defaultTemplate); // Initialize with defaultTemplate
     const editor = useRef(null);
+    const token = useSelector((state: MainState) => state.token);
+    const [me, setMe] = React.useState({} as any);
+
+    useEffect(() => {
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        axios
+          .get("/api/v1/employees/me")
+          .then((response) => {
+            setMe(response.data);
+            console.log(me);
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }, [token]);
 
     const onFinish = async (values: FormValues) => {
         console.log('Values', values);
@@ -29,10 +47,10 @@ function NewTemplates() {
             const createTemplatePayload = {
                 template_name: values.templateName,
                 template_path: "",
-                doctor_id:2
+                doctor_id:me.id
             };
 
-            const createTemplateResponse = await axios.post(`${baseUrl}templates/`, createTemplatePayload, {
+            const createTemplateResponse = await axios.post(`api/v1/templates/`, createTemplatePayload, {
                 headers: {
                     Authorization: `Bearer ${token}`, // Include the token in the headers
                 }
@@ -52,7 +70,7 @@ function NewTemplates() {
             formData.append('file', blob, `${values.templateName}.docx`);
 
             const uploadResponse = await axios.post(
-                `${baseUrl}templates/${templateId}/upload_template`,
+                `api/v1/templates/${templateId}/upload_template`,
                 formData,
                 {
                     headers: {
@@ -71,7 +89,7 @@ function NewTemplates() {
                 doctor_id:2
             };
 
-            await axios.put(`${baseUrl}templates/${templateId}`, updateTemplatePayload, {
+            await axios.put(`api/v1/templates/${templateId}`, updateTemplatePayload, {
                 headers: {
                     Authorization: `Bearer ${token}`, // Include the token in the headers
                     // 'Content-Type': 'application/json' // Optional: Include if required by your API

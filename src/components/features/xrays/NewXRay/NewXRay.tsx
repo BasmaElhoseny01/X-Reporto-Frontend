@@ -6,9 +6,10 @@ import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
 import Title from "antd/es/typography/Title";
 import { InboxOutlined } from "@ant-design/icons";
 import type { UploadProps, UploadFile } from "antd";
-import { baseUrl, token } from "../../../../types/api";
 import { useNavigate } from 'react-router-dom';
-import axios from "axios";
+import { useSelector } from "react-redux";
+import { MainState } from "../../../../state/Reducers";
+import axios from '../../../../services/apiService';
 
 // Define the structure of the form values
 interface FormValues {
@@ -23,7 +24,7 @@ function NewXRay() {
     const navigate = useNavigate(); // Initialize useNavigate hook
     const [form] = Form.useForm<FormValues>();
     const [fileList, setFileList] = useState<UploadFile[]>([]);
-    // const [isFetchingName, setIsFetchingName] = useState(false);
+    const token = useSelector((state: MainState) => state.token);
 
     const props: UploadProps = {
         onRemove: (file) => {
@@ -51,7 +52,7 @@ function NewXRay() {
         try {
             console.log("Uploading X-Ray file...");
             const responseUpload = await axios.post(
-                `${baseUrl}studies/${studyId}/upload_image`,
+                `api/v1/studies/${studyId}/upload_image`,
                 formData,
                 {
                     headers: {
@@ -61,7 +62,7 @@ function NewXRay() {
                 });
             console.log("Updateload response:", responseUpload.data);
             const response = await axios.put(
-                `${baseUrl}studies/${studyId}`,
+                `api/v1/studies/${studyId}`,
                 {
                     study_name: formValues.study_name,
                     patient_id: formValues.patient_id,
@@ -92,7 +93,7 @@ function NewXRay() {
         console.log("Form values:", formValues);
         try {
             const response = await axios.post(
-                `${baseUrl}studies`,
+                `api/v1/studies`,
                 {
                     study_name: formValues.study_name,
                     patient_id: formValues.patient_id,
@@ -126,7 +127,7 @@ function NewXRay() {
 
     const handlePatientIDChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const patientID = event.target.value;
-        await axios.get(`${baseUrl}patients/${patientID}`,
+        await axios.get(`api/v1/patients/${patientID}`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`, // Include the token in the headers

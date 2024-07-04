@@ -5,9 +5,11 @@ import LineHeader from '../../../common/LineHeader/LineHeader';
 import EditInfo from '../../../common/EditInfo/EditInfo';
 import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
 // import ViewHistory from './ViewHistory';
-import { ButtonContainer } from "./ViewPatient.Style";
+import ViewHistory from '../../../common/ViewHistory/ViewHistory';
+import { ButtonContainer, ViewContainer } from "./ViewPatient.Style";
 import { useNavigate } from 'react-router-dom'; // Import useNavigate hook for navigation
 import { PlusOutlined } from "@ant-design/icons";
+import { Row } from 'antd';
 // ContainerOutlined
 interface RouteParams extends Record<string, string | undefined> {
   Id: string;
@@ -33,18 +35,19 @@ function ViewPatient() {
 
 
   return (
-    <div>
-      <Title level={2}>View Patient</Title>
+    <ViewContainer >
+      <Title level={2} >View Patient</Title>
       <LineHeader />
-      <ButtonContainer>
-        <PrimaryButton icon={<PlusOutlined />} onClick={handleAddPatient}>Add Patient</PrimaryButton>
-        {/* <PrimaryButton danger icon={<ContainerOutlined />}>Archive Patient</PrimaryButton> */}
-      </ButtonContainer>
-      <Title level={4}>Patient Information</Title>
+      <Row>
+        <Title level={4} style={{ margin: 0 }}>Patient Information</Title>
+        <ButtonContainer>
+          <PrimaryButton icon={<PlusOutlined />} onClick={handleAddPatient}>Add Patient</PrimaryButton>
+        </ButtonContainer>
+      </Row>
       <LineHeader />
       <EditInfo idValue={idValue} />
-
-    </div>
+      <ViewHistory api={`api/v1/patients/${Id}/studies/?`} />
+    </ViewContainer>
   );
 }
 

@@ -1,5 +1,4 @@
-import React from "react";
-import axios from "axios";
+import React ,{useEffect} from "react";
 
 // Third Party Components
 import PhoneInput from "antd-phone-input";
@@ -14,8 +13,10 @@ import SecondaryButton from "../../../common/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
 import { useNavigate } from 'react-router-dom'; // Import useNavigate hook for navigation
 
-import { baseUrl, token } from "../../../../types/api";
+import { useSelector } from "react-redux";
+import { MainState } from "../../../../state/Reducers";
 
+import axios from '../../../../services/apiService';
 // Styled Components
 import {
   NewEmployeeContainer,
@@ -47,16 +48,30 @@ interface NewEmployeeProps {
 function NewEmployee(props: NewEmployeeProps) {
   const [form] = Form.useForm();
   const navigate = useNavigate(); // Initialize useNavigate hook
+  const token = useSelector((state: MainState) => state.token);
+  const [me, setMe] = React.useState({} as any);
+
+  useEffect(() => {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    axios
+      .get("/api/v1/employees/me")
+      .then((response) => {
+        setMe(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [token]);
 
   const onFinish = async (values: unknown) => {
     const formValues = values as NewEmployeeFormValues;
     formValues.phone_number = (formValues.phone_number as any).countryCode + (formValues.phone_number as any).areaCode + (formValues.phone_number as any).phoneNumber;
     formValues.type = props.type=="doctors" ? 'doctor' : 'employee';
-    formValues.employee_id =2;
+    formValues.employee_id =me.id;
     console.log("Form values:", formValues);
 
     try {
-      const response = await axios.post(`${baseUrl}employees`, formValues, {
+      const response = await axios.post(`api/v1/employees`, formValues, {
         headers: {
           Authorization: `Bearer ${token}`, // Include the token in the headers
           'Content-Type': 'application/json' // Optional: Include if required by your API

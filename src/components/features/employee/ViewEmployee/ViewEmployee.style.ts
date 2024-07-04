@@ -18,3 +18,11 @@ export const ButtonContainer = styled(Flex)`
     margin: 0px 10px;
   }
 `;
+export const ViewContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 100vh;
+  overflow-y: scroll;
+`;

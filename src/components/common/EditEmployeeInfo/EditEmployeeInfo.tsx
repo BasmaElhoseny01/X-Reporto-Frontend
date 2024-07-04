@@ -5,10 +5,11 @@ import SecondaryButton from '../SecondaryButton/SecondaryButton';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
 // import Title from 'antd/es/typography/Title';
 // import LineHeader from '../LineHeader/LineHeader';
-import ViewHistory from '../../common/ViewHistory/ViewHistory';
 import { format, parseISO, isValid } from 'date-fns';
-import axios from 'axios';
-import { baseUrl, token } from "../../../types/api";
+import { useSelector } from "react-redux";
+import { MainState } from "../../../state";
+
+import axios from '../../../services/apiService';
 
 interface UserData {
   id: number;
@@ -55,6 +56,23 @@ function formatDateTime(dateString: string): string {
 function EditEmployeeInfo (props: EditEmployeeInfoProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [form] = Form.useForm();
+  const token = useSelector((state: MainState) => state.token);
+  const [me, setMe] = React.useState({} as any);
+  
+  useEffect(() => {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    axios
+      .get("/api/v1/employees/me")
+      .then((response) => {
+        setMe(response.data);
+        console.log(me);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [token]);
+
   const [data, setData] = useState<UserData>({
     id: 0,
     employee_name: '',
@@ -73,7 +91,7 @@ function EditEmployeeInfo (props: EditEmployeeInfoProps) {
 
   useEffect(() => {
     if (props.idValue) {
-      axios.get(`${baseUrl}employees/${props.idValue}`, {
+      axios.get(`api/v1/employees/${props.idValue}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         }
@@ -105,9 +123,10 @@ function EditEmployeeInfo (props: EditEmployeeInfoProps) {
     values.type = data.type;
     values.employee_id = data.employee_id;
     values.username = data.username;
+    values.doctor_id = me.id;
 
     try {
-      await axios.put(`${baseUrl}employees/${data.id}`, values, {
+      await axios.put(`api/v1/employees/${data.id}`, values, {
         headers: {
           Authorization: `Bearer ${token}`,
         }
@@ -230,7 +249,6 @@ function EditEmployeeInfo (props: EditEmployeeInfoProps) {
       </Form>
       {/* <Title level={4}>History</Title>
       <LineHeader /> */}
-      <ViewHistory studies={data.studies} />
     </div>
   );
 }
