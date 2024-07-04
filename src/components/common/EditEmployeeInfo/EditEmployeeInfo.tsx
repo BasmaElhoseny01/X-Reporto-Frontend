@@ -121,7 +121,7 @@ function EditEmployeeInfo (props: EditEmployeeInfoProps) {
     values.created_at = data.created_at;
     values.role = data.role;
     values.type = data.type;
-    values.employee_id = data.employee_id;
+    values.employee_id = me.id;
     values.username = data.username;
     values.doctor_id = me.id;
 

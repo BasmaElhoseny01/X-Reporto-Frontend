@@ -3,7 +3,6 @@ import { Descriptions, Form, Input, message } from 'antd';
 import { EditButton, ButtonContainer, ReportEditor } from './EditInfoTemplate.style';
 import SecondaryButton from '../SecondaryButton/SecondaryButton';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
-import { baseUrl, token } from "../../../types/api";
 import { format, parseISO, isValid } from 'date-fns';
 import { useSelector } from "react-redux";
 import { MainState } from "../../../state/Reducers";
