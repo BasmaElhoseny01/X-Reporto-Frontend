@@ -14,58 +14,79 @@ import Sider from "antd/es/layout/Sider";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionsCreators, MainState } from "../../../state";
-
-type MenuItem = Required<MenuProps>["items"][number];
-
-const items: MenuItem[] = [
-  { key: "/", icon: <HomeOutlined />, label: "Home" },
-  { key: "/account", icon: <UserOutlined />, label: "Account" },
-  {
-    key: "sub2",
-    label: "patients",
-    icon: <UsergroupDeleteOutlined />,
-    children: [
-      { key: "/patients", label: "All" },
-      // { key: "/patients/archived", label: "Archived" },
-      { key: "/patients/new", label: "New Patient" },
-    ],
-  },
-  {
-    key: "sub3",
-    label: "Reports",
-    icon: <FileTextOutlined />,
-    children: [
-      { key: "/reports/unassign", label: "Un Assigned"},
-      { key: "/reports/worklist", label: "Work list" },
-      { key: "/reports/completed", label: "Completed" },
-      { key: "/reports/archived", label: "Archived" },
-      { key: "/reports/new", label: "New X-Ray" },
-    ],
-  },
-  {
-    key: "sub4",
-    label: "Doctors",
-    icon: <ExperimentOutlined />,
-    children: [
-      { key: "/doctors", label: "All" },
-      // { key: "/doctors/archived", label: "Archived" },
-      { key: "/doctors/new", label: "New" },
-    ],
-  },
-  {
-    key: "sub5",
-    label: "Templates",
-    icon: <HighlightOutlined />,
-    children: [
-      { key: "/templates", label: "All" },
-      { key: "/templates/new", label: "New" },
-    ],
-  },
-  
-  { key: "/LogOut", icon: <LogoutOutlined />, label: "Logout" },
-];
+import axios from '../../../services/apiService';
 
 const SideBar = () => {
+  const token = useSelector((state: MainState) => state.token);
+  const [me, setMe] = React.useState({} as any);
+
+  useEffect(() => {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    axios
+      .get("/api/v1/employees/me")
+      .then((response) => {
+        setMe(response.data);
+        console.log(me);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+
+  type MenuItem = Required<MenuProps>["items"][number];
+
+  const items: MenuItem[] = [
+    { key: "/", icon: <HomeOutlined />, label: "Home" },
+    { key: "/account", icon: <UserOutlined />, label: "Account" },
+    {
+      key: "sub2",
+      label: "patients",
+      icon: <UsergroupDeleteOutlined />,
+      children: [
+        { key: "/patients", label: "All" },
+        // { key: "/patients/archived", label: "Archived" },
+        ...(me.role === "admin" ? [{ key: "/patients/new", label: "New Patient" }] : []),
+      ],
+    },
+    {
+      key: "sub3",
+      label: "Reports",
+      icon: <FileTextOutlined />,
+      children: [
+        { key: "/reports/unassign", label: "Un Assigned"},
+        { key: "/reports/worklist", label: "Work list" },
+        { key: "/reports/completed", label: "Completed" },
+        { key: "/reports/archived", label: "Archived" },
+        ...(me.role === "admin" ? [{ key: "/reports/new", label: "New X-Ray" },] : []),
+      ],
+    },
+    {
+      key: "sub5",
+      label: "Templates",
+      icon: <HighlightOutlined />,
+      children: [
+        { key: "/templates", label: "All" },
+        ...(me.role === "admin" ? [{ key: "/templates/new", label: "New" }] : []),
+      ],
+    },
+    ...(me.role === "admin" ?  
+      [{
+        key: "sub4",
+        label: "Doctors",
+        icon: <ExperimentOutlined />,
+        children: [
+          { key: "/doctors", label: "All" },
+          // { key: "/doctors/archived", label: "Archived" },
+          { key: "/doctors/new", label: "New" },
+        ],
+      }]
+      : []),
+
+    { key: "/LogOut", icon: <LogoutOutlined />, label: "Logout" },
+  ];
+  
   const [collapsed, setCollapsed] = useState(true);
   const drawer = useSelector((state: MainState) => state.drawer);
   const websiteTheme = useSelector((state: MainState) => state.theme);
@@ -80,7 +101,6 @@ const SideBar = () => {
       ChangeToken("");
       ChangeUserName("");
       ChangeId(0);
-      window.location.pathname = "/";
     }
     else{
       ChangeDrawer(e.key);
