@@ -16,11 +16,7 @@ import PrimaryButton from "../../../../../common/PrimaryButton/PrimaryButton";
 interface StatisticCardProps {
   // Define props here
 
-  status:
-    | "your_pending"
-    | "your_submitted"
-    | "all_pending"
-    | "all_new"
+  status: "new" | "incomplete" | "pending" | "completed";
 
   text: string;
 
@@ -30,10 +26,21 @@ interface StatisticCardProps {
 }
 
 function StatisticCard(props: StatisticCardProps) {
-  const { text, count, action } = props;
+  const { text, count, action, status } = props;
   return (
     <StatisticCardContainer>
-      <Badge status="error" text={text} />
+      <Badge
+        status={
+          status == "new"
+            ? "default"
+            : status == "pending"
+            ? "warning"
+            : status == "completed"
+            ? "success"
+            : "error"
+        }
+        text={text}
+      />
       <CountUp end={count} duration={3} style={{ fontSize: "24px" }} />
       <PrimaryButton onClick={action}>Check</PrimaryButton>
     </StatisticCardContainer>
