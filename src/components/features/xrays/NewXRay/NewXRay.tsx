@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { LineHeader, InputRow, FormItem, TextAreaRow, NoteItem, UploadRow, UploadItem, StyledDragger, NewXRayContainer, FormContainer, ButtonRow, FlexButton } from "./NewXRay.style";
 import { message, Input, Form } from "antd";
 import SecondaryButton from "../../../common/SecondaryButton/SecondaryButton";
@@ -25,6 +25,21 @@ function NewXRay() {
     const [form] = Form.useForm<FormValues>();
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const token = useSelector((state: MainState) => state.token);
+    const [me, setMe] = React.useState({} as any);
+
+    useEffect(() => {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      axios
+        .get("/api/v1/employees/me")
+        .then((response) => {
+          setMe(response.data);
+          console.log(me);
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }, [token]);
 
     const props: UploadProps = {
         onRemove: (file) => {
@@ -68,7 +83,7 @@ function NewXRay() {
                     patient_id: formValues.patient_id,
                     notes: formValues.notes,
                     xray_path: responseUpload.data.xray_path,
-                    doctor_id: 2,
+                    doctor_id: me.id,
                 },
                 {
                     headers: {
@@ -98,7 +113,7 @@ function NewXRay() {
                     study_name: formValues.study_name,
                     patient_id: formValues.patient_id,
                     notes: formValues.notes,
-                    doctor_id: 2,
+                    doctor_id: me.id,
                 },
                 {
                     headers: {

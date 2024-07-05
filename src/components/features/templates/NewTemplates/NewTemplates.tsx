@@ -86,7 +86,7 @@ function NewTemplates() {
             const updateTemplatePayload = {
                 template_name: values.templateName,
                 template_path: templatePath,
-                doctor_id:2
+                doctor_id:me.id
             };
 
             await axios.put(`api/v1/templates/${templateId}`, updateTemplatePayload, {
