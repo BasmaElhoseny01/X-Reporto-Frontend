@@ -38,6 +38,7 @@ import AccountPage from "./pages/AccountPage";
 import UnAssigned from "./pages/Unassigned";
 import XRayWorkList from "./pages/XRayWorklist";
 import XRayCompleted from "./pages/XRayCompleted";
+import XRayArchived from "./pages/XRayArchived";
 
 import DoctorPendingCases from "./pages/DoctorPendingCases";
 import DoctorCompletedCases from "./pages/DoctorCompletedCases";
@@ -56,7 +57,6 @@ import NewEmployee from "./components/features/employee/NewEmployee/NewEmployee"
 
 import Examples from "./pages/Examples";
 import DrawarPage from "./pages/DrawarPage";
-import XRayArchived from "./pages/XRayArchived";
 // import ArchivedDoctor from "./pages/ArchivedDoctor";
 import AllTemplates from "./pages/AllTemplates";
 import SigninPage from "./pages/Signin";
@@ -142,7 +142,6 @@ function App() {
               <MainContainer>
                 <Header />
                 <ContentContainer>
-                  <h1>{}</h1>
                   <BrowserRouter>
                     <Routes>
                       <Route path={paths.home} element={<HomePage />} />

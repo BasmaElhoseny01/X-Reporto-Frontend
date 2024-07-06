@@ -5,6 +5,7 @@ import GeneralTable from "../components/common/Table/Table";
 import axios from "../services/apiService";
 import { Button, message } from "antd";
 import { reDirectToCases } from "./paths.utils";
+// import { reDirectToCases } from "./paths.utils";
 
 function UnAssigend() {
   const token = useSelector((state: MainState) => state.token);
@@ -17,8 +18,8 @@ function UnAssigend() {
       .get("/api/v1/employees/me")
       .then((response) => {
         setMe(response.data);
-        console.log(me);
-        console.log(response.data);
+        // console.log(me);
+        // console.log(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -101,7 +102,8 @@ function UnAssigend() {
                     if (response.status === 200) {
                       message.success("Assigned successfully!");
                       setTimeout(() => {
-                        window.location.reload();
+                        // Redirect to the View Page for the case
+                        reDirectToCases("view", record.id);
                       }, 500);
                     } else {
                       message.error("Error, failed to assign!");

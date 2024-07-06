@@ -65,8 +65,8 @@ function EditEmployeeInfo (props: EditEmployeeInfoProps) {
       .get("/api/v1/employees/me")
       .then((response) => {
         setMe(response.data);
-        console.log(me);
-        console.log(response.data);
+        // console.log(me);
+        // console.log(response.data);
       })
       .catch((error) => {
         console.log(error);
