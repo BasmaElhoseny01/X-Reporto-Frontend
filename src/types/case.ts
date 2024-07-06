@@ -30,5 +30,7 @@ interface Case {
   id: number;
 }
 
+
+
 // Allow Case to be null
 export type CaseType = Case | null;
