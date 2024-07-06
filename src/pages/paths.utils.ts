@@ -10,15 +10,19 @@ export const reDirectToAccount = () => {
 
 export const reDirectToCases = (type: string) => {
   switch (type) {
-    case "new":
-      window.location.href = `${paths.cases.base}/${paths.cases.types.new}`;
-      break;
-    case "complete":
-      window.location.href = `${paths.cases.base}/${paths.cases.types.complete}`;
-      break;
     case "unassigned":
       window.location.href = `${paths.cases.base}/${paths.cases.types.unassigned}`;
       break;
+    case "pending":
+      window.location.href = `${paths.cases.base}/${paths.cases.types.pending}`;
+      break;
+
+    // case "new":
+    //   window.location.href = `${paths.cases.base}/${paths.cases.types.new}`;
+    //   break;
+    // case "complete":
+    //   window.location.href = `${paths.cases.base}/${paths.cases.types.complete}`;
+    //   break;
     default:
       // Handle invalid type or default case
       console.error(`Invalid case type: ${type}`);

@@ -85,7 +85,9 @@ function Statistics() {
         status="incomplete"
         text="Pending Cases"
         count={statistics?.incomplete}
-        action={() => console.log("Your Pending Reports")}
+        action={() => {
+          reDirectToCases("pending");
+        }}
       />
 
       {user?.type == "doctor" ? (

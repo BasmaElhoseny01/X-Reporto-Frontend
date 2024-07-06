@@ -6,9 +6,10 @@ interface PathsType {
     base: string;
     types: {
       unassigned: string;
-      complete: string;
-      new: string;
-      view: (id: string | number) => string;
+      pending: string;
+      // complete: string;
+
+      // view: (id: string | number) => string;
     };
   };
 }
@@ -20,9 +21,9 @@ const paths: PathsType = {
     base: "cases", // Base path for cases
     types: {
       unassigned: "unassigned", // Path for unassigned cases
-      complete: "complete", // Path for complete cases
-      new: "new", // Path for new cases
-      view: (id: string | number) => `cases/view/${id}`, // Function to generate view path for a case ID
+      pending: "pending", // Path for pending cases
+      // complete: "complete", // Path for complete cases
+      // view: (id: string | number) => `cases/view/${id}`, // Function to generate view path for a case ID
     },
   },
 };

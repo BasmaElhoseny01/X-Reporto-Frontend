@@ -16,7 +16,6 @@ import { bindActionCreators } from "redux";
 import { actionsCreators, MainState } from "../../../state";
 import axios from "../../../services/apiService";
 
-
 // Paths
 // import paths from "../../../pages/paths";
 
@@ -50,7 +49,7 @@ const SideBar = () => {
       children: [
         { key: "/patients", label: "All" },
         // { key: "/patients/archived", label: "Archived" },
-        ...(me.role === "admin"
+        ...(me.type === "employee"
           ? [{ key: "/patients/new", label: "New Patient" }]
           : []),
       ],
@@ -61,10 +60,10 @@ const SideBar = () => {
       icon: <FileTextOutlined />,
       children: [
         { key: "/cases/unassigned", label: "Unassigned" },
-        { key: "/cases/worklist", label: "Pending" },
+        { key: "/cases/pending", label: "Pending" },
         { key: "/cases/completed", label: "Completed" },
         { key: "/cases/archived", label: "Archived" },
-        ...(me.role === "admin"
+        ...(me.type === "employee"
           ? [{ key: "/cases/new", label: "Add Case" }]
           : []),
       ],
@@ -75,12 +74,12 @@ const SideBar = () => {
       icon: <HighlightOutlined />,
       children: [
         { key: "/templates", label: "All" },
-        ...(me.role === "admin"
+        ...(me.type === "employee"
           ? [{ key: "/templates/new", label: "New" }]
           : []),
       ],
     },
-    ...(me.role === "admin"
+    ...(me.type === "employee"
       ? [
           {
             key: "sub4",

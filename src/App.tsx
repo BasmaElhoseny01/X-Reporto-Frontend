@@ -34,7 +34,10 @@ import HomePage from "./pages/HomePage";
 
 import AccountPage from "./pages/AccountPage";
 
+// Cases
+import UnAssigned from "./pages/Unassigned";
 import XRayWorkList from "./pages/XRayWorklist";
+
 import XRayCompleted from "./pages/XRayCompleted";
 import NewXRay from "./components/features/xrays/NewXRay/NewXRay";
 import ViewXRayPage from "./pages/ViewXRayPage";
@@ -52,7 +55,6 @@ import DrawarPage from "./pages/DrawarPage";
 import XRayArchived from "./pages/XRayArchived";
 // import ArchivedDoctor from "./pages/ArchivedDoctor";
 import AllTemplates from "./pages/AllTemplates";
-import UnAssigend from "./pages/Unassigned";
 import SigninPage from "./pages/Signin";
 import ViewEmployee from "./components/features/employee/ViewEmployee/ViewEmployee";
 import NewTemplates from "./components/features/templates/NewTemplates/NewTemplates";
@@ -146,7 +148,12 @@ function App() {
                       <Route path={paths.cases.base}>
                         <Route
                           path={paths.cases.types.unassigned}
-                          element={<UnAssigend />}
+                          element={<UnAssigned />}
+                        />
+
+                        <Route
+                          path={paths.cases.types.pending}
+                          element={<XRayWorkList />}
                         />
 
                         {/* <Route

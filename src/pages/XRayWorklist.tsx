@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { MainState } from "../state";
 import GeneralTable from "../components/common/Table/Table";
 import { Button, message } from "antd";
-import axios from '../services/apiService';
+import axios from "../services/apiService";
 
 function XRayWorkList() {
   const tableSearch = useSelector((state: MainState) => state.tableSearch);
@@ -24,7 +24,7 @@ function XRayWorkList() {
         },
       },
       {
-        title: "X-Ray ID",
+        title: "Case ID",
         dataIndex: "id",
         key: "id",
         filteredValue: [tableSearch],
@@ -46,7 +46,6 @@ function XRayWorkList() {
         filteredValue: [tableSearch],
         // eslint-disable-next-line
         sorter: (a: any, b: any) => a.doctor_id - b.doctor_id,
-
       },
       {
         key: "Created At",
@@ -82,12 +81,14 @@ function XRayWorkList() {
               type="link"
               style={{ padding: "0px" }}
               onClick={() => {
-                // prevent action when user click on the row              
-                axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+                // prevent action when user click on the row
+                axios.defaults.headers.common[
+                  "Authorization"
+                ] = `Bearer ${token}`;
                 axios
                   .post(`/api/v1/studies/${record.id}/unassign`)
                   .then((response) => {
-                    if(response.status === 200) {
+                    if (response.status === 200) {
                       message.success("Unassigned successfully!");
                       setTimeout(() => {
                         window.location.reload();
@@ -109,8 +110,14 @@ function XRayWorkList() {
     ],
 
     api: "/api/v1/studies/?status=in_progress&",
-    title: "WorkList",
-    filterColumns: ["status","notes","last_view_at","updated_at","employee_id"],
+    title: "Pending Cases",
+    filterColumns: [
+      "status",
+      "notes",
+      "last_view_at",
+      "updated_at",
+      "employee_id",
+    ],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
       window.location.pathname = `reports/${record.id}`;
