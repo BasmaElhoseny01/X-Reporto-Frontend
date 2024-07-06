@@ -3,6 +3,10 @@ import React, { useEffect, useState } from "react";
 // Services
 import axios from "../../../../services/apiService";
 
+// Redux
+import { useSelector } from "react-redux";
+import { MainState } from "../../../../state";
+
 // Styled Components
 import { StatisticsContainer } from "./Statistics.Styles";
 
@@ -18,7 +22,7 @@ type statisticsType = {
 };
 
 // Server Fetch
-const fetchStatistics = async () => {
+const fetchStatistics = async (isDoctor: boolean) => {
   const stats = { new: 0, incomplete: 0, pending: 0, completed: 0 };
   try {
     // New studies
@@ -28,6 +32,8 @@ const fetchStatistics = async () => {
     // InComplete studies
     response = await axios.get("/api/v1/studies/incomplete/count");
     stats.incomplete = response.data.count;
+
+    if (!isDoctor) return stats;
 
     //Your Pending studies
     response = await axios.get("/api/v1/studies/pending/count");
@@ -45,6 +51,9 @@ const fetchStatistics = async () => {
 };
 
 function Statistics() {
+  // Redux States
+  const user = useSelector((state: MainState) => state.user);
+
   const [statistics, setStatistics] = useState<statisticsType>({
     new: 0,
     incomplete: 0,
@@ -53,10 +62,10 @@ function Statistics() {
   });
 
   useEffect(() => {
-    fetchStatistics().then((response) => {
+    fetchStatistics(user?.type == "doctor").then((response) => {
       setStatistics(response);
     });
-  }, []);
+  }, [user]);
 
   // TODO Add Actions to the buttons
   return (
@@ -74,19 +83,23 @@ function Statistics() {
         action={() => console.log("Your Pending Reports")}
       />
 
-      <StatisticCard
-        status="pending"
-        text="My Pending Reports"
-        count={statistics?.pending}
-        action={() => console.log("Your Pending Cases")}
-      />
+      {user?.type == "doctor" ? (
+        <>
+          <StatisticCard
+            status="pending"
+            text="My Pending Reports"
+            count={statistics?.pending}
+            action={() => console.log("Your Pending Cases")}
+          />
 
-      <StatisticCard
-        status="completed"
-        text="My Completed Reports"
-        count={statistics?.completed}
-        action={() => console.log("My Completed Reports")}
-      />
+          <StatisticCard
+            status="completed"
+            text="My Completed Reports"
+            count={statistics?.completed}
+            action={() => console.log("My Completed Reports")}
+          />
+        </>
+      ) : null}
     </StatisticsContainer>
   );
 }

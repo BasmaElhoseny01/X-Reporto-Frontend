@@ -33,16 +33,6 @@ import Poster from "../../../assets/images/home_poster.svg";
 // Types
 import { Employee } from "../../../types/employee";
 
-// Server Fetch
-export const fetchMe = async () => {
-  try {
-    const response = await axios.get("/api/v1/employees/me");
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching me:", error);
-  }
-};
-
 export const fetchRecentActivity = async () => {
   try {
     const response = await axios.get("/api/v1/activities");
@@ -56,20 +46,17 @@ export const fetchRecentActivity = async () => {
 function Home() {
   // Get token from redux
   const token = useSelector((state: MainState) => state.token);
-
-  const [me, setMe] = React.useState({} as Employee);
+  const user = useSelector((state: MainState) => state.user);
 
   useEffect(() => {
-    // Fetch me
-    fetchMe().then((response) => {
-      setMe(response);
-    });
-
     // Fetch recent activity
-    fetchRecentActivity().then((response) => {
-      console.log(response);
-    });
-  }, [token]);
+    if (user?.type == "doctor") {
+      fetchRecentActivity().then((response) => {
+        console.log(response);
+      });
+    }
+    console.log("Fetching User", user);
+  }, [user, token]);
 
   return (
     <HomeContainer>
@@ -78,8 +65,8 @@ function Home() {
           {/* Welcome */}
           <HomeTopTitleContainer>
             <Title level={2}>
-              Welcome, {me.type == "doctor" ? <>Dr.</> : null}{" "}
-              {me.employee_name}!
+              Welcome, {user?.type == "doctor" ? <>Dr.</> : null}{" "}
+              {user?.employee_name}!
             </Title>
             <Title level={5} style={{ fontWeight: 500, marginTop: "-10px" }}>
               Wishing you a productive and successful day ahead.
@@ -93,24 +80,26 @@ function Home() {
         </HomeTopRightContainer>
       </HomeTopContainer>
 
-      <HomeBottomContainer>
-        {/* Recent Activity */}
-        <Title level={3}>Recent Activity</Title>
-        <LineHeader />
-        {/* Max only 8  */}
-        <ActivityCardsContainer>
-          <ActivityCard type="submit" />
-          <ActivityCard type="draft" />
-          <ActivityCard type="view" />
-          <ActivityCard type="view" />
-          <ActivityCard type="submit" />
-          <ActivityCard type="submit" />
-          <ActivityCard type="submit" />
-          <ActivityCard type="submit" />
-          {/* <ActivityCard type="submit" /> */}
-          {/* <ActivityCard type="draft" /> */}
-        </ActivityCardsContainer>
-      </HomeBottomContainer>
+      {user?.type == "doctor" && (
+        <HomeBottomContainer>
+          {/* Recent Activity */}
+          <Title level={3}>Recent Activity</Title>
+          <LineHeader />
+          {/* Max only 8  */}
+          <ActivityCardsContainer>
+            <ActivityCard type="submit" />
+            <ActivityCard type="draft" />
+            <ActivityCard type="view" />
+            <ActivityCard type="view" />
+            <ActivityCard type="submit" />
+            <ActivityCard type="submit" />
+            <ActivityCard type="submit" />
+            <ActivityCard type="submit" />
+            {/* <ActivityCard type="submit" /> */}
+            {/* <ActivityCard type="draft" /> */}
+          </ActivityCardsContainer>
+        </HomeBottomContainer>
+      )}
     </HomeContainer>
   );
 }

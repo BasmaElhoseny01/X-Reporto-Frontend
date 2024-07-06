@@ -3,10 +3,12 @@ import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // Redux
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { MainState, RootState } from "./state/Reducers";
-import { ChangeUser } from "./state/ActionCreators";
+import { bindActionCreators } from "redux";
+import { actionsCreators } from "./state";
 
+// Services
 import axios from "./services/apiService";
 
 // Theme
@@ -61,6 +63,10 @@ import NotFoundPage from "./pages/NotFoundPage";
 // }
 
 function App() {
+  // Dispatchers
+  const dispatch = useDispatch();
+  const { ChangeUser } = bindActionCreators(actionsCreators, dispatch);
+
   // Redux states
   const token = useSelector((state: MainState) => state.token);
   const currentTheme = useSelector((state: RootState) => state.theme);
@@ -76,7 +82,7 @@ function App() {
       .catch((error) => {
         console.log("Error fetching user data: ", error);
       });
-  }, []);
+  }, [token]);
 
   // Naming convention
   // let name = "App";
@@ -126,6 +132,7 @@ function App() {
               <MainContainer>
                 <Header />
                 <ContentContainer>
+                  <h1>{}</h1>
                   <BrowserRouter>
                     <Routes>
                       <Route path="/" element={<HomePage />} />
