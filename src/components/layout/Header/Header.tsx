@@ -30,17 +30,15 @@ import { reDirectToAccount, reDirectToHome } from "../../../utils";
 function Header() {
   const dispatch = useDispatch();
   const currentTheme = useSelector((state: RootState) => state.theme);
+
   const token = useSelector((state: MainState) => state.token);
-  const username = useSelector((state: MainState) => state.username);
+  const user = useSelector((state: MainState) => state.user);
 
   useEffect(() => {
-    if (token === "") {
+    if (token === "" || user === null) {
       reDirectToHome();
     }
-
-    console.log("Token: ", token);
-    console.log("Username: ", username);
-  }, [token, username]);
+  }, [token, user]);
 
   // Call UseEffect to change theme
   React.useEffect(() => {
@@ -97,7 +95,7 @@ function Header() {
       <HeaderRightContainer>
         {/* Avatar */}
         <StyledAvatar size="large" onClick={reDirectToAccount}>
-          {username[0]}
+          {user?.username.charAt(0).toUpperCase()}
         </StyledAvatar>
       </HeaderRightContainer>
     </HeaderContainer>

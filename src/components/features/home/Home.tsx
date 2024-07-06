@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import React, { useEffect } from "react";
 
 import axios from "../../../services/apiService";
@@ -30,9 +28,6 @@ import ActivityCard from "../../common/ActivityCard/ActivityCard";
 // Assets
 import Poster from "../../../assets/images/home_poster.svg";
 
-// Types
-import { Employee } from "../../../types/employee";
-
 export const fetchRecentActivity = async () => {
   try {
     const response = await axios.get("/api/v1/activities");
@@ -52,10 +47,9 @@ function Home() {
     // Fetch recent activity
     if (user?.type == "doctor") {
       fetchRecentActivity().then((response) => {
-        console.log(response);
+        console.log("Fetching Recent ", response);
       });
     }
-    console.log("Fetching User", user);
   }, [user, token]);
 
   return (
