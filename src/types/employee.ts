@@ -12,3 +12,4 @@ export interface Employee {
   type: string;
   username: string;
 }
+

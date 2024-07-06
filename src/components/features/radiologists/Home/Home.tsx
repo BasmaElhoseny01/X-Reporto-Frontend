@@ -64,7 +64,10 @@ function Home() {
         <HomeTopLeftContainer>
           {/* Welcome */}
           <HomeTopTitleContainer>
-            <Title level={2}>Welcome, Dr. {me.employee_name}!</Title>
+            <Title level={2}>
+              Welcome, {me.type == "doctor" ? <>Dr.</> : null}{" "}
+              {me.employee_name}!
+            </Title>
             <Title level={5} style={{ fontWeight: 500, marginTop: "-10px" }}>
               Wishing you a productive and successful day ahead.
             </Title>
@@ -78,7 +81,6 @@ function Home() {
       </HomeTopContainer>
 
       <HomeBottomContainer>
-        ..
         {/* Recent Activity */}
         <Title level={3}>Recent Activity</Title>
         <LineHeader />
@@ -87,11 +89,11 @@ function Home() {
           <ActivityCard type="submit" />
           <ActivityCard type="draft" />
           <ActivityCard type="view" />
-          {/* <ActivityCard type="view" /> */}
-          {/* <ActivityCard type="submit" /> */}
-          {/* <ActivityCard type="submit" /> */}
-          {/* <ActivityCard type="submit" /> */}
-          {/* <ActivityCard type="submit" /> */}
+          <ActivityCard type="view" />
+          <ActivityCard type="submit" />
+          <ActivityCard type="submit" />
+          <ActivityCard type="submit" />
+          <ActivityCard type="submit" />
           {/* <ActivityCard type="submit" /> */}
           {/* <ActivityCard type="draft" /> */}
         </ActivityCardsContainer>
