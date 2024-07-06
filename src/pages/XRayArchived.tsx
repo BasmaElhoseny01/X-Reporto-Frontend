@@ -46,7 +46,6 @@ function XRayArchived() {
         filteredValue: [tableSearch],
         // eslint-disable-next-line
         sorter: (a: any, b: any) => a.doctor_id - b.doctor_id,
-
       },
       {
         key: "Created At",
@@ -82,18 +81,19 @@ function XRayArchived() {
               type="link"
               style={{ padding: "0px" }}
               onClick={() => {
-                // prevent action when user click on the row              
-                axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+                // prevent action when user click on the row
+                axios.defaults.headers.common[
+                  "Authorization"
+                ] = `Bearer ${token}`;
                 axios
                   .post(`/api/v1/studies/${record.id}/unarchive`)
                   .then((response) => {
-                    if(response.status === 200) {
+                    if (response.status === 200) {
                       message.success("Unarchived successfully!");
                       setTimeout(() => {
                         window.location.reload();
                       }, 500);
-                    }
-                    else {
+                    } else {
                       message.error("Failed to unarchive!");
                     }
                   })
@@ -110,8 +110,14 @@ function XRayArchived() {
     ],
 
     api: "/api/v1/studies/?status=archived&",
-    title: "WorkList",
-    filterColumns: ["status","notes","last_view_at","updated_at","employee_id"],
+    title: "Archived Cases",
+    filterColumns: [
+      "status",
+      "notes",
+      "last_view_at",
+      "updated_at",
+      "employee_id",
+    ],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
       window.location.pathname = `reports/${record.id}`;

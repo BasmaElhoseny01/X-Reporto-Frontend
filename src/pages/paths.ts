@@ -7,7 +7,8 @@ interface PathsType {
     types: {
       unassigned: string;
       pending: string;
-      // complete: string;
+      completed: string;
+      archived: string;
 
       // view: (id: string | number) => string;
     };
@@ -22,7 +23,8 @@ const paths: PathsType = {
     types: {
       unassigned: "unassigned", // Path for unassigned cases
       pending: "pending", // Path for pending cases
-      // complete: "complete", // Path for complete cases
+      completed: "completed", // Path for complete cases
+      archived: "archived", // Path for archived cases
       // view: (id: string | number) => `cases/view/${id}`, // Function to generate view path for a case ID
     },
   },

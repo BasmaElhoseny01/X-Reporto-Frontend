@@ -16,12 +16,15 @@ export const reDirectToCases = (type: string) => {
     case "pending":
       window.location.href = `${paths.cases.base}/${paths.cases.types.pending}`;
       break;
+    case "completed":
+      window.location.href = `${paths.cases.base}/${paths.cases.types.completed}`;
+      break;
+    case "archived":
+      window.location.href = `${paths.cases.base}/${paths.cases.types.archived}`;
+      break;
 
     // case "new":
     //   window.location.href = `${paths.cases.base}/${paths.cases.types.new}`;
-    //   break;
-    // case "complete":
-    //   window.location.href = `${paths.cases.base}/${paths.cases.types.complete}`;
     //   break;
     default:
       // Handle invalid type or default case

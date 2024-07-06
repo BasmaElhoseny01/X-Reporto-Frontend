@@ -21,7 +21,7 @@ function XRayCompleted() {
         },
       },
       {
-        title: "X-Ray ID",
+        title: "Case ID",
         dataIndex: "id",
         key: "id",
         filteredValue: [tableSearch],
@@ -71,8 +71,14 @@ function XRayCompleted() {
     ],
 
     api: "/api/v1/studies/?status=completed&",
-    title: "WorkList",
-    filterColumns: ["status","notes","last_view_at","updated_at","employee_id"],
+    title: "Completed Cases",
+    filterColumns: [
+      "status",
+      "notes",
+      "last_view_at",
+      "updated_at",
+      "employee_id",
+    ],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
       window.location.pathname = `reports/${record.id}`;

@@ -156,6 +156,16 @@ function App() {
                           element={<XRayWorkList />}
                         />
 
+                        <Route
+                          path={paths.cases.types.completed}
+                          element={<XRayCompleted />}
+                        />
+
+                        <Route
+                          path={paths.cases.types.archived}
+                          element={<XRayArchived />}
+                        />
+
                         {/* <Route
                           path={paths.cases.types.new}
                           element={<NewXRay />}
