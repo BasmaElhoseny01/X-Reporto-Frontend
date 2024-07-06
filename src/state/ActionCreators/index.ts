@@ -1,6 +1,7 @@
 import { ActionType } from "../ActionType";
 import { Dispatch } from "redux";
 import { Action } from "../Actions";
+import { UserType } from "../../types/employee";
 
 export const ChangeToken = (state: string) => {
   return (dispatch: Dispatch<Action>) => {
@@ -29,6 +30,14 @@ export const ChangeId = (state: number) => {
   };
 };
 
+export const ChangeUser = (state: UserType) => {
+  return (dispatch: Dispatch<Action>) => {
+    dispatch({
+      type: ActionType.CHANGE_USER,
+      payload: state,
+    });
+  };
+};
 
 export const ChangeTheme = (state: "light" | "dark") => {
   return (dispatch: Dispatch<Action>) => {
@@ -39,21 +48,20 @@ export const ChangeTheme = (state: "light" | "dark") => {
   };
 };
 
-export const ChangeDrawer = (state:string) => {
-    return (dispatch : Dispatch<Action>) => {
-        dispatch({
-            type: ActionType.CHANGE_DRAWER,
-            payload: state,
-        });
-    };
+export const ChangeDrawer = (state: string) => {
+  return (dispatch: Dispatch<Action>) => {
+    dispatch({
+      type: ActionType.CHANGE_DRAWER,
+      payload: state,
+    });
+  };
 };
 
-export const ChangeTableSearch = (state:string) => {
-    return (dispatch : Dispatch<Action>) => {
-        dispatch({
-            type: ActionType.CHANGE_TABLE_SEARCH,
-            payload: state,
-        });
-    };
+export const ChangeTableSearch = (state: string) => {
+  return (dispatch: Dispatch<Action>) => {
+    dispatch({
+      type: ActionType.CHANGE_TABLE_SEARCH,
+      payload: state,
+    });
+  };
 };
-

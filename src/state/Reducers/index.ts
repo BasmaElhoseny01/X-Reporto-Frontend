@@ -3,6 +3,7 @@ import { combineReducers } from "redux";
 // All reducers
 import TokenReducer from "./TokenReducer";
 import UserNameReducer from "./UserNameReducer";
+import UserReducer from "./UserReducer";
 import ThemeReducer from "./ThemeReducer";
 import IdReducer from "./IdReducer";
 import DrawerReducer from "./DrawerReducer";
@@ -22,6 +23,7 @@ export interface RootState {
 const rootReducer = combineReducers({
   token: TokenReducer,
   username: UserNameReducer,
+  user: UserReducer,
   id: IdReducer,
   drawer: DrawerReducer,
   theme: ThemeReducer,

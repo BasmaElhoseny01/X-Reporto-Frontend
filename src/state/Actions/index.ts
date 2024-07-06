@@ -1,4 +1,6 @@
 import { ActionType } from "../ActionType";
+import { UserType } from "../../types/employee";
+
 interface Token {
   type: ActionType.CHANGE_TOKEN;
   payload: string;
@@ -13,7 +15,12 @@ interface Id {
   payload: number;
 }
 
-interface Drawer{
+interface User {
+  type: ActionType.CHANGE_USER;
+  payload: UserType;
+}
+
+interface Drawer {
   type: ActionType.CHANGE_DRAWER;
   payload: string;
 }
@@ -28,4 +35,11 @@ interface TableSearch {
   payload: string;
 }
 
-export type Action = Token | UserName | Id | Theme|Drawer|TableSearch;
+export type Action =
+  | Token
+  | UserName
+  | Id
+  | Theme
+  | Drawer
+  | TableSearch
+  | User;

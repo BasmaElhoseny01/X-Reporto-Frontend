@@ -29,11 +29,11 @@ const fetchStatistics = async () => {
     response = await axios.get("/api/v1/studies/incomplete/count");
     stats.incomplete = response.data.count;
 
-    // Pending studies
+    //Your Pending studies
     response = await axios.get("/api/v1/studies/pending/count");
     stats.pending = response.data.count;
 
-    // Completed studies
+    //Your Completed studies
     response = await axios.get("/api/v1/studies/completed/count");
     stats.completed = response.data.count;
 
@@ -69,23 +69,23 @@ function Statistics() {
       />
       <StatisticCard
         status="incomplete"
-        text="InComplete Reports"
+        text="Pending Reports"
         count={statistics?.incomplete}
         action={() => console.log("Your Pending Reports")}
       />
 
       <StatisticCard
         status="pending"
-        text="Pending Reports"
+        text="My Pending Reports"
         count={statistics?.pending}
-        action={() => console.log("Your Submitted Cases")}
+        action={() => console.log("Your Pending Cases")}
       />
 
       <StatisticCard
         status="completed"
-        text="Completed Reports"
+        text="My Completed Reports"
         count={statistics?.completed}
-        action={() => console.log("All Pending Reports")}
+        action={() => console.log("My Completed Reports")}
       />
     </StatisticsContainer>
   );

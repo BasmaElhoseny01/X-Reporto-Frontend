@@ -6,7 +6,7 @@ import {
   FileTextOutlined,
   ExperimentOutlined,
   HighlightOutlined,
-  LogoutOutlined
+  LogoutOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Menu } from "antd";
@@ -14,7 +14,7 @@ import Sider from "antd/es/layout/Sider";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionsCreators, MainState } from "../../../state";
-import axios from '../../../services/apiService';
+import axios from "../../../services/apiService";
 
 const SideBar = () => {
   const token = useSelector((state: MainState) => state.token);
@@ -34,7 +34,6 @@ const SideBar = () => {
       });
   }, []);
 
-
   type MenuItem = Required<MenuProps>["items"][number];
 
   const items: MenuItem[] = [
@@ -47,7 +46,9 @@ const SideBar = () => {
       children: [
         { key: "/patients", label: "All" },
         // { key: "/patients/archived", label: "Archived" },
-        ...(me.role === "admin" ? [{ key: "/patients/new", label: "New Patient" }] : []),
+        ...(me.role === "admin"
+          ? [{ key: "/patients/new", label: "New Patient" }]
+          : []),
       ],
     },
     {
@@ -55,11 +56,13 @@ const SideBar = () => {
       label: "Reports",
       icon: <FileTextOutlined />,
       children: [
-        { key: "/reports/unassign", label: "Un Assigned"},
+        { key: "/reports/unassign", label: "Un Assigned" },
         { key: "/reports/worklist", label: "Work list" },
         { key: "/reports/completed", label: "Completed" },
         { key: "/reports/archived", label: "Archived" },
-        ...(me.role === "admin" ? [{ key: "/reports/new", label: "New X-Ray" },] : []),
+        ...(me.role === "admin"
+          ? [{ key: "/reports/new", label: "New X-Ray" }]
+          : []),
       ],
     },
     {
@@ -68,41 +71,48 @@ const SideBar = () => {
       icon: <HighlightOutlined />,
       children: [
         { key: "/templates", label: "All" },
-        ...(me.role === "admin" ? [{ key: "/templates/new", label: "New" }] : []),
+        ...(me.role === "admin"
+          ? [{ key: "/templates/new", label: "New" }]
+          : []),
       ],
     },
-    ...(me.role === "admin" ?  
-      [{
-        key: "sub4",
-        label: "Doctors",
-        icon: <ExperimentOutlined />,
-        children: [
-          { key: "/doctors", label: "All" },
-          // { key: "/doctors/archived", label: "Archived" },
-          { key: "/doctors/new", label: "New" },
-        ],
-      }]
+    ...(me.role === "admin"
+      ? [
+          {
+            key: "sub4",
+            label: "Doctors",
+            icon: <ExperimentOutlined />,
+            children: [
+              { key: "/doctors", label: "All" },
+              // { key: "/doctors/archived", label: "Archived" },
+              { key: "/doctors/new", label: "New" },
+            ],
+          },
+        ]
       : []),
 
     { key: "/LogOut", icon: <LogoutOutlined />, label: "Logout" },
   ];
-  
+
   const [collapsed, setCollapsed] = useState(true);
   const drawer = useSelector((state: MainState) => state.drawer);
   const websiteTheme = useSelector((state: MainState) => state.theme);
 
   const dispatch = useDispatch();
-  const { ChangeDrawer,ChangeToken,ChangeUserName,ChangeId } = bindActionCreators(actionsCreators, dispatch);
+  const { ChangeDrawer, ChangeToken, ChangeUserName, ChangeUser, ChangeId } =
+    bindActionCreators(actionsCreators, dispatch);
   const onCollapse = (collapsed: boolean) => {
     setCollapsed(collapsed);
   };
   const onMenuClick: MenuProps["onClick"] = (e) => {
     if (e.key === "/LogOut") {
       ChangeToken("");
+
+      // Set User to Null
+      ChangeUser(null);
       ChangeUserName("");
       ChangeId(0);
-    }
-    else{
+    } else {
       ChangeDrawer(e.key);
       window.location.pathname = `${e.key}`;
     }
@@ -111,7 +121,7 @@ const SideBar = () => {
   useEffect(() => {
     ChangeDrawer(window.location.pathname.toLocaleLowerCase());
     console.log(drawer);
-  },[drawer]);
+  }, [drawer]);
 
   return (
     <Sider

@@ -5,6 +5,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // Redux
 import { useSelector } from "react-redux";
 import { MainState, RootState } from "./state/Reducers";
+import { ChangeUser } from "./state/ActionCreators";
+
+import axios from "./services/apiService";
 
 // Theme
 import { ThemeProvider } from "styled-components";
@@ -49,6 +52,7 @@ import ViewEmployee from "./components/features/employee/ViewEmployee/ViewEmploy
 import NewTemplates from "./components/features/templates/NewTemplates/NewTemplates";
 import ViewTemplate from "./components/features/templates/ViewTemplate/ViewTemplate";
 import NotFoundPage from "./pages/NotFoundPage";
+
 // import { bindActionCreators } from "redux";
 // import { actionsCreators } from "./state";
 
@@ -57,16 +61,29 @@ import NotFoundPage from "./pages/NotFoundPage";
 // }
 
 function App() {
+  // Redux states
+  const token = useSelector((state: MainState) => state.token);
   const currentTheme = useSelector((state: RootState) => state.theme);
 
+  // TODO Check location for that
   useEffect(() => {
-    // Naming convention
-    // let name = "App";
-    // console.log("App mounted");
-    // name = "App";
-    // console.log(name);
-    // Set theme to light
-  });
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    axios
+      .get("/api/v1/employees/me")
+      .then((response) => {
+        ChangeUser(response.data);
+      })
+      .catch((error) => {
+        console.log("Error fetching user data: ", error);
+      });
+  }, []);
+
+  // Naming convention
+  // let name = "App";
+  // console.log("App mounted");
+  // name = "App";
+  // console.log(name);
+  // Set theme to light
 
   // const getThemeAlgorithm = () => {
   //   switch (currentTheme) {
@@ -84,7 +101,6 @@ function App() {
   //   }
   // };
 
-  const token = useSelector((state: MainState) => state.token);
   // const {ChangeToken} = bindActionCreators(actionsCreators,useDispatch());
   // ChangeToken("");
   // console.log(token);
