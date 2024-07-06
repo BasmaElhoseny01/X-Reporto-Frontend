@@ -2,11 +2,11 @@
 
 import React, { useEffect } from "react";
 
-import axios from "../../../../services/apiService";
+import axios from "../../../services/apiService";
 
 // Redux
 import { useSelector } from "react-redux";
-import { MainState } from "../../../../state";
+import { MainState } from "../../../state";
 
 // Ant Design
 import Title from "antd/es/typography/Title";
@@ -23,18 +23,35 @@ import {
 } from "./Home.Styles";
 
 // Components
-import LineHeader from "../../../common/LineHeader/LineHeader";
+import LineHeader from "../../common/LineHeader/LineHeader";
 import Statistics from "./Statistics/Statistics";
-import ActivityCard from "../../../common/ActivityCard/ActivityCard";
+import ActivityCard from "../../common/ActivityCard/ActivityCard";
 
 // Assets
-import Poster from "../../../../assets/images/home_poster.svg";
-
-// Server
-import { fetchRecentActivity } from "./Home.Server";
+import Poster from "../../../assets/images/home_poster.svg";
 
 // Types
-import { Employee } from "../../../../types/employee";
+import { Employee } from "../../../types/employee";
+
+// Server Fetch
+export const fetchMe = async () => {
+  try {
+    const response = await axios.get("/api/v1/employees/me");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching me:", error);
+  }
+};
+
+export const fetchRecentActivity = async () => {
+  try {
+    const response = await axios.get("/api/v1/activities");
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching recent activity:", error);
+  }
+};
 
 function Home() {
   // Get token from redux
@@ -43,19 +60,15 @@ function Home() {
   const [me, setMe] = React.useState({} as Employee);
 
   useEffect(() => {
-    axios
-      .get("/api/v1/employees/me")
-      .then((response) => {
-        setMe(response.data);
-        console.log(response.data); // Debug
-        console.log(me); // Debug
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    // Fetch me
+    fetchMe().then((response) => {
+      setMe(response);
+    });
 
     // Fetch recent activity
-    fetchRecentActivity();
+    fetchRecentActivity().then((response) => {
+      console.log(response);
+    });
   }, [token]);
 
   return (
