@@ -25,21 +25,26 @@ import Sun from "../../../assets/images/sun.svg";
 import Moon from "../../../assets/images/moon.svg";
 
 // Utils
-import { reDirectToHome } from "../../../utils";
+import { reDirectToAccount, reDirectToHome } from "../../../utils";
 
 function Header() {
   const dispatch = useDispatch();
   const currentTheme = useSelector((state: RootState) => state.theme);
   const token = useSelector((state: MainState) => state.token);
+  const username = useSelector((state: MainState) => state.username);
 
   useEffect(() => {
     if (token === "") {
       reDirectToHome();
     }
-  }, [token]);
+
+    console.log("Token: ", token);
+    console.log("Username: ", username);
+  }, [token, username]);
+
   // Call UseEffect to change theme
   React.useEffect(() => {
-    console.log("Theme changed to: ", currentTheme);
+    // console.log("Theme changed to: ", currentTheme);
   }, [currentTheme]);
 
   // Toggle theme function
@@ -49,7 +54,7 @@ function Header() {
     // Dispatch action to change theme
     ChangeTheme(newTheme)(dispatch);
 
-    console.log("Theme changed to: ", newTheme);
+    // console.log("Theme changed to: ", newTheme);
   };
 
   return (
@@ -91,8 +96,8 @@ function Header() {
 
       <HeaderRightContainer>
         {/* Avatar */}
-        <StyledAvatar size="large" onClick={() => console.log("Clicked")}>
-          B
+        <StyledAvatar size="large" onClick={reDirectToAccount}>
+          {username[0]}
         </StyledAvatar>
       </HeaderRightContainer>
     </HeaderContainer>

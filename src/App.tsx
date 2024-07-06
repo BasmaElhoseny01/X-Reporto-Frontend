@@ -23,6 +23,8 @@ import SideBar from "./components/layout/SideBar/SideBar";
 // Pages
 import HomePage from "./pages/HomePage";
 
+import AccountPage from "./pages/AccountPage";
+
 import XRayWorkList from "./pages/XRayWorklist";
 import XRayCompleted from "./pages/XRayCompleted";
 import NewXRay from "./components/features/xrays/NewXRay/NewXRay";
@@ -111,6 +113,7 @@ function App() {
                   <BrowserRouter>
                     <Routes>
                       <Route path="/" element={<HomePage />} />
+                      <Route path="/account" element={<AccountPage />} />
 
                       <Route path="patients">
                         <Route index element={<AllPatient />} />

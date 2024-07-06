@@ -15,3 +15,11 @@ export const generateID = () => {
 export const reDirectToHome = () => {
   window.location.href = "/";
 };
+
+export const reDirectToLogin = () => {
+  window.location.href = "/login";
+};
+
+export const reDirectToAccount = () => {
+  window.location.href = "/account";
+};
