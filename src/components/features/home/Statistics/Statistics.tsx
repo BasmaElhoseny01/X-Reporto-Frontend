@@ -13,6 +13,9 @@ import { StatisticsContainer } from "./Statistics.Styles";
 // Components
 import StatisticCard from "./StatisticCard/StatisticCard";
 
+// Paths Utils
+import { reDirectToCases } from "../../../../pages/paths";
+
 // Types
 type statisticsType = {
   new: number;
@@ -72,13 +75,15 @@ function Statistics() {
     <StatisticsContainer>
       <StatisticCard
         status="new"
-        text="New Reports"
+        text="Unassigned Cases"
         count={statistics?.new}
-        action={() => console.log("New Cases")}
+        action={() => {
+          reDirectToCases("unassigned");
+        }}
       />
       <StatisticCard
         status="incomplete"
-        text="Pending Reports"
+        text="Pending Cases"
         count={statistics?.incomplete}
         action={() => console.log("Your Pending Reports")}
       />
@@ -87,14 +92,14 @@ function Statistics() {
         <>
           <StatisticCard
             status="pending"
-            text="My Pending Reports"
+            text="My Pending Cases"
             count={statistics?.pending}
             action={() => console.log("Your Pending Cases")}
           />
 
           <StatisticCard
             status="completed"
-            text="My Completed Reports"
+            text="My Completed Cases"
             count={statistics?.completed}
             action={() => console.log("My Completed Reports")}
           />

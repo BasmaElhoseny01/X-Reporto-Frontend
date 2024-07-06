@@ -40,7 +40,7 @@ function UnAssigend() {
         },
       },
       {
-        title: "X-Ray ID",
+        title: "Case ID",
         dataIndex: "id",
         key: "id",
         // eslint-disable-next-line
@@ -118,7 +118,7 @@ function UnAssigend() {
     ],
 
     api: "/api/v1/studies/?status=new&",
-    title: "Unassigned X-Rays",
+    title: "Unassigned Cases",
     filterColumns: ["status","notes","last_view_at","updated_at","employee_id"],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {

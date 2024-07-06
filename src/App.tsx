@@ -1,3 +1,4 @@
+/* eslint-disable*/
 import React, { useEffect } from "react";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -24,6 +25,9 @@ import { ContentContainer, MainContainer } from "./AppStyles";
 // Components
 import Header from "./components/layout/Header/Header";
 import SideBar from "./components/layout/SideBar/SideBar";
+
+// Paths
+import paths from "./pages/paths";
 
 // Pages
 import HomePage from "./pages/HomePage";
@@ -135,8 +139,9 @@ function App() {
                   <h1>{}</h1>
                   <BrowserRouter>
                     <Routes>
-                      <Route path="/" element={<HomePage />} />
-                      <Route path="/account" element={<AccountPage />} />
+                      <Route path={paths.home} element={<HomePage />} />
+
+                      <Route path={paths.account} element={<AccountPage />} />
 
                       <Route path="patients">
                         <Route index element={<AllPatient />} />
@@ -144,14 +149,41 @@ function App() {
                         <Route path=":Id" element={<ViewPatientPage />} />
                       </Route>
 
-                      <Route path="reports">
+                      <Route path={paths.cases.base}>
+                        <Route
+                          path={paths.cases.types.unassigned}
+                          element={<UnAssigend />}
+                        />
+                        {/* <Route
+                          path={paths.cases.types.workList}
+                          element={<XRayWorkList />}
+                        />
+                        <Route
+                          path={paths.cases.types.completed}
+                          element={<XRayCompleted />}
+                        />
+                        <Route
+                          path={paths.cases.types.archived}
+                          element={<XRayArchived />}
+                        />
+                        <Route
+                          path={paths.cases.types.new}
+                          element={<NewXRay />}
+                        />
+                        <Route
+                          path={paths.cases.types.view(":Id")}
+                          element={<ViewXRayPage />}
+                        /> */}
+                      </Route>
+
+                      {/* <Route path="cases">
+                        <Route path="unassigned" element={<UnAssigend />} />
                         <Route path="workList" element={<XRayWorkList />} />
                         <Route path="completed" element={<XRayCompleted />} />
                         <Route path="archived" element={<XRayArchived />} />
                         <Route path="new" element={<NewXRay />} />
-                        <Route path="unassign" element={<UnAssigend />} />
                         <Route path=":Id" element={<ViewXRayPage />} />
-                      </Route>
+                      </Route> */}
 
                       <Route path="doctors">
                         <Route index element={<AllDoctors />} />

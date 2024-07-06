@@ -53,15 +53,15 @@ const SideBar = () => {
     },
     {
       key: "sub3",
-      label: "Reports",
+      label: "Cases",
       icon: <FileTextOutlined />,
       children: [
-        { key: "/reports/unassign", label: "Un Assigned" },
-        { key: "/reports/worklist", label: "Work list" },
-        { key: "/reports/completed", label: "Completed" },
-        { key: "/reports/archived", label: "Archived" },
+        { key: "/cases/unassigned", label: "Unassigned" },
+        { key: "/cases/worklist", label: "Pending" },
+        { key: "/cases/completed", label: "Completed" },
+        { key: "/cases/archived", label: "Archived" },
         ...(me.role === "admin"
-          ? [{ key: "/reports/new", label: "New X-Ray" }]
+          ? [{ key: "/cases/new", label: "Add Case" }]
           : []),
       ],
     },
