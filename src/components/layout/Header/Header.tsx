@@ -24,14 +24,17 @@ import LogoDark from "../../../assets/images/logo-dark.svg";
 import Sun from "../../../assets/images/sun.svg";
 import Moon from "../../../assets/images/moon.svg";
 
+// Utils
+import { reDirectToHome } from "../../../utils";
+
 function Header() {
   const dispatch = useDispatch();
   const currentTheme = useSelector((state: RootState) => state.theme);
   const token = useSelector((state: MainState) => state.token);
 
   useEffect(() => {
-    if(token===""){
-      window.location.href = "/";
+    if (token === "") {
+      reDirectToHome();
     }
   }, [token]);
   // Call UseEffect to change theme
@@ -54,9 +57,21 @@ function Header() {
       <HeaderLeftContainer>
         {/* Logo*/}
         {currentTheme === "light" ? (
-          <img src={Logo} alt="logo" height="40px" />
+          <img
+            src={Logo}
+            alt="logo"
+            height="40px"
+            style={{ cursor: "pointer" }}
+            onClick={reDirectToHome}
+          />
         ) : (
-          <img src={LogoDark} alt="logo-dark" height="40px" />
+          <img
+            src={LogoDark}
+            alt="logo-dark"
+            height="40px"
+            style={{ cursor: "pointer" }}
+            onClick={reDirectToHome}
+          />
         )}
 
         {/* Switch Dark Light Mode */}

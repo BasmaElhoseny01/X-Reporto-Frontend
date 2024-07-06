@@ -46,6 +46,7 @@ import SigninPage from "./pages/Signin";
 import ViewEmployee from "./components/features/employee/ViewEmployee/ViewEmployee";
 import NewTemplates from "./components/features/templates/NewTemplates/NewTemplates";
 import ViewTemplate from "./components/features/templates/ViewTemplate/ViewTemplate";
+import NotFoundPage from "./pages/NotFoundPage";
 // import { bindActionCreators } from "redux";
 // import { actionsCreators } from "./state";
 
@@ -163,6 +164,7 @@ function App() {
                           </div>
                         }
                       />
+                      <Route path="/*" element={<NotFoundPage />} />
                     </Routes>
                   </BrowserRouter>
                 </ContentContainer>
