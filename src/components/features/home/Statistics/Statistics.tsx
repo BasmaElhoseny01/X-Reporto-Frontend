@@ -105,7 +105,9 @@ function Statistics() {
             status="completed"
             text="My Completed Cases"
             count={statistics?.completed}
-            action={() => console.log("My Completed Reports")}
+            action={() => {
+              reDirectToCases("completed", user?.id);
+            }}
           />
         </>
       ) : null}

@@ -13,19 +13,27 @@ export const reDirectToCases = (type: string, Id?: string | number) => {
     case "unassigned":
       window.location.href = `${paths.cases.base}/${paths.cases.types.unassigned}`;
       break;
+
     case "pending":
       if (Id) {
         // Pending per Doctor
         window.location.href = `${paths.cases.base}/${paths.cases.types.pending}/${Id}`;
-        console.error("Case ID is required for viewing.");
       } else {
         // All Pending
         window.location.href = `${paths.cases.base}/${paths.cases.types.pending}`;
       }
       break;
+
     case "completed":
-      window.location.href = `${paths.cases.base}/${paths.cases.types.completed}`;
+      if (Id) {
+        // Completed per Doctor
+        window.location.href = `${paths.cases.base}/${paths.cases.types.completed}/${Id}`;
+      } else {
+        // All Completed
+        window.location.href = `${paths.cases.base}/${paths.cases.types.completed}`;
+      }
       break;
+
     case "archived":
       window.location.href = `${paths.cases.base}/${paths.cases.types.archived}`;
       break;

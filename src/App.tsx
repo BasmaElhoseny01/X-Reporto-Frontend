@@ -37,10 +37,14 @@ import AccountPage from "./pages/AccountPage";
 // Cases
 import UnAssigned from "./pages/Unassigned";
 import XRayWorkList from "./pages/XRayWorklist";
-
 import XRayCompleted from "./pages/XRayCompleted";
-import NewXRay from "./components/features/xrays/NewXRay/NewXRay";
+
+import DoctorPendingCases from "./pages/DoctorPendingCases";
+import DoctorCompletedCases from "./pages/DoctorCompletedCases";
+
 import ViewXRayPage from "./pages/ViewXRayPage";
+
+import NewXRay from "./components/features/xrays/NewXRay/NewXRay";
 
 import AllPatient from "./pages/AllPatient";
 // import PatientArchived from "./pages/PatientArchived";
@@ -155,13 +159,18 @@ function App() {
                           <Route index element={<XRayWorkList />} />
                           <Route
                             path=":doctorId"
-                            element={<h1>Dr Pending</h1>}
+                            element={<DoctorPendingCases />}
                           />
                         </Route>
-                        <Route
-                          path={paths.cases.types.completed}
-                          element={<XRayCompleted />}
-                        />
+
+                        <Route path={paths.cases.types.completed}>
+                          <Route index element={<XRayCompleted />} />
+                          <Route
+                            path=":doctorId"
+                            element={<DoctorCompletedCases />}
+                          />
+                        </Route>
+
                         <Route
                           path={paths.cases.types.archived}
                           element={<XRayArchived />}
