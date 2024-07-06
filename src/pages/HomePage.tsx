@@ -1,17 +1,10 @@
 import React from "react";
 
 // Components
-import RadiologistHome from "../components/features/radiologists/Home/Home";
+import Home from "../components/features/home/Home";
 
 function HomePage() {
-  return (
-    <RadiologistHome />
-    // Radiologist's Home Page
-
-
-
-    // Employee's Home Page
-  );
+  return <Home />;
 }
 
 export default HomePage;

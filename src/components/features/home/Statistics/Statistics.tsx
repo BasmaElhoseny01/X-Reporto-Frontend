@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 // Services
-import axios from "../../../../../services/apiService";
+import axios from "../../../../services/apiService";
 
 // Styled Components
 import { StatisticsContainer } from "./Statistics.Styles";
@@ -18,7 +18,7 @@ type statisticsType = {
 };
 
 // Server Fetch
-export const fetchStatistics = async () => {
+const fetchStatistics = async () => {
   const stats = { new: 0, incomplete: 0, pending: 0, completed: 0 };
   try {
     // New studies

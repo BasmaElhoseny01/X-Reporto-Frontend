@@ -10,7 +10,7 @@ import { Badge } from "antd";
 import CountUp from "react-countup";
 
 // Components
-import PrimaryButton from "../../../../../common/PrimaryButton/PrimaryButton";
+import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
 
 // Interface props for StatisticCard
 interface StatisticCardProps {
