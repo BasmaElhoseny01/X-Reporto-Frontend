@@ -21,7 +21,7 @@ import Header from "./components/layout/Header/Header";
 import SideBar from "./components/layout/SideBar/SideBar";
 
 // Pages
-import Home from "./pages/Home";
+import HomePage from "./pages/HomePage";
 
 import XRayWorkList from "./pages/XRayWorklist";
 import XRayCompleted from "./pages/XRayCompleted";
@@ -82,10 +82,10 @@ function App() {
   // };
 
   const token = useSelector((state: MainState) => state.token);
-  // const {ChangeToken} = bindActionCreators(actionsCreators,useDispatch());  
+  // const {ChangeToken} = bindActionCreators(actionsCreators,useDispatch());
   // ChangeToken("");
   // console.log(token);
-  
+
   return (
     // <ConfigProvider theme={currentTheme == "light" ? lightTheme : darkTheme}>
     <ConfigProvider
@@ -109,7 +109,7 @@ function App() {
                 <ContentContainer>
                   <BrowserRouter>
                     <Routes>
-                      <Route path="/" element={<Home />} />
+                      <Route path="/" element={<HomePage />} />
 
                       <Route path="patients">
                         <Route index element={<AllPatient />} />
@@ -128,8 +128,14 @@ function App() {
 
                       <Route path="doctors">
                         <Route index element={<AllDoctors />} />
-                        <Route path="new" element={<NewEmployee type="doctors" />} />
-                        <Route path=":Id" element={<ViewEmployee type="doctors" />} />
+                        <Route
+                          path="new"
+                          element={<NewEmployee type="doctors" />}
+                        />
+                        <Route
+                          path=":Id"
+                          element={<ViewEmployee type="doctors" />}
+                        />
                       </Route>
 
                       <Route path="templates">
