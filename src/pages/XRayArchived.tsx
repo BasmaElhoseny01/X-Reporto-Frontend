@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { MainState } from "../state";
 import GeneralTable from "../components/common/Table/Table";
-import { Button } from "antd";
+import { Button, message } from "antd";
 import axios from "../services/apiService";
 
 function XRayArchived() {
@@ -29,12 +29,7 @@ function XRayArchived() {
         key: "id",
         filteredValue: [tableSearch],
         // eslint-disable-next-line
-        onFilter: (value: any, record: any) => {
-          return record.id
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase());
-        },
+        sorter: (a: any, b: any) => a.id - b.id,
       },
       {
         title: "Patient ID",
@@ -42,12 +37,7 @@ function XRayArchived() {
         key: "patient_id",
         filteredValue: [tableSearch],
         // eslint-disable-next-line
-        onFilter: (value: any, record: any) => {
-          return record.patient_id
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase());
-        },
+        sorter: (a: any, b: any) => a.patient_id - b.patient_id,
       },
       {
         title: "Doctor ID",
@@ -55,31 +45,32 @@ function XRayArchived() {
         key: "doctor_id",
         filteredValue: [tableSearch],
         // eslint-disable-next-line
-        onFilter: (value: any, record: any) => {
-          return record.doctor_id
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase());
-        },
+        sorter: (a: any, b: any) => a.doctor_id - b.doctor_id,
+
       },
       {
         key: "Created At",
         title: "created_at",
         dataIndex: "created_at",
         // eslint-disable-next-line
-        sorter: (a: any, b: any) => a.id - b.id,
+        sorter: (a: any, b: any) => a.created_at - b.created_at,
       },
       {
         title: "Severity",
         dataIndex: "severity",
         key: "severity",
         // eslint-disable-next-line
-        sorter: (a: any, b: any) => a.id - b.id,
+        sorter: (a: any, b: any) => a.severity - b.severity,
       },
       {
         title: "Last Edited At",
         dataIndex: "last_edited_at",
         key: "last_edited_at",
+        sorter: (a: any, b: any) => {
+          const dateA = new Date(a.last_edited_at);
+          const dateB = new Date(b.last_edited_at);
+          return dateA.getTime() - dateB.getTime();
+        },
       },
       {
         title: "Action",
@@ -97,7 +88,13 @@ function XRayArchived() {
                   .post(`/api/v1/studies/${record.id}/unarchive`)
                   .then((response) => {
                     if(response.status === 200) {
-                      window.location.reload();
+                      message.success("Unarchived successfully!");
+                      setTimeout(() => {
+                        window.location.reload();
+                      }, 500);
+                    }
+                    else {
+                      message.error("Failed to unarchive!");
                     }
                   })
                   .catch((error) => {

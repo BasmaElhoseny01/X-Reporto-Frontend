@@ -1,77 +1,134 @@
 import React from "react";
-import { InputContainer, Row, SubTitle } from "./InfoSection.Styles";
-import { Progress } from "antd";
+import { ImageCaintainer, InputContainer, Row, SubTitle } from "./InfoSection.Styles";
+import { Image, Progress } from "antd";
 
 function InputRow() {
   return (
     <>
     <Row style={{marginTop:8}}>
       <InputContainer justify="flex-start" >
-        <SubTitle > Atelectasis </SubTitle>
+        <ImageCaintainer>
+          {/* <Image width={40} src={process.env.REACT_APP_BASE_URL + "/download/" + props.xray_path} /> */}
+          <Image width={30} src={process.env.PUBLIC_URL+"/test.jpg"} style={{paddingRight:5}}/>
+          <SubTitle > Atelectasis </SubTitle>
+        </ImageCaintainer>
         <Progress percent={6} steps={25} size={[4,15]} strokeColor={"#1890FF"[6]} />
+
       </InputContainer>
       <InputContainer justify="flex-end" >
-        <SubTitle > Cardiomegaly </SubTitle>
+        <ImageCaintainer>
+          {/* <Image width={40} src={process.env.REACT_APP_BASE_URL + "/download/" + props.xray_path} /> */}
+          <Image width={30} src={process.env.PUBLIC_URL+"/test.jpg"} style={{paddingRight:5}}/>
+          <SubTitle > Cardiomegaly </SubTitle>
+        </ImageCaintainer>
         <Progress percent={6} steps={25} size={[4,15]} strokeColor={"#1890FF"[6]} />
       </InputContainer>
     </Row>
     <Row>
       <InputContainer justify="flex-start">
-        <SubTitle > Consolidation </SubTitle>
+        <ImageCaintainer>
+          {/* <Image width={40} src={process.env.REACT_APP_BASE_URL + "/download/" + props.xray_path} /> */}
+          <Image width={30} src={process.env.PUBLIC_URL+"/test.jpg"} style={{paddingRight:5}}/>
+          <SubTitle > Consolidation </SubTitle>
+        </ImageCaintainer>
         <Progress percent={6} steps={25} size={[4,15]} strokeColor={"#1890FF"[6]} />
       </InputContainer>
       <InputContainer justify="flex-end">
-        <SubTitle > Edema </SubTitle>
+        <ImageCaintainer>
+          {/* <Image width={40} src={process.env.REACT_APP_BASE_URL + "/download/" + props.xray_path} /> */}
+          <Image width={30} src={process.env.PUBLIC_URL+"/test.jpg"} style={{paddingRight:5}}/>
+          <SubTitle > Edema </SubTitle>
+        </ImageCaintainer>
         <Progress percent={6} steps={25} size={[4,15]} strokeColor={"#1890FF"[6]} />
       </InputContainer>
     </Row>
     <Row>
       <InputContainer justify="flex-start">
-        <SubTitle > Lung Lesion </SubTitle>
+        <ImageCaintainer>
+          {/* <Image width={40} src={process.env.REACT_APP_BASE_URL + "/download/" + props.xray_path} /> */}
+          <Image width={30} src={process.env.PUBLIC_URL+"/test.jpg"} style={{paddingRight:5}}/>
+          <SubTitle > Lung Lesion </SubTitle>
+        </ImageCaintainer>
         <Progress percent={6} steps={25} size={[4,15]} strokeColor={"#1890FF"[6]} />
       </InputContainer>
       <InputContainer justify="flex-end">
-        <SubTitle > Lung Opacity </SubTitle>
+        <ImageCaintainer>
+          {/* <Image width={40} src={process.env.REACT_APP_BASE_URL + "/download/" + props.xray_path} /> */}
+          <Image width={30} src={process.env.PUBLIC_URL+"/test.jpg"} style={{paddingRight:5}}/>
+          <SubTitle > Lung Opacity </SubTitle>
+        </ImageCaintainer>
         <Progress percent={6} steps={25} size={[4,15]} strokeColor={"#1890FF"[6]} />
       </InputContainer>
     </Row>
     <Row>
       <InputContainer justify="flex-start">
-        <SubTitle > No Finding </SubTitle>
+        <ImageCaintainer>
+          {/* <Image width={40} src={process.env.REACT_APP_BASE_URL + "/download/" + props.xray_path} /> */}
+          <Image width={30} src={process.env.PUBLIC_URL+"/test.jpg"} style={{paddingRight:5}}/>
+          <SubTitle > No Finding </SubTitle>
+        </ImageCaintainer>
         <Progress percent={6} steps={25} size={[4,15]} strokeColor={"#1890FF"[6]} />
       </InputContainer>
       <InputContainer justify="flex-end">
-        <SubTitle > Pleural Effusion </SubTitle>
+        <ImageCaintainer>
+          {/* <Image width={40} src={process.env.REACT_APP_BASE_URL + "/download/" + props.xray_path} /> */}
+          <Image width={30} src={process.env.PUBLIC_URL+"/test.jpg"} style={{paddingRight:5}}/>
+          <SubTitle > Pleural Effusion </SubTitle>
+        </ImageCaintainer>
         <Progress percent={6} steps={25} size={[4,15]} strokeColor={"#1890FF"[6]} />
       </InputContainer>
     </Row>
     <Row>
       <InputContainer justify="flex-start">
-        <SubTitle > Enlarged Cardi. </SubTitle>
+        <ImageCaintainer>
+          {/* <Image width={40} src={process.env.REACT_APP_BASE_URL + "/download/" + props.xray_path} /> */}
+          <Image width={30} src={process.env.PUBLIC_URL+"/test.jpg"} style={{paddingRight:5}}/>
+          <SubTitle > Enlarged Cardi. </SubTitle>
+        </ImageCaintainer>
         <Progress percent={6} steps={25} size={[4,15]} strokeColor={"#1890FF"[6]} />
       </InputContainer>
       <InputContainer justify="flex-end">
-        <SubTitle > Fracture </SubTitle>
+        <ImageCaintainer>
+          {/* <Image width={40} src={process.env.REACT_APP_BASE_URL + "/download/" + props.xray_path} /> */}
+          <Image width={30} src={process.env.PUBLIC_URL+"/test.jpg"} style={{paddingRight:5}}/>
+          <SubTitle > Fracture </SubTitle>
+        </ImageCaintainer>
         <Progress percent={6} steps={25} size={[4,15]} strokeColor={"#1890FF"[6]} />
       </InputContainer>
     </Row>
     <Row>
       <InputContainer justify="flex-start">
-        <SubTitle > Pleural Other </SubTitle>
+        <ImageCaintainer>
+          {/* <Image width={40} src={process.env.REACT_APP_BASE_URL + "/download/" + props.xray_path} /> */}
+          <Image width={30} src={process.env.PUBLIC_URL+"/test.jpg"} style={{paddingRight:5}}/>
+          <SubTitle > Pleural Other </SubTitle>
+        </ImageCaintainer>
         <Progress percent={6} steps={25} size={[4,15]} strokeColor={"#1890FF"[6]} />
       </InputContainer>
       <InputContainer justify="flex-end">
-        <SubTitle > Pneumonia </SubTitle>
+        <ImageCaintainer>
+          {/* <Image width={40} src={process.env.REACT_APP_BASE_URL + "/download/" + props.xray_path} /> */}
+          <Image width={30} src={process.env.PUBLIC_URL+"/test.jpg"} style={{paddingRight:5}}/>
+          <SubTitle > Pneumonia </SubTitle>
+        </ImageCaintainer>
         <Progress percent={6} steps={25} size={[4,15]} strokeColor={"#1890FF"[6]} />
       </InputContainer>
     </Row>
     <Row>
       <InputContainer justify="flex-start">
-        <SubTitle > Pneumothorax </SubTitle>
+        <ImageCaintainer>
+          {/* <Image width={40} src={process.env.REACT_APP_BASE_URL + "/download/" + props.xray_path} /> */}
+          <Image width={30} src={process.env.PUBLIC_URL+"/test.jpg"} style={{paddingRight:5}}/>
+          <SubTitle > Pneumothorax </SubTitle>
+        </ImageCaintainer>
         <Progress percent={6} steps={25} size={[4,15]} strokeColor={"#1890FF"[6]} />
       </InputContainer>
       <InputContainer justify="flex-end">
-        <SubTitle > Support Devices </SubTitle>
+        <ImageCaintainer>
+          {/* <Image width={40} src={process.env.REACT_APP_BASE_URL + "/download/" + props.xray_path} /> */}
+          <Image width={30} src={process.env.PUBLIC_URL+"/test.jpg"} style={{paddingRight:5}}/>
+          <SubTitle > Support Devices </SubTitle>
+        </ImageCaintainer>
         <Progress percent={6} steps={25} size={[4,15]} strokeColor={"#1890FF"[6]} />
       </InputContainer>
     </Row>

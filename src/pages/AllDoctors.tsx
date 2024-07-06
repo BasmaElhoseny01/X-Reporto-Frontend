@@ -16,7 +16,6 @@ function AllDoctors() {
         onFilter: (value: any, record: any) =>{
           return  record.employee_name.toString().toLowerCase().includes(value.toLowerCase());
         },
-        
       },
       {
         title: "UserName",
@@ -46,21 +45,30 @@ function AllDoctors() {
         dataIndex: "birth_date",
         key: "birth_date",
         // eslint-disable-next-line
-        sorter : (a: any, b: any) => a.id - b.id,
+        sorter: (a: any, b: any) => {
+          const dateA = new Date(a.birth_date);
+          const dateB = new Date(b.birth_date);
+          return dateA.getTime() - dateB.getTime();
+        },
       },
       {
         title: "Age",
         dataIndex: "age",
         key: "age",
         // eslint-disable-next-line
-        sorter : (a: any, b: any) => a.id - b.id,
+         
+        sorter : (a: any, b: any) => a.age - b.age,
       },
       {
         title: "Create At",
         dataIndex: "created_at",
         key: "created_at",
         // eslint-disable-next-line
-        sorter : (a: any, b: any) => a.id - b.id,
+        sorter: (a: any, b: any) => {
+          const dateA = new Date(a.created_at);
+          const dateB = new Date(b.created_at);
+          return dateA.getTime() - dateB.getTime();
+        },
       },
     ],
 

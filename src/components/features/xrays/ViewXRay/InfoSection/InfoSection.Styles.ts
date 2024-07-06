@@ -135,3 +135,10 @@ export const NotFoundContainer = styled(Flex)`
   flex-direction: column;
   margin-top: 20px;
 `;
+
+export const ImageCaintainer = styled(Flex)`
+  padding: 5px;
+  justify-content: flex-start; 
+  align-items: center;
+  flex-direction: row;
+`;

@@ -39,12 +39,11 @@ const GeneralTable = (props:GeneralTableProps) => {
   const token = useSelector((state: MainState) => state.token);
 
   useEffect(() => {
-    console.log(props.api);
     setLoading(true);
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     console.log(props.api);
     axios.get(`${props.api}skip=${5*(page-1)}&limit=5`)
-    .then((response) => {
+    .then((response) => {      
       response.data.map((ele:any) => {
         props.filterColumns.map(filter=>{
           delete ele[filter.toString()];

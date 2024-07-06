@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { MainState } from "../state";
 import GeneralTable from "../components/common/Table/Table";
 import axios from '../services/apiService';
-import { Button } from "antd";
+import { Button, message } from "antd";
 
 function UnAssigend() {
   const token = useSelector((state: MainState) => state.token);
@@ -43,14 +43,8 @@ function UnAssigend() {
         title: "X-Ray ID",
         dataIndex: "id",
         key: "id",
-        filteredValue: [tableSearch],
         // eslint-disable-next-line
-        onFilter: (value: any, record: any) => {
-          return record.id
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase());
-        },
+        sorter: (a: any, b: any) => a.id - b.id,
       },
       {
         title: "Patient ID",
@@ -58,31 +52,31 @@ function UnAssigend() {
         key: "patient_id",
         filteredValue: [tableSearch],
         // eslint-disable-next-line
-        onFilter: (value: any, record: any) => {
-          return record.patient_id
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase());
-        },
+        sorter: (a: any, b: any) => a.patient_id - b.patient_id,
       },
       {
         key: "Created At",
         title: "created_at",
         dataIndex: "created_at",
         // eslint-disable-next-line
-        sorter: (a: any, b: any) => a.id - b.id,
+        sorter: (a: any, b: any) => a.created_at - b.created_at,
       },
       {
         title: "Severity",
         dataIndex: "severity",
         key: "severity",
         // eslint-disable-next-line
-        sorter: (a: any, b: any) => a.id - b.id,
+        sorter: (a: any, b: any) => a.severity - b.severity,
       },
       {
         title: "Last Edited At",
         dataIndex: "last_edited_at",
         key: "last_edited_at",
+        sorter: (a: any, b: any) => {
+          const dateA = new Date(a.last_edited_at);
+          const dateB = new Date(b.last_edited_at);
+          return dateA.getTime() - dateB.getTime();
+        },
       },
       {
         title: "Action",
@@ -102,7 +96,13 @@ function UnAssigend() {
                   .post(`/api/v1/studies/${record.id}/assign`)
                   .then((response) => {
                     if(response.status === 200) {
-                      window.location.reload();
+                      message.success("Assigned successfully!");
+                      setTimeout(() => {
+                        window.location.reload();
+                      }, 500);
+                    }
+                    else {
+                      message.error("Error, failed to assign!");
                     }
                   })
                   .catch((error) => {

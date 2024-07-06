@@ -34,14 +34,18 @@ function AllPatient() {
         dataIndex: "birth_date",
         key: "birth_date",
         // eslint-disable-next-line
-        sorter : (a: any, b: any) => a.id - b.id,
+        sorter: (a: any, b: any) => {
+          const dateA = new Date(a.birth_date);
+          const dateB = new Date(b.birth_date);
+          return dateA.getTime() - dateB.getTime();
+        },
       },
       {
         title: "Age",
         dataIndex: "age",
         key: "age",
         // eslint-disable-next-line
-        sorter : (a: any, b: any) => a.id - b.id,
+        sorter : (a: any, b: any) => a.age - b.age,
       },
     ],
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Form, Input, Switch } from 'antd';
+import { Button, Form, Input, message, Switch } from 'antd';
 import { CardContainer,MainContainer, Header, FormItem } from './signin.Styles';
 
 import Logo from "../../../assets/images/logo.svg";
@@ -21,10 +21,18 @@ function Signin() {
       username:values.username,
       password:values.password
     }).then((res)=>{
-      ChangeToken(res.data.access_token);
-      ChangeDrawer("/");
+      if(res.status === 200)
+      {
+        ChangeToken(res.data.access_token);
+        ChangeDrawer("/");
+        message.success("Login Successful");
+      }
+      else{
+        message.error("Login Failed");
+      }
     }).catch((err)=>{
       console.log(err);
+      message.error("Login Failed");
     });
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -88,7 +96,7 @@ function Signin() {
 
           <FormItem style={{ display: 'flex', justifyContent: 'center', margin: 'auto' }}>
             <Button type="primary" htmlType="submit" > 
-              Submit
+              Login
             </Button>
           </FormItem>
         </Form>
