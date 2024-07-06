@@ -96,7 +96,9 @@ function Statistics() {
             status="pending"
             text="My Pending Cases"
             count={statistics?.pending}
-            action={() => console.log("Your Pending Cases")}
+            action={() => {
+              reDirectToCases("pending", user?.id);
+            }}
           />
 
           <StatisticCard

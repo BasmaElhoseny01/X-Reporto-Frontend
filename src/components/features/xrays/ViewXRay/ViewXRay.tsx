@@ -33,6 +33,15 @@ import {
 } from "@ant-design/icons";
 
 function ViewXRay() {
+
+  useEffect(() => {
+   
+    // Call END Get Case   studies/{id}
+
+    // case
+
+    }, []);
+
   // Context
   const { siderType, handleSetSiderType } = useView();
   // States for the Sider

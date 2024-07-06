@@ -5,6 +5,8 @@ import GeneralTable from "../components/common/Table/Table";
 import { Button, message } from "antd";
 import axios from "../services/apiService";
 
+import { reDirectToCases } from "./paths.utils";
+
 function XRayArchived() {
   const tableSearch = useSelector((state: MainState) => state.tableSearch);
   const token = useSelector((state: MainState) => state.token);
@@ -120,7 +122,7 @@ function XRayArchived() {
     ],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
-      window.location.pathname = `reports/${record.id}`;
+      reDirectToCases("view", record.id);
     },
     addNew: () => {
       window.location.pathname = "reports/new";

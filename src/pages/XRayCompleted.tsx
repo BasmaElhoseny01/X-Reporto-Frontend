@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { MainState } from "../state";
 import GeneralTable from "../components/common/Table/Table";
+import { reDirectToCases } from "./paths.utils";
 
 function XRayCompleted() {
   const tableSearch = useSelector((state: MainState) => state.tableSearch);
@@ -81,7 +82,7 @@ function XRayCompleted() {
     ],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
-      window.location.pathname = `reports/${record.id}`;
+      reDirectToCases("view", record.id);
     },
     addNew: () => {
       window.location.pathname = "reports/new";

@@ -2,8 +2,9 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { MainState } from "../state";
 import GeneralTable from "../components/common/Table/Table";
-import axios from '../services/apiService';
+import axios from "../services/apiService";
 import { Button, message } from "antd";
+import { reDirectToCases } from "./paths.utils";
 
 function UnAssigend() {
   const token = useSelector((state: MainState) => state.token);
@@ -86,22 +87,23 @@ function UnAssigend() {
           return (
             <Button
               type="link"
-              style={{ padding: "0px",textDecoration: "underline"}}
+              style={{ padding: "0px", textDecoration: "underline" }}
               disabled={me.type !== "doctor"}
               onClick={() => {
                 console.log(record);
-                // prevent action when user click on the row              
-                axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+                // prevent action when user click on the row
+                axios.defaults.headers.common[
+                  "Authorization"
+                ] = `Bearer ${token}`;
                 axios
                   .post(`/api/v1/studies/${record.id}/assign`)
                   .then((response) => {
-                    if(response.status === 200) {
+                    if (response.status === 200) {
                       message.success("Assigned successfully!");
                       setTimeout(() => {
                         window.location.reload();
                       }, 500);
-                    }
-                    else {
+                    } else {
                       message.error("Error, failed to assign!");
                     }
                   })
@@ -119,10 +121,16 @@ function UnAssigend() {
 
     api: "/api/v1/studies/?status=new&",
     title: "Unassigned Cases",
-    filterColumns: ["status","notes","last_view_at","updated_at","employee_id"],
+    filterColumns: [
+      "status",
+      "notes",
+      "last_view_at",
+      "updated_at",
+      "employee_id",
+    ],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
-      window.location.pathname = `reports/${record.id}`;
+      reDirectToCases("view", record.id);
     },
     addNew: () => {
       window.location.pathname = "reports/new";

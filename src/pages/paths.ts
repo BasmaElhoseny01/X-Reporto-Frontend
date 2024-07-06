@@ -9,9 +9,8 @@ interface PathsType {
       pending: string;
       completed: string;
       archived: string;
-
-      // view: (id: string | number) => string;
     };
+    
   };
 }
 
@@ -25,7 +24,6 @@ const paths: PathsType = {
       pending: "pending", // Path for pending cases
       completed: "completed", // Path for complete cases
       archived: "archived", // Path for archived cases
-      // view: (id: string | number) => `cases/view/${id}`, // Function to generate view path for a case ID
     },
   },
 };

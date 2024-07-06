@@ -151,20 +151,23 @@ function App() {
                           element={<UnAssigned />}
                         />
 
-                        <Route
-                          path={paths.cases.types.pending}
-                          element={<XRayWorkList />}
-                        />
-
+                        <Route path={paths.cases.types.pending}>
+                          <Route index element={<XRayWorkList />} />
+                          <Route
+                            path=":doctorId"
+                            element={<h1>Dr Pending</h1>}
+                          />
+                        </Route>
                         <Route
                           path={paths.cases.types.completed}
                           element={<XRayCompleted />}
                         />
-
                         <Route
                           path={paths.cases.types.archived}
                           element={<XRayArchived />}
                         />
+
+                        <Route path=":id" element={<ViewXRayPage />} />
 
                         {/* <Route
                           path={paths.cases.types.new}
