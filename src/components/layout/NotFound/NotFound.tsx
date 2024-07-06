@@ -7,7 +7,7 @@ import { Result } from "antd";
 import PrimaryButton from "../../common/PrimaryButton/PrimaryButton";
 
 // Utils
-import { reDirectToHome } from "../../../utils";
+import { reDirectToHome } from "../../../pages/paths.utils";
 
 function NotFound() {
   return (

@@ -25,7 +25,7 @@ import Sun from "../../../assets/images/sun.svg";
 import Moon from "../../../assets/images/moon.svg";
 
 // Utils
-import { reDirectToAccount, reDirectToHome } from "../../../utils";
+import { reDirectToAccount, reDirectToHome } from "../../../pages/paths.utils";
 
 function Header() {
   const dispatch = useDispatch();

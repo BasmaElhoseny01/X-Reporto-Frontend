@@ -16,6 +16,10 @@ import { bindActionCreators } from "redux";
 import { actionsCreators, MainState } from "../../../state";
 import axios from "../../../services/apiService";
 
+
+// Paths
+// import paths from "../../../pages/paths";
+
 const SideBar = () => {
   const token = useSelector((state: MainState) => state.token);
   const [me, setMe] = React.useState({} as any);

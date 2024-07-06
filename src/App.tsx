@@ -143,21 +143,42 @@ function App() {
 
                       <Route path={paths.account} element={<AccountPage />} />
 
-                      <Route path="patients">
-                        <Route index element={<AllPatient />} />
-                        <Route path="new" element={<NewPatientPage />} />
-                        <Route path=":Id" element={<ViewPatientPage />} />
-                      </Route>
-
                       <Route path={paths.cases.base}>
                         <Route
                           path={paths.cases.types.unassigned}
                           element={<UnAssigend />}
                         />
+
                         {/* <Route
-                          path={paths.cases.types.workList}
-                          element={<XRayWorkList />}
+                          path={paths.cases.types.new}
+                          element={<NewXRay />}
                         />
+                        <Route
+                          path={paths.cases.types.complete}
+                          element={<XRayCompleted />}
+                        />
+                        <Route
+                          path={`${paths.cases.base}/:id`}
+                          element={<ViewXRayPage />}
+                        /> */}
+                      </Route>
+
+                      {/* <Route path="patients">
+                        <Route index element={<AllPatient />} />
+                        <Route path="new" element={<NewPatientPage />} />
+                        <Route path=":Id" element={<ViewPatientPage />} />
+                      </Route> */}
+
+                      {/* <Route path={paths.cases.base}>
+                        <Route
+                          path={paths.cases.types.unassigned}
+                          element={<UnAssigend />}
+                        />
+                        <Route
+                          path={paths.cases.types.pending}
+                          element={<XRayWorkList />}
+                        /> */}
+                      {/* 
                         <Route
                           path={paths.cases.types.completed}
                           element={<XRayCompleted />}
@@ -174,7 +195,7 @@ function App() {
                           path={paths.cases.types.view(":Id")}
                           element={<ViewXRayPage />}
                         /> */}
-                      </Route>
+                      {/* </Route> */}
 
                       {/* <Route path="cases">
                         <Route path="unassigned" element={<UnAssigend />} />
@@ -185,7 +206,7 @@ function App() {
                         <Route path=":Id" element={<ViewXRayPage />} />
                       </Route> */}
 
-                      <Route path="doctors">
+                      {/* <Route path="doctors">
                         <Route index element={<AllDoctors />} />
                         <Route
                           path="new"
@@ -195,14 +216,14 @@ function App() {
                           path=":Id"
                           element={<ViewEmployee type="doctors" />}
                         />
-                      </Route>
+                      </Route> */}
 
-                      <Route path="templates">
+                      {/* <Route path="templates">
                         <Route index element={<AllTemplates />} />
                         <Route path="new" element={<NewTemplates />} />
                         <Route path=":Id" element={<ViewTemplate />} />
                       </Route>
-
+ */}
                       {/* <Route path="annotation" element={<Annotation />} /> */}
                       <Route path="drawer" element={<DrawarPage />} />
                       <Route path="examples" element={<Examples />} />

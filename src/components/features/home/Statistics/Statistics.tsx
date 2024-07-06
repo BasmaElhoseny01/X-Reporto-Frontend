@@ -14,7 +14,7 @@ import { StatisticsContainer } from "./Statistics.Styles";
 import StatisticCard from "./StatisticCard/StatisticCard";
 
 // Paths Utils
-import { reDirectToCases } from "../../../../pages/paths";
+import { reDirectToCases } from "../../../../pages/paths.utils";
 
 // Types
 type statisticsType = {
