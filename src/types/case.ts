@@ -1,16 +1,4 @@
-interface Patient {
-  patient_name: string;
-  age: number;
-  email: string;
-  birth_date: string;
-  created_at: string;
-  gender: string;
-  phone_number: string;
-  employee_id: number;
-  id: number;
-  studies: any[]; // Adjust type based on the actual structure of studies
-}
-
+import { Patient } from "./patient";
 interface Case {
   study_name: string;
   status: string;
@@ -29,8 +17,6 @@ interface Case {
   patient: Patient;
   id: number;
 }
-
-
 
 // Allow Case to be null
 export type CaseType = Case | null;

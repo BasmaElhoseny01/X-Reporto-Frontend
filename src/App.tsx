@@ -45,9 +45,11 @@ import DoctorCompletedCases from "./pages/DoctorCompletedCases";
 
 import ViewXRayPage from "./pages/ViewXRayPage";
 
+// Patients
+import AllPatient from "./pages/AllPatient";
+
 import NewXRay from "./components/features/xrays/NewXRay/NewXRay";
 
-import AllPatient from "./pages/AllPatient";
 // import PatientArchived from "./pages/PatientArchived";
 import NewPatientPage from "./pages/NewPatientPage";
 import ViewPatientPage from "./pages/ViewPatientPage";
@@ -148,6 +150,7 @@ function App() {
 
                       <Route path={paths.account} element={<AccountPage />} />
 
+                      {/* Cases */}
                       <Route path={paths.cases.base}>
                         <Route
                           path={paths.cases.types.unassigned}
@@ -180,59 +183,18 @@ function App() {
                         {/* <Route
                           path={paths.cases.types.new}
                           element={<NewXRay />}
-                        />
-                        <Route
-                          path={paths.cases.types.complete}
-                          element={<XRayCompleted />}
-                        />
-                        <Route
-                          path={`${paths.cases.base}/:id`}
-                          element={<ViewXRayPage />}
                         /> */}
                       </Route>
 
-                      {/* <Route path="patients">
+                      {/* Patients */}
+                      <Route path={paths.patients.base}>
                         <Route index element={<AllPatient />} />
-                        <Route path="new" element={<NewPatientPage />} />
-                        <Route path=":Id" element={<ViewPatientPage />} />
-                      </Route> */}
-
-                      {/* <Route path={paths.cases.base}>
                         <Route
-                          path={paths.cases.types.unassigned}
-                          element={<UnAssigend />}
+                          path=":Id"
+                          element={<ViewPatientPage />}
                         />
-                        <Route
-                          path={paths.cases.types.pending}
-                          element={<XRayWorkList />}
-                        /> */}
-                      {/* 
-                        <Route
-                          path={paths.cases.types.completed}
-                          element={<XRayCompleted />}
-                        />
-                        <Route
-                          path={paths.cases.types.archived}
-                          element={<XRayArchived />}
-                        />
-                        <Route
-                          path={paths.cases.types.new}
-                          element={<NewXRay />}
-                        />
-                        <Route
-                          path={paths.cases.types.view(":Id")}
-                          element={<ViewXRayPage />}
-                        /> */}
-                      {/* </Route> */}
-
-                      {/* <Route path="cases">
-                        <Route path="unassigned" element={<UnAssigend />} />
-                        <Route path="workList" element={<XRayWorkList />} />
-                        <Route path="completed" element={<XRayCompleted />} />
-                        <Route path="archived" element={<XRayArchived />} />
-                        <Route path="new" element={<NewXRay />} />
-                        <Route path=":Id" element={<ViewXRayPage />} />
-                      </Route> */}
+                        {/* <Route path="new" element={<NewPatientPage />} /> */}
+                      </Route>
 
                       {/* <Route path="doctors">
                         <Route index element={<AllDoctors />} />

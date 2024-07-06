@@ -10,7 +10,9 @@ interface PathsType {
       completed: string;
       archived: string;
     };
-    
+  };
+  patients: {
+    base: string;
   };
 }
 
@@ -25,6 +27,9 @@ const paths: PathsType = {
       completed: "completed", // Path for complete cases
       archived: "archived", // Path for archived cases
     },
+  },
+  patients: {
+    base: "patients",
   },
 };
 

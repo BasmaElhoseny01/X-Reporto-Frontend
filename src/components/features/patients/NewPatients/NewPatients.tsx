@@ -84,11 +84,10 @@ function NewPatients() {
           },
         }
       );
-      console.log("API response:", response.data);
       message.success("Patient added successfully");
       navigate("/patients"); // Replace with your actual route
     } catch (error) {
-      console.error("API error:", error);
+      console.error("Failed to add patient", error);
       message.error("Failed to add patient");
     }
   };

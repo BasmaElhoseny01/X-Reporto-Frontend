@@ -60,3 +60,15 @@ export const reDirectToCases = (type: string, Id?: string | number) => {
       break;
   }
 };
+
+export const reDirectToPatients = (type: string) => {
+  switch (type) {
+    case "all":
+      window.location.href = `${paths.patients.base}`;
+      break;
+    default:
+      // Handle invalid type or default case
+      console.error(`Invalid Patient type: ${type}`);
+      break;
+  }
+};
