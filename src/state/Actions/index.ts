@@ -1,5 +1,6 @@
 import { ActionType } from "../ActionType";
 import { UserType } from "../../types/employee";
+import { CaseType } from "../../types/case";
 
 interface Token {
   type: ActionType.CHANGE_TOKEN;
@@ -18,6 +19,11 @@ interface Id {
 interface User {
   type: ActionType.CHANGE_USER;
   payload: UserType;
+}
+
+interface Case {
+  type: ActionType.CHANGE_CASE;
+  payload: CaseType;
 }
 
 interface Drawer {
@@ -42,4 +48,5 @@ export type Action =
   | Theme
   | Drawer
   | TableSearch
-  | User;
+  | User
+  | Case;

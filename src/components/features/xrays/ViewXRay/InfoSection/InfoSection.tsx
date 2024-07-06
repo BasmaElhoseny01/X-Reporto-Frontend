@@ -16,54 +16,15 @@ import axios from "../../../../../services/apiService";
 import { MainState } from "../../../../../state";
 import { useSelector } from "react-redux";
 
-// type responseDataType = {
-//   id: number;
-//   study_name: string;
-//   status: string;
-//   notes: string;
-//   last_view_at: string;
-//   last_edited_at: string;
-//   updated_at: string;
-//   created_at: string;
-//   xray_path: string;
-//   xray_type: string;
-//   severity: 0;
-//   is_archived: boolean;
-//   patient_id: 0;
-//   doctor_id: 0;
-//   employee_id: 0;
-//   patient: {
-//     patient_name: string;
-//     age: number;
-//     birth_date: string;
-//     gender: string;
-//     id: number;
-//     studies: [];
-//   };
-// };
+
 function InfoSection() {
   // Context
   const { handleSetSiderType } = useView();
   // const [data, setData] = useState<responseDataType>();
-  // const token = useSelector((state: MainState) => state.token);
-  const id = window.location.pathname.split("/").pop();
+  const study_case = useSelector((state: MainState) => state.case);
 
   // Get the Study Context
-
-  useEffect(() => {
-    // console.log(id);
-    // axios.defaults.headers.common["Authorization"] =`Bearer ${token}`;
-    // axios
-    //   .get(`/api/v1/studies/${id}`)
-    //   .then((response) => {
-    //     setData(response.data);
-    //     console.log(response.data);
-    //     console.log(data);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-  }, [id]);
+  useEffect(() => {}, []);
 
   return (
     <InfoSectionContainer>
@@ -76,13 +37,13 @@ function InfoSection() {
       </Title>
       <LineHeader />
 
-      {/* {study_case?.info && (
+      {study_case && (
         <PatientData
-          name={study_case?.info?.patient?.patient_name}
-          age={study_case?.info.patient.age}
-          dateOfBirth={study_case?.info?.patient?.birth_date}
-          gender={study_case?.info?.patient?.gender}
-          id={study_case.info?.patient?.id}
+          name={study_case?.patient?.patient_name}
+          age={study_case?.patient.age}
+          dateOfBirth={study_case?.patient?.birth_date}
+          gender={study_case?.patient?.gender}
+          id={study_case?.patient?.id}
         />
       )}
       <Title justify="flex-start" style={{ marginTop: 5 }}>
@@ -90,7 +51,7 @@ function InfoSection() {
         History{" "}
       </Title>
       <LineHeader />
-      {study_case && <PatientHistory id={study_case.info.patient.id} />}
+      {study_case && <PatientHistory id={study_case.patient.id} />}
       <ActionsContainer>
         <SecondaryButton style={{ margin: "10px 10px 0", padding: 5 }}>
           {" "}
@@ -103,7 +64,7 @@ function InfoSection() {
           {" "}
           View Report{" "}
         </PrimaryButton>
-      </ActionsContainer> */}
+      </ActionsContainer>
     </InfoSectionContainer>
   );
 }

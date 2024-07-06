@@ -2,6 +2,7 @@ import { ActionType } from "../ActionType";
 import { Dispatch } from "redux";
 import { Action } from "../Actions";
 import { UserType } from "../../types/employee";
+import { CaseType } from "../../types/case";
 // import { BoundingBoxType, CaseInfoType, HeatMapType } from "../../types/case";
 
 export const ChangeToken = (state: string) => {
@@ -39,6 +40,16 @@ export const ChangeUser = (state: UserType) => {
     });
   };
 };
+
+export const ChangeCase = (state: CaseType) => {
+  return (dispatch: Dispatch<Action>) => {
+    dispatch({
+      type: ActionType.CHANGE_CASE,
+      payload: state,
+    });
+  };
+};
+
 export const ChangeTheme = (state: "light" | "dark") => {
   return (dispatch: Dispatch<Action>) => {
     dispatch({

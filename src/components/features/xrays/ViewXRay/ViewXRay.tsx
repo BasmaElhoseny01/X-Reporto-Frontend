@@ -39,12 +39,12 @@ import { bindActionCreators } from "redux";
 
 // Server Fetch
 const fetchStudy = async (id: string) => {
-  // try {
-  //   const response = await axios.get(`/api/v1/studies/${id}`);
-  //   return response.data;
-  // } catch (error) {
-  //   console.log("Error fetching study: ", error);
-  // }
+  try {
+    const response = await axios.get(`/api/v1/studies/${id}`);
+    return response.data;
+  } catch (error) {
+    console.log("Error fetching study: ", error);
+  }
 };
 
 function ViewXRay() {
@@ -52,16 +52,15 @@ function ViewXRay() {
   const { id } = useParams<{ id: string }>();
 
   // Dispatchers
+  const dispatch = useDispatch();
+  const { ChangeCase } = bindActionCreators(actionsCreators, dispatch);
 
   useEffect(() => {
     if (id) {
-      console.log("ID: ", id);
-      // dispatch(ChangeCaseInfo(heatMap));
-
-      //   fetchStudy(id).then((response) => {
-      //     console.log("Response: ", response);
-      //     // ChangeCaseInfo(response);
-      //   });
+      fetchStudy(id).then((response) => {
+        console.log(response);
+        ChangeCase(response);
+      });
     }
   }, [id]);
 
@@ -86,83 +85,81 @@ function ViewXRay() {
     return () => window.removeEventListener("resize", handleResize); // Clean up listener
   }, []);
 
-  // const onSideBarClick: MenuProps["onClick"] = (e) => {
-  //   if (e.key == "info") {
-  //     // Collapse Report
-  //     handleSetSiderType("info");
-  //     // setType("info");
-  //   } else if (e.key == "report") {
-  //     handleSetSiderType("report");
-  //     // setType("report");
-  //   } else if (e.key == "x-ray") {
-  //     handleSetSiderType("x-ray");
-  //     // setType("x-ray");
-  //   }
-  // };
+  const onSideBarClick: MenuProps["onClick"] = (e) => {
+    if (e.key == "info") {
+      // Collapse Report
+      handleSetSiderType("info");
+      // setType("info");
+    } else if (e.key == "report") {
+      handleSetSiderType("report");
+      // setType("report");
+    } else if (e.key == "x-ray") {
+      handleSetSiderType("x-ray");
+      // setType("x-ray");
+    }
+  };
 
   return (
-    <InfoSection />
-
-    //   <ViewXRayContainer>
-    //     <Layout style={{ width: "100%", height: "100%" }}>
-    //       <Content style={{ display: "flex" }}>
-    //         <XRaySection />
-    //         {
-    //           // Show the Info Section only if the type is info
-    //           siderType === "info" ? (
-    //             // <InfoSection viewReport={() => setType("report")} />
-    //             <InfoSection />
-    //           ) : // Show the Report Section only if the type is report
-    //           siderType === "report" ? (
-    //             <ReportSection />
-    //           ) : null
-    //         }
-    //       </Content>
-    //       <Sider
-    //         width={isSmallScreen ? "10%" : "5%"}
-    //         collapsible
-    //         collapsed={false}
-    //         theme={websiteTheme}
-    //         collapsedWidth={0}
-    //         trigger={null}
-    //         // style={{ height: "max-Content" }}
-    //       >
-    //         <Menu
-    //           onClick={onSideBarClick}
-    //           selectedKeys={[siderType]}
-    //           mode="inline"
-    //           theme={websiteTheme}
-    //         >
-    //           <Menu.Item
-    //             key="x-ray"
-    //             icon={
-    //               <Tooltip title="X-Ray" placement="left">
-    //                 <PictureOutlined />
-    //               </Tooltip>
-    //             }
-    //           >
-    //             {/* Optionally, you can also wrap this label with Tooltip if needed */}
-    //           </Menu.Item>
-    //           <Menu.Item
-    //             key="info"
-    //             icon={
-    //               <Tooltip title="Info" placement="left">
-    //                 <BarsOutlined />
-    //               </Tooltip>
-    //             }
-    //           ></Menu.Item>
-    //           <Menu.Item
-    //             key="report"
-    //             icon={
-    //               <Tooltip title="Report" placement="left">
-    //                 <FileTextOutlined />
-    //               </Tooltip>
-    //             }
-    //           ></Menu.Item>
-    //         </Menu>
-    //       </Sider>
-    //     </Layout>
-    //   </ViewXRayContainer>
+    <ViewXRayContainer>
+      <Layout style={{ width: "100%", height: "100%" }}>
+        <Content style={{ display: "flex" }}>
+          <XRaySection />
+          {
+            // Show the Info Section only if the type is info
+            siderType === "info" ? (
+              // <InfoSection viewReport={() => setType("report")} />
+              <InfoSection />
+            ) : // Show the Report Section only if the type is report
+            siderType === "report" ? (
+              <ReportSection />
+            ) : null
+          }
+        </Content>
+        <Sider
+          width={isSmallScreen ? "10%" : "5%"}
+          collapsible
+          collapsed={false}
+          theme={websiteTheme}
+          collapsedWidth={0}
+          trigger={null}
+          // style={{ height: "max-Content" }}
+        >
+          <Menu
+            onClick={onSideBarClick}
+            selectedKeys={[siderType]}
+            mode="inline"
+            theme={websiteTheme}
+          >
+            <Menu.Item
+              key="x-ray"
+              icon={
+                <Tooltip title="X-Ray" placement="left">
+                  <PictureOutlined />
+                </Tooltip>
+              }
+            >
+              {/* Optionally, you can also wrap this label with Tooltip if needed */}
+            </Menu.Item>
+            <Menu.Item
+              key="info"
+              icon={
+                <Tooltip title="Info" placement="left">
+                  <BarsOutlined />
+                </Tooltip>
+              }
+            ></Menu.Item>
+            <Menu.Item
+              key="report"
+              icon={
+                <Tooltip title="Report" placement="left">
+                  <FileTextOutlined />
+                </Tooltip>
+              }
+            ></Menu.Item>
+          </Menu>
+        </Sider>
+      </Layout>
+    </ViewXRayContainer>
   );
 }
 
