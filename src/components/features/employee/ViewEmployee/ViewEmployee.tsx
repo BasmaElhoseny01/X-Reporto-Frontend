@@ -11,7 +11,7 @@ import { MainState } from "../../../../state/Reducers";
 
 // Ant Design
 import Title from "antd/es/typography/Title";
-import { Result, Tabs } from "antd";
+import { Result } from "antd";
 import type { TabsProps } from "antd";
 
 // Components
@@ -20,7 +20,7 @@ import ViewHistory from "../../../common/ViewHistory/ViewHistory";
 import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
 
 // Styled Components
-import { ViewContainer } from "./ViewEmployee.style";
+import { StyledTabs, ViewContainer } from "./ViewEmployee.style";
 
 //Types
 import { EmployeeType } from "../../../../types/employee";
@@ -120,11 +120,11 @@ function ViewEmployee(props: ViewEmployeeProps) {
           <Title level={3}>
             {props.type == "doctors" ? "Doctor" : "Employee"}{" "}
           </Title>
-          <Tabs
+          <StyledTabs
             defaultActiveKey="1"
             items={props.type == "doctors" ? doctorNavItems : employeeNavItems}
             onChange={onChange}
-          />{" "}
+          />
         </ViewContainer>
       ) : (
         <Result

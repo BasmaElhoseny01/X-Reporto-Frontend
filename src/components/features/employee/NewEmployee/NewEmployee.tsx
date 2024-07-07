@@ -29,6 +29,10 @@ import {
   InputFieldsContainer,
   SubmitContainer,
 } from "./NewEmployee.style";
+import {
+  reDirectToDoctors,
+  reDirectToEmployees,
+} from "../../../../pages/paths.utils";
 
 interface NewEmployeeFormValues {
   employee_name: string;
@@ -63,22 +67,27 @@ function NewEmployee(props: NewEmployeeProps) {
       (formValues.phone_number as any).phoneNumber;
     formValues.type = props.type == "doctors" ? "doctor" : "employee";
     formValues.employee_id = user ? user.id : null;
-    console.log("Form values:", formValues);
 
     try {
+      /*eslint-disable-next-line*/
       const response = await axios.post(`api/v1/employees`, formValues, {
         headers: {
           Authorization: `Bearer ${token}`, // Include the token in the headers
           "Content-Type": "application/json", // Optional: Include if required by your API
         },
       });
-      console.log("API response:", response.data);
       message.success(
         `${
           props.type == "doctors" ? "Radiologist" : "Employee"
         } added successfully`
       );
       navigate("/doctors"); // Replace with your actual route
+      // Redirect to view Page
+      if (props.type == "doctors") {
+        reDirectToDoctors("all");
+      } else {
+        reDirectToEmployees("all");
+      }
     } catch (error) {
       console.error("API error:", error);
       message.error(

@@ -72,6 +72,7 @@ function EditEmployeeInfo(props: EditEmployeeInfoProps) {
   };
 
   const onFinish = async (values: any) => {
+    // Add employee_id to the values [This Employee Has Edited]
     values.employee_id = user?.id ?? 0;
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     await axios
@@ -191,6 +192,7 @@ function EditEmployeeInfo(props: EditEmployeeInfoProps) {
                 </Radio.Group>
               </Form.Item>
             </FormInputsContainer>
+
             <ButtonContainer>
               <SecondaryButton onClick={handleCancel} size="large">
                 Cancel
@@ -207,19 +209,19 @@ function EditEmployeeInfo(props: EditEmployeeInfoProps) {
                 {employee?.id}
               </Descriptions.Item>
 
-              <Descriptions.Item label="Name" style={{ width: "20%" }}>
+              <Descriptions.Item label="Name">
                 {employee?.employee_name}
               </Descriptions.Item>
 
-              <Descriptions.Item label="Username" style={{ width: "20%" }}>
+              <Descriptions.Item label="Username">
                 {employee?.username}
               </Descriptions.Item>
 
-              <Descriptions.Item label="Date of Birth" style={{ width: "20%" }}>
+              <Descriptions.Item label="Date of Birth">
                 {employee?.birth_date}
               </Descriptions.Item>
 
-              <Descriptions.Item label="Age" style={{ width: "20%" }}>
+              <Descriptions.Item label="Age" span={0.5}>
                 {employee?.age}
               </Descriptions.Item>
 
