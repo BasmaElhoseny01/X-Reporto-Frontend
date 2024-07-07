@@ -27,6 +27,9 @@ interface PathsType {
   };
   employees: {
     base: string;
+    types: {
+      new: string;
+    };
   };
   templates: {
     base: string;
@@ -64,9 +67,9 @@ const paths: PathsType = {
   },
   employees: {
     base: "employees",
-    // types: {
-    // new: "new",
-    // },
+    types: {
+      new: "new",
+    },
   },
   templates: {
     base: "templates",

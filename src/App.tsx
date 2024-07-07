@@ -62,6 +62,9 @@ import NewPatientPage from "./pages/NewPatientPage";
 
 // Doctors
 import AllDoctors from "./pages/AllDoctors";
+
+// Employees
+import AllEmployees from "./pages/AllEmployees";
 import ViewEmployee from "./components/features/employee/ViewEmployee/ViewEmployee";
 
 // Templates
@@ -212,6 +215,7 @@ function App() {
 
                   {/* Employees */}
                   <Route path={paths.employees.base}>
+                    <Route index element={<AllEmployees />} />
                     <Route path=":Id" element={<ViewEmployee type={""} />} />
                   </Route>
 

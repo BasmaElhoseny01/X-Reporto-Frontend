@@ -125,6 +125,21 @@ export const reDirectToDoctors = (type: string) => {
   }
 };
 
+export const reDirectToEmployees = (type: string) => {
+  switch (type) {
+    case "all":
+      window.location.href = `${paths.employees.base}`;
+      break;
+    case "new":
+      window.location.href = `${paths.employees.base}/${paths.employees.types.new}`;
+      break;
+    default:
+      // Handle invalid type or default case
+      console.error(`Invalid Employee type: ${type}`);
+      break;
+  }
+};
+
 export const reDirectToTemplates = (type: string) => {
   switch (type) {
     case "all":
