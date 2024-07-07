@@ -6,12 +6,12 @@ import axios from "../../../../services/apiService";
 
 // Ant Design
 import Title from "antd/es/typography/Title";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, EditTwoTone } from "@ant-design/icons";
 import { Result, Row } from "antd";
 
 // Components
 import LineHeader from "../../../common/LineHeader/LineHeader";
-// import EditInfo from "../../../common/EditInfo/EditInfo";
+import EditInfo from "../../../common/EditInfo/EditInfo";
 import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
 import ViewHistory from "../../../common/ViewHistory/ViewHistory";
 
@@ -47,12 +47,11 @@ function ViewPatient() {
 
   // Use States
   const [patientData, setPatientData] = useState({} as any);
+  const [isEditing, setIsEditing] = useState(false);
 
-  // const [idValue, setIdValue] = useState<string>("");
   useEffect(() => {
     if (Id) {
       // Get Patient Info
-      // setIdValue(Id, token);
       fetchPatientData(Id, token)
         .then((response) => {
           console.log(response);
@@ -85,9 +84,15 @@ function ViewPatient() {
           <Title level={2}>View Patient</Title>
           <LineHeader />
           <Row>
-            <Title level={4} style={{ margin: 0 }}>
-              Patient Information
-            </Title>
+            <div style={{ display: "flex" }}>
+              <Title level={4} style={{ margin: 0, marginRight: "10px" }}>
+                Patient Information
+              </Title>
+              <EditTwoTone
+                onClick={() => setIsEditing(true)}
+                style={{ fontSize: "24px" }}
+              />
+            </div>
             <ButtonContainer>
               <PrimaryButton icon={<PlusOutlined />} onClick={handleAddPatient}>
                 Add Patient
@@ -95,7 +100,12 @@ function ViewPatient() {
             </ButtonContainer>
           </Row>
           <LineHeader />
-          {/* <EditInfo patientData={patientData} /> */}
+          <EditInfo
+            patient={patientData}
+            setPatientData={setPatientData}
+            edit={isEditing}
+            setIsEditing={setIsEditing}
+          />
           <ViewHistory api={`api/v1/patients/${Id}/studies/?`} />
         </ViewContainer>
       ) : (

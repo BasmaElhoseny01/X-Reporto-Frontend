@@ -1,15 +1,20 @@
 import React from "react";
-import GeneralTable from "../../common/Table/Table";
+
+// Redux
 import { useSelector } from "react-redux";
 import { MainState } from "../../../state";
 
+// Components
+import GeneralTable from "../../common/Table/Table";
 
-interface ViewHistorytProps {
+// Styled Components
+import { HistoryContainer } from "./ViewHistory.style";
+
+interface ViewHistoryProps {
   api: string;
 }
 
-function ViewHistory(props: ViewHistorytProps) {
-  
+function ViewHistory(props: ViewHistoryProps) {
   const tableSearch = useSelector((state: MainState) => state.tableSearch);
   const GeneralTableData = {
     columns: [
@@ -20,7 +25,10 @@ function ViewHistory(props: ViewHistorytProps) {
         filteredValue: [tableSearch],
         // eslint-disable-next-line
         onFilter: (value: any, record: any) => {
-          return record.study_name.toString().toLowerCase().includes(value.toLowerCase());
+          return record.study_name
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase());
         },
       },
       {
@@ -58,12 +66,20 @@ function ViewHistory(props: ViewHistorytProps) {
         title: "Updated At",
         dataIndex: "updated_at",
         key: "updated_at",
-      }
+      },
     ],
 
     api: props.api,
     title: "History",
-    filterColumns: ["notes","xray_path","xray_type","patient_id","doctor_id","employee_id","id"],
+    filterColumns: [
+      "notes",
+      "xray_path",
+      "xray_type",
+      "patient_id",
+      "doctor_id",
+      "employee_id",
+      "id",
+    ],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
       window.location.pathname = `patients/${record.id}`;
@@ -71,12 +87,10 @@ function ViewHistory(props: ViewHistorytProps) {
     addNew: () => {
       window.location.pathname = "reports/new";
     },
-
   };
 
   return (
-    <div>
-
+    <HistoryContainer>
       <GeneralTable
         key={GeneralTableData.title}
         columns={GeneralTableData.columns}
@@ -86,7 +100,7 @@ function ViewHistory(props: ViewHistorytProps) {
         addNew={GeneralTableData.addNew}
         filterColumns={GeneralTableData.filterColumns}
       />
-    </div>
+      </HistoryContainer>
   );
 }
 

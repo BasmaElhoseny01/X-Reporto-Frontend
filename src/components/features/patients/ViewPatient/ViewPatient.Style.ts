@@ -23,6 +23,5 @@ export const ViewContainer = styled.div`
   flex-direction: column;
 
   width: 100%;
-  height: 100vh;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
 `;
