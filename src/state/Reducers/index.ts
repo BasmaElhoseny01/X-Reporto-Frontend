@@ -16,7 +16,7 @@ export interface RootState {
   user: {
     username: string;
     id: string;
-    token: string;
+    token: string | null;
   };
   // Add more state slices as needed
 }

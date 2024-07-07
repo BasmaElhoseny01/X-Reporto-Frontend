@@ -1,41 +1,30 @@
 import React, { useEffect, useState } from "react";
+
+// Redux
+import { useDispatch, useSelector } from "react-redux";
+import { bindActionCreators } from "redux";
+import { actionsCreators, MainState } from "../../../state";
+
+// Ant Design
 import {
   HomeOutlined,
   UsergroupDeleteOutlined,
   UserOutlined,
   FileTextOutlined,
   ExperimentOutlined,
+  DesktopOutlined,
   HighlightOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
-import { useDispatch, useSelector } from "react-redux";
-import { bindActionCreators } from "redux";
-import { actionsCreators, MainState } from "../../../state";
-import axios from "../../../services/apiService";
 
 // Paths
 // import paths from "../../../pages/paths";
 
 const SideBar = () => {
-  const token = useSelector((state: MainState) => state.token);
-  const [me, setMe] = React.useState({} as any);
-
-  useEffect(() => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    axios
-      .get("/api/v1/employees/me")
-      .then((response) => {
-        setMe(response.data);
-        // console.log(me);
-        // console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+  const user = useSelector((state: MainState) => state.user);
 
   type MenuItem = Required<MenuProps>["items"][number];
 
@@ -49,7 +38,7 @@ const SideBar = () => {
       children: [
         { key: "/patients", label: "All" },
         // { key: "/patients/archived", label: "Archived" },
-        ...(me.type === "employee"
+        ...(user?.type === "employee"
           ? [{ key: "/patients/new", label: "New Patient" }]
           : []),
       ],
@@ -63,7 +52,7 @@ const SideBar = () => {
         { key: "/cases/pending", label: "Pending" },
         { key: "/cases/completed", label: "Completed" },
         { key: "/cases/archived", label: "Archived" },
-        ...(me.type === "employee"
+        ...(user?.type === "employee"
           ? [{ key: "/cases/new", label: "Add Case" }]
           : []),
       ],
@@ -74,12 +63,12 @@ const SideBar = () => {
       icon: <HighlightOutlined />,
       children: [
         { key: "/templates", label: "All" },
-        ...(me.type === "employee"
+        ...(user?.type === "doctor"
           ? [{ key: "/templates/new", label: "New" }]
           : []),
       ],
     },
-    ...(me.type === "employee"
+    ...(user?.type === "employee"
       ? [
           {
             key: "sub4",
@@ -89,6 +78,21 @@ const SideBar = () => {
               { key: "/doctors", label: "All" },
               // { key: "/doctors/archived", label: "Archived" },
               { key: "/doctors/new", label: "New" },
+            ],
+          },
+        ]
+      : []),
+
+    ...(user?.type === "employee"
+      ? [
+          {
+            key: "sub6",
+            label: "Employees",
+            icon: <DesktopOutlined />,
+            children: [
+              { key: "/employees", label: "All" },
+              // { key: "/doctors/archived", label: "Archived" },
+              { key: "/employees/new", label: "New" },
             ],
           },
         ]
@@ -123,7 +127,6 @@ const SideBar = () => {
 
   useEffect(() => {
     ChangeDrawer(window.location.pathname.toLocaleLowerCase());
-    // console.log(drawer);
   }, [drawer]);
 
   return (

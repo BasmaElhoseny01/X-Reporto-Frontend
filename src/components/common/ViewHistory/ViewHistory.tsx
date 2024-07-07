@@ -92,15 +92,7 @@ function ViewHistory(props: ViewHistoryProps) {
 
   return (
     <HistoryContainer>
-      <h1>aaaa</h1>
-      <h1>aaaa</h1>
-      <h1>aaaa</h1>
-      <h1>aaaa</h1>
-      <h1>aaaa</h1>
-      <h1>aaaa</h1>
-      <h1>aaaa</h1>
-      <h1>aaaa</h1>
-      {/* <GeneralTable
+      <GeneralTable
         key={GeneralTableData.title}
         columns={GeneralTableData.columns}
         api={GeneralTableData.api}
@@ -108,7 +100,7 @@ function ViewHistory(props: ViewHistoryProps) {
         action={GeneralTableData.action}
         addNew={GeneralTableData.addNew}
         filterColumns={GeneralTableData.filterColumns}
-      /> */}
+      />
     </HistoryContainer>
   );
 }

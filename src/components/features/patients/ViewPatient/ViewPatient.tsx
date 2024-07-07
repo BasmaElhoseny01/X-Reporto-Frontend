@@ -25,6 +25,7 @@ interface RouteParams extends Record<string, string | undefined> {
   Id: string;
 }
 
+// Server Fetch
 const fetchPatientData = async (id: string, token: string) => {
   try {
     const response = await axios.get(`api/v1/patients/${id}`, {
@@ -43,7 +44,10 @@ function ViewPatient() {
 
   // Get the ID value from the URL
   const { Id } = useParams<RouteParams>(); // Replace with the actual ID value
+
+  // Redux States
   const token = useSelector((state: MainState) => state.token);
+  const user = useSelector((state: MainState) => state.user);
 
   // Use States
   const [patientData, setPatientData] = useState({} as any);
@@ -80,22 +84,29 @@ function ViewPatient() {
     <>
       {patientData ? (
         <ViewContainer>
-          <Title level={2}>View Patient</Title>
+          <Title level={2}>Patient</Title>
           <LineHeader />
           <Row>
             <div style={{ display: "flex" }}>
               <Title level={4} style={{ margin: 0, marginRight: "10px" }}>
                 Patient Information
               </Title>
-              <EditTwoTone
-                onClick={() => setIsEditing(true)}
-                style={{ fontSize: "24px" }}
-              />
+              {user?.type == "employee" && (
+                <EditTwoTone
+                  onClick={() => setIsEditing(true)}
+                  style={{ fontSize: "24px" }}
+                />
+              )}
             </div>
             <ButtonContainer>
-              <PrimaryButton icon={<PlusOutlined />} onClick={handleAddPatient}>
-                Add Patient
-              </PrimaryButton>
+              {user?.type == "employee" && (
+                <PrimaryButton
+                  icon={<PlusOutlined />}
+                  onClick={handleAddPatient}
+                >
+                  Add Patient
+                </PrimaryButton>
+              )}
             </ButtonContainer>
           </Row>
           <LineHeader />

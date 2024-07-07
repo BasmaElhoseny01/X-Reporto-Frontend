@@ -11,7 +11,7 @@ export const HeaderContainer = styled(AntdHeader)`
   background-color: transparent;
   border-bottom: 1px solid ${palette.grey100};
 
-  padding: 5px 2rem;
+  padding: 2px 5px;
 
   display: flex;
   justify-content: space-between;

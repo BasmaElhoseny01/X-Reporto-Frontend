@@ -1,7 +1,7 @@
 import { ActionType } from "../ActionType";
 import { Dispatch } from "redux";
 import { Action } from "../Actions";
-import { UserType } from "../../types/employee";
+import { UserType } from "../../types/user";
 import { CaseType } from "../../types/case";
 // import { BoundingBoxType, CaseInfoType, HeatMapType } from "../../types/case";
 

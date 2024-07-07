@@ -1,35 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { Descriptions, Form, Input, Radio, message } from 'antd';
-import { EditButton, ButtonContainer } from './EditEmployeeInfo.style';
-import SecondaryButton from '../SecondaryButton/SecondaryButton';
-import PrimaryButton from '../PrimaryButton/PrimaryButton';
-// import Title from 'antd/es/typography/Title';
-// import LineHeader from '../LineHeader/LineHeader';
-import { format, parseISO, isValid } from 'date-fns';
+import React, { useState, useEffect } from "react";
+
+// Services
+import axios from "../../../services/apiService";
+
+// Third Party
+
+// Ant Design
+import { Descriptions, Form, Input, Radio, message } from "antd";
+
+// Styled Components
+import { ButtonContainer, FormInputsContainer } from "./EditEmployeeInfo.style";
+
+// Components
+import PrimaryButton from "../PrimaryButton/PrimaryButton";
+import SecondaryButton from "../SecondaryButton/SecondaryButton";
+
+// Styled Components
+import { InfoContainer } from "../EditInfo/EditInfo.style";
+
+//Types
+import { EmployeeType } from "../../../types/employee";
 import { useSelector } from "react-redux";
-import { MainState } from "../../../state";
-
-import axios from '../../../services/apiService';
-
-interface UserData {
-  id: number;
-  employee_name: string;
-  email: string;
-  age: number;
-  birth_date: string;
-  phone_number: string;
-  gender: string;
-  created_at: string;
-  studies: []; // Update this type as needed
-  role: string;
-  type: string;
-  employee_id: number;
-  username: string;
-}
+import { MainState } from "../../../state/Reducers";
 
 interface EditEmployeeInfoProps {
-  idValue: string;
   type: string;
+  employee: EmployeeType;
+  setEmployeeData: (value: EmployeeType) => void;
 }
 
 function calculateAge(birthDate: string): number {
@@ -45,85 +42,49 @@ function calculateAge(birthDate: string): number {
   return age;
 }
 
-function formatDateTime(dateString: string): string {
-  const date = parseISO(dateString);
-  if (isValid(date)) {
-    return format(date, 'MM/dd/yyyy HH:mm:ss');
-  }
-  return 'Invalid Date';
-}
-
-function EditEmployeeInfo (props: EditEmployeeInfoProps) {
-  const [isEditing, setIsEditing] = useState(false);
+function EditEmployeeInfo(props: EditEmployeeInfoProps) {
+  const { employee, setEmployeeData } = props;
   const [form] = Form.useForm();
   const token = useSelector((state: MainState) => state.token);
   const user = useSelector((state: MainState) => state.user);
 
-  const [data, setData] = useState<UserData>({
-    id: 0,
-    employee_name: '',
-    email: '',
-    age: 0,
-    birth_date: '',
-    phone_number: '',
-    gender: '',
-    created_at: '',
-    studies: [],
-    role: 'user',
-    type: 'employee',
-    employee_id: 0,
-    username: ''
-  });
+  // Use States
+  const [isEditing, setIsEditing] = useState(false);
+  const [ageValue, setAgeValue] = useState<number>(-1); // State to hold calculated age
 
   useEffect(() => {
-    if (props.idValue) {
-      axios.get(`api/v1/employees/${props.idValue}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        }
-      })
-        .then(response => {
-          setData(response.data);
-          form.setFieldsValue(response.data);
-        })
-        .catch(error => {
-          console.error("Error fetching user data:", error);
-        });
+    // Calculate age initially when patient data is loaded
+    if (employee?.birth_date) {
+      const age = calculateAge(employee?.birth_date);
+      setAgeValue(age);
     }
-  }, [props.idValue, form]);
+  }, [employee?.birth_date]);
 
   const handleEdit = () => {
     setIsEditing(true);
   };
 
-  const handleBirthDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBirthDateChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const date = event.target.value;
     form.setFieldsValue({ age: calculateAge(date) });
   };
 
   const onFinish = async (values: any) => {
-    values.id = data.id;
-    values.age = calculateAge(values.birth_date);
-    values.created_at = data.created_at;
-    values.role = data.role;
-    values.type = data.type;
     values.employee_id = user?.id ?? 0;
-    values.username = data.username;
-    values.doctor_id =  user?.id ?? 0;
-
-    try {
-      await axios.put(`api/v1/employees/${data.id}`, values, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        }
+    await axios
+      .put(`api/v1/employees/${employee?.id}`, { ...values })
+      .then((response) => {
+        setEmployeeData(response.data);
+        message.success("Data successfully updated!");
+      })
+      .catch((error) => {
+        console.error("Error updating user data:", error);
+        message.error("Failed to update data. Please try again.");
       });
-      setData(values);
-      setIsEditing(false);
-      message.success('Data successfully updated!');
-    } catch (error) {
-      console.error('Error updating user data:', error);
-      message.error('Failed to update data. Please try again.');
-    }
+    // Turn off editing mode
+    setIsEditing(false);
   };
 
   const handleCancel = () => {
@@ -131,111 +92,159 @@ function EditEmployeeInfo (props: EditEmployeeInfoProps) {
   };
 
   return (
-    <div>
-      <Form form={form} layout="vertical" initialValues={data} onFinish={onFinish}>
-        <Descriptions layout="vertical" colon={false}>
-          <Descriptions.Item label="Employee ID">{data.id}</Descriptions.Item>
-          <Descriptions.Item label="Employee Name">
-            {isEditing ? (
+    employee && (
+      <InfoContainer>
+        {isEditing ? (
+          <Form
+            form={form}
+            layout="vertical"
+            initialValues={employee}
+            onFinish={onFinish}
+          >
+            <FormInputsContainer>
               <Form.Item
+                label="ID"
+                name="id"
+                labelCol={{ span: 24 }}
+                wrapperCol={{ span: 24 }}
+              >
+                <Input disabled />
+              </Form.Item>
+
+              <Form.Item
+                label="Name"
                 name="employee_name"
                 labelCol={{ span: 24 }}
                 wrapperCol={{ span: 24 }}
-                rules={[{ required: true, message: 'Name is required' }]}
+                rules={[{ required: true, message: "Name is required" }]}
               >
                 <Input placeholder="Employee Name" />
               </Form.Item>
-            ) : (
-              <>
-                {data.employee_name} <EditButton onClick={handleEdit} />
-              </>
-            )}
-          </Descriptions.Item>
-          <Descriptions.Item label="UesrName">{data.username}</Descriptions.Item>
-          <Descriptions.Item label="Birth Date">
-            {isEditing ? (
+
               <Form.Item
+                label="Username"
+                name="username"
+                labelCol={{ span: 24 }}
+                wrapperCol={{ span: 24 }}
+                rules={[{ required: true, message: "Username is required" }]}
+              >
+                <Input placeholder="Employee Username" />
+              </Form.Item>
+
+              <Form.Item
+                label="Date of Birth"
                 name="birth_date"
                 labelCol={{ span: 24 }}
                 wrapperCol={{ span: 24 }}
-                rules={[{ required: true, message: 'Birth Date is required' }]}
+                rules={[{ required: true, message: "Birth Date is required" }]}
               >
-                <Input placeholder="Birth Date" type="date" onChange={handleBirthDateChange} />
+                <Input
+                  placeholder="Date of Birth"
+                  type="date"
+                  onChange={handleBirthDateChange}
+                />
               </Form.Item>
-            ) : (
-              <>
-                {data.birth_date} <EditButton onClick={handleEdit} />
-              </>
-            )}
-          </Descriptions.Item>
-          <Descriptions.Item label="Email">
-            {isEditing ? (
+
               <Form.Item
+                label="Age"
+                name="age"
+                labelCol={{ span: 24 }}
+                wrapperCol={{ span: 24 }}
+              >
+                <Input type="number" disabled value={ageValue} />
+              </Form.Item>
+
+              <Form.Item
+                label="Email"
                 name="email"
                 labelCol={{ span: 24 }}
                 wrapperCol={{ span: 24 }}
-                rules={[{ required: true, message: 'Email is required' }]}
+                rules={[
+                  { required: true, message: "Email is required" },
+                  { type: "email", message: "Email is invalid" },
+                ]}
               >
                 <Input />
               </Form.Item>
-            ) : (
-              <>
-                {data.email} <EditButton onClick={handleEdit} />
-              </>
-            )}
-          </Descriptions.Item>
-          <Descriptions.Item label="Phone Number">
-            {isEditing ? (
+
               <Form.Item
+                label="Phone Number"
                 name="phone_number"
                 labelCol={{ span: 24 }}
                 wrapperCol={{ span: 24 }}
-                rules={[{ required: true, message: 'Phone Number is required' }]}
+                rules={[{ required: true, message: "Phone is required" }]}
               >
                 <Input />
               </Form.Item>
-            ) : (
-              <>
-                {data.phone_number} <EditButton onClick={handleEdit} />
-              </>
-            )}
-          </Descriptions.Item>
-          <Descriptions.Item label="Age">{data.age}</Descriptions.Item>
-          <Descriptions.Item label="Gender">
-            {isEditing ? (
+
               <Form.Item
+                label="Gender"
                 name="gender"
                 labelCol={{ span: 24 }}
                 wrapperCol={{ span: 24 }}
-                rules={[{ required: true, message: 'Gender is required' }]}
+                rules={[{ required: true, message: "Gender is required" }]}
               >
                 <Radio.Group buttonStyle="solid">
                   <Radio.Button value="male">Male</Radio.Button>
                   <Radio.Button value="female">Female</Radio.Button>
                 </Radio.Group>
               </Form.Item>
-            ) : (
-              <>
-                {data.gender} <EditButton onClick={handleEdit} />
-              </>
-            )}
-          </Descriptions.Item>
-          <Descriptions.Item label="Created At">{formatDateTime(data.created_at)}</Descriptions.Item>
-        </Descriptions>
-        {isEditing && (
-          <ButtonContainer>
-            <PrimaryButton htmlType="submit" size="large" style={{ width: '6%' }}>
-              Save
-            </PrimaryButton>
-            <SecondaryButton onClick={handleCancel} size="large" style={{ width: '6%' }}>
-              Cancel
-            </SecondaryButton>
-          </ButtonContainer>
+            </FormInputsContainer>
+            <ButtonContainer>
+              <SecondaryButton onClick={handleCancel} size="large">
+                Cancel
+              </SecondaryButton>
+              <PrimaryButton htmlType="submit" size="large">
+                Save
+              </PrimaryButton>
+            </ButtonContainer>
+          </Form>
+        ) : (
+          <>
+            <Descriptions layout="vertical" colon={false}>
+              <Descriptions.Item label="ID" style={{ width: "20%" }} span={0.5}>
+                {employee?.id}
+              </Descriptions.Item>
+
+              <Descriptions.Item label="Name" style={{ width: "20%" }}>
+                {employee?.employee_name}
+              </Descriptions.Item>
+
+              <Descriptions.Item label="Username" style={{ width: "20%" }}>
+                {employee?.username}
+              </Descriptions.Item>
+
+              <Descriptions.Item label="Date of Birth" style={{ width: "20%" }}>
+                {employee?.birth_date}
+              </Descriptions.Item>
+
+              <Descriptions.Item label="Age" style={{ width: "20%" }}>
+                {employee?.age}
+              </Descriptions.Item>
+
+              <Descriptions.Item label="Email">
+                {employee?.email}
+              </Descriptions.Item>
+              <Descriptions.Item label="Phone">
+                {employee?.phone_number}
+              </Descriptions.Item>
+              <Descriptions.Item label="Gender">
+                {employee?.gender}
+              </Descriptions.Item>
+            </Descriptions>
+            <ButtonContainer>
+              <PrimaryButton
+                htmlType="submit"
+                size="large"
+                onClick={handleEdit}
+              >
+                Edit
+              </PrimaryButton>
+            </ButtonContainer>
+          </>
         )}
-      </Form>
-      {/* <Title level={4}>History</Title>
-      <LineHeader /> */}
-    </div>
+      </InfoContainer>
+    )
   );
 }
 export default EditEmployeeInfo;

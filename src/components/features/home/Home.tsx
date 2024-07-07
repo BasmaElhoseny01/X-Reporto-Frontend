@@ -1,6 +1,4 @@
-import React, { useEffect } from "react";
-
-import axios from "../../../services/apiService";
+import React from "react";
 
 // Redux
 import { useSelector } from "react-redux";
@@ -14,7 +12,6 @@ import {
   HomeContainer,
   HomeTopContainer,
   HomeBottomContainer,
-  ActivityCardsContainer,
   HomeTopTitleContainer,
   HomeTopLeftContainer,
   HomeTopRightContainer,
@@ -23,34 +20,13 @@ import {
 // Components
 import LineHeader from "../../common/LineHeader/LineHeader";
 import Statistics from "./Statistics/Statistics";
-import ActivityCard from "../../common/ActivityCard/ActivityCard";
+import RecentActivity from "./RecentActivity/RecentActivity";
 
 // Assets
 import Poster from "../../../assets/images/home_poster.svg";
 
-export const fetchRecentActivity = async () => {
-  try {
-    const response = await axios.get("/api/v1/activities");
-    console.log(response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching recent activity:", error);
-  }
-};
-
 function Home() {
-  // Get token from redux
-  const token = useSelector((state: MainState) => state.token);
   const user = useSelector((state: MainState) => state.user);
-
-  useEffect(() => {
-    // Fetch recent activity
-    if (user?.type == "doctor") {
-      fetchRecentActivity().then((response) => {
-        console.log("Fetching Recent ", response);
-      });
-    }
-  }, [user, token]);
 
   return (
     <HomeContainer>
@@ -79,19 +55,7 @@ function Home() {
           {/* Recent Activity */}
           <Title level={3}>Recent Activity</Title>
           <LineHeader />
-          {/* Max only 8  */}
-          <ActivityCardsContainer>
-            <ActivityCard type="submit" />
-            <ActivityCard type="draft" />
-            <ActivityCard type="view" />
-            <ActivityCard type="view" />
-            <ActivityCard type="submit" />
-            <ActivityCard type="submit" />
-            <ActivityCard type="submit" />
-            <ActivityCard type="submit" />
-            {/* <ActivityCard type="submit" /> */}
-            {/* <ActivityCard type="draft" /> */}
-          </ActivityCardsContainer>
+          <RecentActivity />
         </HomeBottomContainer>
       )}
     </HomeContainer>

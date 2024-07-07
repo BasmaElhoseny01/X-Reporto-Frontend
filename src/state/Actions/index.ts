@@ -1,5 +1,5 @@
 import { ActionType } from "../ActionType";
-import { UserType } from "../../types/employee";
+import { UserType } from "../../types/user";
 import { CaseType } from "../../types/case";
 
 interface Token {

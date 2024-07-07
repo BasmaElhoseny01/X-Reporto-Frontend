@@ -64,7 +64,7 @@ export const ActivityCardsContainer = styled(Flex)`
   display: flex;
   flex-direction: column;
   /* flex-wrap: wrap; */
-  justify-content: center;
+  justify-content: flex-start; /* Align items at the start */
 
   overflow-y: scroll;
 

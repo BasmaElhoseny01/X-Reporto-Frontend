@@ -8,10 +8,10 @@ import { EditOutlined } from "@ant-design/icons";
 export const InfoContainer = styled(Flex)`
   display: flex;
   flex-direction: column;
-
-  height: 150px;
+  height: 100%;
   width: 100%;
 `;
+
 export const FormInputsContainer = styled(Flex)`
   display: flex;
   flex-direction: row;

@@ -1,14 +1,18 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Descriptions, Form, Input, message } from 'antd';
-import { EditButton, ButtonContainer, ReportEditor } from './EditInfoTemplate.style';
-import SecondaryButton from '../SecondaryButton/SecondaryButton';
-import PrimaryButton from '../PrimaryButton/PrimaryButton';
-import { format, parseISO, isValid } from 'date-fns';
+import React, { useState, useEffect, useRef, useMemo } from "react";
+import { Descriptions, Form, Input, message } from "antd";
+import {
+  EditButton,
+  ButtonContainer,
+  ReportEditor,
+} from "./EditInfoTemplate.style";
+import SecondaryButton from "../SecondaryButton/SecondaryButton";
+import PrimaryButton from "../PrimaryButton/PrimaryButton";
+import { format, parseISO, isValid } from "date-fns";
 import { useSelector } from "react-redux";
 import { MainState } from "../../../state/Reducers";
 
-import axios from '../../../services/apiService';
-interface UserData {
+import axios from "../../../services/apiService";
+interface TemplateData {
   id: number;
   template_name: string;
   created_by: string;
@@ -25,49 +29,69 @@ function EditInfoTemplate(props: EditInfoTemplateProps) {
   const editor = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
   const [form] = Form.useForm();
+
   const token = useSelector((state: MainState) => state.token);
   const user = useSelector((state: MainState) => state.user);
 
   const config = useMemo(
     () => ({
       readonly: false,
-      placeholder: 'Start typing...'
+      placeholder: "Start typing...",
     }),
     []
   );
 
-  const [data, setData] = useState<UserData | null>(null);
+  const [data, setData] = useState<TemplateData | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       if (props.templateID) {
         try {
-          const responseGet = await axios.get(`api/v1/templates/${props.templateID}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
+          const responseGet = await axios.get(
+            `api/v1/templates/${props.templateID}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             }
-          });
-          
-          const responseContent = await axios.get(`api/v1/templates/${responseGet.data.id}/download_template`, {
-            headers: {
-              Authorization: `Bearer ${token}`, // Include the token in the headers
-            }
-          });
+          );
 
-          const responseCreatedBy = await axios.get(`api/v1/employees/${responseGet.data.doctor_id}`, {
-            headers: {
-              Authorization: `Bearer ${token}`, // Include the token in the headers
+          const responseContent = await axios.get(
+            `api/v1/templates/${responseGet.data.id}/download_template`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`, // Include the token in the headers
+              },
             }
-          });
+          );
 
-          setData({ ...responseGet.data, created_by: responseCreatedBy.data.employee_name, content: responseContent.data });
+          const responseCreatedBy = await axios.get(
+            `api/v1/employees/${responseGet.data.doctor_id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`, // Include the token in the headers
+              },
+            }
+          );
+
+          setData({
+            ...responseGet.data,
+            created_by: responseCreatedBy.data.employee_name,
+            content: responseContent.data,
+          });
           setContent(responseContent.data);
           console.log("responseGet.data", responseContent.data);
-          console.log(`api/v1/templates/${responseGet.data.id}/download_template`);
-          form.setFieldsValue({ ...responseGet.data, content: responseContent.data, created_by: responseCreatedBy.data.employee_name });
+          console.log(
+            `api/v1/templates/${responseGet.data.id}/download_template`
+          );
+          form.setFieldsValue({
+            ...responseGet.data,
+            content: responseContent.data,
+            created_by: responseCreatedBy.data.employee_name,
+          });
         } catch (error) {
           console.error(`Error downloading template`, error);
-          message.error("Error fetching user data");
+          message.error("Error loading template");
         }
       }
     };
@@ -85,40 +109,46 @@ function EditInfoTemplate(props: EditInfoTemplateProps) {
       .then(async (values) => {
         if (data) {
           data.template_name = values.template_name;
-          const blob = new Blob([content], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+          const blob = new Blob([content], {
+            type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          });
           const formData = new FormData();
-          formData.append('file', blob, `${values.template_name}.docx`);
+          formData.append("file", blob, `${values.template_name}.docx`);
           const uploadResponse = await axios.post(
             `api/v1/templates/${data.id}/upload_template`,
             formData,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
-                'Content-Type': 'multipart/form-data', // Adjust content type if server expects a specific type
+                "Content-Type": "multipart/form-data", // Adjust content type if server expects a specific type
               },
             }
           );
-          message.success('Template uploaded successfully.');
+          message.success("Template uploaded successfully.");
           const templatePath = uploadResponse.data.template_path; // Adjust based on your API response
           console.log("templatePath", templatePath);
           // Step 3: Update the created template with the obtained template path
           const updateTemplatePayload = {
             template_name: values.template_name,
             template_path: templatePath,
-            doctor_id:  user?.id ?? 0
+            employee_id: user?.id,
           };
-          await axios.put(`api/v1/templates/${data.id}`, updateTemplatePayload, {
-            headers: {
-              Authorization: `Bearer ${token}`, // Include the token in the headers
+          await axios.put(
+            `api/v1/templates/${data.id}`,
+            updateTemplatePayload,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`, // Include the token in the headers
+              },
             }
-          });
+          );
           // Notify success of template update
-          message.success('Template updated successfully.');
+          message.success("Template updated successfully.");
           setIsEditing(false);
         }
       })
       .catch((info) => {
-        message.error('Validation failed:', info);
+        message.error("Validation failed:", info);
       });
   };
 
@@ -134,9 +164,9 @@ function EditInfoTemplate(props: EditInfoTemplateProps) {
   function formatDateTime(dateString: string): string {
     const date = parseISO(dateString);
     if (isValid(date)) {
-      return format(date, 'MM/dd/yyyy HH:mm:ss');
+      return format(date, "MM/dd/yyyy HH:mm:ss");
     }
-    return 'Invalid Date';
+    return "Invalid Date";
   }
 
   if (!data) {
@@ -145,7 +175,12 @@ function EditInfoTemplate(props: EditInfoTemplateProps) {
 
   return (
     <div>
-      <Form form={form} layout="vertical" initialValues={data} onFinish={onFinish}>
+      <Form
+        form={form}
+        layout="vertical"
+        initialValues={data}
+        onFinish={onFinish}
+      >
         <Descriptions layout="vertical" colon={false}>
           <Descriptions.Item label="Template ID">{data.id}</Descriptions.Item>
           <Descriptions.Item label="Template Name">
@@ -154,7 +189,7 @@ function EditInfoTemplate(props: EditInfoTemplateProps) {
                 name="template_name"
                 labelCol={{ span: 24 }}
                 wrapperCol={{ span: 24 }}
-                rules={[{ required: true, message: 'Name is required' }]}
+                rules={[{ required: true, message: "Name is required" }]}
               >
                 <Input placeholder="Template Name" />
               </Form.Item>
@@ -164,10 +199,20 @@ function EditInfoTemplate(props: EditInfoTemplateProps) {
               </>
             )}
           </Descriptions.Item>
-          <Descriptions.Item label="Created By">{data.created_by}</Descriptions.Item>
-          <Descriptions.Item label="Created At">{formatDateTime(data.created_at)}</Descriptions.Item>
+          <Descriptions.Item label="Created By">
+            {data.created_by}
+          </Descriptions.Item>
+          <Descriptions.Item label="Created At">
+            {formatDateTime(data.created_at)}
+          </Descriptions.Item>
 
-          <Form.Item name="content" label="Template" labelCol={{ span: 24 }} wrapperCol={{ span: 24 }} style={{ width: "10%", }}>
+          <Form.Item
+            name="content"
+            label="Template"
+            labelCol={{ span: 24 }}
+            wrapperCol={{ span: 24 }}
+            style={{ width: "10%" }}
+          >
             <ReportEditor
               ref={editor}
               value={content} // Bind value to content state
@@ -179,10 +224,18 @@ function EditInfoTemplate(props: EditInfoTemplateProps) {
         </Descriptions>
         {isEditing && (
           <ButtonContainer>
-            <PrimaryButton htmlType="submit" size="large" style={{ width: '6%' }}>
+            <PrimaryButton
+              htmlType="submit"
+              size="large"
+              style={{ width: "6%" }}
+            >
               Save
             </PrimaryButton>
-            <SecondaryButton onClick={handleCancel} size="large" style={{ width: '6%' }}>
+            <SecondaryButton
+              onClick={handleCancel}
+              size="large"
+              style={{ width: "6%" }}
+            >
               Cancel
             </SecondaryButton>
           </ButtonContainer>

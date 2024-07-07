@@ -11,11 +11,14 @@ export const ActivityCardContainer = styled(Flex)<{ isDarkTheme: boolean }>`
   background-color: ${(props) =>
     props.isDarkTheme ? `${palette.navy}60` : `${palette.grey_light}60`};
 
-  width: 80%;
+  /* width: 80%; */
+  width: 99%;
   height: 50px;
 
   padding: 5px;
   margin: 5px 5px;
+
+  cursor: pointer;
 
   display: flex;
   flex-direction: row;

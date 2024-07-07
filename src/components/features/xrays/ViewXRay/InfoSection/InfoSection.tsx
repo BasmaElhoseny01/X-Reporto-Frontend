@@ -53,10 +53,10 @@ function InfoSection() {
       <LineHeader />
       {study_case && <PatientHistory id={study_case.patient.id} />}
       <ActionsContainer>
-        <SecondaryButton style={{ margin: "10px 10px 0", padding: 5 }}>
+        {/* <SecondaryButton style={{ margin: "10px 10px 0", padding: 5 }}>
           {" "}
           Save as draft{" "}
-        </SecondaryButton>
+        </SecondaryButton> */}
         <PrimaryButton
           style={{ margin: "10px 10px 0", padding: 5 }}
           onClick={() => handleSetSiderType("report")}

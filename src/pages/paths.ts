@@ -1,6 +1,7 @@
 export type PagesType = "home";
 interface PathsType {
   home: string;
+  login: string;
   account: string;
   cases: {
     base: string;
@@ -14,11 +15,33 @@ interface PathsType {
   };
   patients: {
     base: string;
+    types: {
+      new: string;
+    };
+  };
+  doctors: {
+    base: string;
+    types: {
+      new: string;
+    };
+  };
+  employees: {
+    base: string;
+    types: {
+      new: string;
+    };
+  };
+  templates: {
+    base: string;
+    types: {
+      new: string;
+    };
   };
 }
 
 const paths: PathsType = {
   home: "/", // Home page path
+  login: "/login", // Login page path
   account: "/account", // Account page path
   cases: {
     base: "cases", // Base path for cases
@@ -32,6 +55,27 @@ const paths: PathsType = {
   },
   patients: {
     base: "patients",
+    types: {
+      new: "new",
+    },
+  },
+  doctors: {
+    base: "doctors",
+    types: {
+      new: "new",
+    },
+  },
+  employees: {
+    base: "employees",
+    types: {
+      new: "new",
+    },
+  },
+  templates: {
+    base: "templates",
+    types: {
+      new: "new",
+    },
   },
 };
 

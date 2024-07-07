@@ -22,6 +22,8 @@ interface EditInfoProps {
 function EditInfo(props: EditInfoProps) {
   const { patient, setPatientData, edit, setIsEditing } = props;
   const [form] = Form.useForm();
+
+  // Use States
   const [ageValue, setAgeValue] = useState<number>(-1); // State to hold calculated age
 
   useEffect(() => {

@@ -1,7 +1,13 @@
 /* eslint-disable*/
 import React, { useEffect } from "react";
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  redirect,
+  useLocation,
+} from "react-router-dom";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -31,7 +37,9 @@ import paths from "./pages/paths";
 
 // Pages
 import HomePage from "./pages/HomePage";
-
+// Login
+import SignInPage from "./pages/SignInPage";
+// Account
 import AccountPage from "./pages/AccountPage";
 
 // Cases
@@ -44,35 +52,57 @@ import DoctorPendingCases from "./pages/DoctorPendingCases";
 import DoctorCompletedCases from "./pages/DoctorCompletedCases";
 
 import ViewXRayPage from "./pages/ViewXRayPage";
+import NewXRay from "./components/features/xrays/NewXRay/NewXRay";
 
 // Patients
 import AllPatient from "./pages/AllPatient";
-
-import NewXRay from "./components/features/xrays/NewXRay/NewXRay";
-
-// import PatientArchived from "./pages/PatientArchived";
-import NewPatientPage from "./pages/NewPatientPage";
 import ViewPatientPage from "./pages/ViewPatientPage";
+import NewPatientPage from "./pages/NewPatientPage";
+// import PatientArchived from "./pages/PatientArchived";
 
+// Doctors
 import AllDoctors from "./pages/AllDoctors";
-import NewEmployee from "./components/features/employee/NewEmployee/NewEmployee";
 
-import Examples from "./pages/Examples";
-import DrawarPage from "./pages/DrawarPage";
-// import ArchivedDoctor from "./pages/ArchivedDoctor";
-import AllTemplates from "./pages/AllTemplates";
-import SigninPage from "./pages/Signin";
+// Employees
+import AllEmployees from "./pages/AllEmployees";
+import NewEmployee from "./components/features/employee/NewEmployee/NewEmployee";
 import ViewEmployee from "./components/features/employee/ViewEmployee/ViewEmployee";
+
+// Templates
+import AllTemplates from "./pages/AllTemplates";
 import NewTemplates from "./components/features/templates/NewTemplates/NewTemplates";
 import ViewTemplate from "./components/features/templates/ViewTemplate/ViewTemplate";
-import NotFoundPage from "./pages/NotFoundPage";
 
-// import { bindActionCreators } from "redux";
-// import { actionsCreators } from "./state";
+// import Examples from "./pages/Examples";
+// import DrawarPage from "./pages/DrawarPage";
+
+// 404
+import NotFoundPage from "./pages/NotFoundPage";
+import { reDirectToLogin } from "./pages/paths.utils";
 
 // interface AppProps {
 //   // Define props here
 // }
+
+interface Props {
+  children: React.ReactNode;
+}
+
+const ConditionalLayout = (props: Props) => {
+  const { children } = props;
+  const location = useLocation();
+  const isLoginPage = location.pathname === paths.login;
+
+  return (
+    <>
+      {!isLoginPage && <SideBar />}
+      <MainContainer>
+        {!isLoginPage && <Header />}
+        {children}
+      </MainContainer>
+    </>
+  );
+};
 
 function App() {
   // Dispatchers
@@ -85,46 +115,24 @@ function App() {
 
   // TODO Check location for that
   useEffect(() => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    axios
-      .get("/api/v1/employees/me")
-      .then((response) => {
-        ChangeUser(response.data);
-      })
-      .catch((error) => {
-        console.log("Error fetching user data: ", error);
-      });
+    console.log("Token: ", token);
+    if (token === "") {
+      reDirectToLogin();
+    } else {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      axios
+        .get("/api/v1/employees/me")
+        .then((response) => {
+          console.log("User Logged In", response.data);
+          ChangeUser(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching user data: ", error);
+        });
+    }
   }, [token]);
 
-  // Naming convention
-  // let name = "App";
-  // console.log("App mounted");
-  // name = "App";
-  // console.log(name);
-  // Set theme to light
-
-  // const getThemeAlgorithm = () => {
-  //   switch (currentTheme) {
-  //     case "dark":
-  //       return theme.darkAlgorithm;
-  //     case "compact":
-  //       return theme.compactAlgorithm;
-  //     case "compact-dark":
-  //       return (tokens: any) => ({
-  //         ...theme.darkAlgorithm(tokens),
-  //         ...theme.compactAlgorithm(tokens),
-  //       });
-  //     default:
-  //       return theme.defaultAlgorithm;
-  //   }
-  // };
-
-  // const {ChangeToken} = bindActionCreators(actionsCreators,useDispatch());
-  // ChangeToken("");
-  // console.log(token);
-
   return (
-    // <ConfigProvider theme={currentTheme == "light" ? lightTheme : darkTheme}>
     <ConfigProvider
       theme={{
         algorithm:
@@ -136,107 +144,97 @@ function App() {
     >
       <ThemeProvider theme={currentTheme == "light" ? lightTheme : darkTheme}>
         <Layout>
-          {token === "" ? (
-            <SigninPage />
-          ) : (
-            <>
-              <SideBar />
-              <MainContainer>
-                <Header />
-                <ContentContainer>
-                  <BrowserRouter>
-                    <Routes>
-                      <Route path={paths.home} element={<HomePage />} />
+          <BrowserRouter>
+            <ConditionalLayout>
+              <ContentContainer>
+                <Routes>
+                  <Route path={paths.home} element={<HomePage />} />
+                  <Route path={paths.login} element={<SignInPage />} />
 
-                      <Route path={paths.account} element={<AccountPage />} />
+                  <Route path={paths.account} element={<AccountPage />} />
 
-                      {/* Cases */}
-                      <Route path={paths.cases.base}>
-                        <Route
-                          path={paths.cases.types.unassigned}
-                          element={<UnAssigned />}
-                        />
+                  {/* Cases */}
+                  <Route path={paths.cases.base}>
+                    <Route
+                      path={paths.cases.types.unassigned}
+                      element={<UnAssigned />}
+                    />
 
-                        <Route path={paths.cases.types.pending}>
-                          <Route index element={<XRayWorkList />} />
-                          <Route
-                            path=":doctorId"
-                            element={<DoctorPendingCases />}
-                          />
-                        </Route>
-
-                        <Route path={paths.cases.types.completed}>
-                          <Route index element={<XRayCompleted />} />
-                          <Route
-                            path=":doctorId"
-                            element={<DoctorCompletedCases />}
-                          />
-                        </Route>
-
-                        <Route
-                          path={paths.cases.types.archived}
-                          element={<XRayArchived />}
-                        />
-
-                        <Route
-                          path={paths.cases.types.new}
-                          element={<NewXRay />}
-                        />
-
-                        <Route path=":id" element={<ViewXRayPage />} />
-                      </Route>
-
-                      {/* Patients */}
-                      <Route path={paths.patients.base}>
-                        <Route index element={<AllPatient />} />
-                        <Route path=":Id" element={<ViewPatientPage />} />
-                        {/* <Route path="new" element={<NewPatientPage />} /> */}
-                      </Route>
-
-                      {/* <Route path="doctors">
-                        <Route index element={<AllDoctors />} />
-                        <Route
-                          path="new"
-                          element={<NewEmployee type="doctors" />}
-                        />
-                        <Route
-                          path=":Id"
-                          element={<ViewEmployee type="doctors" />}
-                        />
-                      </Route> */}
-
-                      {/* <Route path="templates">
-                        <Route index element={<AllTemplates />} />
-                        <Route path="new" element={<NewTemplates />} />
-                        <Route path=":Id" element={<ViewTemplate />} />
-                      </Route>
- */}
-                      {/* <Route path="annotation" element={<Annotation />} /> */}
-                      <Route path="drawer" element={<DrawarPage />} />
-                      <Route path="examples" element={<Examples />} />
+                    <Route path={paths.cases.types.pending}>
+                      <Route index element={<XRayWorkList />} />
                       <Route
-                        path="about"
-                        element={
-                          <div
-                            style={{
-                              display: "flex",
-                              flexDirection: "column",
-                              height: "100%",
-                              justifyContent: "flex-end",
-                            }}
-                          >
-                            <div>basma</div>
-                            <div>basma</div>
-                          </div>
-                        }
+                        path=":doctorId"
+                        element={<DoctorPendingCases />}
                       />
-                      <Route path="/*" element={<NotFoundPage />} />
-                    </Routes>
-                  </BrowserRouter>
-                </ContentContainer>
-              </MainContainer>
-            </>
-          )}
+                    </Route>
+
+                    <Route path={paths.cases.types.completed}>
+                      <Route index element={<XRayCompleted />} />
+                      <Route
+                        path=":doctorId"
+                        element={<DoctorCompletedCases />}
+                      />
+                    </Route>
+
+                    <Route
+                      path={paths.cases.types.archived}
+                      element={<XRayArchived />}
+                    />
+
+                    <Route path={paths.cases.types.new} element={<NewXRay />} />
+
+                    <Route path=":id" element={<ViewXRayPage />} />
+                  </Route>
+
+                  {/* Patients */}
+                  <Route path={paths.patients.base}>
+                    <Route index element={<AllPatient />} />
+                    {/* <Route
+                      path={paths.patients.types.new}
+                      element={<NewPatientPage />}
+                    /> */}
+                    <Route path=":Id" element={<ViewPatientPage />} />
+                  </Route>
+
+                  {/* Doctors */}
+                  <Route path={paths.doctors.base}>
+                    <Route index element={<AllDoctors />} />
+                    {/* <Route
+                      path={paths.doctors.types.new}
+                      element={<NewEmployee />}
+                    /> */}
+                    <Route
+                      path=":Id"
+                      element={<ViewEmployee type="doctors" />}
+                    />
+                  </Route>
+
+                  {/* Employees */}
+                  <Route path={paths.employees.base}>
+                    <Route index element={<AllEmployees />} />
+                    <Route
+                      path={paths.employees.types.new}
+                      element={<NewEmployee type="" />}
+                    />
+                    <Route path=":Id" element={<ViewEmployee type={""} />} />
+                  </Route>
+
+                  {/* Templates */}
+                  <Route path={paths.templates.base}>
+                    <Route index element={<AllTemplates />} />
+                    <Route
+                      path={paths.templates.types.new}
+                      element={<NewTemplates />}
+                    />
+                    <Route path=":Id" element={<ViewTemplate />} />
+                  </Route>
+
+                  {/* NotFound */}
+                  <Route path="/*" element={<NotFoundPage />} />
+                </Routes>
+              </ContentContainer>
+            </ConditionalLayout>
+          </BrowserRouter>
         </Layout>
       </ThemeProvider>
     </ConfigProvider>
