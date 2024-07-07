@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 // Redux
 import { useDispatch, useSelector } from "react-redux";
@@ -26,24 +26,14 @@ import Moon from "../../../assets/images/moon.svg";
 
 // Utils
 import { reDirectToAccount, reDirectToHome } from "../../../pages/paths.utils";
+import paths from "../../../pages/paths";
 
 function Header() {
   const dispatch = useDispatch();
   const currentTheme = useSelector((state: RootState) => state.theme);
-
-  const token = useSelector((state: MainState) => state.token);
   const user = useSelector((state: MainState) => state.user);
 
-  useEffect(() => {
-    if (token === "" || user === null) {
-      reDirectToHome();
-    }
-  }, [token, user]);
-
-  // Call UseEffect to change theme
-  React.useEffect(() => {
-    // console.log("Theme changed to: ", currentTheme);
-  }, [currentTheme]);
+  const isLoginPage = location.pathname === paths.login;
 
   // Toggle theme function
   const toggleTheme = (checked: boolean) => {
@@ -92,12 +82,14 @@ function Header() {
         </LightDarkSwitchContainer>
       </HeaderLeftContainer>
 
-      <HeaderRightContainer>
-        {/* Avatar */}
-        <StyledAvatar size="large" onClick={reDirectToAccount}>
-          {user?.username.charAt(0).toUpperCase()}
-        </StyledAvatar>
-      </HeaderRightContainer>
+      {isLoginPage ? null : (
+        <HeaderRightContainer>
+          {/* Avatar */}
+          <StyledAvatar size="large" onClick={reDirectToAccount}>
+            {user?.username.charAt(0).toUpperCase()}
+          </StyledAvatar>
+        </HeaderRightContainer>
+      )}
     </HeaderContainer>
   );
 }

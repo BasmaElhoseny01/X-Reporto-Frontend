@@ -1,15 +1,41 @@
 import paths from "./paths";
 
+const baseUrl = process.env.REACT_APP_BASE_URL || "http://localhost:3000"; // Default to a fallback URL if not defined
+
 export const reDirectToHome = () => {
-  window.location.href = `${paths.home}`;
+  let newPath = "";
+  newPath = `${paths.home}`;
+
+  if (newPath == window.location.pathname) {
+    // console.log("Already in Home page");
+  } else {
+    window.location.href = newPath;
+  }
+};
+
+export const reDirectToLogin = () => {
+  let newPath = "";
+  newPath = `${paths.login}`;
+
+  if (newPath == window.location.pathname) {
+    // console.log("Already in login page");
+  } else {
+    window.location.href = newPath;
+  }
 };
 
 export const reDirectToAccount = () => {
-  window.location.href = `${paths.account}`;
+  let newPath = "";
+  newPath = `${paths.account}`;
+
+  if (newPath == window.location.pathname) {
+    // console.log("Already in Account page");
+  } else {
+    window.location.href = newPath;
+  }
 };
 
 export const reDirectToCases = (type: string, Id?: string | number) => {
-  const baseUrl = process.env.REACT_APP_BASE_URL || "http://localhost:3000"; // Default to a fallback URL if not defined
   let newPath = "";
 
   switch (type) {

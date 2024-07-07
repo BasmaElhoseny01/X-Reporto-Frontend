@@ -9,7 +9,7 @@ import { Card, Flex, Form } from "antd";
 export const MainContainer = styled(Flex)`
   flex-wrap: wrap;
   justify-content: space-between;
-  margin:10% auto 90%;
+  margin: 10% auto 90%;
   height: 100%;
   overflow-y: hidden;
 `;
@@ -29,7 +29,7 @@ export const CardContainer = styled(Card)`
   flex-direction: column;
   justify-content: center;
   margin-bottom: 42px;
-  padding-button: 0px;
+  padding-bottom: 0px;
 `;
 
 export const FormItem = styled(Form.Item)`

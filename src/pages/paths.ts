@@ -1,6 +1,7 @@
 export type PagesType = "home";
 interface PathsType {
   home: string;
+  login: string;
   account: string;
   cases: {
     base: string;
@@ -29,6 +30,7 @@ interface PathsType {
 
 const paths: PathsType = {
   home: "/", // Home page path
+  login: "/login", // Login page path
   account: "/account", // Account page path
   cases: {
     base: "cases", // Base path for cases

@@ -1,3 +1,4 @@
+/* eslint-disable*/
 import React from "react";
 
 // Redux
@@ -31,49 +32,37 @@ function Home() {
   const user = useSelector((state: MainState) => state.user);
 
   return (
-    <HomeContainer>
-      <HomeTopContainer>
-        <HomeTopLeftContainer>
-          {/* Welcome */}
-          <HomeTopTitleContainer>
-            <Title level={2}>
-              Welcome, {user?.type == "doctor" ? <>Dr.</> : null}{" "}
-              {user?.employee_name}!
-            </Title>
-            <Title level={5} style={{ fontWeight: 500, marginTop: "-10px" }}>
-              Wishing you a productive and successful day ahead.
-            </Title>
-          </HomeTopTitleContainer>
-          {/* Statistics */}
-          <Statistics />
-        </HomeTopLeftContainer>
-        <HomeTopRightContainer>
-          <img src={Poster} alt="poster" height={"100%"} />
-        </HomeTopRightContainer>
-      </HomeTopContainer>
+    <>home</>
+    // <HomeContainer>
+    //   <HomeTopContainer>
+    //     <HomeTopLeftContainer>
+    //       {/* Welcome */}
+    //       <HomeTopTitleContainer>
+    //         <Title level={2}>
+    //           Welcome, {user?.type == "doctor" ? <>Dr.</> : null}{" "}
+    //           {user?.employee_name}!
+    //         </Title>
+    //         <Title level={5} style={{ fontWeight: 500, marginTop: "-10px" }}>
+    //           Wishing you a productive and successful day ahead.
+    //         </Title>
+    //       </HomeTopTitleContainer>
+    //       {/* Statistics */}
+    //       <Statistics />
+    //     </HomeTopLeftContainer>
+    //     <HomeTopRightContainer>
+    //       <img src={Poster} alt="poster" height={"100%"} />
+    //     </HomeTopRightContainer>
+    //   </HomeTopContainer>
 
-      {user?.type == "doctor" && (
-        <HomeBottomContainer>
-          {/* Recent Activity */}
-          <Title level={3}>Recent Activity</Title>
-          <LineHeader />
-          <RecentActivity />
-          {/* Max only 8  */}
-          {/* <ActivityCardsContainer> */}
-          {/* <ActivityCard type="submit" />
-            <ActivityCard type="draft" />
-            <ActivityCard type="view" />
-            <ActivityCard type="view" />
-            <ActivityCard type="submit" />
-            <ActivityCard type="submit" />
-            <ActivityCard type="submit" />
-            <ActivityCard type="submit" /> */}
-          {/* <ActivityCard type="submit" /> */}
-          {/* <ActivityCard type="draft" /> */}
-          {/* </ActivityCardsContainer> */}
-        </HomeBottomContainer>
-      )}
-    </HomeContainer>
+    //   {user?.type == "doctor" && (
+    //     <HomeBottomContainer>
+    //       {/* Recent Activity */}
+    //       <Title level={3}>Recent Activity</Title>
+    //       <LineHeader />
+    //       <RecentActivity />
+    //     </HomeBottomContainer>
+    //   )}
+    // </HomeContainer>
   );
 }
 
