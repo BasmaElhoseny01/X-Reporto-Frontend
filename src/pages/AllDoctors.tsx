@@ -1,20 +1,30 @@
 import React from "react";
+
+// Redux
 import { useSelector } from "react-redux";
 import { MainState } from "../state";
+
+// Components
 import GeneralTable from "../components/common/Table/Table";
+
+// Utils
+import { reDirectToDoctors } from "./paths.utils";
 
 function AllDoctors() {
   const tableSearch = useSelector((state: MainState) => state.tableSearch);
   const GeneralTableData = {
     columns: [
       {
-        title: "Doctor Name",
+        title: "Name",
         dataIndex: "employee_name",
         key: "employee_name",
         filteredValue: [tableSearch],
         // eslint-disable-next-line
-        onFilter: (value: any, record: any) =>{
-          return  record.employee_name.toString().toLowerCase().includes(value.toLowerCase());
+        onFilter: (value: any, record: any) => {
+          return record.employee_name
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase());
         },
       },
       {
@@ -23,17 +33,19 @@ function AllDoctors() {
         key: "username",
         filteredValue: [tableSearch],
         // eslint-disable-next-line
-        onFilter: (value: any, record: any) =>{
-          return  record.username.toString().toLowerCase().includes(value.toLowerCase());
+        onFilter: (value: any, record: any) => {
+          return record.username
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase());
         },
-        
       },
       {
         title: "ID",
         dataIndex: "id",
         key: "id",
         // eslint-disable-next-line
-        sorter : (a: any, b: any) => a.id - b.id,
+        sorter: (a: any, b: any) => a.id - b.id,
       },
       {
         key: "gender",
@@ -56,8 +68,8 @@ function AllDoctors() {
         dataIndex: "age",
         key: "age",
         // eslint-disable-next-line
-         
-        sorter : (a: any, b: any) => a.age - b.age,
+
+        sorter: (a: any, b: any) => a.age - b.age,
       },
       {
         title: "Create At",
@@ -74,15 +86,14 @@ function AllDoctors() {
 
     api: "/api/v1/employees/?type=doctor&",
     title: "All Doctors",
-    filterColumns :["role","type","phone_number","email","employee_id"],
+    filterColumns: ["role", "type", "phone_number", "email", "employee_id"],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
-      window.location.pathname = `doctors/${record.id}`;
+      reDirectToDoctors("view", record.id);
     },
     addNew: () => {
-      window.location.pathname = "doctors/new";
+      reDirectToDoctors("new");
     },
-
   };
 
   return (

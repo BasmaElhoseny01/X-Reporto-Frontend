@@ -110,10 +110,17 @@ export const reDirectToPatients = (type: string) => {
   }
 };
 
-export const reDirectToDoctors = (type: string) => {
+export const reDirectToDoctors = (type: string, Id?: string | number) => {
   switch (type) {
     case "all":
       window.location.href = `${paths.doctors.base}`;
+      break;
+    case "view":
+      if (Id) {
+        window.location.href = `${paths.doctors.base}/${Id}`;
+      } else {
+        console.error("Doctor ID is required for viewing.");
+      }
       break;
     case "new":
       window.location.href = `${paths.doctors.base}/${paths.doctors.types.new}`;
