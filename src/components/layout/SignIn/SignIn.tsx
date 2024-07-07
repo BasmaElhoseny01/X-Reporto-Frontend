@@ -4,33 +4,32 @@ import React from "react";
 import axios from "../../../services/apiService";
 
 // Redux
-import { useDispatch, useSelector } from "react-redux";
-import { actionsCreators, MainState } from "../../../state";
+import { useDispatch } from "react-redux";
+import { actionsCreators } from "../../../state";
 import { bindActionCreators } from "redux";
 
 // Ant Design
-import { Button, Form, Input, message, Switch } from "antd";
-import Paragraph from "antd/es/typography/Paragraph";
+import { Input, message, Typography } from "antd";
 
 // Styled Components
 import {
   CardContainer,
-  MainContainer,
-  Header,
   FormItem,
+  SigInPageContainer,
+  StyledForm,
 } from "./SignIn.Styles";
-import { LightDarkSwitchContainer } from "../../layout/Header/Header.Styles";
 
-// Assets
-import Logo from "../../../assets/images/logo.svg";
-import LogoDark from "../../../assets/images/logo-dark.svg";
-import Sun from "../../../assets/images/sun.svg";
-import Moon from "../../../assets/images/moon.svg";
+// Components
+import Header from "../Header/Header";
+import PrimaryButton from "../../common/PrimaryButton/PrimaryButton";
 
 // Utils
 import { reDirectToHome } from "../../../pages/paths.utils";
 
 function SignIn() {
+  const dispatch = useDispatch();
+  const { ChangeToken } = bindActionCreators(actionsCreators, dispatch);
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onFinish = (values: any) => {
     axios
@@ -61,43 +60,25 @@ function SignIn() {
     ChangeToken("");
   };
 
-  const currentTheme = useSelector((state: MainState) => state.theme);
-  const dispatch = useDispatch();
-  const { ChangeTheme, ChangeToken } = bindActionCreators(
-    actionsCreators,
-    dispatch
-  );
-  const toggleTheme = (checked: boolean) => {
-    const newTheme = checked ? "light" : "dark";
-    ChangeTheme(newTheme);
-  };
   return (
-    <MainContainer>
-      <CardContainer
-        title={
-          <Header>
-            {currentTheme === "light" ? (
-              <img src={Logo} alt="logo" height="40px" />
-            ) : (
-              <img src={LogoDark} alt="logo-dark" height="40px" />
-            )}
-            <LightDarkSwitchContainer>
-              <Paragraph>Light</Paragraph>
-
-              <Switch
-                checkedChildren={<img src={Sun} alt="sun" />}
-                unCheckedChildren={<img src={Moon} alt="moon" />}
-                defaultChecked={currentTheme === "light"}
-                onChange={toggleTheme}
-              />
-
-              <Paragraph>Dark</Paragraph>
-            </LightDarkSwitchContainer>
-          </Header>
-        }
-        style={{ width: 500, padding: "30px 30px 0" }}
-      >
-        <Form
+    <SigInPageContainer>
+      {/* <SignInContentContainer> */}
+      <CardContainer style={{ width: 500, padding: "30px 30px 0" }}>
+        <Header />
+        <Typography.Title level={2} style={{ textAlign: "left" }}>
+          Welcome to X-Report
+        </Typography.Title>
+        <Typography.Paragraph
+          style={{
+            textAlign: "left",
+            color: "#888888",
+            marginBottom: "20px",
+          }}
+        >
+          Please log in to access your dashboard and start managing your
+          reports.
+        </Typography.Paragraph>
+        <StyledForm
           name="basic"
           initialValues={{ remember: true }}
           onFinish={onFinish}
@@ -110,7 +91,6 @@ function SignIn() {
           >
             <Input />
           </FormItem>
-
           <FormItem
             label="Password"
             name="password"
@@ -118,7 +98,6 @@ function SignIn() {
           >
             <Input.Password />
           </FormItem>
-
           <FormItem
             style={{
               display: "flex",
@@ -126,13 +105,13 @@ function SignIn() {
               margin: "auto",
             }}
           >
-            <Button type="primary" htmlType="submit">
+            <PrimaryButton style={{ width: "200px" }} htmlType="submit">
               Login
-            </Button>
+            </PrimaryButton>
           </FormItem>
-        </Form>
+        </StyledForm>
       </CardContainer>
-    </MainContainer>
+    </SigInPageContainer>
   );
 }
 

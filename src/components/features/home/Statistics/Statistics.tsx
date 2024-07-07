@@ -25,9 +25,11 @@ type statisticsType = {
 };
 
 // Server Fetch
-const fetchStatistics = async (isDoctor: boolean) => {
+const fetchStatistics = async (isDoctor: boolean, token: string) => {
   const stats = { new: 0, incomplete: 0, pending: 0, completed: 0 };
   try {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
     // New studies
     let response = await axios.get("/api/v1/studies/new/count");
     stats.new = response.data.count;
@@ -56,6 +58,7 @@ const fetchStatistics = async (isDoctor: boolean) => {
 function Statistics() {
   // Redux States
   const user = useSelector((state: MainState) => state.user);
+  const token = useSelector((state: MainState) => state.token);
 
   const [statistics, setStatistics] = useState<statisticsType>({
     new: 0,
@@ -65,7 +68,7 @@ function Statistics() {
   });
 
   useEffect(() => {
-    fetchStatistics(user?.type == "doctor").then((response) => {
+    fetchStatistics(user?.type == "doctor", token).then((response) => {
       setStatistics(response);
     });
   }, [user]);

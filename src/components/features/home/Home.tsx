@@ -1,4 +1,3 @@
-/* eslint-disable*/
 import React from "react";
 
 // Redux
@@ -13,7 +12,6 @@ import {
   HomeContainer,
   HomeTopContainer,
   HomeBottomContainer,
-  // ActivityCardsContainer,
   HomeTopTitleContainer,
   HomeTopLeftContainer,
   HomeTopRightContainer,
@@ -23,7 +21,6 @@ import {
 import LineHeader from "../../common/LineHeader/LineHeader";
 import Statistics from "./Statistics/Statistics";
 import RecentActivity from "./RecentActivity/RecentActivity";
-// import ActivityCard from "../../common/ActivityCard/ActivityCard";
 
 // Assets
 import Poster from "../../../assets/images/home_poster.svg";
@@ -32,37 +29,36 @@ function Home() {
   const user = useSelector((state: MainState) => state.user);
 
   return (
-    <>home</>
-    // <HomeContainer>
-    //   <HomeTopContainer>
-    //     <HomeTopLeftContainer>
-    //       {/* Welcome */}
-    //       <HomeTopTitleContainer>
-    //         <Title level={2}>
-    //           Welcome, {user?.type == "doctor" ? <>Dr.</> : null}{" "}
-    //           {user?.employee_name}!
-    //         </Title>
-    //         <Title level={5} style={{ fontWeight: 500, marginTop: "-10px" }}>
-    //           Wishing you a productive and successful day ahead.
-    //         </Title>
-    //       </HomeTopTitleContainer>
-    //       {/* Statistics */}
-    //       <Statistics />
-    //     </HomeTopLeftContainer>
-    //     <HomeTopRightContainer>
-    //       <img src={Poster} alt="poster" height={"100%"} />
-    //     </HomeTopRightContainer>
-    //   </HomeTopContainer>
+    <HomeContainer>
+      <HomeTopContainer>
+        <HomeTopLeftContainer>
+          {/* Welcome */}
+          <HomeTopTitleContainer>
+            <Title level={2}>
+              Welcome, {user?.type == "doctor" ? <>Dr.</> : null}{" "}
+              {user?.employee_name}!
+            </Title>
+            <Title level={5} style={{ fontWeight: 500, marginTop: "-10px" }}>
+              Wishing you a productive and successful day ahead.
+            </Title>
+          </HomeTopTitleContainer>
+          {/* Statistics */}
+          <Statistics />
+        </HomeTopLeftContainer>
+        <HomeTopRightContainer>
+          <img src={Poster} alt="poster" height={"100%"} />
+        </HomeTopRightContainer>
+      </HomeTopContainer>
 
-    //   {user?.type == "doctor" && (
-    //     <HomeBottomContainer>
-    //       {/* Recent Activity */}
-    //       <Title level={3}>Recent Activity</Title>
-    //       <LineHeader />
-    //       <RecentActivity />
-    //     </HomeBottomContainer>
-    //   )}
-    // </HomeContainer>
+      {user?.type == "doctor" && (
+        <HomeBottomContainer>
+          {/* Recent Activity */}
+          <Title level={3}>Recent Activity</Title>
+          <LineHeader />
+          <RecentActivity />
+        </HomeBottomContainer>
+      )}
+    </HomeContainer>
   );
 }
 

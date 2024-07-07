@@ -12,6 +12,7 @@ import {
   UserOutlined,
   FileTextOutlined,
   ExperimentOutlined,
+  DesktopOutlined,
   HighlightOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
@@ -77,6 +78,21 @@ const SideBar = () => {
               { key: "/doctors", label: "All" },
               // { key: "/doctors/archived", label: "Archived" },
               { key: "/doctors/new", label: "New" },
+            ],
+          },
+        ]
+      : []),
+
+    ...(user?.type === "employee"
+      ? [
+          {
+            key: "sub6",
+            label: "Employees",
+            icon: <DesktopOutlined />,
+            children: [
+              { key: "/employees", label: "All" },
+              // { key: "/doctors/archived", label: "Archived" },
+              { key: "/employees/new", label: "New" },
             ],
           },
         ]

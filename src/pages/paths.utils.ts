@@ -110,6 +110,21 @@ export const reDirectToPatients = (type: string) => {
   }
 };
 
+export const reDirectToDoctors = (type: string) => {
+  switch (type) {
+    case "all":
+      window.location.href = `${paths.doctors.base}`;
+      break;
+    case "new":
+      window.location.href = `${paths.doctors.base}/${paths.doctors.types.new}`;
+      break;
+    default:
+      // Handle invalid type or default case
+      console.error(`Invalid Doctor type: ${type}`);
+      break;
+  }
+};
+
 export const reDirectToTemplates = (type: string) => {
   switch (type) {
     case "all":

@@ -61,19 +61,19 @@ import NewPatientPage from "./pages/NewPatientPage";
 // import PatientArchived from "./pages/PatientArchived";
 
 // Doctors
+import AllDoctors from "./pages/AllDoctors";
+import ViewEmployee from "./components/features/employee/ViewEmployee/ViewEmployee";
 
 // Templates
 import AllTemplates from "./pages/AllTemplates";
 import NewTemplates from "./components/features/templates/NewTemplates/NewTemplates";
 import ViewTemplate from "./components/features/templates/ViewTemplate/ViewTemplate";
 
-import AllDoctors from "./pages/AllDoctors";
 import NewEmployee from "./components/features/employee/NewEmployee/NewEmployee";
 
 import Examples from "./pages/Examples";
 import DrawarPage from "./pages/DrawarPage";
 // import ArchivedDoctor from "./pages/ArchivedDoctor";
-import ViewEmployee from "./components/features/employee/ViewEmployee/ViewEmployee";
 
 // 404
 import NotFoundPage from "./pages/NotFoundPage";
@@ -96,7 +96,7 @@ const ConditionalLayout = (props: Props) => {
     <>
       {!isLoginPage && <SideBar />}
       <MainContainer>
-        {<Header />}
+        {!isLoginPage && <Header />}
         {children}
       </MainContainer>
     </>
@@ -142,20 +142,17 @@ function App() {
     >
       <ThemeProvider theme={currentTheme == "light" ? lightTheme : darkTheme}>
         <Layout>
-          <>
-            {/* <SideBar /> */}
-            {/* <Header /> */}
-            <BrowserRouter>
-              <ConditionalLayout>
-                <ContentContainer>
-                  <Routes>
-                    <Route path={paths.home} element={<HomePage />} />
-                    <Route path={paths.login} element={<SignInPage />} />
+          <BrowserRouter>
+            <ConditionalLayout>
+              <ContentContainer>
+                <Routes>
+                  <Route path={paths.home} element={<HomePage />} />
+                  <Route path={paths.login} element={<SignInPage />} />
 
-                    {/* <Route path={paths.account} element={<AccountPage />} /> */}
+                  {/* <Route path={paths.account} element={<AccountPage />} /> */}
 
-                    {/* Cases */}
-                    {/* <Route path={paths.cases.base}>
+                  {/* Cases */}
+                  {/* <Route path={paths.cases.base}>
                       <Route
                         path={paths.cases.types.unassigned}
                         element={<UnAssigned />}
@@ -190,8 +187,8 @@ function App() {
                       <Route path=":id" element={<ViewXRayPage />} />
                     </Route> */}
 
-                    {/* Patients */}
-                    {/* <Route path={paths.patients.base}>
+                  {/* Patients */}
+                  {/* <Route path={paths.patients.base}>
                       <Route index element={<AllPatient />} />
                       <Route
                         path={paths.patients.types.new}
@@ -200,8 +197,26 @@ function App() {
                       <Route path=":Id" element={<ViewPatientPage />} />
                     </Route> */}
 
-                    {/* Templates */}
-                    {/* <Route path={paths.templates.base}>
+                  {/* Doctors */}
+                  <Route path={paths.doctors.base}>
+                    <Route index element={<AllDoctors />} />
+                    {/* <Route
+                      path={paths.doctors.types.new}
+                      element={<NewEmployee />}
+                    /> */}
+                    <Route
+                      path=":Id"
+                      element={<ViewEmployee type={"doctors"} />}
+                    />
+                  </Route>
+
+                  {/* Employees */}
+                  <Route path={paths.employees.base}>
+                    <Route path=":Id" element={<ViewEmployee type={""} />} />
+                  </Route>
+
+                  {/* Templates */}
+                  {/* <Route path={paths.templates.base}>
                       <Route index element={<AllTemplates />} />
                       <Route
                         path={paths.templates.types.new}
@@ -210,13 +225,12 @@ function App() {
                       <Route path=":Id" element={<ViewTemplate />} />
                     </Route> */}
 
-                    {/* NotFound */}
-                    <Route path="/*" element={<NotFoundPage />} />
-                  </Routes>
-                </ContentContainer>
-              </ConditionalLayout>
-            </BrowserRouter>
-          </>
+                  {/* NotFound */}
+                  <Route path="/*" element={<NotFoundPage />} />
+                </Routes>
+              </ContentContainer>
+            </ConditionalLayout>
+          </BrowserRouter>
         </Layout>
       </ThemeProvider>
     </ConfigProvider>
