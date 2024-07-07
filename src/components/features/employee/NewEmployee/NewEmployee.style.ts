@@ -16,7 +16,7 @@ export const FormContainer = styled(Form)`
   display: flex;
   flex-direction: column;
 
-  height: 100%;
+  height: 80%;
 `;
 
 export const InputFieldsContainer = styled(Flex)`

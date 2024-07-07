@@ -1,4 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
+
+import { useNavigate } from "react-router-dom"; // Import useNavigate hook for navigation
+
+// Services
+import axios from "../../../../services/apiService";
+
+// Redux
+import { useSelector } from "react-redux";
+import { MainState } from "../../../../state/Reducers";
 
 // Third Party Components
 import PhoneInput from "antd-phone-input";
@@ -11,12 +20,8 @@ import { Form, Input, Radio, message } from "antd";
 import LineHeader from "../../../common/LineHeader/LineHeader";
 import SecondaryButton from "../../../common/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
-import { useNavigate } from "react-router-dom"; // Import useNavigate hook for navigation
+import Unauthorized from "../../../layout/unauthorized/Unauthorized";
 
-import { useSelector } from "react-redux";
-import { MainState } from "../../../../state/Reducers";
-
-import axios from "../../../../services/apiService";
 // Styled Components
 import {
   NewEmployeeContainer,
@@ -24,7 +29,6 @@ import {
   InputFieldsContainer,
   SubmitContainer,
 } from "./NewEmployee.style";
-import Unauthorized from "../../../layout/unauthorized/Unauthorized";
 
 interface NewEmployeeFormValues {
   employee_name: string;
@@ -36,7 +40,7 @@ interface NewEmployeeFormValues {
   gender: "male" | "female";
   phone_number: string;
   email: string;
-  employee_id: number;
+  employee_id: number | null;
   password: string;
   username: string;
 }
@@ -49,19 +53,8 @@ function NewEmployee(props: NewEmployeeProps) {
   const [form] = Form.useForm();
   const navigate = useNavigate(); // Initialize useNavigate hook
   const token = useSelector((state: MainState) => state.token);
-  const [me, setMe] = React.useState({} as any);
 
-  useEffect(() => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    axios
-      .get("/api/v1/employees/me")
-      .then((response) => {
-        setMe(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [token]);
+  const user = useSelector((state: MainState) => state.user);
 
   const onFinish = async (values: unknown) => {
     const formValues = values as NewEmployeeFormValues;
@@ -70,7 +63,7 @@ function NewEmployee(props: NewEmployeeProps) {
       (formValues.phone_number as any).areaCode +
       (formValues.phone_number as any).phoneNumber;
     formValues.type = props.type == "doctors" ? "doctor" : "employee";
-    formValues.employee_id = me.id;
+    formValues.employee_id = user ? user.id : null;
     console.log("Form values:", formValues);
 
     try {
@@ -95,7 +88,7 @@ function NewEmployee(props: NewEmployeeProps) {
     }
   };
 
-  const onCancel = () => {
+  const onCancel = (): void => {
     form.resetFields();
   };
 
@@ -123,11 +116,13 @@ function NewEmployee(props: NewEmployeeProps) {
 
   return (
     <>
-      {me.type != "employee" ? (
+      {user?.type != "employee" ? (
+        <Unauthorized />
+      ) : user.role != "admin" ? (
         <Unauthorized />
       ) : (
         <NewEmployeeContainer>
-          <Title level={2}>
+          <Title level={3}>
             New {props.type == "doctors" ? "Radiologist" : "Employee"}
           </Title>
           <LineHeader />
@@ -163,6 +158,7 @@ function NewEmployee(props: NewEmployeeProps) {
                   placeholder="Birth Date"
                   type="date"
                   onChange={handleBirthDateChange}
+                  max={new Date().toISOString().split("T")[0]}
                 />
               </Form.Item>
 
@@ -211,18 +207,6 @@ function NewEmployee(props: NewEmployeeProps) {
                 </Radio.Group>
               </Form.Item>
 
-              {/* <Form.Item
-            name="type"
-            label="Type"
-            labelCol={{ span: 24 }}
-            wrapperCol={{ span: 24 }}
-            rules={[{ required: true, message: "Type is required" }]}
-          >
-            <Radio.Group buttonStyle="solid">
-              <Radio.Button value="employee">Employee</Radio.Button>
-              <Radio.Button value="doctor">Doctor</Radio.Button>
-            </Radio.Group>
-          </Form.Item> */}
               <Form.Item
                 name="username"
                 label="Username"

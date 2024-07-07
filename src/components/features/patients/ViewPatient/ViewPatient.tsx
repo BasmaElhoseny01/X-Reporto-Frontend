@@ -25,6 +25,7 @@ interface RouteParams extends Record<string, string | undefined> {
   Id: string;
 }
 
+// Server Fetch
 const fetchPatientData = async (id: string, token: string) => {
   try {
     const response = await axios.get(`api/v1/patients/${id}`, {
@@ -43,6 +44,8 @@ function ViewPatient() {
 
   // Get the ID value from the URL
   const { Id } = useParams<RouteParams>(); // Replace with the actual ID value
+
+  // Redux States
   const token = useSelector((state: MainState) => state.token);
   const user = useSelector((state: MainState) => state.user);
 

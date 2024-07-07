@@ -1,16 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import Title from 'antd/es/typography/Title';
-import LineHeader from '../../../common/LineHeader/LineHeader';
+import React, { useState, useEffect } from "react";
+
+import { useParams } from "react-router-dom";
+
+// Services
+import axios from "../../../../services/apiService";
+
+// Redux
+import { useSelector } from "react-redux";
+import { MainState } from "../../../../state/Reducers";
+
+// Ant Design
+import Title from "antd/es/typography/Title";
+import { Result, Tabs } from "antd";
+import type { TabsProps } from "antd";
+
+// Components
+import EditEmployeeInfo from "../../../common/EditEmployeeInfo/EditEmployeeInfo";
+import ViewHistory from "../../../common/ViewHistory/ViewHistory";
 import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
-import { ButtonContainer ,ViewContainer} from "./ViewEmployee.style";
-import EditEmployeeInfo from '../../../common/EditEmployeeInfo/EditEmployeeInfo';
-import ViewHistory from '../../../common/ViewHistory/ViewHistory';
 
-import { useNavigate } from 'react-router-dom'; // Import useNavigate hook for navigation
-import { PlusOutlined } from "@ant-design/icons";
-import { Row } from 'antd';
+// Styled Components
+import { ViewContainer } from "./ViewEmployee.style";
 
+//Types
+import { EmployeeType } from "../../../../types/employee";
+
+// Utils
+import { reDirectToHome } from "../../../../utils";
+
+// Interfaces
 interface RouteParams extends Record<string, string | undefined> {
   Id: string;
 }
@@ -18,40 +36,107 @@ interface ViewEmployeeProps {
   type: string;
 }
 
+// Server Fetch
+const fetchEmployeeData = async (id: string, token: string) => {
+  try {
+    const response = await axios.get(`api/v1/employees/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching Employee data:", error);
+  }
+};
+
 function ViewEmployee(props: ViewEmployeeProps) {
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  // Get the ID value from the URL
   const { Id } = useParams<RouteParams>(); // Replace with the actual ID value
 
-  const [idValue, setIdValue] = useState<string>('');
+  // Redux States
+  const token = useSelector((state: MainState) => state.token);
+
+  // Use States
+  const [employeeData, setEmployeeData] = useState<EmployeeType | null>(null);
+
   useEffect(() => {
     if (Id) {
-      setIdValue(Id);
+      // Get Employee Info
+      fetchEmployeeData(Id, token).then((response) => {
+        console.log(response);
+        setEmployeeData(response);
+      });
     }
   }, [Id]);
-  const handleAddEmployee = () => {
-    // Perform any necessary actions before navigating
-    // Example: Saving data, validation, etc.
 
-    // Navigate to the desired route using history.push
-    navigate(`/${props.type}/new`); // Replace with your actual route
+  // const handleAddEmployee = () => {
+  //   reDirectToEmployees("new");
+  // };
+
+  /* eslint-disable-next-line */
+  const onChange = (key: string) => {
+    // console.log(key);
   };
 
+  const employeeNavItems: TabsProps["items"] = [
+    {
+      key: "1",
+      label: "Info",
+      children: (
+        <EditEmployeeInfo
+          employee={employeeData}
+          setEmployeeData={setEmployeeData}
+          type={props.type}
+        />
+      ),
+    },
+  ];
+
+  const doctorNavItems: TabsProps["items"] = [
+    {
+      key: "1",
+      label: "Info",
+      children: (
+        <EditEmployeeInfo
+          employee={employeeData}
+          setEmployeeData={setEmployeeData}
+          type={props.type}
+        />
+      ),
+    },
+    {
+      key: "2",
+      label: "History",
+      children: <ViewHistory api={`api/v1/employees/${Id}/studies/?`} />,
+    },
+  ];
+
   return (
-    <ViewContainer>
-      <Title level={2}>View {props.type=="doctors" ? 'Radiologist' : 'Employee'} </Title>
-      <LineHeader />
-      <Row>
-      <Title level={4} style={{ margin: 0 }}>{props.type=="doctors" ? 'Radiologist' : 'Employee'} Information</Title>
-      <ButtonContainer>
-        <PrimaryButton icon={<PlusOutlined />} onClick={handleAddEmployee}>Add {props.type=="doctors" ? 'Radiologist' : 'Employee'}</PrimaryButton>
-        {/* <PrimaryButton danger icon={<ContainerOutlined />}>Archive Patient</PrimaryButton> */}
-      </ButtonContainer>
-      </Row>
-      <LineHeader />
-      <EditEmployeeInfo idValue={idValue} type={props.type} />
-      {/* only  if props.type=="doctors" view history */}
-      {props.type=="doctors" && <ViewHistory api={`api/v1/employees/${Id}/studies/?`} />}
-    </ViewContainer>
+    <>
+      {employeeData ? (
+        <ViewContainer>
+          {" "}
+          <Title level={3}>
+            {props.type == "doctors" ? "Doctor" : "Employee"}{" "}
+          </Title>
+          <Tabs
+            defaultActiveKey="1"
+            items={props.type == "doctors" ? doctorNavItems : employeeNavItems}
+            onChange={onChange}
+          />{" "}
+        </ViewContainer>
+      ) : (
+        <Result
+          status="404"
+          title="404"
+          subTitle="No Patient exists with this ID."
+          extra={
+            <PrimaryButton onClick={reDirectToHome}>Back Home</PrimaryButton>
+          }
+        />
+      )}
+    </>
   );
 }
 

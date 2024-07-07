@@ -35,6 +35,19 @@ function AllEmployees() {
         },
       },
       {
+        title: "Role",
+        dataIndex: "role",
+        key: "role",
+        // eslint-disable-next-line
+        onFilter: (value: any, record: any) => {
+          return record.role
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase());
+        },
+        sorter: (a: any, b: any) => a.role.localeCompare(b.role),
+      },
+      {
         title: "ID",
         dataIndex: "id",
         key: "id",
@@ -80,10 +93,10 @@ function AllEmployees() {
 
     api: "/api/v1/employees/?type=employee&",
     title: "Employees",
-    filterColumns: ["role", "type", "phone_number", "email", "employee_id"],
+    filterColumns: ["type", "phone_number", "email", "employee_id"],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
-      reDirectToEmployees(record.id);
+      reDirectToEmployees("view", record.id);
     },
     addNew: () => {
       reDirectToEmployees("new");

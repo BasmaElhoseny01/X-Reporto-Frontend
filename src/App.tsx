@@ -125,6 +125,7 @@ function App() {
       axios
         .get("/api/v1/employees/me")
         .then((response) => {
+          console.log("User Logged In", response.data);
           ChangeUser(response.data);
         })
         .catch((error) => {
@@ -191,14 +192,14 @@ function App() {
                     </Route> */}
 
                   {/* Patients */}
-                  {/* <Route path={paths.patients.base}>
-                      <Route index element={<AllPatient />} />
-                      <Route
-                        path={paths.patients.types.new}
-                        element={<NewPatientPage />}
-                      />
-                      <Route path=":Id" element={<ViewPatientPage />} />
-                    </Route> */}
+                  <Route path={paths.patients.base}>
+                    <Route index element={<AllPatient />} />
+                    {/* <Route
+                      path={paths.patients.types.new}
+                      element={<NewPatientPage />}
+                    /> */}
+                    <Route path=":Id" element={<ViewPatientPage />} />
+                  </Route>
 
                   {/* Doctors */}
                   <Route path={paths.doctors.base}>
@@ -209,13 +210,17 @@ function App() {
                     /> */}
                     <Route
                       path=":Id"
-                      element={<ViewEmployee type={"doctors"} />}
+                      element={<ViewEmployee type="doctors" />}
                     />
                   </Route>
 
                   {/* Employees */}
                   <Route path={paths.employees.base}>
                     <Route index element={<AllEmployees />} />
+                    <Route
+                      path={paths.employees.types.new}
+                      element={<NewEmployee type="" />}
+                    />
                     <Route path=":Id" element={<ViewEmployee type={""} />} />
                   </Route>
 

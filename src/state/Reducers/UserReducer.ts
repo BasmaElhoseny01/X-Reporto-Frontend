@@ -1,4 +1,4 @@
-import { UserType } from "../../types/employee";
+import { UserType } from "../../types/user";
 import { Action } from "../Actions/index";
 import { ActionType } from "../ActionType";
 
