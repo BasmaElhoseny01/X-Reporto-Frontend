@@ -50,6 +50,7 @@ export const defaultTemplate =
     <h4>Examination:</h4>
     <h4>Comparison:</h4>
     <h4 style="margin:0;">Findings:</h4>
+    <p id="findings"></p>
     <h4>Impression:</h4>
   </div>
   <hr />
