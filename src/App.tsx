@@ -65,6 +65,7 @@ import AllDoctors from "./pages/AllDoctors";
 
 // Employees
 import AllEmployees from "./pages/AllEmployees";
+import NewEmployee from "./components/features/employee/NewEmployee/NewEmployee";
 import ViewEmployee from "./components/features/employee/ViewEmployee/ViewEmployee";
 
 // Templates
@@ -72,11 +73,8 @@ import AllTemplates from "./pages/AllTemplates";
 import NewTemplates from "./components/features/templates/NewTemplates/NewTemplates";
 import ViewTemplate from "./components/features/templates/ViewTemplate/ViewTemplate";
 
-import NewEmployee from "./components/features/employee/NewEmployee/NewEmployee";
-
-import Examples from "./pages/Examples";
-import DrawarPage from "./pages/DrawarPage";
-// import ArchivedDoctor from "./pages/ArchivedDoctor";
+// import Examples from "./pages/Examples";
+// import DrawarPage from "./pages/DrawarPage";
 
 // 404
 import NotFoundPage from "./pages/NotFoundPage";
@@ -153,43 +151,40 @@ function App() {
                   <Route path={paths.home} element={<HomePage />} />
                   <Route path={paths.login} element={<SignInPage />} />
 
-                  {/* <Route path={paths.account} element={<AccountPage />} /> */}
+                  <Route path={paths.account} element={<AccountPage />} />
 
                   {/* Cases */}
-                  {/* <Route path={paths.cases.base}>
+                  <Route path={paths.cases.base}>
+                    <Route
+                      path={paths.cases.types.unassigned}
+                      element={<UnAssigned />}
+                    />
+
+                    <Route path={paths.cases.types.pending}>
+                      <Route index element={<XRayWorkList />} />
                       <Route
-                        path={paths.cases.types.unassigned}
-                        element={<UnAssigned />}
+                        path=":doctorId"
+                        element={<DoctorPendingCases />}
                       />
+                    </Route>
 
-                      <Route path={paths.cases.types.pending}>
-                        <Route index element={<XRayWorkList />} />
-                        <Route
-                          path=":doctorId"
-                          element={<DoctorPendingCases />}
-                        />
-                      </Route>
-
-                      <Route path={paths.cases.types.completed}>
-                        <Route index element={<XRayCompleted />} />
-                        <Route
-                          path=":doctorId"
-                          element={<DoctorCompletedCases />}
-                        />
-                      </Route>
-
+                    <Route path={paths.cases.types.completed}>
+                      <Route index element={<XRayCompleted />} />
                       <Route
-                        path={paths.cases.types.archived}
-                        element={<XRayArchived />}
+                        path=":doctorId"
+                        element={<DoctorCompletedCases />}
                       />
+                    </Route>
 
-                      <Route
-                        path={paths.cases.types.new}
-                        element={<NewXRay />}
-                      />
+                    <Route
+                      path={paths.cases.types.archived}
+                      element={<XRayArchived />}
+                    />
 
-                      <Route path=":id" element={<ViewXRayPage />} />
-                    </Route> */}
+                    <Route path={paths.cases.types.new} element={<NewXRay />} />
+
+                    <Route path=":id" element={<ViewXRayPage />} />
+                  </Route>
 
                   {/* Patients */}
                   <Route path={paths.patients.base}>
@@ -225,14 +220,14 @@ function App() {
                   </Route>
 
                   {/* Templates */}
-                  {/* <Route path={paths.templates.base}>
-                      <Route index element={<AllTemplates />} />
-                      <Route
-                        path={paths.templates.types.new}
-                        element={<NewTemplates />}
-                      />
-                      <Route path=":Id" element={<ViewTemplate />} />
-                    </Route> */}
+                  <Route path={paths.templates.base}>
+                    <Route index element={<AllTemplates />} />
+                    <Route
+                      path={paths.templates.types.new}
+                      element={<NewTemplates />}
+                    />
+                    <Route path=":Id" element={<ViewTemplate />} />
+                  </Route>
 
                   {/* NotFound */}
                   <Route path="/*" element={<NotFoundPage />} />
