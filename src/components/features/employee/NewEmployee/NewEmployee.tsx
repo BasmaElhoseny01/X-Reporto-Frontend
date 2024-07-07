@@ -1,7 +1,5 @@
 import React from "react";
 
-import { useNavigate } from "react-router-dom"; // Import useNavigate hook for navigation
-
 // Services
 import axios from "../../../../services/apiService";
 
@@ -29,11 +27,14 @@ import {
   InputFieldsContainer,
   SubmitContainer,
 } from "./NewEmployee.style";
+
+// Utils
 import {
   reDirectToDoctors,
   reDirectToEmployees,
 } from "../../../../pages/paths.utils";
 
+// Interface
 interface NewEmployeeFormValues {
   employee_name: string;
   role: "user";
@@ -55,7 +56,8 @@ interface NewEmployeeProps {
 
 function NewEmployee(props: NewEmployeeProps) {
   const [form] = Form.useForm();
-  const navigate = useNavigate(); // Initialize useNavigate hook
+
+  // Redux
   const token = useSelector((state: MainState) => state.token);
   const user = useSelector((state: MainState) => state.user);
 
@@ -66,7 +68,7 @@ function NewEmployee(props: NewEmployeeProps) {
       (formValues.phone_number as any).areaCode +
       (formValues.phone_number as any).phoneNumber;
     formValues.type = props.type == "doctors" ? "doctor" : "employee";
-    formValues.employee_id = user ? user.id : null;
+    formValues.employee_id = user ? user.id : null; // Add Employee Id to track Activities
 
     try {
       /*eslint-disable-next-line*/
@@ -81,7 +83,6 @@ function NewEmployee(props: NewEmployeeProps) {
           props.type == "doctors" ? "Radiologist" : "Employee"
         } added successfully`
       );
-      navigate("/doctors"); // Replace with your actual route
       // Redirect to view Page
       if (props.type == "doctors") {
         reDirectToDoctors("all");
