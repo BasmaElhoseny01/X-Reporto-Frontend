@@ -9,6 +9,7 @@ interface PathsType {
       pending: string;
       completed: string;
       archived: string;
+      new: string;
     };
   };
   patients: {
@@ -26,6 +27,7 @@ const paths: PathsType = {
       pending: "pending", // Path for pending cases
       completed: "completed", // Path for complete cases
       archived: "archived", // Path for archived cases
+      new: "new", // Path for new cases
     },
   },
   patients: {

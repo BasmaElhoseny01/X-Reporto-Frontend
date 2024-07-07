@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from "react";
 
 // Redux
@@ -91,7 +92,15 @@ function ViewHistory(props: ViewHistoryProps) {
 
   return (
     <HistoryContainer>
-      <GeneralTable
+      <h1>aaaa</h1>
+      <h1>aaaa</h1>
+      <h1>aaaa</h1>
+      <h1>aaaa</h1>
+      <h1>aaaa</h1>
+      <h1>aaaa</h1>
+      <h1>aaaa</h1>
+      <h1>aaaa</h1>
+      {/* <GeneralTable
         key={GeneralTableData.title}
         columns={GeneralTableData.columns}
         api={GeneralTableData.api}
@@ -99,8 +108,8 @@ function ViewHistory(props: ViewHistoryProps) {
         action={GeneralTableData.action}
         addNew={GeneralTableData.addNew}
         filterColumns={GeneralTableData.filterColumns}
-      />
-      </HistoryContainer>
+      /> */}
+    </HistoryContainer>
   );
 }
 

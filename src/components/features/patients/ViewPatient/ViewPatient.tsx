@@ -56,7 +56,6 @@ function ViewPatient() {
         .then((response) => {
           console.log(response);
           setPatientData(response);
-          console.log(patientData);
         })
         .catch((error) => {
           if (error.message.includes("404")) {

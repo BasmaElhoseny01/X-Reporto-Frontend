@@ -178,21 +178,18 @@ function App() {
                           element={<XRayArchived />}
                         />
 
-                        <Route path=":id" element={<ViewXRayPage />} />
-
-                        {/* <Route
+                        <Route
                           path={paths.cases.types.new}
                           element={<NewXRay />}
-                        /> */}
+                        />
+
+                        <Route path=":id" element={<ViewXRayPage />} />
                       </Route>
 
                       {/* Patients */}
                       <Route path={paths.patients.base}>
                         <Route index element={<AllPatient />} />
-                        <Route
-                          path=":Id"
-                          element={<ViewPatientPage />}
-                        />
+                        <Route path=":Id" element={<ViewPatientPage />} />
                         {/* <Route path="new" element={<NewPatientPage />} /> */}
                       </Route>
 

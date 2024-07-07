@@ -4,9 +4,8 @@ import styled from "styled-components";
 // import { palette } from "../../../../styles/theme";
 
 export const HistoryContainer = styled("div")`
-  width: 100%;
+  flex: 1;
   overflow-y: scroll;
-
   /* Customize scrollbar */
   &::-webkit-scrollbar {
     width: 6px; /* Width of the scrollbar */

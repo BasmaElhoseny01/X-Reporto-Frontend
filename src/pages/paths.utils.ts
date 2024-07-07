@@ -46,14 +46,10 @@ export const reDirectToCases = (type: string, Id?: string | number) => {
         console.error("Case ID is required for viewing.");
       }
       break;
+    case "new":
+      window.location.href = `${paths.cases.base}/${paths.cases.types.new}`;
+      break;
 
-    // case "view":
-    //   window.location.href = `${paths.cases.base}/${paths.cases.types.view}`;
-    //   break;
-
-    // case "new":
-    //   window.location.href = `${paths.cases.base}/${paths.cases.types.new}`;
-    //   break;
     default:
       // Handle invalid type or default case
       console.error(`Invalid case type: ${type}`);
