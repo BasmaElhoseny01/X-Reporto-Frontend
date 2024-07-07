@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo, useEffect } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import { Typography, Form, Input, message } from "antd";
 const { Title } = Typography;
 import {
@@ -40,7 +40,7 @@ function NewTemplates() {
       const createTemplatePayload = {
         template_name: values.templateName,
         template_path: "",
-        doctor_id:  user?.id ?? 0,
+        doctor_id: user?.id ?? 0,
       };
 
       const createTemplateResponse = await axios.post(
@@ -85,7 +85,7 @@ function NewTemplates() {
       const updateTemplatePayload = {
         template_name: values.templateName,
         template_path: templatePath,
-        doctor_id:  user?.id ?? 0,
+        doctor_id: user?.id ?? 0,
       };
 
       await axios.put(`api/v1/templates/${templateId}`, updateTemplatePayload, {
@@ -151,7 +151,7 @@ function NewTemplates() {
 
   return (
     <>
-      {user &&user.type != "doctor" ? (
+      {user && user.type != "doctor" ? (
         <Unauthorized />
       ) : (
         <ReportDiv>

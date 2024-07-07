@@ -73,6 +73,7 @@ function EditEmployeeInfo(props: EditEmployeeInfoProps) {
 
   const onFinish = async (values: any) => {
     values.employee_id = user?.id ?? 0;
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     await axios
       .put(`api/v1/employees/${employee?.id}`, { ...values })
       .then((response) => {
