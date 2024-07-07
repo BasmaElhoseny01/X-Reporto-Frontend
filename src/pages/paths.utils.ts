@@ -62,9 +62,27 @@ export const reDirectToPatients = (type: string) => {
     case "all":
       window.location.href = `${paths.patients.base}`;
       break;
+    case "new":
+      window.location.href = `${paths.patients.base}/${paths.patients.types.new}`;
+      break;
     default:
       // Handle invalid type or default case
       console.error(`Invalid Patient type: ${type}`);
+      break;
+  }
+};
+
+export const reDirectToTemplates = (type: string) => {
+  switch (type) {
+    case "all":
+      window.location.href = `${paths.templates.base}`;
+      break;
+    case "new":
+      window.location.href = `${paths.templates.base}/${paths.templates.types.new}`;
+      break;
+    default:
+      // Handle invalid type or default case
+      console.error(`Invalid Template type: ${type}`);
       break;
   }
 };

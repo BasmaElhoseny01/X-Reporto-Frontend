@@ -44,15 +44,22 @@ import DoctorPendingCases from "./pages/DoctorPendingCases";
 import DoctorCompletedCases from "./pages/DoctorCompletedCases";
 
 import ViewXRayPage from "./pages/ViewXRayPage";
+import NewXRay from "./components/features/xrays/NewXRay/NewXRay";
 
 // Patients
 import AllPatient from "./pages/AllPatient";
-
-import NewXRay from "./components/features/xrays/NewXRay/NewXRay";
-
-// import PatientArchived from "./pages/PatientArchived";
-import NewPatientPage from "./pages/NewPatientPage";
 import ViewPatientPage from "./pages/ViewPatientPage";
+import NewPatientPage from "./pages/NewPatientPage";
+// import PatientArchived from "./pages/PatientArchived";
+
+
+// Doctors
+
+// Templates
+import AllTemplates from "./pages/AllTemplates";
+import NewTemplates from "./components/features/templates/NewTemplates/NewTemplates";
+import ViewTemplate from "./components/features/templates/ViewTemplate/ViewTemplate";
+
 
 import AllDoctors from "./pages/AllDoctors";
 import NewEmployee from "./components/features/employee/NewEmployee/NewEmployee";
@@ -60,11 +67,12 @@ import NewEmployee from "./components/features/employee/NewEmployee/NewEmployee"
 import Examples from "./pages/Examples";
 import DrawarPage from "./pages/DrawarPage";
 // import ArchivedDoctor from "./pages/ArchivedDoctor";
-import AllTemplates from "./pages/AllTemplates";
-import SigninPage from "./pages/Signin";
 import ViewEmployee from "./components/features/employee/ViewEmployee/ViewEmployee";
-import NewTemplates from "./components/features/templates/NewTemplates/NewTemplates";
-import ViewTemplate from "./components/features/templates/ViewTemplate/ViewTemplate";
+
+// Signin
+import SigninPage from "./pages/Signin";
+
+// 404
 import NotFoundPage from "./pages/NotFoundPage";
 
 // import { bindActionCreators } from "redux";
@@ -189,8 +197,11 @@ function App() {
                       {/* Patients */}
                       <Route path={paths.patients.base}>
                         <Route index element={<AllPatient />} />
+                        <Route
+                          path={paths.patients.types.new}
+                          element={<NewPatientPage />}
+                        />
                         <Route path=":Id" element={<ViewPatientPage />} />
-                        {/* <Route path="new" element={<NewPatientPage />} /> */}
                       </Route>
 
                       {/* <Route path="doctors">
@@ -205,14 +216,17 @@ function App() {
                         />
                       </Route> */}
 
-                      {/* <Route path="templates">
+                      <Route path={paths.templates.base}>
                         <Route index element={<AllTemplates />} />
-                        <Route path="new" element={<NewTemplates />} />
+                        <Route
+                          path={paths.templates.types.new}
+                          element={<NewTemplates />}
+                        />
                         <Route path=":Id" element={<ViewTemplate />} />
                       </Route>
- */}
+
                       {/* <Route path="annotation" element={<Annotation />} /> */}
-                      <Route path="drawer" element={<DrawarPage />} />
+                      {/* <Route path="drawer" element={<DrawarPage />} />
                       <Route path="examples" element={<Examples />} />
                       <Route
                         path="about"
@@ -229,7 +243,7 @@ function App() {
                             <div>basma</div>
                           </div>
                         }
-                      />
+                      /> */}
                       <Route path="/*" element={<NotFoundPage />} />
                     </Routes>
                   </BrowserRouter>

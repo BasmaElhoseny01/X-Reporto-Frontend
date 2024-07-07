@@ -74,7 +74,7 @@ const SideBar = () => {
       icon: <HighlightOutlined />,
       children: [
         { key: "/templates", label: "All" },
-        ...(me.type === "employee"
+        ...(me.type === "doctor"
           ? [{ key: "/templates/new", label: "New" }]
           : []),
       ],

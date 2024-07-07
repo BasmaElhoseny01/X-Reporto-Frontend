@@ -14,6 +14,16 @@ interface PathsType {
   };
   patients: {
     base: string;
+    types: {
+      new: string;
+    };
+  };
+
+  templates: {
+    base: string;
+    types: {
+      new: string;
+    };
   };
 }
 
@@ -32,6 +42,15 @@ const paths: PathsType = {
   },
   patients: {
     base: "patients",
+    types: {
+      new: "new",
+    },
+  },
+  templates: {
+    base: "templates",
+    types: {
+      new: "new",
+    },
   },
 };
 
