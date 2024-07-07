@@ -9,45 +9,57 @@ export const reDirectToAccount = () => {
 };
 
 export const reDirectToCases = (type: string, Id?: string | number) => {
+  const baseUrl = process.env.REACT_APP_BASE_URL || "http://localhost:3000"; // Default to a fallback URL if not defined
+  let newPath = "";
+
   switch (type) {
     case "unassigned":
-      window.location.href = `${paths.cases.base}/${paths.cases.types.unassigned}`;
+      newPath = `${paths.cases.base}/${paths.cases.types.unassigned}`;
+      window.location.href = newPath;
       break;
 
     case "pending":
       if (Id) {
         // Pending per Doctor
-        window.location.href = `${paths.cases.base}/${paths.cases.types.pending}/${Id}`;
+        newPath = `${baseUrl}/${paths.cases.base}/${paths.cases.types.pending}/${Id}`;
+        window.location.href = newPath;
       } else {
         // All Pending
-        window.location.href = `${paths.cases.base}/${paths.cases.types.pending}`;
+        newPath = `${baseUrl}/${paths.cases.base}/${paths.cases.types.pending}`;
+        window.location.href = newPath;
       }
       break;
 
     case "completed":
       if (Id) {
         // Completed per Doctor
-        window.location.href = `${paths.cases.base}/${paths.cases.types.completed}/${Id}`;
+        newPath = `${baseUrl}/${paths.cases.base}/${paths.cases.types.completed}/${Id}`;
+        window.location.href = newPath;
       } else {
         // All Completed
-        window.location.href = `${paths.cases.base}/${paths.cases.types.completed}`;
+        newPath = `${baseUrl}/${paths.cases.base}/${paths.cases.types.completed}`;
+        window.location.href = newPath;
       }
       break;
 
     case "archived":
-      window.location.href = `${paths.cases.base}/${paths.cases.types.archived}`;
+      newPath = `${baseUrl}/${paths.cases.base}/${paths.cases.types.archived}`;
+      window.location.href = newPath;
       break;
 
     case "view":
       if (Id) {
-        // Case Id
-        window.location.href = `${Id}`;
+        // View a specific case
+        newPath = `${baseUrl}/${paths.cases.base}/${Id}`;
+        window.location.href = newPath;
       } else {
         console.error("Case ID is required for viewing.");
       }
       break;
+
     case "new":
-      window.location.href = `${paths.cases.base}/${paths.cases.types.new}`;
+      newPath = `${baseUrl}/${paths.cases.types.new}`;
+      window.location.href = newPath;
       break;
 
     default:

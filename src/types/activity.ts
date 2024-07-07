@@ -1,13 +1,14 @@
 export type ActivityType =
   | "view"
   | "edit"
-  | " submit"
-  | " archive"
-  | " unarchive"
-  | " assign"
-  | " unassign"
-  | " delete"
-  | " create";
+  | "submit"
+  | "archive"
+  | "unarchive"
+  | "assign"
+  | "unassign"
+  | "delete"
+  | "create";
+
 export interface Activity {
   activity_type: ActivityType;
 
