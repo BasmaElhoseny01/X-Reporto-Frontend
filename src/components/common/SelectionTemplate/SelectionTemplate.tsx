@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "../../../services/apiService";
 import { SelectionButton } from "./SelectionTemplate.style";
-import { baseUrl, token } from "../../../types/api";
-
+import { useSelector } from "react-redux";
+import { MainState } from "../../../state/Reducers";
 interface Template {
   template_name: string;
   template_path: string;
@@ -66,8 +66,10 @@ export const defaultTemplate =
     </tbody>
   </table>
 `;
-const emptyTemplate = "<h4>Findings:</h4>";
+const emptyTemplate = `<h4>Findings:</h4><p id="findings"></p>`;
 function SelectionTemplate({ selectedValue, handleSelectionChange }: Props) {
+  const token = useSelector((state: MainState) => state.token);
+
   const [options, setOptions] = useState<Option[]>([
     { value: "-1", label: "Default" },
     { value: "-2", label: "Empty" },
@@ -75,7 +77,7 @@ function SelectionTemplate({ selectedValue, handleSelectionChange }: Props) {
 
   useEffect(() => {
     axios
-      .get(`${baseUrl}templates/`, {
+      .get(`api/v1/templates/`, {
         headers: {
             Authorization: `Bearer ${token}`, // Include the token in the headers
         }
@@ -107,7 +109,7 @@ function SelectionTemplate({ selectedValue, handleSelectionChange }: Props) {
   const handleChange = (value: string, option: Option): void => {
     if (value && value !== "" && option.label !== "Empty" && option.label !== "Default") {
       axios
-        .get(`${baseUrl}templates/${value}/download_template`, {
+        .get(`api/v1/templates/${value}/download_template`, {
           headers: {
               Authorization: `Bearer ${token}`, // Include the token in the headers
           }
