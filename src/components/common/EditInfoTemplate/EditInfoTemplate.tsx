@@ -26,21 +26,8 @@ function EditInfoTemplate(props: EditInfoTemplateProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [form] = Form.useForm();
   const token = useSelector((state: MainState) => state.token);
-  const [me, setMe] = React.useState({} as any);
+  const user = useSelector((state: MainState) => state.user);
 
-  useEffect(() => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    axios
-      .get("/api/v1/employees/me")
-      .then((response) => {
-        setMe(response.data);
-        // console.log(me);
-        // console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [token]);
   const config = useMemo(
     () => ({
       readonly: false,
@@ -118,7 +105,7 @@ function EditInfoTemplate(props: EditInfoTemplateProps) {
           const updateTemplatePayload = {
             template_name: values.template_name,
             template_path: templatePath,
-            doctor_id: me.id
+            doctor_id:  user?.id ?? 0
           };
           await axios.put(`api/v1/templates/${data.id}`, updateTemplatePayload, {
             headers: {

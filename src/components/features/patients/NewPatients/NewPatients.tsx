@@ -39,21 +39,7 @@ function NewPatients() {
   const navigate = useNavigate(); // Initialize useNavigate hook
   const [form] = Form.useForm();
   const token = useSelector((state: MainState) => state.token);
-  const [me, setMe] = React.useState({} as any);
-
-  useEffect(() => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    axios
-      .get("/api/v1/employees/me")
-      .then((response) => {
-        setMe(response.data);
-        // console.log(me);
-        // console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [token]);
+  const user = useSelector((state: MainState) => state.user);
 
   const onFinish = async (values: unknown) => {
     const formValues = values as NewPatientFormValues;
@@ -74,7 +60,7 @@ function NewPatients() {
           birth_date: formValues.birthDate,
           gender: formValues.gender,
           phone_number: formValues.phone.toString(),
-          employee_id: me.id,
+          employee_id:  user?.id ?? 0,
           created_at: "2024-06-26T20:31:24.258262",
         },
         {
@@ -120,7 +106,7 @@ function NewPatients() {
 
   return (
     <>
-      {me.type != "employee" ? (
+      {user &&user.type != "employee" ? (
         <Unauthorized />
       ) : (
         <NewPatientContainer>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   LineHeader,
   InputRow,
@@ -39,21 +39,7 @@ function NewXRay() {
   const [form] = Form.useForm<FormValues>();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const token = useSelector((state: MainState) => state.token);
-  const [me, setMe] = React.useState({} as any);
-
-  useEffect(() => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    axios
-      .get("/api/v1/employees/me")
-      .then((response) => {
-        setMe(response.data);
-        // console.log(me);
-        // console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [token]);
+  const user = useSelector((state: MainState) => state.user);
 
   const props: UploadProps = {
     onRemove: (file) => {
@@ -98,7 +84,7 @@ function NewXRay() {
           patient_id: formValues.patient_id,
           notes: formValues.notes,
           xray_path: responseUpload.data.xray_path,
-          doctor_id: me.id,
+          doctor_id:user?.id ?? 0,
         },
         {
           headers: {
@@ -127,7 +113,7 @@ function NewXRay() {
           study_name: formValues.study_name,
           patient_id: formValues.patient_id,
           notes: formValues.notes,
-          doctor_id: me.id,
+          doctor_id:  user?.id ?? 0,
         },
         {
           headers: {
@@ -175,7 +161,7 @@ function NewXRay() {
 
   return (
     <>
-      {me.type != "employee" ? (
+      {user &&user.type!= "employee" ? (
         <Unauthorized />
       ) : (
         <NewXRayContainer>

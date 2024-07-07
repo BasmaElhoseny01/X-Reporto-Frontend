@@ -32,22 +32,7 @@ function NewTemplates() {
   const [content, setContent] = useState<string>(defaultTemplate); // Initialize with defaultTemplate
   const editor = useRef(null);
   const token = useSelector((state: MainState) => state.token);
-  const [me, setMe] = React.useState({} as any);
-
-  useEffect(() => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    axios
-      .get("/api/v1/employees/me")
-      .then((response) => {
-        setMe(response.data);
-        // console.log(me);
-        // console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [token]);
-
+  const user = useSelector((state: MainState) => state.user);
   const onFinish = async (values: FormValues) => {
     console.log("Values", values);
     try {
@@ -55,7 +40,7 @@ function NewTemplates() {
       const createTemplatePayload = {
         template_name: values.templateName,
         template_path: "",
-        doctor_id: me.id,
+        doctor_id:  user?.id ?? 0,
       };
 
       const createTemplateResponse = await axios.post(
@@ -100,7 +85,7 @@ function NewTemplates() {
       const updateTemplatePayload = {
         template_name: values.templateName,
         template_path: templatePath,
-        doctor_id: me.id,
+        doctor_id:  user?.id ?? 0,
       };
 
       await axios.put(`api/v1/templates/${templateId}`, updateTemplatePayload, {
@@ -166,7 +151,7 @@ function NewTemplates() {
 
   return (
     <>
-      {me.type != "doctor" ? (
+      {user &&user.type != "doctor" ? (
         <Unauthorized />
       ) : (
         <ReportDiv>

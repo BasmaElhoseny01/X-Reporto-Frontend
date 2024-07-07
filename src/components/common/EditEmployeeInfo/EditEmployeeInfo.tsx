@@ -57,21 +57,7 @@ function EditEmployeeInfo (props: EditEmployeeInfoProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [form] = Form.useForm();
   const token = useSelector((state: MainState) => state.token);
-  const [me, setMe] = React.useState({} as any);
-  
-  useEffect(() => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    axios
-      .get("/api/v1/employees/me")
-      .then((response) => {
-        setMe(response.data);
-        // console.log(me);
-        // console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [token]);
+  const user = useSelector((state: MainState) => state.user);
 
   const [data, setData] = useState<UserData>({
     id: 0,
@@ -121,9 +107,9 @@ function EditEmployeeInfo (props: EditEmployeeInfoProps) {
     values.created_at = data.created_at;
     values.role = data.role;
     values.type = data.type;
-    values.employee_id = me.id;
+    values.employee_id = user?.id ?? 0;
     values.username = data.username;
-    values.doctor_id = me.id;
+    values.doctor_id =  user?.id ?? 0;
 
     try {
       await axios.put(`api/v1/employees/${data.id}`, values, {

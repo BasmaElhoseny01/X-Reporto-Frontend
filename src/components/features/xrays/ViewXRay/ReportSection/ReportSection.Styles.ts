@@ -27,3 +27,11 @@ export const ButtonContainer = styled(Flex)`
 export const ReportEditor = styled(JoditEditor)`
     height: 50vh;
     `;
+
+export const LoadingContainer = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh; /* Full viewport height to center the spinner vertically */
+width: 100%;
+`;

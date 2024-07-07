@@ -49,19 +49,7 @@ function NewEmployee(props: NewEmployeeProps) {
   const [form] = Form.useForm();
   const navigate = useNavigate(); // Initialize useNavigate hook
   const token = useSelector((state: MainState) => state.token);
-  const [me, setMe] = React.useState({} as any);
-
-  useEffect(() => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    axios
-      .get("/api/v1/employees/me")
-      .then((response) => {
-        setMe(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [token]);
+  const user = useSelector((state: MainState) => state.user);
 
   const onFinish = async (values: unknown) => {
     const formValues = values as NewEmployeeFormValues;
@@ -70,7 +58,7 @@ function NewEmployee(props: NewEmployeeProps) {
       (formValues.phone_number as any).areaCode +
       (formValues.phone_number as any).phoneNumber;
     formValues.type = props.type == "doctors" ? "doctor" : "employee";
-    formValues.employee_id = me.id;
+    formValues.employee_id =  user?.id ?? 0;
     console.log("Form values:", formValues);
 
     try {
@@ -123,7 +111,7 @@ function NewEmployee(props: NewEmployeeProps) {
 
   return (
     <>
-      {me.type != "employee" ? (
+      { user && user.type != "employee" ? (
         <Unauthorized />
       ) : (
         <NewEmployeeContainer>
