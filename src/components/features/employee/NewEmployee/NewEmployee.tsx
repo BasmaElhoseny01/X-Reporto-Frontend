@@ -118,7 +118,7 @@ function NewEmployee(props: NewEmployeeProps) {
     <>
       {user?.type != "employee" ? (
         <Unauthorized />
-      ) : user.role != "admin" ? (
+      ) : user?.role != "admin" ? (
         <Unauthorized />
       ) : (
         <NewEmployeeContainer>
