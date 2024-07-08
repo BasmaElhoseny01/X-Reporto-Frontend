@@ -154,19 +154,23 @@ export const reDirectToDoctors = (type: string, Id?: string | number) => {
 };
 
 export const reDirectToEmployees = (type: string, Id?: string | number) => {
+  let newPath = "";
   switch (type) {
     case "all":
-      window.location.href = `${paths.employees.base}`;
+      newPath = `${baseUrl}/${paths.employees.base}`;
+      window.location.href = newPath;
       break;
     case "view":
       if (Id) {
-        window.location.href = `${paths.employees.base}/${Id}`;
+        newPath = `${baseUrl}/${paths.employees.base}/${Id}`;
+        window.location.href = newPath;
       } else {
         console.error("Employee ID is required for viewing.");
       }
       break;
     case "new":
-      window.location.href = `${paths.employees.base}/${paths.employees.types.new}`;
+      newPath = `${baseUrl}/${paths.employees.base}/${paths.employees.types.new}`;
+      window.location.href = newPath;
       break;
     default:
       // Handle invalid type or default case
@@ -176,12 +180,15 @@ export const reDirectToEmployees = (type: string, Id?: string | number) => {
 };
 
 export const reDirectToTemplates = (type: string) => {
+  let newPath = "";
   switch (type) {
     case "all":
-      window.location.href = `${paths.templates.base}`;
+      newPath = `${baseUrl}/${paths.templates.base}`;
+      window.location.href = newPath;
       break;
     case "new":
-      window.location.href = `${paths.templates.base}/${paths.templates.types.new}`;
+      newPath = `${baseUrl}/${paths.templates.base}/${paths.templates.types.new}`;
+      window.location.href = newPath;
       break;
     default:
       // Handle invalid type or default case

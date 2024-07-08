@@ -12,7 +12,7 @@ body {
 
 .jodit-react-container {
   /* display: none; */
-  height: 100%;
+  height: 80%;
   overflow-y: scroll;
 
   /* Customize scrollbar */

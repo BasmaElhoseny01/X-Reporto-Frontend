@@ -1,4 +1,3 @@
-/* eslint-disable*/
 import React, { useState, useRef, useMemo } from "react";
 
 // Services
@@ -16,9 +15,6 @@ const { Title } = Typography;
 import {
   ButtonContainer,
   ReportEditor,
-  ReportDiv,
-  TemplateDataCol,
-  TemplateDataRow,
   NewTemplateContainer,
   InputFieldsContainer,
 } from "./NewTemplates.style";
@@ -31,6 +27,7 @@ import SelectionTemplate, {
   defaultTemplate,
 } from "../../../../components/common/SelectionTemplate/SelectionTemplate";
 import Unauthorized from "../../../layout/unauthorized/Unauthorized";
+import { reDirectToTemplates } from "../../../../pages/paths.utils";
 
 // Interface
 interface FormValues {
@@ -52,7 +49,10 @@ function NewTemplates() {
   const [content, setContent] = useState<string>(defaultTemplate); // Initialize with defaultTemplate
 
   const onFinish = async (values: FormValues) => {
-    console.log("Values", values);
+    // Add Content to the template
+    // console.log("Content", content);
+    values.templateContent = content;
+
     try {
       // Step 1: Create the template with an empty template_path
       const createTemplatePayload = {
@@ -70,12 +70,14 @@ function NewTemplates() {
           },
         }
       );
-      const templateId = createTemplateResponse.data.id; // Adjust according to your API response
-
-      // Notify success of template creation
+      // console.log("createTemplateResponse", createTemplateResponse);
+      // Notify success of template create
       message.success("Template created successfully.");
+
+      const templateId = createTemplateResponse.data.id; // Adjust according to your API response
       // Step 2: Convert HTML content to a Blob object
-      console.log("value file", values.templateContent);
+      // console.log("value file", values.templateContent);
+
       // Create a Blob from the .docx content
       const blob = new Blob([values.templateContent], {
         type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -115,14 +117,20 @@ function NewTemplates() {
 
       // Notify success of template update
       message.success("Template updated successfully with the file path.");
+
+      setTimeout(() => {
+        // Redirect to the template list page
+        reDirectToTemplates("all");
+      }, 500); // 1 second delay
     } catch (error) {
       console.error("Error creating or updating template:", error);
-      message.error("Error creating or updating template.");
+      message.error("Failed to create new template.");
     }
   };
 
   const onCancel = () => {
     form.resetFields();
+    setContent(defaultTemplate); // Reset content to default template
   };
 
   const handleSelectionChange = (
@@ -148,23 +156,8 @@ function NewTemplates() {
     []
   );
 
-  // useEffect(() => {
-  //     const fetchData = async () => {
-  //         try {
-  //             const response = await axios.get('https://api.example.com/findings'); // Replace with your API endpoint
-  //             const findingsData = response.data.findings; // Adjust according to the API response structure
-  //             const updatedContent = content.replace('<p id="findings"></p>', `<p id="findings">${findingsData}</p>`);
-  //             setContent(updatedContent);
-  //         } catch (error) {
-  //             console.error('Error fetching data:', error);
-  //         }
-  //     };
-
-  //     fetchData();
-  // }, []); // Fetch data only once on initial render
-
   const handleContentChange = (newContent: string) => {
-    // setContent(newContent);
+    setContent(newContent);
   };
 
   return (
@@ -187,7 +180,7 @@ function NewTemplates() {
               onFinish={onFinish}
               initialValues={{
                 templateName: "",
-                templateContent: defaultTemplate,
+                // templateContent: defaultTemplate,
                 templateType: "Default",
               }}
               style={{
@@ -231,88 +224,24 @@ function NewTemplates() {
             onChange={handleContentChange}
           />
 
-          {/* <Form.Item
-            name="templateContent"
-            label="Template Content"
-            labelCol={{ span: 24 }}
-            wrapperCol={{ span: 24 }}
-          > */}
-          {/* <ReportEditor
-            ref={editor}
-            value={content} // Bind value to content state
-            config={config}
-            onBlur={handleContentChange} // You can choose to keep onBlur or onChange based on performance considerations
-            onChange={handleContentChange}
-          /> */}
-          {/* </Form.Item> */}
+          <ButtonContainer gap="middle">
+            <SecondaryButton
+              onClick={onCancel}
+              size="large"
+              style={{ width: "8%" }}
+            >
+              Cancel
+            </SecondaryButton>
+            <PrimaryButton
+              // htmlType="submit"
+              onClick={form.submit}
+              size="large"
+              style={{ width: "8%" }}
+            >
+              Add
+            </PrimaryButton>
+          </ButtonContainer>
         </NewTemplateContainer>
-        // <ReportDiv>
-        //   <LineHeader />
-        //   <Form
-        //     form={form}
-        //     onFinish={onFinish}
-        //     initialValues={{
-        //       templateName: "",
-        //       templateContent: defaultTemplate,
-        //       templateType: "Default",
-        //     }}
-        //   >
-        //     <TemplateDataCol>
-        //       <TemplateDataRow>
-        //         <Form.Item
-        //           name="templateName"
-        //           label="Template Name"
-        //           labelCol={{ span: 24 }}
-        //           wrapperCol={{ span: 24 }}
-        //         >
-        //           <Input name="templateName" />
-        //         </Form.Item>
-
-        //         <Form.Item
-        //           name="templateType"
-        //           label="Template Type"
-        //           labelCol={{ span: 24 }}
-        //           wrapperCol={{ span: 24 }}
-        //         >
-        //           <SelectionTemplate
-        //             selectedValue={selectedValue}
-        //             handleSelectionChange={handleSelectionChange}
-        //           />
-        //         </Form.Item>
-        //       </TemplateDataRow>
-        //       <Form.Item
-        //         name="templateContent"
-        //         label="Template Content"
-        //         labelCol={{ span: 24 }}
-        //         wrapperCol={{ span: 24 }}
-        //       >
-        //         <ReportEditor
-        //           ref={editor}
-        //           value={content} // Bind value to content state
-        //           config={config}
-        //           onBlur={handleContentChange} // You can choose to keep onBlur or onChange based on performance considerations
-        //           onChange={handleContentChange}
-        //         />
-        //       </Form.Item>
-        //     </TemplateDataCol>
-        //     <ButtonContainer gap="middle">
-        //       <SecondaryButton
-        //         onClick={onCancel}
-        //         size="large"
-        //         style={{ width: "8%" }}
-        //       >
-        //         Cancel
-        //       </SecondaryButton>
-        //       <PrimaryButton
-        //         htmlType="submit"
-        //         size="large"
-        //         style={{ width: "8%" }}
-        //       >
-        //         Add
-        //       </PrimaryButton>
-        //     </ButtonContainer>
-        //   </Form>
-        // </ReportDiv>
       )}
     </>
   );
