@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 // Services
-import axios from "../../../services/apiService";
+import axios from "../../../../../services/apiService";
 
 // Third Party
 
@@ -12,16 +12,16 @@ import { Descriptions, Form, Input, Radio, message } from "antd";
 import { ButtonContainer, FormInputsContainer } from "./EditEmployeeInfo.style";
 
 // Components
-import PrimaryButton from "../PrimaryButton/PrimaryButton";
-import SecondaryButton from "../SecondaryButton/SecondaryButton";
+import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
+import SecondaryButton from "../../../../common/SecondaryButton/SecondaryButton";
 
 // Styled Components
-import { InfoContainer } from "../EditInfo/EditInfo.style";
+import { InfoContainer } from "../../../../common/EditInfo/EditInfo.style";
 
 //Types
-import { EmployeeType } from "../../../types/employee";
+import { EmployeeType } from "../../../../../types/employee";
 import { useSelector } from "react-redux";
-import { MainState } from "../../../state/Reducers";
+import { MainState } from "../../../../../state/Reducers";
 
 interface EditEmployeeInfoProps {
   type: string;
@@ -73,7 +73,7 @@ function EditEmployeeInfo(props: EditEmployeeInfoProps) {
 
   const onFinish = async (values: any) => {
     // Add employee_id to the values [This Employee Has Edited]
-    values.employee_id = user?.id ?? 0;
+    values.employee_id = user?.id ?? -1;
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     await axios
       .put(`api/v1/employees/${employee?.id}`, { ...values })

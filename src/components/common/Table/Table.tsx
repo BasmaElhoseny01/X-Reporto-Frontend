@@ -49,15 +49,13 @@ const GeneralTable = (props: GeneralTableProps) => {
             delete ele[filter.toString()];
           });
         });
-        console.log(response.data);
         setDataSource(response.data);
-        console.log(response.data);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       })
       .finally(() => {
-        setLoading(false);
+        setLoading(false); // Set fetching to false after 0.5 seconds
       });
   }, [page]);
 

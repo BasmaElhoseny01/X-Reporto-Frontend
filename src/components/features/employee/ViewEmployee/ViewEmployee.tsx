@@ -15,7 +15,7 @@ import { Alert, Result, Spin } from "antd";
 import type { TabsProps } from "antd";
 
 // Components
-import EditEmployeeInfo from "../../../common/EditEmployeeInfo/EditEmployeeInfo";
+import EditEmployeeInfo from "./EditEmployeeInfo/EditEmployeeInfo";
 import ViewHistory from "../../../common/ViewHistory/ViewHistory";
 import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
 
@@ -162,7 +162,11 @@ function ViewEmployee(props: ViewEmployeeProps) {
         <Result
           status="404"
           title="404"
-          subTitle="No Employee exists with this ID."
+          subTitle={
+            props.type === "doctors"
+              ? "No Doctor exists with this ID."
+              : "No Employee exists with this ID."
+          }
           extra={
             <PrimaryButton onClick={reDirectToHome}>Back Home</PrimaryButton>
           }
