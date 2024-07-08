@@ -1,14 +1,19 @@
 import React from "react";
 
+// Hooks
+import useCustomNavigate from "../hooks/useCustomNavigate";
+
 // Redux
 import { useSelector } from "react-redux";
 import { MainState } from "../state";
 
 // Components
 import GeneralTable from "../components/common/Table/Table";
-import { reDirectToPatients } from "./paths.utils";
 
 function AllPatient() {
+  // Navigation
+  const { navigateToPatients } = useCustomNavigate();
+
   const tableSearch = useSelector((state: MainState) => state.tableSearch);
   const GeneralTableData = {
     columns: [
@@ -62,10 +67,10 @@ function AllPatient() {
     filterColumns: ["email", "phone_number", "studies"],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
-      reDirectToPatients("view", record.id);
+      navigateToPatients("view", record.id);
     },
     addNew: () => {
-      reDirectToPatients("new");
+      navigateToPatients("new");
     },
   };
 
