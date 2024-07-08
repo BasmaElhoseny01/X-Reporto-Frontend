@@ -199,10 +199,10 @@ function App() {
                   {/* Doctors */}
                   <Route path={paths.doctors.base}>
                     <Route index element={<AllDoctors />} />
-                    {/* <Route
+                    <Route
                       path={paths.doctors.types.new}
-                      element={<NewEmployee />}
-                    /> */}
+                      element={<NewEmployee type="doctors" />}
+                    />
                     <Route
                       path=":Id"
                       element={<ViewEmployee type="doctors" />}

@@ -79,9 +79,7 @@ function NewEmployee(props: NewEmployeeProps) {
         },
       });
       message.success(
-        `${
-          props.type == "doctors" ? "Radiologist" : "Employee"
-        } added successfully`
+        `${props.type == "doctors" ? "Doctor" : "Employee"} added successfully`
       );
       // Redirect to view Page
       if (props.type == "doctors") {
@@ -92,7 +90,7 @@ function NewEmployee(props: NewEmployeeProps) {
     } catch (error) {
       console.error("API error:", error);
       message.error(
-        `Failed to add ${props.type == "doctors" ? "Radiologist" : "Employee"}`
+        `Failed to add ${props.type == "doctors" ? "Doctor" : "Employee"}`
       );
     }
   };
@@ -132,7 +130,7 @@ function NewEmployee(props: NewEmployeeProps) {
       ) : (
         <NewEmployeeContainer>
           <Title level={3}>
-            New {props.type == "doctors" ? "Radiologist" : "Employee"}
+            New {props.type == "doctors" ? "Doctor" : "Employee"}
           </Title>
           <LineHeader />
           <FormContainer

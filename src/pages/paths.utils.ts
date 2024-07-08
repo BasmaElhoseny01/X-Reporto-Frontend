@@ -111,24 +111,34 @@ export const reDirectToPatients = (type: string) => {
 };
 
 export const reDirectToDoctors = (type: string, Id?: string | number) => {
+  let newPath = "";
   switch (type) {
     case "all":
-      window.location.href = `${paths.doctors.base}`;
+      newPath = `${baseUrl}/${paths.doctors.base} `;
+      window.location.href = newPath;
       break;
     case "view":
       if (Id) {
-        window.location.href = `${paths.doctors.base}/${Id}`;
+        newPath = `${baseUrl}/${paths.doctors.base}/${Id}`;
+        window.location.href = newPath;
       } else {
         console.error("Doctor ID is required for viewing.");
       }
       break;
     case "new":
-      window.location.href = `${paths.doctors.base}/${paths.doctors.types.new}`;
+      newPath = `${baseUrl}/${paths.doctors.base}/${paths.doctors.types.new}`;
+      window.location.href = newPath;
       break;
     default:
       // Handle invalid type or default case
       console.error(`Invalid Doctor type: ${type}`);
       break;
+  }
+
+  if (newPath == window.location.pathname) {
+    // console.log("Already in Home page");
+  } else {
+    window.location.href = newPath;
   }
 };
 
