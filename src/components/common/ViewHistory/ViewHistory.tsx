@@ -89,7 +89,7 @@ function ViewHistory(props: ViewHistoryProps) {
     ],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
-      reDirectToPatients("view", record.id);
+      reDirectToCases("view", record.id);
     },
     addNew: () => {
       reDirectToCases("new");

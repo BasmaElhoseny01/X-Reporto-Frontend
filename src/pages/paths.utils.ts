@@ -74,6 +74,7 @@ export const reDirectToCases = (type: string, Id?: string | number) => {
       break;
 
     case "view":
+      // console.log(Id);
       if (Id) {
         // View a specific case
         newPath = `${baseUrl}/${paths.cases.base}/${Id}`;
@@ -84,7 +85,7 @@ export const reDirectToCases = (type: string, Id?: string | number) => {
       break;
 
     case "new":
-      newPath = `${baseUrl}/${paths.cases.types.new}`;
+      newPath = `${baseUrl}/${paths.cases.base}/${paths.cases.types.new}`;
       window.location.href = newPath;
       break;
 
