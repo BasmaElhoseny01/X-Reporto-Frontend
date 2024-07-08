@@ -64,6 +64,8 @@ function ViewXRay() {
     }
   }, [id]);
 
+  const [xReportoResultId, setXReportoResultId] = useState<number>(0);
+
   // Context
   const { siderType, handleSetSiderType } = useView();
   // States for the Sider
@@ -104,6 +106,7 @@ function ViewXRay() {
       <Layout style={{ width: "100%", height: "100%" }}>
         <Content style={{ display: "flex" }}>
           <XRaySection />
+          <h1>{xReportoResultId}</h1>
           {
             // Show the Info Section only if the type is info
             siderType === "info" ? (
@@ -111,7 +114,10 @@ function ViewXRay() {
               <InfoSection />
             ) : // Show the Report Section only if the type is report
             siderType === "report" ? (
-              <ReportSection />
+              <ReportSection
+                xReportoResultId={xReportoResultId}
+                setXReportoResultId={setXReportoResultId}
+              />
             ) : null
           }
         </Content>

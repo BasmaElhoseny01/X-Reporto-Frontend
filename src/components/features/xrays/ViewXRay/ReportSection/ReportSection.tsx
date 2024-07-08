@@ -1,21 +1,39 @@
 import React, { useState, useRef, useMemo, useEffect } from "react";
-import { Typography, message, Spin } from 'antd';
+import { Typography, message, Spin } from "antd";
 const { Title } = Typography;
-import { ReportHeader, ButtonContainer, ReportEditor, ReportDiv, LoadingContainer } from "./ReportSection.Styles";
-import LineHeader from '../../../../common/LineHeader/LineHeader';
-import SelectionTemplate, { defaultTemplate } from "../../../../common/SelectionTemplate/SelectionTemplate";
-import PrimaryButton from '../../../../common/PrimaryButton/PrimaryButton';
+import {
+  ReportHeader,
+  ButtonContainer,
+  ReportEditor,
+  ReportDiv,
+  LoadingContainer,
+} from "./ReportSection.Styles";
+import LineHeader from "../../../../common/LineHeader/LineHeader";
+import SelectionTemplate, {
+  defaultTemplate,
+} from "../../../../common/SelectionTemplate/SelectionTemplate";
+import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
 import { useSelector } from "react-redux";
 import { MainState } from "../../../../../state/Reducers";
 import axios from "../../../../../services/apiService";
 
-function ReportSection() {
+// Interfaces
+interface ReportSectionProps {
+  // Props Here
+  xReportoResultId: number;
+  setXReportoResultId: (value: number) => void;
+}
+
+function ReportSection(props: ReportSectionProps) {
+  const { xReportoResultId, setXReportoResultId } = props;
+
   const [selectedValue, setSelectedValue] = useState<string>("-1");
   const [content, setContent] = useState<string>(defaultTemplate);
   const editor = useRef(null);
   const token = useSelector((state: MainState) => state.token);
-  const delay = (ms: number): Promise<void> => new Promise(resolve => setTimeout(resolve, ms));
-  const [resultId, setResultId] = useState<number>(0);
+  const delay = (ms: number): Promise<void> =>
+    new Promise((resolve) => setTimeout(resolve, ms));
+  // const [resultId, setResultId] = useState<number>(0);
   const studyCase = useSelector((state: MainState) => state.case);
   const [loading, setLoading] = useState<boolean>(false);
   const [reportNotExist, setReportNotExist] = useState<boolean>(true);
@@ -27,11 +45,10 @@ function ReportSection() {
     setContent(value);
   };
 
-
   const config = useMemo(
     () => ({
       readonly: false,
-      placeholder: 'Start typing...'
+      placeholder: "Start typing...",
     }),
     []
   );
@@ -55,7 +72,8 @@ function ReportSection() {
       );
       console.log("API response:", responseRequestReport.data);
       const requestId = responseRequestReport.data.id;
-      setResultId(requestId);
+      // setResultId(requestId);
+      setXReportoResultId(requestId);
       console.log("request id", responseRequestReport.data.id);
 
       message.success("Starting to generate report, please wait a minute...");
@@ -82,11 +100,16 @@ function ReportSection() {
           params: {
             file_path: reportPath,
           },
-          responseType: 'text',
-        },
+          responseType: "text",
+        }
       );
       setReportContent(responseGetReport.data);
-      setContent(content.replace('<p id="findings"></p>', `<p id="findings">${responseGetReport.data}</p>`));
+      setContent(
+        content.replace(
+          '<p id="findings"></p>',
+          `<p id="findings">${responseGetReport.data}</p>`
+        )
+      );
       message.success("Report generated successfully!");
     } catch (error) {
       console.error("Error generating report:", error);
@@ -105,7 +128,8 @@ function ReportSection() {
     const formData = new FormData();
     formData.append("report", blob);
     const responseUpload = await axios.post(
-      `api/v1/results/${resultId}/upload_report`,
+      // `api/v1/results/${resultId}/upload_report`,
+      `api/v1/results/${xReportoResultId}/upload_report`,
       formData,
       {
         headers: {
@@ -118,7 +142,6 @@ function ReportSection() {
     message.success("X-Ray uploaded successfully");
     setReportNotExist(false);
   };
-
 
   useEffect(() => {
     const fetchReportPath = async () => {
@@ -148,10 +171,15 @@ function ReportSection() {
                 params: {
                   file_path: reportPath.report_path,
                 },
-                responseType: 'text',
-              },
+                responseType: "text",
+              }
             );
-            setContent(content.replace('<p id="findings"></p>', `<p id="findings">${responseGetReport.data}</p>`));
+            setContent(
+              content.replace(
+                '<p id="findings"></p>',
+                `<p id="findings">${responseGetReport.data}</p>`
+              )
+            );
           }
         } catch (error) {
           console.error("Error fetching report path:", error);
@@ -174,28 +202,42 @@ function ReportSection() {
       ) : (
         <>
           <ReportHeader>
-            <Title level={2} style={{ margin: "1%" }}>Report</Title>
-            {reportNotExist ? (<SelectionTemplate
-              selectedValue={selectedValue}
-              handleSelectionChange={handleSelectionChange}
-            />) : null}
+            <Title level={2} style={{ margin: "1%" }}>
+              Report
+            </Title>
+            {reportNotExist ? (
+              <SelectionTemplate
+                selectedValue={selectedValue}
+                handleSelectionChange={handleSelectionChange}
+              />
+            ) : null}
           </ReportHeader>
           <LineHeader />
           <ReportEditor
             ref={editor}
             value={content}
             config={config}
-            onBlur={newContent => setContent(newContent)}
+            onBlur={(newContent) => setContent(newContent)}
             onChange={handleContentChange}
           />
           {reportNotExist ? (
             <ButtonContainer>
-              <PrimaryButton onClick={handleSubmitReport} size="large" style={{ width: '13%' }}>
+              <PrimaryButton
+                onClick={handleSubmitReport}
+                size="large"
+                style={{ width: "13%" }}
+              >
                 Submit Report
               </PrimaryButton>
-              {visible ? (<PrimaryButton onClick={handleGenerateReport} size="large" style={{ width: '13%' }}>
-                Generate Report
-              </PrimaryButton>) : null}
+              {visible ? (
+                <PrimaryButton
+                  onClick={handleGenerateReport}
+                  size="large"
+                  style={{ width: "13%" }}
+                >
+                  Generate Report
+                </PrimaryButton>
+              ) : null}
             </ButtonContainer>
           ) : null}
         </>
