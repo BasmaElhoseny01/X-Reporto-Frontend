@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-// Paths
+// Paths Object
 import paths from "../pages/paths";
 
 const useCustomNavigate = () => {
@@ -15,34 +15,34 @@ const useCustomNavigate = () => {
   const navigateToCases = (type: string, Id?: string | number) => {
     switch (type) {
       case "unassigned":
-        navigate(`${paths.cases.base}/${paths.cases.types.unassigned}`);
+        navigate(`/${paths.cases.base}/${paths.cases.types.unassigned}`);
         break;
       case "pending":
         if (Id) {
-          navigate(`${paths.cases.base}/${paths.cases.types.pending}/${Id}`);
+          navigate(`/${paths.cases.base}/${paths.cases.types.pending}/${Id}`);
         } else {
-          navigate(`${paths.cases.base}/${paths.cases.types.pending}`);
+          navigate(`/${paths.cases.base}/${paths.cases.types.pending}`);
         }
         break;
       case "completed":
         if (Id) {
-          navigate(`${paths.cases.base}/${paths.cases.types.completed}/${Id}`);
+          navigate(`/${paths.cases.base}/${paths.cases.types.completed}/${Id}`);
         } else {
-          navigate(`${paths.cases.base}/${paths.cases.types.completed}`);
+          navigate(`/${paths.cases.base}/${paths.cases.types.completed}`);
         }
         break;
       case "archived":
-        navigate(`${paths.cases.base}/${paths.cases.types.archived}`);
+        navigate(`/${paths.cases.base}/${paths.cases.types.archived}`);
         break;
       case "view":
         if (Id) {
-          navigate(`${paths.cases.base}/${Id}`);
+          navigate(`/${paths.cases.base}/${Id}`);
         } else {
           console.error("Case ID is required for viewing.");
         }
         break;
       case "new":
-        navigate(`${paths.cases.types.new}`);
+        navigate(`/${paths.cases.base}/${paths.cases.types.new}`);
         break;
       default:
         console.error(`Invalid case type: ${type}`);
@@ -53,17 +53,17 @@ const useCustomNavigate = () => {
   const navigateToPatients = (type: string, Id?: string | number) => {
     switch (type) {
       case "all":
-        navigate(`${paths.patients.base}`);
+        navigate(`/${paths.patients.base}`);
         break;
       case "view":
         if (Id) {
-          navigate(`${paths.doctors.base}/${Id}`);
+          navigate(`/${paths.patients.base}/${Id}`);
         } else {
-          console.error("Doctor ID is required for viewing.");
+          console.error("Patient ID is required for viewing.");
         }
         break;
       case "new":
-        navigate(`${paths.patients.base}/${paths.patients.types.new}`);
+        navigate(`/${paths.patients.base}/${paths.patients.types.new}`);
         break;
       default:
         console.error(`Invalid Patient type: ${type}`);
@@ -74,17 +74,17 @@ const useCustomNavigate = () => {
   const navigateToDoctors = (type: string, Id?: string | number) => {
     switch (type) {
       case "all":
-        navigate(`${paths.doctors.base}`);
+        navigate(`/${paths.doctors.base}`);
         break;
       case "view":
         if (Id) {
-          navigate(`${paths.doctors.base}/${Id}`);
+          navigate(`/${paths.doctors.base}/${Id}`);
         } else {
           console.error("Doctor ID is required for viewing.");
         }
         break;
       case "new":
-        navigate(`${paths.doctors.base}/${paths.doctors.types.new}`);
+        navigate(`/${paths.doctors.base}/${paths.doctors.types.new}`);
         break;
       default:
         console.error(`Invalid Doctor type: ${type}`);
@@ -95,17 +95,17 @@ const useCustomNavigate = () => {
   const navigateToEmployees = (type: string, Id?: string | number) => {
     switch (type) {
       case "all":
-        navigate(`${paths.employees.base}`);
+        navigate(`/${paths.employees.base}`);
         break;
       case "view":
         if (Id) {
-          navigate(`${paths.employees.base}/${Id}`);
+          navigate(`/${paths.employees.base}/${Id}`);
         } else {
           console.error("Employee ID is required for viewing.");
         }
         break;
       case "new":
-        navigate(`${paths.employees.base}/${paths.employees.types.new}`);
+        navigate(`/${paths.employees.base}/${paths.employees.types.new}`);
         break;
       default:
         console.error(`Invalid Employee type: ${type}`);
@@ -116,10 +116,10 @@ const useCustomNavigate = () => {
   const navigateToTemplates = (type: string) => {
     switch (type) {
       case "all":
-        navigate(`${paths.templates.base}`);
+        navigate(`/${paths.templates.base}`);
         break;
       case "new":
-        navigate(`${paths.templates.base}/${paths.templates.types.new}`);
+        navigate(`/${paths.templates.base}/${paths.templates.types.new}`);
         break;
       default:
         console.error(`Invalid Template type: ${type}`);

@@ -1,6 +1,8 @@
 /* eslint-disable */
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate hook for navigation
+
+// Hooks
+import useCustomNavigate from "../../../../hooks/useCustomNavigate";
 
 // Services
 import axios from "../../../../services/apiService";
@@ -29,7 +31,6 @@ import {
   InputFieldsContainer,
   SubmitContainer,
 } from "./NewPatients.Styles";
-import { reDirectToPatients } from "../../../../pages/paths.utils";
 
 interface NewPatientFormValues {
   patientName: string;
@@ -41,9 +42,11 @@ interface NewPatientFormValues {
 }
 
 function NewPatients() {
-  const [form] = Form.useForm();
+  // Navigation
+  const { navigateToPatients } = useCustomNavigate();
 
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  // Form
+  const [form] = Form.useForm();
 
   // Redux
   const token = useSelector((state: MainState) => state.token);
@@ -77,8 +80,7 @@ function NewPatients() {
         }
       );
       message.success("Patient added successfully");
-      reDirectToPatients("all");
-      // navigate("/patients"); // Replace with your actual route
+      navigateToPatients("all");
     } catch (error) {
       console.error("Failed to add patient", error);
       message.error("Failed to add patient");
