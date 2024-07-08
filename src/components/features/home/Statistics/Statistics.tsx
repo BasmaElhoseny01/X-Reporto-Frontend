@@ -1,5 +1,7 @@
-/*eslint-disable */
 import React, { useEffect, useState } from "react";
+
+// Hooks
+import useCustomNavigate from "../../../../hooks/useCustomNavigate";
 
 // Services
 import axios from "../../../../services/apiService";
@@ -14,10 +16,6 @@ import { StatisticsContainer } from "./Statistics.Styles";
 // Components
 import StatisticCard from "./StatisticCard/StatisticCard";
 
-// Paths Utils
-import { reDirectToCases } from "../../../../pages/paths.utils";
-// import { useNavigate } from "react-router-dom";
-import useCustomNavigate from "../../../../hooks/useCustomNavigate";
 
 // Types
 type statisticsType = {
@@ -61,7 +59,6 @@ const fetchStatistics = async (isDoctor: boolean, token: string) => {
 function Statistics() {
   // Navigate
   const { navigateToCases } = useCustomNavigate();
-  // const navigate = useNavigate();
 
   // Redux States
   const user = useSelector((state: MainState) => state.user);

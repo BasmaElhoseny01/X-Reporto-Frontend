@@ -1,14 +1,27 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { MainState } from "../state";
-import GeneralTable from "../components/common/Table/Table";
-import { Button, message } from "antd";
+
+// Hooks
+import useCustomNavigate from "../hooks/useCustomNavigate";
+
+// Services
 import axios from "../services/apiService";
 
-import { reDirectToCases } from "./paths.utils";
+// Redux
+import { useSelector } from "react-redux";
+import { MainState } from "../state";
+
+// Ant Design
+import { Button, message } from "antd";
+
+// Components
+import GeneralTable from "../components/common/Table/Table";
 
 function XRayWorkList() {
+  // Navigate
+  const { navigateToCases } = useCustomNavigate();
+
   const tableSearch = useSelector((state: MainState) => state.tableSearch);
+
   const token = useSelector((state: MainState) => state.token);
   const GeneralTableData = {
     columns: [
@@ -122,10 +135,10 @@ function XRayWorkList() {
     ],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
-      reDirectToCases("view", record.id);
+      navigateToCases("view", record.id);
     },
     addNew: () => {
-      window.location.pathname = "reports/new";
+      navigateToCases("new");
     },
   };
 

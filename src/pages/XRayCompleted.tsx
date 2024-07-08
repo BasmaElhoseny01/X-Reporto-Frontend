@@ -1,11 +1,21 @@
 import React from "react";
+
+// Hooks
+import useCustomNavigate from "../hooks/useCustomNavigate";
+
+// Redux
 import { useSelector } from "react-redux";
 import { MainState } from "../state";
+
+// Components
 import GeneralTable from "../components/common/Table/Table";
-import { reDirectToCases } from "./paths.utils";
 
 function XRayCompleted() {
+  // Navigate
+  const { navigateToCases } = useCustomNavigate();
+
   const tableSearch = useSelector((state: MainState) => state.tableSearch);
+
   const GeneralTableData = {
     columns: [
       {
@@ -82,10 +92,10 @@ function XRayCompleted() {
     ],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
-      reDirectToCases("view", record.id);
+      navigateToCases("view", record.id);
     },
     addNew: () => {
-      window.location.pathname = "reports/new";
+      navigateToCases("new");
     },
   };
 

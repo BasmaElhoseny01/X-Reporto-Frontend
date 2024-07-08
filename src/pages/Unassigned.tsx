@@ -1,30 +1,29 @@
-import React, { useEffect } from "react";
+import React from "react";
+
+// Hooks
+import useCustomNavigate from "../hooks/useCustomNavigate";
+
+// Services
+import axios from "../services/apiService";
+
+// Redux
 import { useSelector } from "react-redux";
 import { MainState } from "../state";
-import GeneralTable from "../components/common/Table/Table";
-import axios from "../services/apiService";
+
+// Ant Design
 import { Button, message } from "antd";
-import { reDirectToCases } from "./paths.utils";
-// import { reDirectToCases } from "./paths.utils";
 
-function UnAssigend() {
-  const token = useSelector((state: MainState) => state.token);
+// Components
+import GeneralTable from "../components/common/Table/Table";
+
+function UnAssigned() {
+  // Navigate
+  const { navigateToCases } = useCustomNavigate();
+
   const tableSearch = useSelector((state: MainState) => state.tableSearch);
-  const [me, setMe] = React.useState({} as any);
 
-  useEffect(() => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    axios
-      .get("/api/v1/employees/me")
-      .then((response) => {
-        setMe(response.data);
-        // console.log(me);
-        // console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [token]);
+  const token = useSelector((state: MainState) => state.token);
+  const user = useSelector((state: MainState) => state.user);
 
   const GeneralTableData = {
     columns: [
@@ -89,7 +88,7 @@ function UnAssigend() {
             <Button
               type="link"
               style={{ padding: "0px", textDecoration: "underline" }}
-              disabled={me.type !== "doctor"}
+              disabled={user?.type !== "doctor"}
               onClick={() => {
                 console.log(record);
                 // prevent action when user click on the row
@@ -100,11 +99,12 @@ function UnAssigend() {
                   .post(`/api/v1/studies/${record.id}/assign`)
                   .then((response) => {
                     if (response.status === 200) {
-                      message.success("Assigned successfully!");
-                      setTimeout(() => {
-                        // Redirect to the View Page for the case
-                        reDirectToCases("view", record.id);
-                      }, 500);
+                      message.success("Case assigned successfully!");
+                      navigateToCases("view", record.id);
+                      // setTimeout(() => {
+                      //   // Redirect to the View Page for the case
+                      // reDirectToCases("view", record.id);
+                      // }, 500);
                     } else {
                       message.error("Error, failed to assign!");
                     }
@@ -132,10 +132,10 @@ function UnAssigend() {
     ],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
-      reDirectToCases("view", record.id);
+      navigateToCases("view", record.id);
     },
     addNew: () => {
-      window.location.pathname = "reports/new";
+      navigateToCases("new");
     },
   };
 
@@ -152,4 +152,4 @@ function UnAssigend() {
   );
 }
 
-export default UnAssigend;
+export default UnAssigned;
