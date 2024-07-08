@@ -1,3 +1,4 @@
+/*eslint-disable */
 import React, { useEffect, useState } from "react";
 
 // Services
@@ -15,6 +16,8 @@ import StatisticCard from "./StatisticCard/StatisticCard";
 
 // Paths Utils
 import { reDirectToCases } from "../../../../pages/paths.utils";
+// import { useNavigate } from "react-router-dom";
+import useCustomNavigate from "../../../../hooks/useCustomNavigate";
 
 // Types
 type statisticsType = {
@@ -56,6 +59,10 @@ const fetchStatistics = async (isDoctor: boolean, token: string) => {
 };
 
 function Statistics() {
+  // Navigate
+  const { navigateToCases } = useCustomNavigate();
+  // const navigate = useNavigate();
+
   // Redux States
   const user = useSelector((state: MainState) => state.user);
   const token = useSelector((state: MainState) => state.token);
@@ -81,7 +88,7 @@ function Statistics() {
         text="Unassigned Cases"
         count={statistics?.new}
         action={() => {
-          reDirectToCases("unassigned");
+          navigateToCases("unassigned");
         }}
       />
       <StatisticCard
@@ -89,7 +96,7 @@ function Statistics() {
         text="Pending Cases"
         count={statistics?.incomplete}
         action={() => {
-          reDirectToCases("pending");
+          navigateToCases("pending");
         }}
       />
 
@@ -100,7 +107,7 @@ function Statistics() {
             text="My Pending Cases"
             count={statistics?.pending}
             action={() => {
-              reDirectToCases("pending", user?.id);
+              navigateToCases("pending", user?.id);
             }}
           />
 
@@ -109,7 +116,7 @@ function Statistics() {
             text="My Completed Cases"
             count={statistics?.completed}
             action={() => {
-              reDirectToCases("completed", user?.id);
+              navigateToCases("completed", user?.id);
             }}
           />
         </>

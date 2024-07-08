@@ -78,6 +78,7 @@ import ViewTemplate from "./components/features/templates/ViewTemplate/ViewTempl
 
 // 404
 import NotFoundPage from "./pages/NotFoundPage";
+// import useCustomNavigate from "./hooks/useCustomNavigate";
 import { reDirectToLogin } from "./pages/paths.utils";
 
 // interface AppProps {
@@ -189,10 +190,10 @@ function App() {
                   {/* Patients */}
                   <Route path={paths.patients.base}>
                     <Route index element={<AllPatient />} />
-                    {/* <Route
+                    <Route
                       path={paths.patients.types.new}
                       element={<NewPatientPage />}
-                    /> */}
+                    />
                     <Route path=":Id" element={<ViewPatientPage />} />
                   </Route>
 

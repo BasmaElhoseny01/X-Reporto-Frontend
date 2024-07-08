@@ -1,4 +1,13 @@
+/* eslint-disable */
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate hook for navigation
+
+// Services
+import axios from "../../../../services/apiService";
+
+// Redux
+import { useSelector } from "react-redux";
+import { MainState } from "../../../../state/Reducers";
 
 // Third Party Components
 import PhoneInput from "antd-phone-input";
@@ -8,14 +17,10 @@ import Title from "antd/es/typography/Title";
 import { Form, Input, Radio, message } from "antd";
 
 // Components
-import LineHeader from "../../../common/LineHeader/LineHeader";
-import SecondaryButton from "../../../common/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
-import { useNavigate } from "react-router-dom"; // Import useNavigate hook for navigation
-import { useSelector } from "react-redux";
-import { MainState } from "../../../../state/Reducers";
-
-import axios from "../../../../services/apiService";
+import SecondaryButton from "../../../common/SecondaryButton/SecondaryButton";
+import LineHeader from "../../../common/LineHeader/LineHeader";
+import Unauthorized from "../../../layout/unauthorized/Unauthorized";
 
 // Styled Components
 import {
@@ -24,7 +29,7 @@ import {
   InputFieldsContainer,
   SubmitContainer,
 } from "./NewPatients.Styles";
-import Unauthorized from "../../../layout/unauthorized/Unauthorized";
+import { reDirectToPatients } from "../../../../pages/paths.utils";
 
 interface NewPatientFormValues {
   patientName: string;
@@ -36,19 +41,20 @@ interface NewPatientFormValues {
 }
 
 function NewPatients() {
-  const navigate = useNavigate(); // Initialize useNavigate hook
   const [form] = Form.useForm();
+
+  const navigate = useNavigate(); // Initialize useNavigate hook
+
+  // Redux
   const token = useSelector((state: MainState) => state.token);
   const user = useSelector((state: MainState) => state.user);
 
   const onFinish = async (values: unknown) => {
     const formValues = values as NewPatientFormValues;
-    console.log("Form values:", (formValues.phone as any).countryCode);
     formValues.phone =
       (formValues.phone as any).countryCode +
       (formValues.phone as any).areaCode +
       (formValues.phone as any).phoneNumber;
-    console.log("Form values:", formValues);
     try {
       // change formValues.phone to string
       const response = await axios.post(
@@ -60,7 +66,7 @@ function NewPatients() {
           birth_date: formValues.birthDate,
           gender: formValues.gender,
           phone_number: formValues.phone.toString(),
-          employee_id:  user?.id ?? 0,
+          employee_id: user?.id ?? 0,
           created_at: "2024-06-26T20:31:24.258262",
         },
         {
@@ -71,7 +77,8 @@ function NewPatients() {
         }
       );
       message.success("Patient added successfully");
-      navigate("/patients"); // Replace with your actual route
+      reDirectToPatients("all");
+      // navigate("/patients"); // Replace with your actual route
     } catch (error) {
       console.error("Failed to add patient", error);
       message.error("Failed to add patient");
@@ -106,7 +113,7 @@ function NewPatients() {
 
   return (
     <>
-      {user &&user.type != "employee" ? (
+      {user && user.type != "employee" ? (
         <Unauthorized />
       ) : (
         <NewPatientContainer>
