@@ -21,7 +21,7 @@ import { ButtonContainer, ViewContainer } from "./ViewTemplate.style";
 // Components
 import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
 import LineHeader from "../../../common/LineHeader/LineHeader";
-import EditInfoTemplate from "./EditInfoTemplate/EditInfoTemplate";
+// import EditInfoTemplate from "./EditInfoTemplate/EditInfoTemplate";
 
 // Types
 import { TemplateType } from "../../../../types/template";
@@ -29,17 +29,18 @@ import {
   reDirectToHome,
   reDirectToTemplates,
 } from "../../../../pages/paths.utils";
+import { EmployeeType } from "../../../../types/employee";
 
 // Interfaces
 interface RouteParams extends Record<string, string | undefined> {
   Id: string;
 }
 
-// interface TemplateObject {
-//   template: TemplateType;
-//   content: string;
-//   createdBy: string;
-// }
+interface TemplateObject {
+  template: TemplateType;
+  doctor: EmployeeType;
+  // content: string;
+}
 
 // Server Fetch
 const fetchTemplateData = async (id: string, token: string) => {
@@ -53,9 +54,39 @@ const fetchTemplateData = async (id: string, token: string) => {
     return response.data;
   } catch (error) {
     console.error("Error fetching Template data:", error);
+    throw error;
+  }
+};
+
+const fetchTemplateDoctor = async (id: string, token: string) => {
+  try {
+    const response = await axios.get(`api/v1/employees/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching Doctor for Template:", error);
     return null; // Return null on error
   }
 };
+
+// const downloadTemplateContent = async (id: string, token: string) => {
+//   try {
+//     const response = await axios.get(`api/v1/templates/${id}`, {
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//       },
+//     });
+//     console.log(response.data);
+//     return response.data;
+//   } catch (error) {
+//     console.error("Error fetching Template data:", error);
+//     return null; // Return null on error
+//   }
+// };
 
 // const deleteTemplate = async (id: string, token: string) => {
 //   try {
@@ -80,30 +111,60 @@ function ViewTemplate() {
   const token = useSelector((state: MainState) => state.token);
 
   // Use States
-  const [templateData, setTemplateData] = useState<TemplateType | null>(null);
+  const [templateData, setTemplateData] = useState<TemplateObject | null>(null);
   const [fetching, setFetching] = useState(true); // Initially set fetching to true
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    if (Id) {
-      setError(false); // Reset error state
-      // Get Employee Info
-      fetchTemplateData(Id, token)
-        .then((response) => {
-          if (response) {
-            setTemplateData(response);
-          } else {
-            setError(true); // Set error state if response is null
+    const fetchData = async () => {
+      if (Id) {
+        try {
+          setError(false); // Reset error state
+          setFetching(true); // Set fetching to true when starting data fetch
+
+          // Fetch template data
+          const templateResponse = await fetchTemplateData(Id, token);
+          console.log(templateResponse);
+
+          if (!templateResponse) {
+            setError(true); // Set error state if template response is null
+            return; // Exit early if template data fetch fails
           }
-        })
-        .catch(() => {
-          setError(true); // Set error state on fetch failure
-        })
-        .finally(() => {
+
+          // Fetch Template Doctor
+          const doctorResponse = await fetchTemplateDoctor(
+            templateResponse.doctor_id,
+            token
+          );
+          console.log(doctorResponse);
+
+          if (!doctorResponse) {
+            setError(true); // Set error state if doctor response is null
+            return; // Exit early if template doctor fetch fails
+          }
+
+          // Fetch Template Content
+
+          // Set Template Object
+          setTemplateData({
+            template: templateResponse,
+            doctor: doctorResponse,
+          });
+
+          // Set fetching to false after all data is fetched
           setTimeout(() => {
-            setFetching(false); // Set fetching to false after 0.5 seconds
+            setFetching(false);
           }, 1000); // 1 second delay
-        });
+        } catch (error) {
+          console.error("Error fetching Template data:", error);
+          setError(true); // Set error state on fetch failure
+          setFetching(false); // Set fetching to false on error
+        }
+      }
+    };
+
+    if (Id) {
+      fetchData(); // Call fetchData function if Id exists
     } else {
       setFetching(false); // Set fetching to false if Id is not provided
     }
@@ -180,13 +241,12 @@ function ViewTemplate() {
   }
 
   return (
-    // <ViewTemplateContainer>
-    <>
+    <ViewContainer>
       <Title level={3}>Template</Title>
-      <LineHeader />
+      {/* <EditInfoTemplate /> */}
       {/* <ButtonContainer>
         <PrimaryButton icon={<PlusOutlined />} onClick={handleNewTemplate}>
-          New Template
+        New Template
         </PrimaryButton>
         <PrimaryButton
         danger
@@ -197,8 +257,7 @@ function ViewTemplate() {
           </PrimaryButton>
           </ButtonContainer>
       <EditInfoTemplate templateID={parseInt(templateID)} /> */}
-    </>
-    // </ViewTemplateContainer>
+    </ViewContainer>
   );
 }
 

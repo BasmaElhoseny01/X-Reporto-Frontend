@@ -3,6 +3,10 @@ import React, { useState, useEffect } from "react";
 // Services
 import axios from "../../../../../services/apiService";
 
+// Redux
+import { useSelector } from "react-redux";
+import { MainState } from "../../../../../state/Reducers";
+
 // Third Party
 
 // Ant Design
@@ -20,8 +24,6 @@ import { InfoContainer } from "../../../../common/EditInfo/EditInfo.style";
 
 //Types
 import { EmployeeType } from "../../../../../types/employee";
-import { useSelector } from "react-redux";
-import { MainState } from "../../../../../state/Reducers";
 
 interface EditEmployeeInfoProps {
   type: string;
@@ -45,6 +47,8 @@ function calculateAge(birthDate: string): number {
 function EditEmployeeInfo(props: EditEmployeeInfoProps) {
   const { employee, setEmployeeData } = props;
   const [form] = Form.useForm();
+
+  // Redux
   const token = useSelector((state: MainState) => state.token);
   const user = useSelector((state: MainState) => state.user);
 
