@@ -99,7 +99,7 @@ export const reDirectToPatients = (type: string, Id?: string | number) => {
   let newPath = "";
   switch (type) {
     case "all":
-      newPath = `${paths.patients.base}`;
+      newPath = `${baseUrl}/${paths.patients.base}`;
       window.location.href = newPath;
       break;
     case "view":

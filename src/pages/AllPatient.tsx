@@ -1,28 +1,36 @@
 import React from "react";
+
+// Redux
 import { useSelector } from "react-redux";
 import { MainState } from "../state";
+
+// Components
 import GeneralTable from "../components/common/Table/Table";
+import { reDirectToPatients } from "./paths.utils";
 
 function AllPatient() {
   const tableSearch = useSelector((state: MainState) => state.tableSearch);
   const GeneralTableData = {
     columns: [
       {
-        title: "Patient Name",
+        title: "Name",
         dataIndex: "patient_name",
         key: "patient_name",
         filteredValue: [tableSearch],
         // eslint-disable-next-line
-        onFilter: (value: any, record: any) =>{
-          return  record.patient_name.toString().toLowerCase().includes(value.toLowerCase());
-        }, 
+        onFilter: (value: any, record: any) => {
+          return record.patient_name
+            .toString()
+            .toLowerCase()
+            .includes(value.toLowerCase());
+        },
       },
       {
-        title: "User ID",
+        title: "ID",
         dataIndex: "id",
         key: "id",
         // eslint-disable-next-line
-        sorter : (a: any, b: any) => a.id - b.id,
+        sorter: (a: any, b: any) => a.id - b.id,
       },
       {
         key: "gender",
@@ -45,21 +53,20 @@ function AllPatient() {
         dataIndex: "age",
         key: "age",
         // eslint-disable-next-line
-        sorter : (a: any, b: any) => a.age - b.age,
+        sorter: (a: any, b: any) => a.age - b.age,
       },
     ],
 
     api: "/api/v1/patients/?",
     title: "All Patients",
-    filterColumns : ["email","phone_number","studies"],
+    filterColumns: ["email", "phone_number", "studies"],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
-      window.location.pathname = `patients/${record.id}`;
+      reDirectToPatients("view", record.id);
     },
     addNew: () => {
-      window.location.pathname = "patients/new";
+      reDirectToPatients("new");
     },
-
   };
 
   return (
