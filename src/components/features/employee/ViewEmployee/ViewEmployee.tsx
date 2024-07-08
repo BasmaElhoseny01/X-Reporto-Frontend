@@ -1,5 +1,5 @@
+/* eslint-disable */
 import React, { useState, useEffect } from "react";
-
 import { useParams } from "react-router-dom";
 
 // Services
@@ -11,7 +11,7 @@ import { MainState } from "../../../../state/Reducers";
 
 // Ant Design
 import Title from "antd/es/typography/Title";
-import { Result } from "antd";
+import { Alert, Result, Spin } from "antd";
 import type { TabsProps } from "antd";
 
 // Components
@@ -47,8 +47,13 @@ const fetchEmployeeData = async (id: string, token: string) => {
     return response.data;
   } catch (error) {
     console.error("Error fetching Employee data:", error);
+    return null; // Return null on error
   }
 };
+
+const Header = ({ type }: { type: string }) => (
+  <Title level={3}>{type === "doctors" ? "Doctor" : "Employee"}</Title>
+);
 
 function ViewEmployee(props: ViewEmployeeProps) {
   // Get the ID value from the URL
@@ -59,22 +64,34 @@ function ViewEmployee(props: ViewEmployeeProps) {
 
   // Use States
   const [employeeData, setEmployeeData] = useState<EmployeeType | null>(null);
+  const [fetching, setFetching] = useState(true); // Initially set fetching to true
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (Id) {
+      setError(false); // Reset error state
       // Get Employee Info
-      fetchEmployeeData(Id, token).then((response) => {
-        console.log(response);
-        setEmployeeData(response);
-      });
+      fetchEmployeeData(Id, token)
+        .then((response) => {
+          if (response) {
+            setEmployeeData(response);
+          } else {
+            setError(true); // Set error state if response is null
+          }
+        })
+        .catch(() => {
+          setError(true); // Set error state on fetch failure
+        })
+        .finally(() => {
+          setTimeout(() => {
+            setFetching(false); // Set fetching to false after 0.5 seconds
+          }, 1000); // 1 second delay
+        });
+    } else {
+      setFetching(false); // Set fetching to false if Id is not provided
     }
-  }, [Id]);
+  }, [Id, token]);
 
-  // const handleAddEmployee = () => {
-  //   reDirectToEmployees("new");
-  // };
-
-  /* eslint-disable-next-line */
   const onChange = (key: string) => {
     // console.log(key);
   };
@@ -112,31 +129,57 @@ function ViewEmployee(props: ViewEmployeeProps) {
     },
   ];
 
-  return (
-    <>
-      {employeeData ? (
-        <ViewContainer>
-          {" "}
-          <Title level={3}>
-            {props.type == "doctors" ? "Doctor" : "Employee"}{" "}
-          </Title>
-          <StyledTabs
-            defaultActiveKey="1"
-            items={props.type == "doctors" ? doctorNavItems : employeeNavItems}
-            onChange={onChange}
-          />
-        </ViewContainer>
-      ) : (
+  if (fetching) {
+    return (
+      <ViewContainer>
+        <Header type={props.type} />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "80%",
+          }}
+        >
+          <Spin tip="Loading" size="large">
+            <div
+              style={{
+                padding: 50,
+                // background: "rgba(0, 0, 0, 0.05)",
+                borderRadius: 4,
+              }}
+            />
+          </Spin>
+        </div>
+      </ViewContainer>
+    );
+  }
+
+  if (error || !employeeData) {
+    return (
+      <ViewContainer>
+        <Header type={props.type} />
         <Result
           status="404"
           title="404"
-          subTitle="No Patient exists with this ID."
+          subTitle="No Employee exists with this ID."
           extra={
             <PrimaryButton onClick={reDirectToHome}>Back Home</PrimaryButton>
           }
         />
-      )}
-    </>
+      </ViewContainer>
+    );
+  }
+
+  return (
+    <ViewContainer>
+      <Header type={props.type} />
+      <StyledTabs
+        defaultActiveKey="1"
+        items={props.type === "doctors" ? doctorNavItems : employeeNavItems}
+        onChange={onChange}
+      />
+    </ViewContainer>
   );
 }
 
