@@ -1,6 +1,28 @@
 import React, { useState } from "react";
+
+// Hooks
+import useCustomNavigate from "../../../../hooks/useCustomNavigate";
+
+// Services
+import axios from "../../../../services/apiService";
+
+// Redux
+import { useSelector } from "react-redux";
+import { MainState } from "../../../../state/Reducers";
+
+// Ant Design
+import { message, Input, Form, Upload } from "antd";
+import { UploadFile, UploadProps } from "antd";
+import { InboxOutlined } from "@ant-design/icons";
+
+// Components
+import Unauthorized from "../../../layout/unauthorized/Unauthorized";
+import SecondaryButton from "../../../common/SecondaryButton/SecondaryButton";
+import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
+import Title from "antd/es/typography/Title";
+import LineHeader from "../../../common/LineHeader/LineHeader";
+
 import {
-  LineHeader,
   InputRow,
   FormItem,
   TextAreaRow,
@@ -10,20 +32,8 @@ import {
   StyledDragger,
   NewXRayContainer,
   FormContainer,
-  ButtonRow,
-  FlexButton,
+  SubmitContainer,
 } from "./NewXRay.style";
-import { message, Input, Form } from "antd";
-import SecondaryButton from "../../../common/SecondaryButton/SecondaryButton";
-import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
-import Title from "antd/es/typography/Title";
-import { InboxOutlined } from "@ant-design/icons";
-import type { UploadProps, UploadFile } from "antd";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { MainState } from "../../../../state/Reducers";
-import axios from "../../../../services/apiService";
-import Unauthorized from "../../../layout/unauthorized/Unauthorized";
 
 // Define the structure of the form values
 interface FormValues {
@@ -35,9 +45,14 @@ interface FormValues {
 }
 
 function NewXRay() {
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  // Navigation
+  const { navigateToCases } = useCustomNavigate();
+
+  // Form
   const [form] = Form.useForm<FormValues>();
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+
+  // Redux
   const token = useSelector((state: MainState) => state.token);
   const user = useSelector((state: MainState) => state.user);
 
@@ -47,12 +62,16 @@ function NewXRay() {
         const index = prev.indexOf(file);
         const newFileList = prev.slice();
         newFileList.splice(index, 1);
-        console.log("File removed:", file);
         return newFileList;
       });
     },
     beforeUpload: (file) => {
-      setFileList((prev) => [...prev, file]);
+      // Allow only one file to be uploaded at a time
+      if (fileList.length >= 1) {
+        message.error("You can only upload one file at a time.");
+        return Upload.LIST_IGNORE; // Ignore this file
+      }
+      setFileList([file]); // Replace the current file
       return false; // Prevent automatic upload
     },
     fileList,
@@ -76,7 +95,7 @@ function NewXRay() {
           },
         }
       );
-      console.log("Updateload response:", responseUpload.data);
+      /*eslint-disable-next-line*/
       const response = await axios.put(
         `api/v1/studies/${studyId}`,
         {
@@ -84,18 +103,16 @@ function NewXRay() {
           patient_id: formValues.patient_id,
           notes: formValues.notes,
           xray_path: responseUpload.data.xray_path,
-          doctor_id:user?.id ?? 0,
+          doctor_id: user?.id ?? 0,
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Include the token in the headers
-            "Content-Type": "application/json", // Optional: Include if required by your API
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
         }
       );
-      console.log("Upload response:", response.data);
-      message.success("X-Ray uploaded successfully");
-      navigate("/reports"); // Replace with your actual route
+      message.success("X-Ray File uploaded successfully");
     } catch (error) {
       console.error("Upload error:", error);
       message.error("Failed to upload X-Ray");
@@ -113,21 +130,22 @@ function NewXRay() {
           study_name: formValues.study_name,
           patient_id: formValues.patient_id,
           notes: formValues.notes,
-          doctor_id:  user?.id ?? 0,
+          doctor_id: user?.id ?? 0,
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Include the token in the headers
-            "Content-Type": "application/json", // Optional: Include if required by your API
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
         }
       );
-      console.log("API response:", response.data);
-      message.success("Patient added successfully");
 
       // Upload X-Ray file after creating the study
       const studyId = response.data.id; // Assuming the response contains the study ID
       await uploadXRayFile(studyId, formValues);
+
+      message.success("Case added successfully");
+      navigateToCases("unassigned");
     } catch (error) {
       console.error("API error:", error);
       message.error("Failed to add Xray");
@@ -146,8 +164,8 @@ function NewXRay() {
     await axios
       .get(`api/v1/patients/${patientID}`, {
         headers: {
-          Authorization: `Bearer ${token}`, // Include the token in the headers
-          "Content-Type": "application/json", // Optional: Include if required by your API
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
       })
       .then((response) => {
@@ -161,11 +179,11 @@ function NewXRay() {
 
   return (
     <>
-      {user &&user.type!= "employee" ? (
+      {user && user.type != "employee" ? (
         <Unauthorized />
       ) : (
         <NewXRayContainer>
-          <Title level={2}>New X-Ray</Title>
+          <Title level={3}>New X-Ray</Title>
           <LineHeader />
           <FormContainer
             form={form}
@@ -195,6 +213,7 @@ function NewXRay() {
                 <Input placeholder="Patient Name" size="large" disabled />
               </FormItem>
             </InputRow>
+
             <InputRow>
               <NoteItem
                 name="notes"
@@ -205,6 +224,7 @@ function NewXRay() {
                 <TextAreaRow placeholder="Please enter any notes" rows={4} />
               </NoteItem>
             </InputRow>
+
             <UploadRow>
               <UploadItem
                 name="uploadXRay"
@@ -227,25 +247,24 @@ function NewXRay() {
                 </StyledDragger>
               </UploadItem>
             </UploadRow>
-            <ButtonRow>
-              <FlexButton gap="middle">
-                <SecondaryButton
-                  htmlType="button"
-                  style={{ width: "17%" }}
-                  size="large"
-                  onClick={onCancel}
-                >
-                  Cancel
-                </SecondaryButton>
-                <PrimaryButton
-                  htmlType="submit"
-                  size="large"
-                  style={{ width: "17%" }}
-                >
-                  Add
-                </PrimaryButton>
-              </FlexButton>
-            </ButtonRow>
+
+            <SubmitContainer gap="middle">
+              <SecondaryButton
+                onClick={onCancel}
+                htmlType="button"
+                size="large"
+                style={{ width: "6%" }}
+              >
+                Cancel
+              </SecondaryButton>
+              <PrimaryButton
+                htmlType="submit"
+                size="large"
+                style={{ width: "6%" }}
+              >
+                Add
+              </PrimaryButton>
+            </SubmitContainer>
           </FormContainer>
         </NewXRayContainer>
       )}

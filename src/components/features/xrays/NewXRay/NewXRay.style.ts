@@ -1,24 +1,27 @@
-import { palette } from "../../../../styles/theme";
 import styled from "styled-components";
 import { Row, Input, Form, Flex, Upload } from "antd";
+
 const { TextArea } = Input;
 const { Dragger } = Upload;
 
 export const NewXRayContainer = styled(Flex)`
   display: flex;
   flex-direction: column;
-  flex: 1;
-  height: 85vh;
-  margin: 0 ;
+
+  height: 100%;
 `;
+
 export const FormContainer = styled(Form)`
   display: flex;
   flex-direction: column;
-  flex: 1;
+
+  height: 100%;
+  /* flex: 1;
   height: 70vh;
   align-items: start;
-  justify-content: start;
+  justify-content: start; */
 `;
+
 export const ButtonContainer = styled(Flex)`
   display: flex;
   flex-direction: row;
@@ -33,63 +36,62 @@ export const ButtonContainer = styled(Flex)`
   }
 `;
 
-const LineHeader = styled.hr`
-  border-top: 1px solid ${palette.grey50};
-  margin-right: 2%;
-`;
-const InputRow = styled(Row)`
+export const InputRow = styled(Row)`
   width: 100%;
   display: flex;
   border-radius: 1%;
 `;
 
-const FormItem = styled(Form.Item)`
+export const FormItem = styled(Form.Item)`
   margin-right: 30px;
 `;
-const TextAreaRow = styled(TextArea)`
+export const TextAreaRow = styled(TextArea)`
   width: 95%;
   border-radius: 1%;
+
+  /* Customize scrollbar */
+  &::-webkit-scrollbar {
+    width: 6px; /* Width of the scrollbar */
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent; /* Track color */
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2); /* Thumb color */
+    border-radius: 3px; /* Rounded corners of the thumb */
+  }
 `;
-const NoteItem = styled(Form.Item)`
+export const NoteItem = styled(Form.Item)`
   width: 95vw;
-  
 `;
-const UploadRow = styled(Row)`
+export const UploadRow = styled(Row)`
   width: 95%;
   display: flex;
   border-radius: 1%;
-  height: 37vh;
+  /* height: 37vh; */
 `;
-const UploadItem = styled(Form.Item)`
+
+export const UploadItem = styled(Form.Item)`
   width: 100%;
 `;
-const ButtonRow = styled(Row)`
-  width: 40%;
-  margin-left: 55%;
-  margin-top: 0;
+
+export const SubmitContainer = styled(Flex)`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  flex: 1;
 `;
-const FlexButton = styled(Flex)`
+
+export const FlexButton = styled(Flex)`
   width: 100%;
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
-
 `;
-const StyledDragger = styled(Dragger)`
+export const StyledDragger = styled(Dragger)`
   display: flex;
   width: 100%;
-  height: 30vh;
+  /* height: 30vh; */
   border-radius: 1%;
 `;
-export {
-  LineHeader,
-  InputRow,
-  FormItem,
-  TextAreaRow,
-  NoteItem,
-  UploadRow,
-  FlexButton,
-  ButtonRow,
-  UploadItem,
-  StyledDragger,
-};
