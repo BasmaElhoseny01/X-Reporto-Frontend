@@ -1,20 +1,20 @@
-import { palette } from "../../../styles/theme";
+import { palette } from "../../../../../styles/theme";
 import styled from "styled-components";
-import JoditEditor from 'jodit-react';
+import JoditEditor from "jodit-react";
 
 // Ant Design
-import {Flex} from "antd";
+import { Flex } from "antd";
 // import Button from "antd-button-color";
-import { EditOutlined } from '@ant-design/icons';
+import { EditOutlined } from "@ant-design/icons";
 
 // export const ButtonContainer = styled.div`
 //     // margin-top: 2%;
 //     margin-left: 90%;
 //     `;
 export const EditButton = styled(EditOutlined)`
-    color: ${palette.primary};
-    margin-left: 5%;
-    `;
+  color: ${palette.primary};
+  margin-left: 5%;
+`;
 export const ButtonContainer = styled(Flex)`
   display: flex;
   flex-direction: row;
@@ -32,9 +32,9 @@ export const ButtonContainer = styled(Flex)`
   }
 `;
 export const ReportEditor = styled(JoditEditor)`
-    // // width: 50%;
-    // // background-color: #f0f2f5;
-    // // height: 80%;
-    // overflow-y: scroll;
+  // // width: 50%;
+  // // background-color: #f0f2f5;
+  // // height: 80%;
+  // overflow-y: scroll;
 `;
 // export { LineHeader, InputRow, ButtonCol, AddButton, FlexButton, ButtonRow };

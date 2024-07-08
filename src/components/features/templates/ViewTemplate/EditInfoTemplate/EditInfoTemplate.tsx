@@ -5,13 +5,13 @@ import {
   ButtonContainer,
   ReportEditor,
 } from "./EditInfoTemplate.style";
-import SecondaryButton from "../SecondaryButton/SecondaryButton";
-import PrimaryButton from "../PrimaryButton/PrimaryButton";
+import SecondaryButton from "../../../../common/SecondaryButton/SecondaryButton";
+import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
 import { format, parseISO, isValid } from "date-fns";
 import { useSelector } from "react-redux";
-import { MainState } from "../../../state/Reducers";
+import { MainState } from "../../../../../state/Reducers";
 
-import axios from "../../../services/apiService";
+import axios from "../../../../../services/apiService";
 interface TemplateData {
   id: number;
   template_name: string;

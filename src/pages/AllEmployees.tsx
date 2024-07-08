@@ -1,7 +1,13 @@
 import React from "react";
+
+// Redux
 import { useSelector } from "react-redux";
 import { MainState } from "../state";
+
+// Components
 import GeneralTable from "../components/common/Table/Table";
+
+// Utils
 import { reDirectToEmployees } from "./paths.utils";
 
 function AllEmployees() {

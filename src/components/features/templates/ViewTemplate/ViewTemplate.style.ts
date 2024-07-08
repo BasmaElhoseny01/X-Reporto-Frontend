@@ -1,4 +1,3 @@
-
 import styled from "styled-components";
 
 // Ant Design
@@ -19,18 +18,10 @@ export const ButtonContainer = styled(Flex)`
     margin: 0px 10px;
   }
 `;
-export const ViewTemplateContainer = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: flex-start;
-//   align-items: flex-start;
+export const ViewContainer = styled.div`
+  display: flex;
+  flex-direction: column;
 
-//   // padding: 20px;
-//   width: 100%;
-//   height: 100vh;
-      height: 100%;
-
-overflow-y: scroll;
-
-
+  height: 100%;
+  width: 100%;
 `;

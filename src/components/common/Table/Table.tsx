@@ -40,24 +40,22 @@ const GeneralTable = (props: GeneralTableProps) => {
   useEffect(() => {
     setLoading(true);
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    console.log(props.api);
     axios
       .get(`${props.api}skip=${5 * (page - 1)}&limit=5`)
       .then((response) => {
+        console.log("Response for", props.api, response.data);
         response.data.map((ele: any) => {
           props.filterColumns.map((filter) => {
             delete ele[filter.toString()];
           });
         });
-        console.log(response.data);
         setDataSource(response.data);
-        console.log(response.data);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       })
       .finally(() => {
-        setLoading(false);
+        setLoading(false); // Set fetching to false after 0.5 seconds
       });
   }, [page]);
 

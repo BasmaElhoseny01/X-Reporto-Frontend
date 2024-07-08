@@ -11,6 +11,12 @@ import GeneralTable from "../../common/Table/Table";
 // Styled Components
 import { HistoryContainer } from "./ViewHistory.style";
 
+// Utils
+import {
+  reDirectToCases,
+  reDirectToPatients,
+} from "../../../pages/paths.utils";
+
 interface ViewHistoryProps {
   api: string;
 }
@@ -83,10 +89,10 @@ function ViewHistory(props: ViewHistoryProps) {
     ],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
-      window.location.pathname = `patients/${record.id}`;
+      reDirectToPatients("view", record.id);
     },
     addNew: () => {
-      window.location.pathname = "reports/new";
+      reDirectToCases("new");
     },
   };
 

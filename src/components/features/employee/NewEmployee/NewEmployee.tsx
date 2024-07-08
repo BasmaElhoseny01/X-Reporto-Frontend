@@ -1,7 +1,5 @@
 import React from "react";
 
-import { useNavigate } from "react-router-dom"; // Import useNavigate hook for navigation
-
 // Services
 import axios from "../../../../services/apiService";
 
@@ -30,6 +28,13 @@ import {
   SubmitContainer,
 } from "./NewEmployee.style";
 
+// Utils
+import {
+  reDirectToDoctors,
+  reDirectToEmployees,
+} from "../../../../pages/paths.utils";
+
+// Interface
 interface NewEmployeeFormValues {
   employee_name: string;
   role: "user";
@@ -51,7 +56,8 @@ interface NewEmployeeProps {
 
 function NewEmployee(props: NewEmployeeProps) {
   const [form] = Form.useForm();
-  const navigate = useNavigate(); // Initialize useNavigate hook
+
+  // Redux
   const token = useSelector((state: MainState) => state.token);
   const user = useSelector((state: MainState) => state.user);
 
@@ -62,27 +68,29 @@ function NewEmployee(props: NewEmployeeProps) {
       (formValues.phone_number as any).areaCode +
       (formValues.phone_number as any).phoneNumber;
     formValues.type = props.type == "doctors" ? "doctor" : "employee";
-    formValues.employee_id = user ? user.id : null;
-    console.log("Form values:", formValues);
+    formValues.employee_id = user ? user.id : null; // Add Employee Id to track Activities
 
     try {
+      /*eslint-disable-next-line*/
       const response = await axios.post(`api/v1/employees`, formValues, {
         headers: {
           Authorization: `Bearer ${token}`, // Include the token in the headers
           "Content-Type": "application/json", // Optional: Include if required by your API
         },
       });
-      console.log("API response:", response.data);
       message.success(
-        `${
-          props.type == "doctors" ? "Radiologist" : "Employee"
-        } added successfully`
+        `${props.type == "doctors" ? "Doctor" : "Employee"} added successfully`
       );
-      navigate("/doctors"); // Replace with your actual route
+      // Redirect to view Page
+      if (props.type == "doctors") {
+        reDirectToDoctors("all");
+      } else {
+        reDirectToEmployees("all");
+      }
     } catch (error) {
       console.error("API error:", error);
       message.error(
-        `Failed to add ${props.type == "doctors" ? "Radiologist" : "Employee"}`
+        `Failed to add ${props.type == "doctors" ? "Doctor" : "Employee"}`
       );
     }
   };
@@ -122,7 +130,7 @@ function NewEmployee(props: NewEmployeeProps) {
       ) : (
         <NewEmployeeContainer>
           <Title level={3}>
-            New {props.type == "doctors" ? "Radiologist" : "Employee"}
+            New {props.type == "doctors" ? "Doctor" : "Employee"}
           </Title>
           <LineHeader />
           <FormContainer
