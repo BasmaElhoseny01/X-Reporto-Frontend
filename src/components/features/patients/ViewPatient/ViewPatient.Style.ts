@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 // Ant Design
-import { Flex } from "antd";
+import { Flex, Tabs } from "antd";
 export const ButtonContainer = styled(Flex)`
   display: flex;
   flex-direction: row;
@@ -24,4 +24,29 @@ export const ViewContainer = styled.div`
 
   height: 100%;
   width: 100%;
+`;
+
+export const StyledTabs = styled(Tabs)`
+  height: 100%;
+
+  & > .ant-tabs-bar {
+    height: 100%;
+
+    & > .ant-tabs-nav {
+      height: 100%;
+
+      /* & > .ant-tabs-content-holder {
+        height: 100%;
+        background-color: red;
+
+        & > .ant-tabs-content {
+          height: 100%;
+
+          background-color: cyan;
+        }
+      } */
+    }
+    background-color: #aaa;
+    /* margin-bottom: 0px; */
+  }
 `;

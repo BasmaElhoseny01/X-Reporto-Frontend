@@ -72,7 +72,9 @@ function EditEmployeeInfo(props: EditEmployeeInfoProps) {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const date = event.target.value;
-    form.setFieldsValue({ age: calculateAge(date) });
+    const age = calculateAge(date);
+    setAgeValue(age); // Update age in state
+    form.setFieldsValue({ age });
   };
 
   const onFinish = async (values: any) => {
@@ -240,11 +242,7 @@ function EditEmployeeInfo(props: EditEmployeeInfoProps) {
               </Descriptions.Item>
             </Descriptions>
             <ButtonContainer>
-              <PrimaryButton
-                htmlType="submit"
-                size="large"
-                onClick={handleEdit}
-              >
+              <PrimaryButton size="large" onClick={handleEdit}>
                 Edit
               </PrimaryButton>
             </ButtonContainer>

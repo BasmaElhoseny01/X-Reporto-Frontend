@@ -10,3 +10,4 @@ export interface Patient {
   id: 0;
   studies: [];
 }
+export type PatientType = Patient | null;

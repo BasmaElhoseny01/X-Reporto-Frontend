@@ -1,5 +1,6 @@
-/* eslint-disable */
 import React, { useState, useEffect } from "react";
+
+// Hooks
 import { useParams } from "react-router-dom";
 
 // Services
@@ -11,7 +12,7 @@ import { MainState } from "../../../../state/Reducers";
 
 // Ant Design
 import Title from "antd/es/typography/Title";
-import { Alert, Result, Spin } from "antd";
+import { Result, Spin } from "antd";
 import type { TabsProps } from "antd";
 
 // Styled Components
@@ -92,6 +93,7 @@ function ViewEmployee(props: ViewEmployeeProps) {
     }
   }, [Id, token]);
 
+  /*eslint-disable-next-line*/
   const onChange = (key: string) => {
     // console.log(key);
   };
@@ -160,13 +162,9 @@ function ViewEmployee(props: ViewEmployeeProps) {
       <ViewContainer>
         <Header type={props.type} />
         <Result
-          status="404"
-          title="404"
-          subTitle={
-            props.type === "doctors"
-              ? "No Doctor exists with this ID."
-              : "No Employee exists with this ID."
-          }
+          status="500"
+          title="500"
+          subTitle={"Sorry, something went wrong."}
           extra={
             <PrimaryButton onClick={reDirectToHome}>Back Home</PrimaryButton>
           }
