@@ -1,8 +1,16 @@
 import React, { useState, useEffect } from "react";
+
+// Services
 import axios from "../../../services/apiService";
-import { SelectionButton } from "./SelectionTemplate.style";
+
+// Redux
 import { useSelector } from "react-redux";
 import { MainState } from "../../../state/Reducers";
+
+// Antd Design
+import { message, Select } from "antd";
+
+// Interface
 interface Template {
   template_name: string;
   template_path: string;
@@ -17,11 +25,29 @@ interface Option {
 
 interface Props {
   selectedValue: string;
-  handleSelectionChange: (value: string, labelValue: string, label: string) => void;
+  handleSelectionChange: (
+    value: string,
+    labelValue: string,
+    label: string
+  ) => void;
 }
 
-export const defaultTemplate = 
-`
+// Server Fetch
+const fetchTemplateTypes = async (token: string) => {
+  try {
+    const response = await axios.get(`api/v1/templates/`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching Template Types data:", error);
+    return null; // Return null on error
+  }
+};
+
+export const defaultTemplate = `
   <table style="width:100%; text-align: left;margin:0;">
     <tbody>
       <tr>
@@ -76,63 +102,78 @@ function SelectionTemplate({ selectedValue, handleSelectionChange }: Props) {
   ]);
 
   useEffect(() => {
-    axios
-      .get(`api/v1/templates/`, {
-        headers: {
-            Authorization: `Bearer ${token}`, // Include the token in the headers
-        }
-      })
+    fetchTemplateTypes(token)
       .then((response) => {
-        const fetchedOptions: Option[] = response.data.map((template: Template) => {
-          if (template.template_path != null && template.template_path != "") {
-            return {
-              value: template.id.toString(), // Use template ID as the value
-              label: template.template_name,
-              disabled: false,
-            };
-          }
-          return null;
-        }).filter(Boolean) as Option[];
+        const fetchedOptions: Option[] = response
+          .map((template: Template) => {
+            if (
+              template.template_path != null &&
+              template.template_path != ""
+            ) {
+              return {
+                value: template.id.toString(), // Use template ID as the value
+                label: template.template_name,
+                disabled: false,
+              };
+            }
+            return null;
+          })
+          .filter(Boolean) as Option[];
 
         // Ensure no duplicate values
         setOptions((prevOptions) => {
-          const existingValues = new Set(prevOptions.map(opt => opt.value));
-          const newOptions = fetchedOptions.filter(opt => !existingValues.has(opt.value));
+          const existingValues = new Set(prevOptions.map((opt) => opt.value));
+          const newOptions = fetchedOptions.filter(
+            (opt) => !existingValues.has(opt.value)
+          );
           return [...prevOptions, ...newOptions];
         });
       })
       .catch((error) => {
         console.error("Error fetching templates:", error);
+        message.error("Failed to fetch templates. Please try again.");
       });
   }, []);
 
   const handleChange = (value: string, option: Option): void => {
-    if (value && value !== "" && option.label !== "Empty" && option.label !== "Default") {
+    if (
+      value &&
+      value !== "" &&
+      option.label !== "Empty" &&
+      option.label !== "Default"
+    ) {
       axios
         .get(`api/v1/templates/${value}/download_template`, {
           headers: {
-              Authorization: `Bearer ${token}`, // Include the token in the headers
-          }
+            Authorization: `Bearer ${token}`, // Include the token in the headers
+          },
         })
         .then((response) => {
           handleSelectionChange(response.data, value, option.label);
         })
         .catch((error) => {
           console.error(`Error downloading template ${option.label}:`, error);
+          message.error(
+            `Failed to download template ${option.label}. Please try again.`
+          );
         });
     } else {
-      if (value === "-1") handleSelectionChange(defaultTemplate, "-1", option.label); // Use default template if value is -1
-      else if (value === "-2") handleSelectionChange(emptyTemplate, "-2",""); // Use empty template if value is -2
+      if (value === "-1")
+        handleSelectionChange(defaultTemplate, "-1", option.label);
+      // Use default template if value is -1
+      else if (value === "-2") handleSelectionChange(emptyTemplate, "-2", "");
+      // Use empty template if value is -2
       else handleSelectionChange(defaultTemplate, "", option.label); // Use default template if value is empty
     }
   };
 
   return (
-    <SelectionButton
-      size="large"
+    <Select
       defaultValue={defaultTemplate}
       value={selectedValue}
-      onChange={(value, option) => handleChange(value as string, option as Option)}
+      onChange={(value, option) =>
+        handleChange(value as string, option as Option)
+      }
       options={options}
     />
   );

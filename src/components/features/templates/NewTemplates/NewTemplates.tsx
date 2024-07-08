@@ -1,25 +1,38 @@
+/* eslint-disable*/
 import React, { useState, useRef, useMemo } from "react";
+
+// Services
+import axios from "../../../../services/apiService";
+
+// Redux
+import { useSelector } from "react-redux";
+import { MainState } from "../../../../state/Reducers";
+
+// Ant Design
 import { Typography, Form, Input, message } from "antd";
 const { Title } = Typography;
+
+// Styled Components
 import {
   ButtonContainer,
   ReportEditor,
   ReportDiv,
   TemplateDataCol,
   TemplateDataRow,
+  NewTemplateContainer,
+  InputFieldsContainer,
 } from "./NewTemplates.style";
+
+// Components
+import PrimaryButton from "../../../../components/common/PrimaryButton/PrimaryButton";
+import SecondaryButton from "../../../../components/common/SecondaryButton/SecondaryButton";
 import LineHeader from "../../../../components/common/LineHeader/LineHeader";
 import SelectionTemplate, {
   defaultTemplate,
 } from "../../../../components/common/SelectionTemplate/SelectionTemplate";
-import SecondaryButton from "../../../../components/common/SecondaryButton/SecondaryButton";
-import PrimaryButton from "../../../../components/common/PrimaryButton/PrimaryButton";
-import { useSelector } from "react-redux";
-import { MainState } from "../../../../state/Reducers";
-
-import axios from "../../../../services/apiService";
 import Unauthorized from "../../../layout/unauthorized/Unauthorized";
 
+// Interface
 interface FormValues {
   templateName: string;
   templateContent: string;
@@ -27,12 +40,17 @@ interface FormValues {
 }
 
 function NewTemplates() {
-  const [form] = Form.useForm<FormValues>();
-  const [selectedValue, setSelectedValue] = useState<string>("-1");
-  const [content, setContent] = useState<string>(defaultTemplate); // Initialize with defaultTemplate
   const editor = useRef(null);
+  const [form] = Form.useForm<FormValues>();
+
+  // Redux
   const token = useSelector((state: MainState) => state.token);
   const user = useSelector((state: MainState) => state.user);
+
+  // Use States
+  const [selectedValue, setSelectedValue] = useState<string>("-1");
+  const [content, setContent] = useState<string>(defaultTemplate); // Initialize with defaultTemplate
+
   const onFinish = async (values: FormValues) => {
     console.log("Values", values);
     try {
@@ -146,7 +164,7 @@ function NewTemplates() {
   // }, []); // Fetch data only once on initial render
 
   const handleContentChange = (newContent: string) => {
-    setContent(newContent);
+    // setContent(newContent);
   };
 
   return (
@@ -154,32 +172,44 @@ function NewTemplates() {
       {user && user.type != "doctor" ? (
         <Unauthorized />
       ) : (
-        <ReportDiv>
-          <Title level={2}>New Templates</Title>
-          <LineHeader />
-          <Form
-            form={form}
-            onFinish={onFinish}
-            initialValues={{
-              templateName: "",
-              templateContent: defaultTemplate,
-              templateType: "Default",
+        <NewTemplateContainer>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
             }}
           >
-            <TemplateDataCol>
-              <TemplateDataRow>
+            <Title level={3}>New Template</Title>
+
+            <Form
+              form={form}
+              onFinish={onFinish}
+              initialValues={{
+                templateName: "",
+                templateContent: defaultTemplate,
+                templateType: "Default",
+              }}
+              style={{
+                width: "50%",
+              }}
+            >
+              <InputFieldsContainer>
                 <Form.Item
                   name="templateName"
-                  label="Template Name"
+                  label="Name"
                   labelCol={{ span: 24 }}
                   wrapperCol={{ span: 24 }}
+                  rules={[
+                    { required: true, message: "Template name is required" },
+                  ]}
                 >
-                  <Input name="templateName" />
+                  <Input placeholder="Template Name" />
                 </Form.Item>
 
                 <Form.Item
                   name="templateType"
-                  label="Template Type"
+                  label="Initial Template"
                   labelCol={{ span: 24 }}
                   wrapperCol={{ span: 24 }}
                 >
@@ -188,40 +218,101 @@ function NewTemplates() {
                     handleSelectionChange={handleSelectionChange}
                   />
                 </Form.Item>
-              </TemplateDataRow>
-              <Form.Item
-                name="templateContent"
-                label="Template Content"
-                labelCol={{ span: 24 }}
-                wrapperCol={{ span: 24 }}
-              >
-                <ReportEditor
-                  ref={editor}
-                  value={content} // Bind value to content state
-                  config={config}
-                  onBlur={handleContentChange} // You can choose to keep onBlur or onChange based on performance considerations
-                  onChange={handleContentChange}
-                />
-              </Form.Item>
-            </TemplateDataCol>
-            <ButtonContainer gap="middle">
-              <SecondaryButton
-                onClick={onCancel}
-                size="large"
-                style={{ width: "8%" }}
-              >
-                Cancel
-              </SecondaryButton>
-              <PrimaryButton
-                htmlType="submit"
-                size="large"
-                style={{ width: "8%" }}
-              >
-                Add
-              </PrimaryButton>
-            </ButtonContainer>
-          </Form>
-        </ReportDiv>
+              </InputFieldsContainer>
+            </Form>
+          </div>
+          <LineHeader />
+
+          <ReportEditor
+            ref={editor}
+            value={content} // Bind value to content state
+            config={config}
+            onBlur={handleContentChange} // You can choose to keep onBlur or onChange based on performance considerations
+            onChange={handleContentChange}
+          />
+
+          {/* <Form.Item
+            name="templateContent"
+            label="Template Content"
+            labelCol={{ span: 24 }}
+            wrapperCol={{ span: 24 }}
+          > */}
+          {/* <ReportEditor
+            ref={editor}
+            value={content} // Bind value to content state
+            config={config}
+            onBlur={handleContentChange} // You can choose to keep onBlur or onChange based on performance considerations
+            onChange={handleContentChange}
+          /> */}
+          {/* </Form.Item> */}
+        </NewTemplateContainer>
+        // <ReportDiv>
+        //   <LineHeader />
+        //   <Form
+        //     form={form}
+        //     onFinish={onFinish}
+        //     initialValues={{
+        //       templateName: "",
+        //       templateContent: defaultTemplate,
+        //       templateType: "Default",
+        //     }}
+        //   >
+        //     <TemplateDataCol>
+        //       <TemplateDataRow>
+        //         <Form.Item
+        //           name="templateName"
+        //           label="Template Name"
+        //           labelCol={{ span: 24 }}
+        //           wrapperCol={{ span: 24 }}
+        //         >
+        //           <Input name="templateName" />
+        //         </Form.Item>
+
+        //         <Form.Item
+        //           name="templateType"
+        //           label="Template Type"
+        //           labelCol={{ span: 24 }}
+        //           wrapperCol={{ span: 24 }}
+        //         >
+        //           <SelectionTemplate
+        //             selectedValue={selectedValue}
+        //             handleSelectionChange={handleSelectionChange}
+        //           />
+        //         </Form.Item>
+        //       </TemplateDataRow>
+        //       <Form.Item
+        //         name="templateContent"
+        //         label="Template Content"
+        //         labelCol={{ span: 24 }}
+        //         wrapperCol={{ span: 24 }}
+        //       >
+        //         <ReportEditor
+        //           ref={editor}
+        //           value={content} // Bind value to content state
+        //           config={config}
+        //           onBlur={handleContentChange} // You can choose to keep onBlur or onChange based on performance considerations
+        //           onChange={handleContentChange}
+        //         />
+        //       </Form.Item>
+        //     </TemplateDataCol>
+        //     <ButtonContainer gap="middle">
+        //       <SecondaryButton
+        //         onClick={onCancel}
+        //         size="large"
+        //         style={{ width: "8%" }}
+        //       >
+        //         Cancel
+        //       </SecondaryButton>
+        //       <PrimaryButton
+        //         htmlType="submit"
+        //         size="large"
+        //         style={{ width: "8%" }}
+        //       >
+        //         Add
+        //       </PrimaryButton>
+        //     </ButtonContainer>
+        //   </Form>
+        // </ReportDiv>
       )}
     </>
   );

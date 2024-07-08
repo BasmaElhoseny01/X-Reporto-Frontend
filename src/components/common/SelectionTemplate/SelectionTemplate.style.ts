@@ -2,7 +2,7 @@
 import { Select } from "antd";
 import styled from "styled-components";
 
-export const SelectionButton = styled(Select)`
-    width: 45%;
-    margin: 1% ;
-`;
+// export const SelectionButton = styled(Select)`
+//     width: 45%;
+//     margin: 1% ;
+// `;
