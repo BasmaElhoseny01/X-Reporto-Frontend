@@ -20,7 +20,7 @@ import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
 import SecondaryButton from "../../../../common/SecondaryButton/SecondaryButton";
 
 // Styled Components
-import { InfoContainer } from "../../../../common/EditInfo/EditInfo.style";
+import { InfoContainer } from "./EditEmployeeInfo.style";
 
 //Types
 import { EmployeeType } from "../../../../../types/employee";

@@ -1,4 +1,3 @@
-/*eslint-disable */
 import React, { useState, useEffect } from "react";
 
 // Hooks
@@ -13,29 +12,17 @@ import { useSelector } from "react-redux";
 import { MainState } from "../../../../state";
 
 // Ant Design
-import { Result, Row, Spin } from "antd";
+import { Result, Spin } from "antd";
 import Title from "antd/es/typography/Title";
 import type { TabsProps } from "antd";
 
-import { PlusOutlined, EditTwoTone } from "@ant-design/icons";
-
 // Components
-import LineHeader from "../../../common/LineHeader/LineHeader";
-import EditInfo from "../../../common/EditInfo/EditInfo";
+import EditPatientInfo from "./EditPatientInfo/EditPatientInfo";
 import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
 import ViewHistory from "../../../common/ViewHistory/ViewHistory";
 
 // Styled Components
-import {
-  ButtonContainer,
-  StyledTabs,
-  ViewContainer,
-} from "./ViewPatient.Style";
-
-// Utils
-import { reDirectToHome } from "../../../../pages/paths.utils";
-import EditEmployeeInfo from "../../employee/ViewEmployee/EditEmployeeInfo/EditEmployeeInfo";
-import EditPatientInfo from "./EditPatientInfo/EditPatientInfo";
+import { StyledTabs, ViewContainer } from "./ViewPatient.Style";
 
 // Interfaces
 interface RouteParams extends Record<string, string | undefined> {
@@ -63,18 +50,15 @@ function ViewPatient() {
   const { Id } = useParams<RouteParams>(); // Replace with the actual ID value
 
   // Navigation
-  const { navigateToHome, navigateToPatients } = useCustomNavigate();
+  const { navigateToHome } = useCustomNavigate();
 
   // Redux States
   const token = useSelector((state: MainState) => state.token);
-  const user = useSelector((state: MainState) => state.user);
 
   // Use States
   const [patientData, setPatientData] = useState({} as any);
   const [fetching, setFetching] = useState(true); // Initially set fetching to true
   const [error, setError] = useState(false);
-
-  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     if (Id) {
@@ -100,14 +84,6 @@ function ViewPatient() {
     }
   }, [Id, token]);
 
-  const handleAddPatient = () => {
-    // Perform any necessary actions before navigating
-    // Example: Saving data, validation, etc.
-
-    // Navigate to the desired route using history.push
-    navigateToPatients("new");
-  };
-
   /*eslint-disable-next-line*/
   const onChange = (key: string) => {
     // console.log(key);
@@ -118,14 +94,16 @@ function ViewPatient() {
       key: "1",
       label: "Info",
       children: (
-        <EditInfo patient={patientData} setPatientData={setPatientData} />
+        <EditPatientInfo
+          patient={patientData}
+          setPatientData={setPatientData}
+        />
       ),
     },
     {
       key: "2",
       label: "History",
-      // children: <ViewHistory api={`api/v1/employees/${Id}/studies/?`} />,
-      children: <h1>History</h1>,
+      children: <ViewHistory api={`api/v1/patients/${Id}/studies/?`} />,
     },
   ];
 
@@ -180,53 +158,6 @@ function ViewPatient() {
         items={patientNavItems}
         onChange={onChange}
       />
-
-      {/* {patientData ? (
-        <ViewContainer>
-          <Title level={2}>Patient</Title>
-          <LineHeader />
-          <Row>
-            <div style={{ display: "flex" }}>
-              <Title level={4} style={{ margin: 0, marginRight: "10px" }}>
-                Patient Information
-              </Title>
-              {user?.type == "employee" && (
-                <EditTwoTone
-                  onClick={() => setIsEditing(true)}
-                  style={{ fontSize: "24px" }}
-                />
-              )}
-            </div>
-            <ButtonContainer>
-              {user?.type == "employee" && (
-                <PrimaryButton
-                  icon={<PlusOutlined />}
-                  onClick={handleAddPatient}
-                >
-                  Add Patient
-                </PrimaryButton>
-              )}
-            </ButtonContainer>
-          </Row>
-          <LineHeader />
-          <EditInfo
-            patient={patientData}
-            setPatientData={setPatientData}
-            edit={isEditing}
-            setIsEditing={setIsEditing}
-          />
-          <ViewHistory api={`api/v1/patients/${Id}/studies/?`} />
-        </ViewContainer>
-      ) : (
-        <Result
-          status="404"
-          title="404"
-          subTitle="No Patient exists with this ID."
-          extra={
-            <PrimaryButton onClick={reDirectToHome}>Back Home</PrimaryButton>
-          }
-        />
-      )}*/}
     </ViewContainer>
   );
 }
