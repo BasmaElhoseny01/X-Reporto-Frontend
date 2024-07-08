@@ -30,16 +30,17 @@ import {
   reDirectToTemplates,
 } from "../../../../pages/paths.utils";
 import { EmployeeType } from "../../../../types/employee";
+import EditInfoTemplate from "./EditInfoTemplate/EditInfoTemplate";
 
 // Interfaces
 interface RouteParams extends Record<string, string | undefined> {
   Id: string;
 }
 
-interface TemplateObject {
+export interface TemplateObject {
   template: TemplateType;
   doctor: EmployeeType;
-  // content: string;
+  content: string;
 }
 
 // Server Fetch
@@ -50,7 +51,6 @@ const fetchTemplateData = async (id: string, token: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching Template data:", error);
@@ -65,7 +65,6 @@ const fetchTemplateDoctor = async (id: string, token: string) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching Doctor for Template:", error);
@@ -73,20 +72,22 @@ const fetchTemplateDoctor = async (id: string, token: string) => {
   }
 };
 
-// const downloadTemplateContent = async (id: string, token: string) => {
-//   try {
-//     const response = await axios.get(`api/v1/templates/${id}`, {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     });
-//     console.log(response.data);
-//     return response.data;
-//   } catch (error) {
-//     console.error("Error fetching Template data:", error);
-//     return null; // Return null on error
-//   }
-// };
+const downloadTemplateContent = async (id: string, token: string) => {
+  try {
+    const response = await axios.get(
+      `api/v1/templates/${id}/download_template`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error Downloading Template File:", error);
+    return null; // Return null on error
+  }
+};
 
 // const deleteTemplate = async (id: string, token: string) => {
 //   try {
@@ -124,7 +125,7 @@ function ViewTemplate() {
 
           // Fetch template data
           const templateResponse = await fetchTemplateData(Id, token);
-          console.log(templateResponse);
+          console.log("templateResponse", templateResponse);
 
           if (!templateResponse) {
             setError(true); // Set error state if template response is null
@@ -136,7 +137,7 @@ function ViewTemplate() {
             templateResponse.doctor_id,
             token
           );
-          console.log(doctorResponse);
+          console.log("doctorResponse", doctorResponse);
 
           if (!doctorResponse) {
             setError(true); // Set error state if doctor response is null
@@ -144,11 +145,18 @@ function ViewTemplate() {
           }
 
           // Fetch Template Content
+          const contentResponse = await downloadTemplateContent(Id, token);
+          console.log("contentResponse", contentResponse);
+
+          if (!contentResponse) {
+            throw new Error("Error fetching Template Content");
+          }
 
           // Set Template Object
           setTemplateData({
             template: templateResponse,
             doctor: doctorResponse,
+            content: contentResponse,
           });
 
           // Set fetching to false after all data is fetched
@@ -242,21 +250,33 @@ function ViewTemplate() {
 
   return (
     <ViewContainer>
-      <Title level={3}>Template</Title>
-      {/* <EditInfoTemplate /> */}
-      {/* <ButtonContainer>
-        <PrimaryButton icon={<PlusOutlined />} onClick={handleNewTemplate}>
-        New Template
-        </PrimaryButton>
-        <PrimaryButton
-        danger
-        icon={<DeleteOutlined />}
-          onClick={handleDeleteTemplate}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <Title level={3}>Template</Title>
+        <ButtonContainer>
+          <PrimaryButton
+            icon={<PlusOutlined />}
+            //  onClick={handleNewTemplate}
           >
-          Delete Template
+            New Template
           </PrimaryButton>
-          </ButtonContainer>
-      <EditInfoTemplate templateID={parseInt(templateID)} /> */}
+          <PrimaryButton
+            danger
+            icon={<DeleteOutlined />}
+            // onClick={handleDeleteTemplate}
+          >
+            Delete Template
+          </PrimaryButton>
+        </ButtonContainer>
+      </div>
+      <LineHeader />
+
+      <EditInfoTemplate template={templateData} />
     </ViewContainer>
   );
 }

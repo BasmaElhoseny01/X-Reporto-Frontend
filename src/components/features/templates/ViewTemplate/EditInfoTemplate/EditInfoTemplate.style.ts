@@ -7,6 +7,13 @@ import { Flex } from "antd";
 // import Button from "antd-button-color";
 import { EditOutlined } from "@ant-design/icons";
 
+export const InfoContainer = styled(Flex)`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+`;
+
 // export const ButtonContainer = styled.div`
 //     // margin-top: 2%;
 //     margin-left: 90%;
