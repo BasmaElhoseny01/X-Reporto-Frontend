@@ -14,13 +14,13 @@ import Title from "antd/es/typography/Title";
 import { Alert, Result, Spin } from "antd";
 import type { TabsProps } from "antd";
 
+// Styled Components
+import { StyledTabs, ViewContainer } from "./ViewEmployee.style";
+
 // Components
 import EditEmployeeInfo from "./EditEmployeeInfo/EditEmployeeInfo";
 import ViewHistory from "../../../common/ViewHistory/ViewHistory";
 import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
-
-// Styled Components
-import { StyledTabs, ViewContainer } from "./ViewEmployee.style";
 
 //Types
 import { EmployeeType } from "../../../../types/employee";
@@ -57,7 +57,7 @@ const Header = ({ type }: { type: string }) => (
 
 function ViewEmployee(props: ViewEmployeeProps) {
   // Get the ID value from the URL
-  const { Id } = useParams<RouteParams>(); // Replace with the actual ID value
+  const { Id } = useParams<RouteParams>();
 
   // Redux States
   const token = useSelector((state: MainState) => state.token);
