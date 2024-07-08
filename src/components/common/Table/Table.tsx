@@ -40,10 +40,10 @@ const GeneralTable = (props: GeneralTableProps) => {
   useEffect(() => {
     setLoading(true);
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    console.log(props.api);
     axios
       .get(`${props.api}skip=${5 * (page - 1)}&limit=5`)
       .then((response) => {
+        console.log("Response for", props.api, response.data);
         response.data.map((ele: any) => {
           props.filterColumns.map((filter) => {
             delete ele[filter.toString()];

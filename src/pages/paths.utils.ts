@@ -95,13 +95,24 @@ export const reDirectToCases = (type: string, Id?: string | number) => {
   }
 };
 
-export const reDirectToPatients = (type: string) => {
+export const reDirectToPatients = (type: string, Id?: string | number) => {
+  let newPath = "";
   switch (type) {
     case "all":
-      window.location.href = `${paths.patients.base}`;
+      newPath = `${paths.patients.base}`;
+      window.location.href = newPath;
+      break;
+    case "view":
+      if (Id) {
+        newPath = `${baseUrl}/${paths.doctors.base}/${Id}`;
+        window.location.href = newPath;
+      } else {
+        console.error("Doctor ID is required for viewing.");
+      }
       break;
     case "new":
-      window.location.href = `${paths.patients.base}/${paths.patients.types.new}`;
+      newPath = `${paths.patients.base}/${paths.patients.types.new}`;
+      window.location.href = newPath;
       break;
     default:
       // Handle invalid type or default case
