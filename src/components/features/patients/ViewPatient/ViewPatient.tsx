@@ -118,12 +118,7 @@ function ViewPatient() {
       key: "1",
       label: "Info",
       children: (
-        <EditInfo patient={patientData} />
-        // <EditPatientInfo
-        // employee={employeeData}
-        // setEmployeeData={setEmployeeData}
-        // type={props.type}
-        // />
+        <EditInfo patient={patientData} setPatientData={setPatientData} />
       ),
     },
     {
