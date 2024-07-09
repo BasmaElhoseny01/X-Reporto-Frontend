@@ -3,7 +3,6 @@ import styled from "styled-components";
 // Theme
 // import { palette } from "../../../../styles/theme";
 
-
 // Ant Design
 import { Flex } from "antd";
 import { palette } from "../../../../../styles/theme";
@@ -22,12 +21,12 @@ export const LineHeader = styled.hr`
   margin-left: 0px;
 `;
 
-export const Title = styled(Flex)`
-  font-size: 20px;
-  font-weight: bold;
-  width: 100%;
-  padding: 3px 0 0 0;
-`;
+// export const Title = styled(Flex)`
+//   font-size: 20px;
+//   font-weight: bold;
+//   width: 100%;
+//   padding: 3px 0 0 0;
+// `;
 
 export const Row = styled(Flex)`
   width: 100%;
@@ -46,7 +45,7 @@ export const InputContainer = styled(Flex)`
   width: 50%;
   margin: 0 20px 0 0;
   justify-content: space-between;
-  `;
+`;
 
 export const InputTitle = styled(Flex)`
   font-size: 12px;
@@ -139,7 +138,7 @@ export const NotFoundContainer = styled(Flex)`
 
 export const ImageCaintainer = styled(Flex)`
   padding: 5px;
-  justify-content: flex-start; 
+  justify-content: flex-start;
   align-items: center;
   flex-direction: row;
 `;

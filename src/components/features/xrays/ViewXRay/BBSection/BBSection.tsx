@@ -1,5 +1,4 @@
-// import React from "react";
-// /* eslint-disable @typescript-eslint/no-unused-vars */
+import React from "react";
 
 // // Context
 // import { useAnnotations } from "../AnnotationProvider";
@@ -29,7 +28,9 @@
 // import { Empty } from "antd";
 
 function BBSection() {
-  return <div>BBSection</div>;
+  return (
+    <div>BBSection</div>
+  );
   // const {
   //   selectedAnnotation,
   //   annotations,

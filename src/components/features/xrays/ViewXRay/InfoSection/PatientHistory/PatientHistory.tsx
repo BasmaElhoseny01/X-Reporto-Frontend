@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { HostoryContainer } from "./InfoSection.Styles";
-import Card from "./Card";
+import { HostoryContainer } from "../InfoSection.Styles";
+import Card from "../Card";
 import { FileSearchOutlined } from "@ant-design/icons";
-import { NotFoundContainer, SubTitle } from "./InfoSection.Styles";
+import { NotFoundContainer, SubTitle } from "../InfoSection.Styles";
 import { useSelector } from "react-redux";
-import { MainState } from "../../../../../state";
-import axios from "../../../../../services/apiService";
+import { MainState } from "../../../../../../state";
+import axios from "../../../../../../services/apiService";
 
 type responseDataType = {
   study_name: string;
@@ -34,6 +34,8 @@ function PatientHistory(props: PatientHistoryProps) {
     axios
       .get(`/api/v1/patients/${props.id}/studies`)
       .then((response) => {
+        console.log("props.id", props.id);
+        console.log("response", response.data);
         setData(response.data);
       })
       .catch((error) => {

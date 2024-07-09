@@ -47,6 +47,7 @@ import { ResultType } from "../../../../types/study";
 import HeatMapSection from "./HeatMapSection/HeatMapSection";
 import AnnotationProvider from "./AnnotationProvider";
 import Test from "./Test";
+import BBSection from "./BBSection/BBSection";
 
 // Interfaces
 interface RouteParams extends Record<string, string | undefined> {
@@ -245,14 +246,14 @@ function ViewXRay() {
       key: "1",
       label: "",
       icon: <InfoCircleOutlined style={{ fontSize: "16px" }} />,
-      children: <h1>Info</h1>,
+      children: <InfoSection study_case={caseData} />,
       // <InfoSection study_case={caseData} />,
     },
     {
       key: "2",
       label: "",
       icon: <DropboxOutlined style={{ fontSize: "16px" }} />,
-      children: <h1>BB</h1>,
+      children: <BBSection />,
       // <InfoSection study_case={caseData} />,
       // <HeatMapSection />,
     },
@@ -261,7 +262,7 @@ function ViewXRay() {
       label: "",
       icon: <HeatMapOutlined style={{ fontSize: "16px" }} />,
       children: (
-        <h1>Heat</h1>
+        <div>Heat</div>
         // <HeatMapSection
         //   templateResultData={templateResultData}
         //   setTemplateResultData={setTemplateResultData}
@@ -272,7 +273,7 @@ function ViewXRay() {
       key: "4",
       label: "",
       icon: <FileTextOutlined style={{ fontSize: "16px" }} />,
-      children: <h1>Report</h1>,
+      children: <div>Report</div>,
       // <ReportSection
       //   lmResultData={lmResultData}
       //   setLmResultData={setLmResultData}

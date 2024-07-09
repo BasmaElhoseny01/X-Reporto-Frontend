@@ -4,15 +4,16 @@ import {
   ActionsContainer,
   InfoSectionContainer,
   LineHeader,
-  Title,
+  // Title,
 } from "./InfoSection.Styles";
 import PatientData from "./PatientData";
-import PatientHistory from "./PatientHistory";
+import PatientHistory from "./PatientHistory/PatientHistory";
 import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
 import { useView } from "../ViewProvider";
 import { MainState } from "../../../../../state";
 import { useSelector } from "react-redux";
 import { CaseType } from "../../../../../types/case";
+import Title from "antd/es/typography/Title";
 
 // Interface for InfoSection
 interface InfoSectionProps {
@@ -25,16 +26,15 @@ function InfoSection(props: InfoSectionProps) {
   const { handleSetSiderType } = useView();
 
   // Get the Study Context
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log("InfoSection.....");
+    console.log("Study Case: ", study_case);
+  }, []);
 
   return (
     <InfoSectionContainer>
-      <Title justify="flex-start" style={{ marginTop: 5 }}>
-        {" "}
-        Info{" "}
-      </Title>
+      <Title level={4}>Info</Title>
       <LineHeader />
-
       {study_case && (
         <PatientData
           name={study_case?.patient?.patient_name}
@@ -44,25 +44,33 @@ function InfoSection(props: InfoSectionProps) {
           id={study_case?.patient?.id}
         />
       )}
-      <Title justify="flex-start" style={{ marginTop: 5 }}>
-        {" "}
-        History{" "}
-      </Title>
+
+      <Title level={4}>History</Title>
       <LineHeader />
+
+      {/* {study_case && <PatientHistory id={study_case.patient.id} />} */}
+
+      {/* <PrimaryButton
+        // style={{ margin: "10px 10px 0", padding: 5 }}
+        onClick={() => handleSetSiderType("report")}
+      >
+        View Report
+      </PrimaryButton> */}
+      {/* <LineHeader />
       {study_case && <PatientHistory id={study_case.patient.id} />}
-      <ActionsContainer>
-        {/* <SecondaryButton style={{ margin: "10px 10px 0", padding: 5 }}>
+      <ActionsContainer> */}
+      {/* <SecondaryButton style={{ margin: "10px 10px 0", padding: 5 }}>
           {" "}
           Save as draft{" "}
         </SecondaryButton> */}
-        <PrimaryButton
+      {/* <PrimaryButton
           style={{ margin: "10px 10px 0", padding: 5 }}
           onClick={() => handleSetSiderType("report")}
         >
           {" "}
           View Report{" "}
-        </PrimaryButton>
-      </ActionsContainer>
+        </PrimaryButton> */}
+      {/* </ActionsContainer> */}
     </InfoSectionContainer>
   );
 }
