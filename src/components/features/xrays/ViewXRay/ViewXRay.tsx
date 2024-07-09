@@ -44,6 +44,7 @@ import useCustomNavigate from "../../../../hooks/useCustomNavigate";
 import { ResultType } from "../../../../types/study";
 import HeatMapSection from "./HeatMapSection/HeatMapSection";
 import AnnotationProvider from "./XRaySection/AnnotationProvider";
+import Test from "./Test";
 
 // Interfaces
 interface RouteParams extends Record<string, string | undefined> {
@@ -192,14 +193,12 @@ function ViewXRay() {
 
   // Check screen size on component mount and window resize
   useEffect(() => {
-    function handleResize() {
-      setIsSmallScreen(window.innerWidth < 800); // Adjust breakpoint as needed
-    }
-
-    handleResize(); // Check initial size
-    window.addEventListener("resize", handleResize); // Add resize listener
-
-    return () => window.removeEventListener("resize", handleResize); // Clean up listener
+    // function handleResize() {
+    //   setIsSmallScreen(window.innerWidth < 800); // Adjust breakpoint as needed
+    // }
+    // handleResize(); // Check initial size
+    // window.addEventListener("resize", handleResize); // Add resize listener
+    // return () => window.removeEventListener("resize", handleResize); // Clean up listener
   }, []);
 
   const onSideBarClick: MenuProps["onClick"] = (e) => {
@@ -220,76 +219,77 @@ function ViewXRay() {
 
   // Render Content based on the states
   const Body = () => {
-    if (fetching) {
-      return (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "80%",
-            width: "100%",
-          }}
-        >
-          <Spin tip="Loading" size="large">
-            <div
-              style={{
-                padding: 50,
-                // background: "rgba(0, 0, 0, 0.05)",
-                borderRadius: 4,
-              }}
-            />
-          </Spin>
-        </div>
-      );
-    }
-    if (error || !caseData) {
-      return (
-        <Result
-          style={{ width: "100%" }}
-          status="500"
-          title="500"
-          subTitle={"Sorry, something went wrong."}
-          extra={
-            <PrimaryButton onClick={navigateToHome}>Back Home</PrimaryButton>
-          }
-        />
-      );
-    }
+    // if (fetching) {
+    //   return (
+    //     <div
+    //       style={{
+    //         display: "flex",
+    //         justifyContent: "center",
+    //         alignItems: "center",
+    //         height: "80%",
+    //         width: "100%",
+    //       }}
+    //     >
+    //       <Spin tip="Loading" size="large">
+    //         <div
+    //           style={{
+    //             padding: 50,
+    //             // background: "rgba(0, 0, 0, 0.05)",
+    //             borderRadius: 4,
+    //           }}
+    //         />
+    //       </Spin>
+    //     </div>
+    //   );
+    // }
+    // if (error || !caseData) {
+    //   return (
+    //     <Result
+    //       style={{ width: "100%" }}
+    //       status="500"
+    //       title="500"
+    //       subTitle={"Sorry, something went wrong."}
+    //       extra={
+    //         <PrimaryButton onClick={navigateToHome}>Back Home</PrimaryButton>
+    //       }
+    //     />
+    //   );
+    // }
 
-    const RightSection = () => {
-      // Show the Info Section only if the type is info
-      if (siderType === "info") {
-        return null;
-        //  <InfoSection study_case={caseData} />;
-      }
-      // Show the Report Section only if the type is report
-      else if (siderType === "report") {
-        return null;
-        // <ReportSection
-        //   lmResultData={lmResultData}
-        //   setLmResultData={setLmResultData}
-        // />
-      }
-      // Show HeatMap Section only if the type is heatmap
-      else if (siderType === "heat") {
-        return null;
-        // <HeatMapSection
-        //   templateResultData={templateResultData}
-        //   setTemplateResultData={setTemplateResultData}
-        // />
-        // return <ReportSection />;
-      }
-      return null;
-    };
+    // const RightSection = () => {
+    //   // Show the Info Section only if the type is info
+    //   if (siderType === "info") {
+    //     return null;
+    //     //  <InfoSection study_case={caseData} />;
+    //   }
+    //   // Show the Report Section only if the type is report
+    //   else if (siderType === "report") {
+    //     return null;
+    //     // <ReportSection
+    //     //   lmResultData={lmResultData}
+    //     //   setLmResultData={setLmResultData}
+    //     // />
+    //   }
+    //   // Show HeatMap Section only if the type is heatmap
+    //   else if (siderType === "heat") {
+    //     return null;
+    //     // <HeatMapSection
+    //     //   templateResultData={templateResultData}
+    //     //   setTemplateResultData={setTemplateResultData}
+    //     // />
+    //     // return <ReportSection />;
+    //   }
+    //   return null;
+    // };
 
     return (
       <>
         <AnnotationProvider>
-          <XRaySection
+          <Test />
+          {/* <XRaySection
             xRayPath={lmResultData ? lmResultData.xray_path : null}
             regionPath={lmResultData ? lmResultData.region_path : null}
-          />
+          /> */}
           {/* <RightSection /> */}
         </AnnotationProvider>
       </>
@@ -297,64 +297,71 @@ function ViewXRay() {
   };
 
   return (
-    <ViewXRayContainer>
-      <Layout style={{ width: "100%", height: "100%" }}>
-        <Content style={{ display: "flex", width: "100%" }}>
-          <Body />
-        </Content>
-        <Sider
-          width={isSmallScreen ? "10%" : "5%"}
-          collapsible
-          collapsed={false}
-          theme={websiteTheme}
-          collapsedWidth={0}
-          trigger={null}
-          // style={{ height: "max-Content" }}
-        >
-          <Menu
-            onClick={onSideBarClick}
-            selectedKeys={[siderType]}
-            mode="inline"
+    <AnnotationProvider>
+      <ViewXRayContainer>
+        <Layout style={{ width: "100%", height: "100%" }}>
+          <Content style={{ display: "flex", width: "100%" }}>
+            {/* <Body /> */}
+            <Test />
+            <XRaySection
+              xRayPath={lmResultData ? lmResultData.xray_path : null}
+              regionPath={lmResultData ? lmResultData.region_path : null}
+            />
+          </Content>
+          <Sider
+            width={isSmallScreen ? "10%" : "5%"}
+            collapsible
+            collapsed={false}
             theme={websiteTheme}
+            collapsedWidth={0}
+            trigger={null}
+            // style={{ height: "max-Content" }}
           >
-            <Menu.Item
-              key="info"
-              icon={
-                <Tooltip title="Info" placement="left">
-                  <InfoCircleOutlined />
-                </Tooltip>
-              }
-            ></Menu.Item>
-            <Menu.Item
-              key="x-ray"
-              icon={
-                <Tooltip title="X-Ray" placement="left">
-                  <PictureOutlined />
-                </Tooltip>
-              }
+            <Menu
+              onClick={onSideBarClick}
+              selectedKeys={[siderType]}
+              mode="inline"
+              theme={websiteTheme}
             >
-              {/* Optionally, you can also wrap this label with Tooltip if needed */}
-            </Menu.Item>
-            <Menu.Item
-              key="report"
-              icon={
-                <Tooltip title="Report" placement="left">
-                  <FileTextOutlined />
-                </Tooltip>
-              }
-            ></Menu.Item>
-            <Menu.Item
-              key="heat"
-              icon={
-                <Tooltip title="Checklist Report" placement="left">
-                  <BarsOutlined />
-                </Tooltip>
-              }
-            ></Menu.Item>
-          </Menu>
-        </Sider>
-      </Layout>
-    </ViewXRayContainer>
+              <Menu.Item
+                key="info"
+                icon={
+                  <Tooltip title="Info" placement="left">
+                    <InfoCircleOutlined />
+                  </Tooltip>
+                }
+              ></Menu.Item>
+              <Menu.Item
+                key="x-ray"
+                icon={
+                  <Tooltip title="X-Ray" placement="left">
+                    <PictureOutlined />
+                  </Tooltip>
+                }
+              >
+                {/* Optionally, you can also wrap this label with Tooltip if needed */}
+              </Menu.Item>
+              <Menu.Item
+                key="report"
+                icon={
+                  <Tooltip title="Report" placement="left">
+                    <FileTextOutlined />
+                  </Tooltip>
+                }
+              ></Menu.Item>
+              <Menu.Item
+                key="heat"
+                icon={
+                  <Tooltip title="Checklist Report" placement="left">
+                    <BarsOutlined />
+                  </Tooltip>
+                }
+              ></Menu.Item>
+            </Menu>
+          </Sider>
+        </Layout>
+      </ViewXRayContainer>
+    </AnnotationProvider>
   );
 }
 
