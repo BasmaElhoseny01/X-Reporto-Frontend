@@ -14,14 +14,19 @@ import { MainState } from "../../../../../state";
 import { useSelector } from "react-redux";
 import { CaseType } from "../../../../../types/case";
 import Title from "antd/es/typography/Title";
+import { Switch } from "antd";
 
 // Interface for InfoSection
 interface InfoSectionProps {
   // Props Here
   study_case: CaseType;
+  useAI: boolean;
+  toggleUseAI: () => void;
+  bot_img_blue: string;
+  bot_img_grey: string;
 }
 function InfoSection(props: InfoSectionProps) {
-  const { study_case } = props;
+  const { study_case, bot_img_blue, bot_img_grey, useAI, toggleUseAI } = props;
   // Context
   const { handleSetSiderType } = useView();
 
@@ -33,7 +38,23 @@ function InfoSection(props: InfoSectionProps) {
 
   return (
     <InfoSectionContainer>
-      <Title level={4}>Info</Title>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Title level={4}>Info</Title>
+        <img
+          src={useAI ? bot_img_blue : bot_img_grey}
+          alt="Bot"
+          style={{ width: 40, height: 40, cursor: "pointer" }}
+          onClick={toggleUseAI}
+        />
+      </div>
+
       <LineHeader />
       {study_case && (
         <PatientData

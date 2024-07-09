@@ -100,7 +100,7 @@ function AnnotationProvider(props: AnnotationsProviderProps) {
     const annotation = annotations.find((annotation) => annotation.id === id);
     if (annotation) {
       annotation.finding = finding;
-      annotation.ai = false;
+      // annotation.ai = false;
       setAnnotations([...annotations]);
     }
   };

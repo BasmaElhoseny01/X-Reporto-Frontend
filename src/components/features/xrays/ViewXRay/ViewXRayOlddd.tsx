@@ -41,7 +41,7 @@ import { CaseType } from "../../../../types/case";
 import { set } from "date-fns";
 import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
 import useCustomNavigate from "../../../../hooks/useCustomNavigate";
-import { ResultType } from "../../../../types/study";
+import { ResultType } from "../../../../types/Result";
 import HeatMapSection from "./HeatMapSection/HeatMapSection";
 import AnnotationProvider from "./AnnotationProvider";
 import Test from "./Test";
@@ -303,11 +303,11 @@ function ViewXRay() {
           <Content style={{ display: "flex", width: "100%" }}>
             {/* <Body /> */}
             <Test />
-            <XRaySection
+            {/* <XRaySection
               xRayPath={lmResultData ? lmResultData.xray_path : null}
               regionPath={lmResultData ? lmResultData.region_path : null}
               regionSentencePath={""}
-            />
+            /> */}
           </Content>
           <Sider
             width={isSmallScreen ? "10%" : "5%"}

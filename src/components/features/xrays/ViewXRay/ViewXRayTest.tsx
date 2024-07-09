@@ -47,12 +47,6 @@ import { ResultType } from "../../../../types/Result";
 import HeatMapSection from "./HeatMapSection/HeatMapSection";
 import AnnotationProvider from "./AnnotationProvider";
 import Test from "./Test";
-import BBSection from "./BBSection/BBSection";
-
-// Assets
-import BotBlue from "../../../../assets/images/bot-blue.svg";
-import BotRed from "../../../../assets/images/bot-red.svg";
-import BotGray from "../../../../assets/images/bot-grey.svg";
 
 // Interfaces
 interface RouteParams extends Record<string, string | undefined> {
@@ -88,7 +82,7 @@ const fetchStudyResults = async (id: string, token: string) => {
   }
 };
 
-function ViewXRay() {
+function ViewXRayTest() {
   // Params (Case Id)
   const { Id } = useParams<RouteParams>();
 
@@ -99,14 +93,9 @@ function ViewXRay() {
   const token = useSelector((state: MainState) => state.token);
 
   const [caseData, setCaseData] = useState<CaseType>(null);
-
-  // Results States
   const [lmResultData, setLmResultData] = useState<ResultType>(null);
   const [templateResultData, setTemplateResultData] =
     useState<ResultType>(null);
-  const [customResultData, setCustomResultData] = useState<ResultType>(null);
-  const [useAI, setUseAI] = useState(false);
-
   const [fetching, setFetching] = useState(true); // Initially set fetching to true
   const [error, setError] = useState(false);
 
@@ -122,6 +111,7 @@ function ViewXRay() {
           const caseResponse = await fetchStudy(Id, token);
           if (caseResponse) {
             setCaseData(caseResponse);
+
             const resultsResponse = await fetchStudyResults(Id, token);
             if (resultsResponse) {
               if (resultsResponse.length === 0) {
@@ -129,7 +119,6 @@ function ViewXRay() {
               } else {
                 let lmResultFound = false;
                 let templateResultFound = false;
-                let customResultFound = false;
 
                 for (let i = 0; i < resultsResponse.length; i++) {
                   const result = resultsResponse[i];
@@ -140,20 +129,14 @@ function ViewXRay() {
                   } else if (result.type === "template") {
                     setTemplateResultData(result);
                     templateResultFound = true;
-                  } else if (result.type === "custom") {
-                    setCustomResultData(result);
-                    customResultFound = true;
                   }
                 }
 
                 if (!lmResultFound) {
-                  message.info("No LM results found for this case.");
+                  message.error("No LM results found for this case.");
                 }
                 if (!templateResultFound) {
-                  message.info("No template results found for this case.");
-                }
-                if (!customResultFound) {
-                  message.info("No custom results found for this case.");
+                  message.error("No template results found for this case.");
                 }
               }
             } else {
@@ -209,10 +192,6 @@ function ViewXRay() {
     // return () => window.removeEventListener("resize", handleResize); // Clean up listener
   }, []);
 
-  const toggleUseAI = () => {
-    setUseAI(!useAI);
-  };
-
   // Render Content based on the states
   const Body = () => {
     if (fetching) {
@@ -254,26 +233,11 @@ function ViewXRay() {
     }
 
     return (
-      <XRaySection
-        llmResultData={lmResultData}
-        customResultData={customResultData}
-        useAI={useAI}
-
-        originalXRayPath={caseData ? caseData.xray_path : null}
-        // xRayPath={lmResultData ? lmResultData.xray_path : null}
-        // xRayPath={caseData ? caseData.xray_path : null}
-        // // regionPath={lmResultData ? lmResultData.region_path : null}
-        // regionPath={
-        //   customResultData
-        //     ? customResultData.region_path
-        //     : lmResultData
-        //     ? lmResultData.region_path
-        //     : null
-        // }
-        // regionSentencePath={
-        //   lmResultData ? lmResultData.region_sentence_path : null
-        // }
-      />
+      <></>
+      // <XRaySection
+      //   xRayPath={lmResultData ? lmResultData.xray_path : null}
+      //   regionPath={lmResultData ? lmResultData.region_path : null}
+      // />
     );
   };
 
@@ -282,31 +246,14 @@ function ViewXRay() {
       key: "1",
       label: "",
       icon: <InfoCircleOutlined style={{ fontSize: "16px" }} />,
-      children: (
-        <InfoSection
-          bot_img_blue={BotBlue}
-          bot_img_grey={BotGray}
-          useAI={useAI}
-          toggleUseAI={toggleUseAI}
-          study_case={caseData}
-        />
-      ),
+      children: <h1>Info</h1>,
       // <InfoSection study_case={caseData} />,
     },
     {
       key: "2",
       label: "",
       icon: <DropboxOutlined style={{ fontSize: "16px" }} />,
-      children: (
-        <BBSection
-          bot_img_blue={BotBlue}
-          bot_img_grey={BotGray}
-          useAI={useAI}
-          toggleUseAI={toggleUseAI}
-          lmResultData={lmResultData}
-          customResultData={customResultData}
-        />
-      ),
+      children: <h1>BB</h1>,
       // <InfoSection study_case={caseData} />,
       // <HeatMapSection />,
     },
@@ -315,7 +262,7 @@ function ViewXRay() {
       label: "",
       icon: <HeatMapOutlined style={{ fontSize: "16px" }} />,
       children: (
-        <div>Heat</div>
+        <h1>Heat</h1>
         // <HeatMapSection
         //   templateResultData={templateResultData}
         //   setTemplateResultData={setTemplateResultData}
@@ -326,12 +273,11 @@ function ViewXRay() {
       key: "4",
       label: "",
       icon: <FileTextOutlined style={{ fontSize: "16px" }} />,
-      children: (
-        <ReportSection
-          lmResultData={lmResultData}
-          // setLmResultData={setLmResultData}
-        />
-      ),
+      children: <h1>Report</h1>,
+      // <ReportSection
+      //   lmResultData={lmResultData}
+      //   setLmResultData={setLmResultData}
+      // />
     },
   ];
 
@@ -341,10 +287,10 @@ function ViewXRay() {
         {/* Body */}
         <Body />
         {/* Tabs */}
-        <Tabs tabPosition="right" items={xRayNavItems} style={{ flex: 1.5 }} />
+        <Tabs tabPosition="right" items={xRayNavItems} style={{ flex: 1 }} />
       </ViewXRayContainer>
     </AnnotationProvider>
   );
 }
 
-export default ViewXRay;
+export default ViewXRayTest;

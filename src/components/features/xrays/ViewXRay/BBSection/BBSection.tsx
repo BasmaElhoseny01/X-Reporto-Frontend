@@ -32,12 +32,26 @@ import BotGray from "../../../../../assets/images/bot-grey.svg";
 
 import { Empty, Input } from "antd";
 import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
+import { ResultType } from "../../../../../types/Result";
 
+// Interface
+interface BBSectionProps {
+  // Props Here
+  // isAIResult: boolean;
+  useAI: boolean;
+  toggleUseAI: () => void;
+  bot_img_blue: string;
+  bot_img_grey: string;
+
+  lmResultData: ResultType;
+  customResultData: ResultType;
+}
 // Server APIS
 const submitBBoxes = async (token: string) => {
   // console.log("Submit BBoxes: ", bboxes);
 };
-function BBSection() {
+function BBSection(props: BBSectionProps) {
+  const { useAI, toggleUseAI, bot_img_blue, bot_img_grey } = props;
   const {
     selectedAnnotation,
     annotations,
@@ -45,15 +59,36 @@ function BBSection() {
     handleEditAnnotationFinding,
   } = useAnnotations();
 
-  const handelSaveBoxes = async () => {
-    console.log("Save Boxes");
+  const handelSaveResult = async () => {
+    console.log("Save Result");
+
+    // if (isAIResult) {
+    // console.log("Saving to AI");
+    // } else {
+    // console.log("Saving to Custom");
+    // }
   };
 
   return (
     <BBFindingsSectionContainer>
       {/* All findings in 1 paragraph */}
       <BBAllFindingsContainer>
-        <Title level={3}>All Findings</Title>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Title level={3}>All Findings</Title>
+          <img
+            src={useAI ? bot_img_blue : bot_img_grey}
+            alt="Bot"
+            style={{ width: 40, height: 40, cursor: "pointer" }}
+            onClick={toggleUseAI}
+          />
+        </div>
         <LineHeader />
         <Paragraph>
           {annotations.map((region) => (
@@ -98,7 +133,7 @@ function BBSection() {
                 }}
               />
             </label>
-            <img
+            {/* <img
               src={
                 selectedAnnotation
                   ? selectedAnnotation?.ai
@@ -106,7 +141,7 @@ function BBSection() {
                     : BotRed
                   : BotGray
               }
-            />
+            /> */}
           </BBFindingTitleContainer>
           <StyledTextArea
             value={selectedAnnotation?.finding}
@@ -128,7 +163,7 @@ function BBSection() {
       </BBFindingContainer>
 
       <ButtonContainer>
-        <PrimaryButton onClick={handelSaveBoxes} size="large">
+        <PrimaryButton onClick={handelSaveResult} size="large">
           Save
         </PrimaryButton>
       </ButtonContainer>

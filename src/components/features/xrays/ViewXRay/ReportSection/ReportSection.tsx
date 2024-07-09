@@ -17,7 +17,7 @@ import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
 import { useSelector } from "react-redux";
 import { MainState } from "../../../../../state/Reducers";
 import axios from "../../../../../services/apiService";
-import { ResultType } from "../../../../../types/study";
+import { ResultType } from "../../../../../types/Result";
 
 // Interfaces
 interface ReportSectionProps {
@@ -227,7 +227,7 @@ function ReportSection(props: ReportSectionProps) {
 
       try {
         // Upload the report
-        const uploadResponse = await uploadReportFile(findingsText, 5, token);
+        const uploadResponse = await uploadReportFile(findingsText, -1, token); // FIX BASMAAA
         if (uploadResponse) {
           message.success("Report submitted successfully!");
           // setReportNotExist(false);

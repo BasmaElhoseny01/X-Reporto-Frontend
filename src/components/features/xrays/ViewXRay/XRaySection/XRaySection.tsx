@@ -33,12 +33,18 @@ import { anatomicalRegionsIndexToKey } from "../../../../../constants/anatomical
 import LoadingOutlined from "@ant-design/icons/LoadingOutlined";
 import { Box, Region } from "../XRay.types";
 import Test from "../Test";
+import { ResultType } from "../../../../../types/Result";
 // Interfaces
 interface XRaySectionProps {
+  originalXRayPath: string | null;
+  llmResultData: ResultType | null;
+  customResultData: ResultType | null;
+
+  useAI: boolean;
   // Props Here
-  xRayPath: string | null;
-  regionPath: string | null;
-  regionSentencePath: string | null;
+  // xRayPath: string | null;
+  // regionPath: string | null;
+  // regionSentencePath: string | null;
 }
 
 // Server Fetch
@@ -109,7 +115,7 @@ const downloadBBoxesFile = async (file_path: string, token: string) => {
         id: regionId.toString(),
         title: anatomicalRegionsIndexToKey[regionId],
         finding: "",
-        ai: false,
+        // ai: false,
         box: boundingBox,
       });
     });
@@ -139,38 +145,6 @@ const downloadBBoxesFindingsFile = async (file_path: string, token: string) => {
 
     const findings: string[] = lines;
     return findings;
-
-    // const regions: Region[] = [];
-
-    // // Process each line to extract region ID and bounding box coordinates
-    // lines.forEach((line: string) => {
-    //   const parts = line.trim().split(" ");
-
-    //   // Parse region ID and coordinates
-    //   const regionId = parseInt(parts[0]);
-    //   const x = parseFloat(parts[1]);
-    //   const y = parseFloat(parts[2]);
-    //   const width = parseFloat(parts[3]);
-    //   const height = parseFloat(parts[4]);
-
-    //   // Create object and push to boundingBoxes array
-    //   const boundingBox: Box = {
-    //     x,
-    //     y,
-    //     width,
-    //     height,
-    //   };
-
-    //   regions.push({
-    //     id: regionId.toString(),
-    //     title: anatomicalRegionsIndexToKey[regionId],
-    //     finding: "",
-    //     ai: false,
-    //     box: boundingBox,
-    //   });
-    // });
-
-    // return regions;
   } catch (error) {
     console.log("Error fetching Bounding Boxes Findings: ", error);
     return null;
@@ -178,7 +152,7 @@ const downloadBBoxesFindingsFile = async (file_path: string, token: string) => {
 };
 
 function XRaySection(props: XRaySectionProps) {
-  const { xRayPath, regionPath, regionSentencePath } = props;
+  const { originalXRayPath, llmResultData, customResultData, useAI } = props;
 
   // Navigation
   const { navigateToHome } = useCustomNavigate();
@@ -189,7 +163,6 @@ function XRaySection(props: XRaySectionProps) {
   // const { infoCollapsed, reportCollapsed } = useView();
   const { siderType } = useView();
 
-  // const [xRayData, setXRayData] = useState(null);
   const [xRayURL, setXRayURL] = useState<string | null>(null);
   const { handleSetAnnotations } = useAnnotations();
   // const [bbData, setBBData] = useState(null);
@@ -198,10 +171,9 @@ function XRaySection(props: XRaySectionProps) {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    console.log("XRaySection", xRayPath, regionPath);
-    // let hasXRay = false;
+    console.log("XRaySection", llmResultData, customResultData, useAI);
 
-    const fetchData = async () => {
+    const fetchData = async (xRayOnly: boolean) => {
       if (xRayPath) {
         // console.log("xRayPath", xRayPath);
         let fetchStartTime = Date.now(); // Record start time before fetch
@@ -213,6 +185,11 @@ function XRaySection(props: XRaySectionProps) {
           if (xRayResponse) {
             setXRayURL(xRayResponse);
             // hasXRay = true;
+
+            if (xRayOnly) {
+              // only download x-ray
+              return;
+            }
 
             if (regionPath) {
               try {
@@ -280,8 +257,37 @@ function XRaySection(props: XRaySectionProps) {
         setFetching(false);
       }
     };
-    fetchData();
-  }, [xRayPath, regionPath]);
+
+    //   // let hasXRay = false;
+    // defien XrayPatha s string or null
+
+    let xRayPath: string | null = null;
+    let regionPath = "";
+    let regionSentencePath = "";
+
+    if (useAI) {
+      if (!llmResultData) {
+        message.info("No AI results found for this case.");
+        xRayPath = originalXRayPath;
+        fetchData(true);
+        return;
+      }
+      xRayPath = llmResultData?.xray_path;
+      regionPath = llmResultData?.region_path;
+      regionSentencePath = llmResultData?.region_sentence_path;
+    } else {
+      if (!customResultData) {
+        message.info("No custom results found for this case.");
+        xRayPath = originalXRayPath;
+        fetchData(true);
+        return;
+      }
+      xRayPath = customResultData?.xray_path;
+      regionPath = customResultData?.region_path;
+      regionSentencePath = customResultData?.region_sentence_path;
+    }
+    fetchData(false);
+  }, [llmResultData, customResultData]);
 
   // Render Content based on the states
   // const Body = () => {

@@ -103,7 +103,7 @@ function CanvasSection(props: CanvasSectionProps) {
             id,
             title: `Region(${id})`,
             finding: "",
-            ai: false,
+            // ai: false,
             box: {
               x,
               y,
@@ -170,7 +170,7 @@ function CanvasSection(props: CanvasSectionProps) {
             id,
             title: `Region(${id})`,
             finding: "",
-            ai: false,
+            // ai: false,
             box: {
               x: sx,
               y: sy,

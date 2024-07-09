@@ -4,7 +4,7 @@ import { HeatMapSectionContainer } from "./HeatMapSection.Styles";
 import { LineHeader, Title } from "./HeatMapSection.Styles";
 
 import InputRow from "./InputRow";
-import { ResultType } from "../../../../../types/study";
+import { ResultType } from "../../../../../types/Result";
 
 // Interface for HeatMapSection
 interface HeatMapSectionProps {

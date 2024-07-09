@@ -27,8 +27,11 @@ const ImageFromUrl: React.FC<ImageFromUrlProps> = ({
       setImage(imageToLoad);
       console.log("Image Loaded", imageToLoad.width, imageToLoad.height);
       setCanvasMeasures({
-        width: imageToLoad.width,
-        height: imageToLoad.height,
+        // Fix Basma
+        width: 512,
+        height: 512,
+        // width: imageToLoad.width,
+        // height: imageToLoad.height,
       });
     });
 
