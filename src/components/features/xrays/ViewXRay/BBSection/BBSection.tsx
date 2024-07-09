@@ -36,6 +36,8 @@ import BotGray from "../../../../../assets/images/bot-grey.svg";
 import { Empty, Input, message } from "antd";
 import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
 import { ResultType } from "../../../../../types/Result";
+import { useSelector } from "react-redux";
+import { MainState } from "../../../../../state";
 
 // Interface
 interface BBSectionProps {
@@ -87,6 +89,9 @@ function BBSection(props: BBSectionProps) {
     customResultData,
     case_id,
   } = props;
+
+  const token = useSelector((state: MainState) => state.token);
+
   const {
     selectedAnnotation,
     annotations,
@@ -100,7 +105,7 @@ function BBSection(props: BBSectionProps) {
         console.log("Modifying to Custom");
       } else {
         if (case_id) {
-          await createCustomResult(case_id, "token");
+          await createCustomResult(case_id, token);
         } else {
           throw new Error("Case ID is null");
         }
