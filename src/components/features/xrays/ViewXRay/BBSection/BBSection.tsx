@@ -1,6 +1,9 @@
 /*eslint-disable*/
 import React from "react";
 
+// Services
+import axios from "../../../../../services/apiService";
+
 // Context
 import { useAnnotations } from "../AnnotationProvider";
 
@@ -30,7 +33,7 @@ import BotBlue from "../../../../../assets/images/bot-blue.svg";
 import BotRed from "../../../../../assets/images/bot-red.svg";
 import BotGray from "../../../../../assets/images/bot-grey.svg";
 
-import { Empty, Input } from "antd";
+import { Empty, Input, message } from "antd";
 import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
 import { ResultType } from "../../../../../types/Result";
 
@@ -45,13 +48,45 @@ interface BBSectionProps {
 
   lmResultData: ResultType;
   customResultData: ResultType;
+  case_id: number | null;
 }
+
 // Server APIS
+const createCustomResult = async (study_id: number, token: string) => {
+  try {
+    const response = await axios.post(
+      `api/v1/results`,
+      {
+        result_name: "Custom Result",
+        type: "custom",
+        study_id: study_id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the headers
+          "Content-Type": "application/json", // Optional: Include if required by your API
+        },
+      }
+    );
+    console.log("Custom Result Created: ", response.data);
+  } catch (error) {
+    console.error("Error creating custom result: ", error);
+    return null;
+  }
+};
 const submitBBoxes = async (token: string) => {
   // console.log("Submit BBoxes: ", bboxes);
 };
 function BBSection(props: BBSectionProps) {
-  const { useAI, toggleUseAI, bot_img_blue, bot_img_grey } = props;
+  const {
+    useAI,
+    toggleUseAI,
+    bot_img_blue,
+    bot_img_grey,
+    lmResultData,
+    customResultData,
+    case_id,
+  } = props;
   const {
     selectedAnnotation,
     annotations,
@@ -60,12 +95,28 @@ function BBSection(props: BBSectionProps) {
   } = useAnnotations();
 
   const handelSaveResult = async () => {
-    console.log("Save Result");
+    try {
+      if (customResultData) {
+        console.log("Modifying to Custom");
+      } else {
+        if (case_id) {
+          await createCustomResult(case_id, "token");
+        } else {
+          throw new Error("Case ID is null");
+        }
+        console.log("Creating New Custom");
+      }
+    } catch (error) {
+      message.error("failed to save result");
+      console.error("Error Saving Result: ", error);
+    }
+    // if(useAI){
 
-    // if (isAIResult) {
-    // console.log("Saving to AI");
-    // } else {
-    // console.log("Saving to Custom");
+    // }
+    // // if (lmResultData) {
+    //   console.log("Saving to LM");
+    // } else if (customResultData) {
+    //   console.log("Saving to Custom");
     // }
   };
 

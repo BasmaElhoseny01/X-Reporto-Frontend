@@ -210,7 +210,11 @@ function ViewXRay() {
   }, []);
 
   const toggleUseAI = () => {
-    setUseAI(!useAI);
+    if (lmResultData) {
+      setUseAI(!useAI);
+    } else {
+      message.info("No LM results found for this case.");
+    }
   };
 
   // Render Content based on the states
@@ -258,7 +262,6 @@ function ViewXRay() {
         llmResultData={lmResultData}
         customResultData={customResultData}
         useAI={useAI}
-
         originalXRayPath={caseData ? caseData.xray_path : null}
         // xRayPath={lmResultData ? lmResultData.xray_path : null}
         // xRayPath={caseData ? caseData.xray_path : null}
@@ -305,6 +308,7 @@ function ViewXRay() {
           toggleUseAI={toggleUseAI}
           lmResultData={lmResultData}
           customResultData={customResultData}
+          case_id={caseData ? caseData.id : null}
         />
       ),
       // <InfoSection study_case={caseData} />,

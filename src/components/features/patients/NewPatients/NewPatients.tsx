@@ -70,7 +70,6 @@ function NewPatients() {
           gender: formValues.gender,
           phone_number: formValues.phone.toString(),
           employee_id: user?.id ?? 0,
-          created_at: "2024-06-26T20:31:24.258262",
         },
         {
           headers: {
