@@ -141,6 +141,7 @@ function ViewXRay() {
                     setTemplateResultData(result);
                     templateResultFound = true;
                   } else if (result.type === "custom") {
+                    result.xray_path = "static/denoised/5_denoised.png"; // Fix basma
                     setCustomResultData(result);
                     customResultFound = true;
                   }
@@ -308,6 +309,7 @@ function ViewXRay() {
           toggleUseAI={toggleUseAI}
           lmResultData={lmResultData}
           customResultData={customResultData}
+          originalXRayPath={caseData ? caseData.xray_path : null}
           case_id={caseData ? caseData.id : null}
         />
       ),

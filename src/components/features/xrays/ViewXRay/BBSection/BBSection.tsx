@@ -38,6 +38,7 @@ import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
 import { ResultType } from "../../../../../types/Result";
 import { useSelector } from "react-redux";
 import { MainState } from "../../../../../state";
+import { Region } from "../XRay.types";
 
 // Interface
 interface BBSectionProps {
@@ -50,17 +51,24 @@ interface BBSectionProps {
 
   lmResultData: ResultType;
   customResultData: ResultType;
+  originalXRayPath: string | null;
   case_id: number | null;
 }
 
 // Server APIS
-const createCustomResult = async (study_id: number, token: string) => {
+
+const createCustomResult = async (
+  study_id: number,
+  xray_path: string | null,
+  token: string
+): Promise<ResultType | null> => {
   try {
     const response = await axios.post(
       `api/v1/results`,
       {
         result_name: "Custom Result",
         type: "custom",
+        xray_path: xray_path,
         study_id: study_id,
       },
       {
@@ -71,14 +79,53 @@ const createCustomResult = async (study_id: number, token: string) => {
       }
     );
     console.log("Custom Result Created: ", response.data);
+    return response.data;
   } catch (error) {
     console.error("Error creating custom result: ", error);
     return null;
   }
 };
-const submitBBoxes = async (token: string) => {
-  // console.log("Submit BBoxes: ", bboxes);
+
+const uploadBBoxesFile = async (
+  regions: Region[],
+  resultId: string | number,
+  token: string
+) => {
+  try {
+    // console.log("Uploading BBoxes ......");
+    // console.log("Text: ", regions);
+
+    const text = regions
+      .map((region, index) => {
+        const { x, y, width, height } = region.box;
+        return `${index} ${x} ${y} ${width} ${height}`;
+      })
+      .join("\n");
+    console.log("Text: ", text);
+
+    const blob = new Blob([text], {
+      type: "text/plain",
+    });
+    const formData = new FormData();
+    formData.append("boxes", blob);
+
+    const response = await axios.post(
+      `api/v1/results/${resultId}/upload_boxes`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the headers
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error uploading BBoxes: ", error);
+    return null;
+  }
 };
+
 function BBSection(props: BBSectionProps) {
   const {
     useAI,
@@ -87,6 +134,7 @@ function BBSection(props: BBSectionProps) {
     bot_img_grey,
     lmResultData,
     customResultData,
+    originalXRayPath,
     case_id,
   } = props;
 
@@ -101,28 +149,34 @@ function BBSection(props: BBSectionProps) {
 
   const handelSaveResult = async () => {
     try {
-      if (customResultData) {
-        console.log("Modifying to Custom");
-      } else {
+      let result: ResultType | null = customResultData;
+      if (!customResultData || true) {
+        // Create New Custom Result
+        console.log("Creating New Custom");
         if (case_id) {
-          await createCustomResult(case_id, token);
+          const response = await createCustomResult(
+            case_id,
+            lmResultData ? lmResultData.xray_path : originalXRayPath,
+            token
+          );
+          console.log("Response: ", response);
+          result = response;
         } else {
           throw new Error("Case ID is null");
         }
-        console.log("Creating New Custom");
+      }
+      // Upload BBoxes to the result
+      console.log("Saving Result ......: ", result);
+      if (result) {
+        const response = await uploadBBoxesFile(annotations, result.id, token);
+        console.log("Response: ", response);
+      } else {
+        message.error("failed to save result");
       }
     } catch (error) {
       message.error("failed to save result");
       console.error("Error Saving Result: ", error);
     }
-    // if(useAI){
-
-    // }
-    // // if (lmResultData) {
-    //   console.log("Saving to LM");
-    // } else if (customResultData) {
-    //   console.log("Saving to Custom");
-    // }
   };
 
   return (
