@@ -319,11 +319,15 @@ function ViewXRay() {
       label: "",
       icon: <HeatMapOutlined style={{ fontSize: "16px" }} />,
       children: (
-        <div>Heat</div>
-        // <HeatMapSection
-        //   templateResultData={templateResultData}
-        //   setTemplateResultData={setTemplateResultData}
-        // />
+        <HeatMapSection
+          bot_img_blue={BotBlue}
+          bot_img_grey={BotGray}
+          useAI={useAI}
+          toggleUseAI={toggleUseAI}
+          templateResultData={templateResultData}
+          customResultData={customResultData}
+          case_id={caseData ? caseData.id : null}
+        />
       ),
     },
     {
