@@ -1,3 +1,4 @@
+/*eslint-disable */
 import React, { useState, useRef, useMemo, useEffect } from "react";
 import { Typography, message, Spin } from "antd";
 const { Title } = Typography;
@@ -70,7 +71,7 @@ function ReportSection(props: ReportSectionProps) {
           },
         }
       );
-      console.log("API response:", responseRequestReport.data);
+      console.log("LLM API response:", responseRequestReport.data);
       const requestId = responseRequestReport.data.id;
       // setResultId(requestId);
       setXReportoResultId(requestId);

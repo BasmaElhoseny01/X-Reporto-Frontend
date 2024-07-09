@@ -184,7 +184,7 @@ function App() {
 
                     <Route path={paths.cases.types.new} element={<NewXRay />} />
 
-                    <Route path=":id" element={<ViewXRayPage />} />
+                    <Route path=":Id" element={<ViewXRayPage />} />
                   </Route>
 
                   {/* Patients */}
