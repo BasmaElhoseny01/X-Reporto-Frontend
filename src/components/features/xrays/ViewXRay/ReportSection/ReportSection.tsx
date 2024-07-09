@@ -6,7 +6,7 @@ import {
   ReportHeader,
   ButtonContainer,
   ReportEditor,
-  ReportDiv,
+  // ReportDiv,
   LoadingContainer,
 } from "./ReportSection.Styles";
 import LineHeader from "../../../../common/LineHeader/LineHeader";
@@ -23,16 +23,43 @@ import { ResultType } from "../../../../../types/study";
 interface ReportSectionProps {
   // Props Here
   lmResultData: ResultType;
-  setLmResultData: (value: ResultType) => void;
+  // setLmResultData: (value: ResultType) => void;
 }
 
+// Server Fetch
+const downloadReportFile = async (file_path: string, token: string) => {
+  try {
+    const response = await axios.get(`api/v1/results/download_file`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        file_path: file_path,
+      },
+      responseType: "text",
+    });
+
+    return response.data;
+  } catch (error) {
+    console.log("Error fetching Report: ", error);
+    return null;
+  }
+};
+
 function ReportSection(props: ReportSectionProps) {
+  // Props
+  const { lmResultData } = props;
+  // useEffect(() => {
+  //   console.log("ReportSection.....");
+  //   console.log("LM Result Data: ", props.lmResultData);
+  // }, []);
 
+  // const [xReportoResultId, setXReportoResultId] = useState<number>(0);
 
-  const [xReportoResultId, setXReportoResultId] = useState<number>(0);
+  // Text Editor Content
+  const [content, setContent] = useState<string>(defaultTemplate);
 
   const [selectedValue, setSelectedValue] = useState<string>("-1");
-  const [content, setContent] = useState<string>(defaultTemplate);
   const editor = useRef(null);
   const token = useSelector((state: MainState) => state.token);
   const delay = (ms: number): Promise<void> =>
@@ -57,148 +84,174 @@ function ReportSection(props: ReportSectionProps) {
     []
   );
 
+  useEffect(() => {
+    // Download the report content :D
+    const fetchData = async () => {
+      if (lmResultData?.report_path) {
+        const reportResponse = await downloadReportFile(
+          lmResultData.report_path,
+          token
+        );
+        // console.log("reportResponse: ", reportResponse);
+        if (reportResponse) {
+          setContent(
+            content.replace(
+              '<p id="findings"></p>',
+              `<p id="findings">${reportResponse}</p>`
+            )
+          );
+          message.success("Report loaded successfully!");
+        }
+      } else {
+        message.error("Failed to load report");
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const handleContentChange = (value: string) => {
     setContent(value);
   };
 
-  const handleGenerateReport = async () => {
-    setLoading(true);
-    try {
-      console.log("idValue", studyCase?.id);
-      const responseRequestReport = await axios.post(
-        `api/v1/studies/${studyCase?.id}/run_llm`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log("LLM API response:", responseRequestReport.data);
-      const requestId = responseRequestReport.data.id;
-      // setResultId(requestId);
-      setXReportoResultId(requestId);
-      console.log("request id", responseRequestReport.data.id);
+  // const handleGenerateReport = async () => {
+  //   setLoading(true);
+  //   try {
+  //     console.log("idValue", studyCase?.id);
+  //     const responseRequestReport = await axios.post(
+  //       `api/v1/studies/${studyCase?.id}/run_llm`,
+  //       {},
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+  //     console.log("LLM API response:", responseRequestReport.data);
+  //     const requestId = responseRequestReport.data.id;
+  //     // setResultId(requestId);
+  //     setXReportoResultId(requestId);
+  //     console.log("request id", responseRequestReport.data.id);
 
-      message.success("Starting to generate report, please wait a minute...");
+  //     message.success("Starting to generate report, please wait a minute...");
 
-      await delay(60000);
+  //     await delay(60000);
 
-      const responseRequestReportPath = await axios.get(
-        `api/v1/results/${requestId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      const reportPath = responseRequestReportPath.data.report_path;
-      console.log("API response:", responseRequestReportPath.data.report_path);
+  //     const responseRequestReportPath = await axios.get(
+  //       `api/v1/results/${requestId}`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+  //     const reportPath = responseRequestReportPath.data.report_path;
+  //     console.log("API response:", responseRequestReportPath.data.report_path);
 
-      const responseGetReport = await axios.get(
-        `api/v1/results/download_file`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            file_path: reportPath,
-          },
-          responseType: "text",
-        }
-      );
-      setReportContent(responseGetReport.data);
-      setContent(
-        content.replace(
-          '<p id="findings"></p>',
-          `<p id="findings">${responseGetReport.data}</p>`
-        )
-      );
-      message.success("Report generated successfully!");
-    } catch (error) {
-      console.error("Error generating report:", error);
-      message.error("Failed to generate report");
-    } finally {
-      setLoading(false);
-      setVisible(false);
-    }
-  };
+  //     const responseGetReport = await axios.get(
+  //       `api/v1/results/download_file`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //         params: {
+  //           file_path: reportPath,
+  //         },
+  //         responseType: "text",
+  //       }
+  //     );
+  //     setReportContent(responseGetReport.data);
+  //     setContent(
+  //       content.replace(
+  //         '<p id="findings"></p>',
+  //         `<p id="findings">${responseGetReport.data}</p>`
+  //       )
+  //     );
+  //     message.success("Report generated successfully!");
+  //   } catch (error) {
+  //     console.error("Error generating report:", error);
+  //     message.error("Failed to generate report");
+  //   } finally {
+  //     setLoading(false);
+  //     setVisible(false);
+  //   }
+  // };
 
-  const handleSubmitReport = async () => {
-    const blob = new Blob([reportContent], {
-      type: "text/plain",
-    });
+  // const handleSubmitReport = async () => {
+  //   const blob = new Blob([reportContent], {
+  //     type: "text/plain",
+  //   });
 
-    const formData = new FormData();
-    formData.append("report", blob);
-    const responseUpload = await axios.post(
-      // `api/v1/results/${resultId}/upload_report`,
-      `api/v1/results/${xReportoResultId}/upload_report`,
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
-    console.log("Upload response:", responseUpload.data);
-    message.success("X-Ray uploaded successfully");
-    setReportNotExist(false);
-  };
+  //   const formData = new FormData();
+  //   formData.append("report", blob);
+  //   const responseUpload = await axios.post(
+  //     // `api/v1/results/${resultId}/upload_report`,
+  //     `api/v1/results/${xReportoResultId}/upload_report`,
+  //     formData,
+  //     {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     }
+  //   );
+  //   console.log("Upload response:", responseUpload.data);
+  //   message.success("X-Ray uploaded successfully");
+  //   setReportNotExist(false);
+  // };
 
-  useEffect(() => {
-    const fetchReportPath = async () => {
-      if (studyCase?.id) {
-        setLoading(true);
-        try {
-          console.log("path", `api/v1/studies/${studyCase.id}/results`);
-          const responseRequestReportPath = await axios.get(
-            `api/v1/studies/${studyCase.id}/results`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-          console.log("API response:", responseRequestReportPath.data);
-          const reportPaths = responseRequestReportPath.data;
-          if (reportPaths.length > 0) {
-            setReportNotExist(false);
-            const reportPath = reportPaths[0];
-            const responseGetReport = await axios.get(
-              `api/v1/results/download_file`,
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-                params: {
-                  file_path: reportPath.report_path,
-                },
-                responseType: "text",
-              }
-            );
-            setContent(
-              content.replace(
-                '<p id="findings"></p>',
-                `<p id="findings">${responseGetReport.data}</p>`
-              )
-            );
-          }
-        } catch (error) {
-          console.error("Error fetching report path:", error);
-          message.error("Failed to fetch report path");
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
+  // useEffect(() => {
+  //   const fetchReportPath = async () => {
+  //     if (studyCase?.id) {
+  //       setLoading(true);
+  //       try {
+  //         console.log("path", `api/v1/studies/${studyCase.id}/results`);
+  //         const responseRequestReportPath = await axios.get(
+  //           `api/v1/studies/${studyCase.id}/results`,
+  //           {
+  //             headers: {
+  //               Authorization: `Bearer ${token}`,
+  //             },
+  //           }
+  //         );
+  //         console.log("API response:", responseRequestReportPath.data);
+  //         const reportPaths = responseRequestReportPath.data;
+  //         if (reportPaths.length > 0) {
+  //           setReportNotExist(false);
+  //           const reportPath = reportPaths[0];
+  //           const responseGetReport = await axios.get(
+  //             `api/v1/results/download_file`,
+  //             {
+  //               headers: {
+  //                 Authorization: `Bearer ${token}`,
+  //               },
+  //               params: {
+  //                 file_path: reportPath.report_path,
+  //               },
+  //               responseType: "text",
+  //             }
+  //           );
+  //           setContent(
+  //             content.replace(
+  //               '<p id="findings"></p>',
+  //               `<p id="findings">${responseGetReport.data}</p>`
+  //             )
+  //           );
+  //         }
+  //       } catch (error) {
+  //         console.error("Error fetching report path:", error);
+  //         message.error("Failed to fetch report path");
+  //       } finally {
+  //         setLoading(false);
+  //       }
+  //     }
+  //   };
 
-    fetchReportPath();
-  }, [reportNotExist, studyCase?.id, token]);
+  //   fetchReportPath();
+  // }, [reportNotExist, studyCase?.id, token]);
 
   return (
-    <ReportDiv>
+    <>
       {loading ? (
         <LoadingContainer>
           <Spin size="large" />
@@ -206,15 +259,13 @@ function ReportSection(props: ReportSectionProps) {
       ) : (
         <>
           <ReportHeader>
-            <Title level={2} style={{ margin: "1%" }}>
-              Report
-            </Title>
-            {reportNotExist ? (
+            <Title level={3}>Report</Title>
+            {/* {reportNotExist ? (
               <SelectionTemplate
                 selectedValue={selectedValue}
                 handleSelectionChange={handleSelectionChange}
               />
-            ) : null}
+            ) : null} */}
           </ReportHeader>
           <LineHeader />
           <ReportEditor
@@ -224,7 +275,7 @@ function ReportSection(props: ReportSectionProps) {
             onBlur={(newContent) => setContent(newContent)}
             onChange={handleContentChange}
           />
-          {reportNotExist ? (
+          {/* {reportNotExist ? (
             <ButtonContainer>
               <PrimaryButton
                 onClick={handleSubmitReport}
@@ -243,10 +294,10 @@ function ReportSection(props: ReportSectionProps) {
                 </PrimaryButton>
               ) : null}
             </ButtonContainer>
-          ) : null}
+          ) : null} */}
         </>
       )}
-    </ReportDiv>
+    </>
   );
 }
 

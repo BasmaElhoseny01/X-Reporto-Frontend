@@ -273,11 +273,12 @@ function ViewXRay() {
       key: "4",
       label: "",
       icon: <FileTextOutlined style={{ fontSize: "16px" }} />,
-      children: <div>Report</div>,
-      // <ReportSection
-      //   lmResultData={lmResultData}
-      //   setLmResultData={setLmResultData}
-      // />
+      children: (
+        <ReportSection
+          lmResultData={lmResultData}
+          // setLmResultData={setLmResultData}
+        />
+      ),
     },
   ];
 
