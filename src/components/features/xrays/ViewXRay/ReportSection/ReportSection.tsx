@@ -17,16 +17,19 @@ import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
 import { useSelector } from "react-redux";
 import { MainState } from "../../../../../state/Reducers";
 import axios from "../../../../../services/apiService";
+import { ResultType } from "../../../../../types/study";
 
 // Interfaces
 interface ReportSectionProps {
   // Props Here
-  xReportoResultId: number;
-  setXReportoResultId: (value: number) => void;
+  lmResultData: ResultType;
+  setLmResultData: (value: ResultType) => void;
 }
 
 function ReportSection(props: ReportSectionProps) {
-  const { xReportoResultId, setXReportoResultId } = props;
+
+
+  const [xReportoResultId, setXReportoResultId] = useState<number>(0);
 
   const [selectedValue, setSelectedValue] = useState<string>("-1");
   const [content, setContent] = useState<string>(defaultTemplate);

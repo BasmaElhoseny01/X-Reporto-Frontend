@@ -10,10 +10,11 @@ import { ResultType } from "../../../../../types/study";
 interface HeatMapSectionProps {
   // Props Here
   templateResultData: ResultType;
+  setTemplateResultData: (value: ResultType) => void;
 }
 function HeatMapSection(props: HeatMapSectionProps) {
   console.log("HeatMapSection Props: ", props);
-  // const { templateResultData } = props;
+  // const { templateResultData,setTemplateResultData } = props;
 
   return (
     <HeatMapSectionContainer>

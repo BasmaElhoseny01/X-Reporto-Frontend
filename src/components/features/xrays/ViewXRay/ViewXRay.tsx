@@ -252,11 +252,20 @@ function ViewXRay() {
       }
       // Show the Report Section only if the type is report
       else if (siderType === "report") {
-        // return <ReportSection />;
+        return null;
+        // <ReportSection
+        //   lmResultData={lmResultData}
+        //   setLmResultData={setLmResultData}
+        // />
       }
       // Show HeatMap Section only if the type is heatmap
       else if (siderType === "heat") {
-        return <HeatMapSection templateResultData={templateResultData} />;
+        return (
+          <HeatMapSection
+            templateResultData={templateResultData}
+            setTemplateResultData={setTemplateResultData}
+          />
+        );
         // return <ReportSection />;
       }
       return null;
