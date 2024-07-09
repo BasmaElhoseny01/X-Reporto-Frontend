@@ -292,7 +292,7 @@ function ViewXRay() {
         {/* Body */}
         <Body />
         {/* Tabs */}
-        <Tabs tabPosition="right" items={xRayNavItems} style={{ flex: 1 }} />
+        <Tabs tabPosition="right" items={xRayNavItems} style={{ flex: 1.5 }} />
       </ViewXRayContainer>
     </AnnotationProvider>
   );

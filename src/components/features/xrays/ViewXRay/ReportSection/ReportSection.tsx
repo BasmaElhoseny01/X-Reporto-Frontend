@@ -45,6 +45,34 @@ const downloadReportFile = async (file_path: string, token: string) => {
     return null;
   }
 };
+// Server Fetch
+const uploadReportFile = async (
+  text: string,
+  resultId: string | number,
+  token: string
+) => {
+  try {
+    const blob = new Blob([text], {
+      type: "text/plain",
+    });
+    const formData = new FormData();
+    formData.append("report", blob);
+    const response = await axios.post(
+      `api/v1/results/${resultId}/upload_report`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log("Error uploading Report: ", error);
+    return null;
+  }
+};
 
 function ReportSection(props: ReportSectionProps) {
   // Props
@@ -57,7 +85,8 @@ function ReportSection(props: ReportSectionProps) {
   // const [xReportoResultId, setXReportoResultId] = useState<number>(0);
 
   // Text Editor Content
-  const [content, setContent] = useState<string>(defaultTemplate);
+  const [content, setContent] = useState<string>(defaultTemplate); // Text Editor Content
+  const [reportContent, setReportContent] = useState<string>(""); // Finding Report Content
 
   const [selectedValue, setSelectedValue] = useState<string>("-1");
   const editor = useRef(null);
@@ -68,7 +97,6 @@ function ReportSection(props: ReportSectionProps) {
   const studyCase = useSelector((state: MainState) => state.case);
   const [loading, setLoading] = useState<boolean>(false);
   const [reportNotExist, setReportNotExist] = useState<boolean>(true);
-  const [reportContent, setReportContent] = useState<string>("");
   const [visible, setVisible] = useState<boolean>(true);
 
   const handleSelectionChange = (value: string, labelValue: string): void => {
@@ -94,6 +122,7 @@ function ReportSection(props: ReportSectionProps) {
         );
         // console.log("reportResponse: ", reportResponse);
         if (reportResponse) {
+          setReportContent(reportResponse);
           setContent(
             content.replace(
               '<p id="findings"></p>',
@@ -177,28 +206,61 @@ function ReportSection(props: ReportSectionProps) {
   //   }
   // };
 
-  // const handleSubmitReport = async () => {
-  //   const blob = new Blob([reportContent], {
-  //     type: "text/plain",
-  //   });
+  const handleSubmitReport = async () => {
+    console.log("reportContent", reportContent);
 
-  //   const formData = new FormData();
-  //   formData.append("report", blob);
-  //   const responseUpload = await axios.post(
-  //     // `api/v1/results/${resultId}/upload_report`,
-  //     `api/v1/results/${xReportoResultId}/upload_report`,
-  //     formData,
-  //     {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //         "Content-Type": "multipart/form-data",
-  //       },
-  //     }
-  //   );
-  //   console.log("Upload response:", responseUpload.data);
-  //   message.success("X-Ray uploaded successfully");
-  //   setReportNotExist(false);
-  // };
+    // Create a new DOM parser
+    const parser = new DOMParser();
+
+    // Parse the HTML string into a document
+    const doc = parser.parseFromString(content, "text/html");
+
+    // Select the <p> element by its ID
+    const findingsElement = doc.getElementById("findings");
+    if (findingsElement) {
+      // Get the text content inside the <p> element
+      const findingsText = findingsElement.textContent;
+      if (!findingsText) {
+        message.error("Please fill in the findings section");
+        return;
+      }
+
+      try {
+        // Upload the report
+        const uploadResponse = await uploadReportFile(findingsText, 5, token);
+        if (uploadResponse) {
+          message.success("Report submitted successfully!");
+          // setReportNotExist(false);
+        } else {
+          message.error("Failed to submit report");
+        }
+
+        // console.log("findingsText", findingsText);
+
+        const blob = new Blob([findingsText], {
+          type: "text/plain",
+        });
+        const formData = new FormData();
+        formData.append("report", blob);
+        const responseUpload = await axios.post(
+          // `api/v1/results/${resultId}/upload_report`,
+          `api/v1/results/${5}/upload_report`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+      } catch (error) {
+        console.error("Error uploading report:", error);
+        message.error("Failed to submit report");
+      }
+    } else {
+      message.error("Failed to submit report");
+    }
+  };
 
   // useEffect(() => {
   //   const fetchReportPath = async () => {
@@ -277,8 +339,8 @@ function ReportSection(props: ReportSectionProps) {
           />
           <ButtonContainer>
             <PrimaryButton
-              // onClick={handleSubmitReport}
-              onClick={() => console.log("Submit Report")}
+              onClick={handleSubmitReport}
+              // onClick={() => console.log("Submit Report")}
               size="large"
             >
               Submit Report

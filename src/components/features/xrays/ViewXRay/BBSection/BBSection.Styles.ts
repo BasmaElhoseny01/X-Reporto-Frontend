@@ -5,6 +5,7 @@ import { palette } from "../../../../../styles/theme";
 
 // Ant Design
 import { Flex } from "antd";
+import TextArea from "antd/es/input/TextArea";
 
 export const BBFindingsSectionContainer = styled(Flex)`
   padding: 0px 5px;
@@ -39,6 +40,25 @@ export const BBAllFindingsContainer = styled(Flex)`
   flex: 2;
 `;
 
+export const StyledTextArea = styled(TextArea)`
+  width: 95%;
+  border-radius: 1%;
+
+  /* min-height: 100px !important; */
+
+  /* Customize scrollbar */
+  &::-webkit-scrollbar {
+    width: 6px; /* Width of the scrollbar */
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent; /* Track color */
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2); /* Thumb color */
+    border-radius: 3px; /* Rounded corners of the thumb */
+  }
+`;
+
 export const VerticalDivider = styled.div`
   height: 80%;
   border-left: 2px solid ${palette.grey300};
@@ -52,6 +72,12 @@ export const BBFindingTitleContainer = styled(Flex)`
   align-items: center;
 
   width: 100%;
+
+  input {
+    width: 50%;
+
+    margin: 10px;
+  }
 
   img {
     width: 30px;
@@ -68,5 +94,18 @@ export const BBFindingButtonsContainer = styled(Flex)`
 
   button {
     margin-left: 10px;
+  }
+`;
+
+export const ButtonContainer = styled(Flex)`
+  // display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+  flex: 1;
+  width: 100%;
+
+  & > * {
+    margin: 10px 10px;
   }
 `;
