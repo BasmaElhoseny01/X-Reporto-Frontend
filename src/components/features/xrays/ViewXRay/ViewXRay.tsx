@@ -94,9 +94,11 @@ function ViewXRay() {
   const token = useSelector((state: MainState) => state.token);
 
   const [caseData, setCaseData] = useState<CaseType>(null);
+
   const [lmResultData, setLmResultData] = useState<ResultType>(null);
   const [templateResultData, setTemplateResultData] =
     useState<ResultType>(null);
+
   const [fetching, setFetching] = useState(true); // Initially set fetching to true
   const [error, setError] = useState(false);
 
@@ -112,7 +114,6 @@ function ViewXRay() {
           const caseResponse = await fetchStudy(Id, token);
           if (caseResponse) {
             setCaseData(caseResponse);
-
             const resultsResponse = await fetchStudyResults(Id, token);
             if (resultsResponse) {
               if (resultsResponse.length === 0) {
@@ -237,6 +238,9 @@ function ViewXRay() {
       <XRaySection
         xRayPath={lmResultData ? lmResultData.xray_path : null}
         regionPath={lmResultData ? lmResultData.region_path : null}
+        regionSentencePath={
+          lmResultData ? lmResultData.region_sentence_path : null
+        }
       />
     );
   };

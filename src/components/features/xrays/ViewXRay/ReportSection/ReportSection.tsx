@@ -275,6 +275,16 @@ function ReportSection(props: ReportSectionProps) {
             onBlur={(newContent) => setContent(newContent)}
             onChange={handleContentChange}
           />
+          <ButtonContainer>
+            <PrimaryButton
+              // onClick={handleSubmitReport}
+              onClick={() => console.log("Submit Report")}
+              size="large"
+            >
+              Submit Report
+            </PrimaryButton>
+          </ButtonContainer>
+
           {/* {reportNotExist ? (
             <ButtonContainer>
               <PrimaryButton

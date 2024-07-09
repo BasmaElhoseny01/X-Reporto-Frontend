@@ -13,6 +13,7 @@ interface Result {
   region_path: "string";
   heatmap_path: "string";
   report_path: "string";
+  region_sentence_path: "string";
 }
 
 // Allow Case to be null

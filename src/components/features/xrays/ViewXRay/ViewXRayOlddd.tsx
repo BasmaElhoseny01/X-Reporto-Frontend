@@ -306,6 +306,7 @@ function ViewXRay() {
             <XRaySection
               xRayPath={lmResultData ? lmResultData.xray_path : null}
               regionPath={lmResultData ? lmResultData.region_path : null}
+              regionSentencePath={""}
             />
           </Content>
           <Sider
