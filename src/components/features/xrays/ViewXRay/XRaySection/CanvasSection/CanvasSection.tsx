@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import React, { useEffect, useState } from "react";
 
 // Third Party Components
@@ -53,10 +54,12 @@ function CanvasSection(props: CanvasSectionProps) {
     handleSetAnnotations,
   } = useAnnotations();
 
+  useEffect(() => {
+    console.log("Canvas Section ........");
+  }, []);
+
   // const { handleSetInfoCollapsed, handleSetReportCollapsed } = useView();
   const { handleSetSiderType } = useView();
-
-  useEffect(() => {}, []);
 
   const adjustPointerPosition = (pointerPosition: Vector2d) => {
     const { stageScale, stageX, stageY } = stageProperties;
@@ -223,8 +226,6 @@ function CanvasSection(props: CanvasSectionProps) {
   const annotationsToDraw = [...annotations, ...newAnnotation];
   return (
     <Stage
-      // width={canvasMeasures.width}
-      // height={canvasMeasures.height}
       width={canvasMeasures.width}
       height={canvasMeasures.height}
       onMouseEnter={handleMouseEnter}
@@ -235,7 +236,7 @@ function CanvasSection(props: CanvasSectionProps) {
       scaleY={stageProperties.stageScale}
       x={stageProperties.stageX}
       y={stageProperties.stageY}
-      onWheel={handleWheel}
+      // onWheel={handleWheel}
     >
       <Layer>
         <ImageFromUrl

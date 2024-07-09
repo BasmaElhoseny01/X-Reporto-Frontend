@@ -18,7 +18,7 @@ import CanvasSection from "./CanvasSection/CanvasSection";
 import {
   XRaySectionContainer,
   BBFindingsContainer,
-  XRayContainer,
+  // XRayContainer,
 } from "./XRaySection.Styles";
 import axios from "../../../../../services/apiService";
 import { MainState } from "../../../../../state";
@@ -32,6 +32,7 @@ import { anatomicalRegionsIndexToKey } from "../../../../../constants/anatomical
 
 import LoadingOutlined from "@ant-design/icons/LoadingOutlined";
 import { Box, Region } from "../XRay.types";
+import Test from "../Test";
 // Interfaces
 interface XRaySectionProps {
   // Props Here
@@ -207,77 +208,77 @@ function XRaySection(props: XRaySectionProps) {
   }, [xRayPath, regionPath]);
 
   // Render Content based on the states
-  const Body = () => {
-    let content;
+  // const Body = () => {
+  //   let content;
 
-    // if (xRayPath && fetching) {
-    //   content = (
-    //     <div
-    //       style={{
-    //         display: "flex",
-    //         justifyContent: "center",
-    //         alignItems: "center",
-    //         height: "80%",
-    //         width: "100%",
-    //       }}
-    //     >
-    //       {/* <Spin tip="Loading" size="small">
-    //         <div
-    //           style={{
-    //             padding: 50,
-    //             // background: "rgba(0, 0, 0, 0.05)",
-    //             borderRadius: 4,
-    //           }}
-    //         />
-    //       </Spin> */}
-    //       <Spin indicator={<LoadingOutlined spin />} />
-    //     </div>
-    //   );
-    // } else if (error || !xRayURL) {
-    //   content = (
-    //     <Result
-    //       status="error"
-    //       title="There are some problems with loading x-ray."
-    //       extra={
-    //         null
-    //         //   <Button type="primary" key="console">
-    //         //     Go Console
-    //         //   </Button>
-    //       }
-    //     />
-    //   );
-    // } else {
-    //   content = (
-    //     <>
-    //       <CanvasSection ImageURL={xRayURL} />
-    //       {/* {siderType !== "info" && siderType !== "report" && ( */}
-    //       {/* // <h1>Findings</h1> */}
-    //       {/* <BBFindingsContainer>
-    //         <BBFindings />
-    //       </BBFindingsContainer> */}
-    //       {/* )} */}
-    //     </>
-    //   );
-    // }
-    content = (
-      <>
-        <CanvasSection ImageURL={xRayURL ?? ""} />
-      </>
-    );
+  // if (xRayPath && fetching) {
+  //   content = (
+  //     <div
+  //       style={{
+  //         display: "flex",
+  //         justifyContent: "center",
+  //         alignItems: "center",
+  //         height: "80%",
+  //         width: "100%",
+  //       }}
+  //     >
+  //       {/* <Spin tip="Loading" size="small">
+  //         <div
+  //           style={{
+  //             padding: 50,
+  //             // background: "rgba(0, 0, 0, 0.05)",
+  //             borderRadius: 4,
+  //           }}
+  //         />
+  //       </Spin> */}
+  //       <Spin indicator={<LoadingOutlined spin />} />
+  //     </div>
+  //   );
+  // } else if (error || !xRayURL) {
+  //   content = (
+  //     <Result
+  //       status="error"
+  //       title="There are some problems with loading x-ray."
+  //       extra={
+  //         null
+  //         //   <Button type="primary" key="console">
+  //         //     Go Console
+  //         //   </Button>
+  //       }
+  //     />
+  //   );
+  // } else {
+  //   content = (
+  //     <>
+  //       <CanvasSection ImageURL={xRayURL} />
+  //       {/* {siderType !== "info" && siderType !== "report" && ( */}
+  //       {/* // <h1>Findings</h1> */}
+  //       {/* <BBFindingsContainer>
+  //         <BBFindings />
+  //       </BBFindingsContainer> */}
+  //       {/* )} */}
+  //     </>
+  //   );
+  // }
+  // content = <>{/* <CanvasSection ImageURL={xRayURL ?? ""} /> */}</>;
 
-    return (
-      <XRayContainer>
-        <ToolBar />
-        {content}
-      </XRayContainer>
-    );
-  };
+  // return (
+  // <XRayContainer>
+  //   <ToolBar />
+  //   {/* {content} */}
+  //   {/* <Test /> */}
+  //   {/* <CanvasSection ImageURL={xRayURL ?? ""} /> */}
+  // </XRayContainer>
+  // );
+  // };
 
   return (
     <ToolProvider>
       <StagePropertiesProvider>
         <XRaySectionContainer>
-          <Body />
+          <ToolBar />
+          <Test />
+          <CanvasSection ImageURL={xRayURL ?? ""} />
         </XRaySectionContainer>
       </StagePropertiesProvider>
     </ToolProvider>

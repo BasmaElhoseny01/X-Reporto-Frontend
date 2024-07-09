@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { Flex } from "antd";
 
 export const XRaySectionContainer = styled(Flex)`
-  padding: 5px;
+  /* padding: 5px;
 
   display: flex;
   flex-direction: row;
@@ -15,10 +15,7 @@ export const XRaySectionContainer = styled(Flex)`
   align-items: center;
 
   flex: 1;
-  height: 100%;
-`;
-
-export const XRayContainer = styled(Flex)`
+  height: 100%; */
   padding: 5px;
 
   display: flex;
@@ -29,6 +26,18 @@ export const XRayContainer = styled(Flex)`
   flex: 1;
   height: 100%;
 `;
+
+// export const XRayContainer = styled(Flex)`
+//   padding: 5px;
+
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: space-around;
+//   align-items: center;
+
+//   flex: 1;
+//   height: 100%;
+// `;
 
 export const BBFindingsContainer = styled(Flex)`
   border: 1px solid #000;
