@@ -52,7 +52,6 @@ import DoctorPendingCases from "./pages/DoctorPendingCases";
 import DoctorCompletedCases from "./pages/DoctorCompletedCases";
 
 import ViewXRayPage from "./pages/ViewXRayPage";
-import ViewXRayPageTest from "./pages/ViewXRayPageTest";
 import NewXRay from "./components/features/xrays/NewXRay/NewXRay";
 
 // Patients
@@ -186,7 +185,6 @@ function App() {
                     <Route path={paths.cases.types.new} element={<NewXRay />} />
 
                     <Route path=":Id" element={<ViewXRayPage />} />
-                    <Route path=":Id/test" element={<ViewXRayPageTest />} />
                   </Route>
 
                   {/* Patients */}
