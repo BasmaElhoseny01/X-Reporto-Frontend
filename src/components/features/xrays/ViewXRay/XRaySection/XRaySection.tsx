@@ -277,7 +277,7 @@ function XRaySection(props: XRaySectionProps) {
       <StagePropertiesProvider>
         <XRaySectionContainer>
           <ToolBar />
-          <Test />
+          {/* <Test /> */}
           <CanvasSection ImageURL={xRayURL ?? ""} />
         </XRaySectionContainer>
       </StagePropertiesProvider>
