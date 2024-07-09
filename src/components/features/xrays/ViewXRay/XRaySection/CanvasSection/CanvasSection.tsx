@@ -236,7 +236,7 @@ function CanvasSection(props: CanvasSectionProps) {
       scaleY={stageProperties.stageScale}
       x={stageProperties.stageX}
       y={stageProperties.stageY}
-      // onWheel={handleWheel}
+      onWheel={handleWheel}
     >
       <Layer>
         <ImageFromUrl
