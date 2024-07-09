@@ -206,89 +206,75 @@ function XRaySection(props: XRaySectionProps) {
     fetchData();
   }, [xRayPath, regionPath]);
 
-  // // Render Content based on the states
-  // const Body = () => {
-  //   let content;
+  // Render Content based on the states
+  const Body = () => {
+    let content;
 
-  //   if (xRayPath && fetching) {
-  //     content = (
-  //       <div
-  //         style={{
-  //           display: "flex",
-  //           justifyContent: "center",
-  //           alignItems: "center",
-  //           height: "80%",
-  //           width: "100%",
-  //         }}
-  //       >
-  //         {/* <Spin tip="Loading" size="small">
-  //           <div
-  //             style={{
-  //               padding: 50,
-  //               // background: "rgba(0, 0, 0, 0.05)",
-  //               borderRadius: 4,
-  //             }}
-  //           />
-  //         </Spin> */}
-  //         <Spin indicator={<LoadingOutlined spin />} />
-  //       </div>
-  //     );
-  //   } else if (error || !xRayURL) {
-  //     content = (
-  //       <Result
-  //         status="error"
-  //         title="There are some problems with loading x-ray."
-  //         extra={
-  //           null
-  //           //   <Button type="primary" key="console">
-  //           //     Go Console
-  //           //   </Button>
-  //         }
-  //       />
-  //     );
-  //   } else {
-  //     content = (
-  //       <>
-  //         <CanvasSection ImageURL={xRayURL} />
-  //         {siderType !== "info" && siderType !== "report" && (
-  //           <h1>Findings</h1>
-  //           // <BBFindingsContainer>
-  //           //   <BBFindings />
-  //           // </BBFindingsContainer>
-  //         )}
-  //       </>
-  //     );
-  //   }
+    if (xRayPath && fetching) {
+      content = (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "80%",
+            width: "100%",
+          }}
+        >
+          {/* <Spin tip="Loading" size="small">
+            <div
+              style={{
+                padding: 50,
+                // background: "rgba(0, 0, 0, 0.05)",
+                borderRadius: 4,
+              }}
+            />
+          </Spin> */}
+          <Spin indicator={<LoadingOutlined spin />} />
+        </div>
+      );
+    } else if (error || !xRayURL) {
+      content = (
+        <Result
+          status="error"
+          title="There are some problems with loading x-ray."
+          extra={
+            null
+            //   <Button type="primary" key="console">
+            //     Go Console
+            //   </Button>
+          }
+        />
+      );
+    } else {
+      content = (
+        <>
+          <CanvasSection ImageURL={xRayURL} />
+          {/* {siderType !== "info" && siderType !== "report" && ( */}
+          {/* // <h1>Findings</h1> */}
+          {/* <BBFindingsContainer>
+            <BBFindings />
+          </BBFindingsContainer> */}
+          {/* )} */}
+        </>
+      );
+    }
 
-  //   return (
-  //     <XRayContainer>
-  //       <ToolBar />
-  //       {content}
-  //     </XRayContainer>
-  //   );
-  // };
+    return (
+      <XRayContainer>
+        <ToolBar />
+        {content}
+      </XRayContainer>
+    );
+  };
 
   return (
     <ToolProvider>
-      {/* <AnnotationProvider> */}
       <StagePropertiesProvider>
         <XRaySectionContainer>
-          {/* <Body /> */}
-          <XRayContainer>
-            <ToolBar />
-            <>
-              <CanvasSection ImageURL={xRayURL ?? ""} />
-              {siderType !== "info" && siderType !== "report" && (
-                <h1>Findings</h1>
-                // <BBFindingsContainer>
-                //   <BBFindings />
-                // </BBFindingsContainer>
-              )}
-            </>
-          </XRayContainer>
+          <Body />
         </XRaySectionContainer>
       </StagePropertiesProvider>
-      {/* </AnnotationProvider> */}
     </ToolProvider>
   );
 }

@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { Flex, Menu } from "antd";
 
 export const ViewXRayContainer = styled(Flex)`
-  background-color: #ff0000;
+  /* background-color: #ff0000; */
 
   display: flex;
   // flex-direction: row;

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React from "react";
+import React, { useEffect } from "react";
 
 // Redux
 import { useSelector } from "react-redux";
@@ -22,6 +22,9 @@ interface ViewHistoryProps {
 }
 
 function ViewHistory(props: ViewHistoryProps) {
+  useEffect(() => {
+    console.log("ViewHistory.....");
+  }, []);
   const tableSearch = useSelector((state: MainState) => state.tableSearch);
   const GeneralTableData = {
     columns: [

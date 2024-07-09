@@ -9,9 +9,9 @@ import { Flex } from "antd";
 import { palette } from "../../../../../styles/theme";
 
 export const InfoSectionContainer = styled(Flex)`
-  padding: 0px 10px 0 10px;
-  width: 100%;
-  height: 100%;
+  /* padding: 0px 10px 0 10px; */
+  /* width: 100%; */
+  /* height: 100%; */
   flex-direction: column;
 `;
 

@@ -37,6 +37,8 @@ function EditEmployeeInfo(props: EditEmployeeInfoProps) {
   const [ageValue, setAgeValue] = useState<number>(-1); // State to hold calculated age
 
   useEffect(() => {
+    console.log("ViewInfo.....");
+
     // Calculate age initially when patient data is loaded
     if (patient?.birth_date) {
       const age = calculateAge(patient.birth_date);
