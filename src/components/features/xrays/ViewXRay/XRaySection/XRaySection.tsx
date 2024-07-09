@@ -140,7 +140,7 @@ function XRaySection(props: XRaySectionProps) {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    // console.log("XRaySection", xRayPath, regionPath);
+    console.log("XRaySection", xRayPath, regionPath);
     // let hasXRay = false;
 
     const fetchData = async () => {
