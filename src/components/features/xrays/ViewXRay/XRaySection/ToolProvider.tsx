@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 
 // Types
-import { Tools, NavTools } from "./XRaySection.types";
+import { Tools, NavTools } from "../XRay.types";
 // Define the context type, including the function to change the tool
 interface ToolsContextType extends Tools {
   handleChangeNavTool: (tool: NavTools) => void;

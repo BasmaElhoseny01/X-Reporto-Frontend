@@ -10,7 +10,7 @@ import AnnotationBox from "./AnnotationBox/AnnotationBox";
 
 // Context
 import { useTools } from "../ToolProvider";
-import { useAnnotations } from "../AnnotationProvider";
+import { useAnnotations } from "../../AnnotationProvider";
 import { useStageProperties } from "../StagePropertiesProvider";
 import { useView } from "../../ViewProvider";
 
@@ -18,7 +18,7 @@ import { useView } from "../../ViewProvider";
 // import XRay from "../../../../../../assets/images/resized.jpg";
 
 // Types
-import { Region } from "../XRaySection.types";
+import { Region } from "../../XRay.types";
 import { Vector2d } from "konva/lib/types";
 
 let idCounter = 0;
@@ -32,7 +32,7 @@ interface CanvasSectionProps {
 
 function CanvasSection(props: CanvasSectionProps) {
   const { ImageURL } = props;
-  
+
   // UseStates
   const [canvasMeasures, setCanvasMeasures] = useState({
     // width: window.innerWidth,

@@ -33,6 +33,7 @@ import {
   FileTextOutlined,
   PictureOutlined,
   HeatMapOutlined,
+  DropboxOutlined,
   BarsOutlined,
 } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -44,7 +45,7 @@ import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
 import useCustomNavigate from "../../../../hooks/useCustomNavigate";
 import { ResultType } from "../../../../types/study";
 import HeatMapSection from "./HeatMapSection/HeatMapSection";
-import AnnotationProvider from "./XRaySection/AnnotationProvider";
+import AnnotationProvider from "./AnnotationProvider";
 import Test from "./Test";
 
 // Interfaces
@@ -101,8 +102,6 @@ function ViewXRayTest() {
     useState<ResultType>(null);
   const [fetching, setFetching] = useState(true); // Initially set fetching to true
   const [error, setError] = useState(false);
-
-  const [selectedTab, setSelectedTab] = useState<string>("-1"); // State to manage selected tab
 
   // const [studyCase, setStudyCase] = useState<CaseType>(null);
   // const [xReportoResultId, setXReportoResultId] = useState<number | null>(null);
@@ -204,17 +203,6 @@ function ViewXRayTest() {
     // return () => window.removeEventListener("resize", handleResize); // Clean up listener
   }, []);
 
-  // Set selected tab to "1" after fetching is completed
-  useEffect(() => {
-    if (!fetching) {
-      setSelectedTab("1");
-    }
-  }, [fetching]);
-
-  const handleTabChange = (key: string) => {
-    setSelectedTab(key);
-  };
-
   // Render Content based on the states
   const Body = () => {
     if (fetching) {
@@ -225,7 +213,8 @@ function ViewXRayTest() {
             justifyContent: "center",
             alignItems: "center",
             height: "80%",
-            width: "100%",
+            // width: "100%",
+            flex: "1",
           }}
         >
           <Spin tip="Loading" size="large">
@@ -293,16 +282,23 @@ function ViewXRayTest() {
       key: "1",
       label: "",
       icon: <InfoCircleOutlined style={{ fontSize: "16px" }} />,
-      children: <h1>Heat</h1>,
+      children: <h1>Info</h1>,
       // <InfoSection study_case={caseData} />,
     },
     {
       key: "2",
       label: "",
+      icon: <DropboxOutlined style={{ fontSize: "16px" }} />,
+      children: <h1>BB</h1>,
+      // <InfoSection study_case={caseData} />,
+      // <HeatMapSection />,
+    },
+    {
+      key: "3",
+      label: "",
       icon: <HeatMapOutlined style={{ fontSize: "16px" }} />,
       children: (
         <h1>Heat</h1>
-
         // <HeatMapSection
         //   templateResultData={templateResultData}
         //   setTemplateResultData={setTemplateResultData}
@@ -310,7 +306,7 @@ function ViewXRayTest() {
       ),
     },
     {
-      key: "3",
+      key: "4",
       label: "",
       icon: <FileTextOutlined style={{ fontSize: "16px" }} />,
       children: <h1>Report</h1>,
@@ -327,14 +323,7 @@ function ViewXRayTest() {
         {/* Body */}
         <Body />
         {/* Tabs */}
-        <Tabs
-          tabPosition="right"
-          items={xRayNavItems}
-          style={{ flex: 1 }}
-          defaultActiveKey="-1"
-          activeKey={fetching ? "-1" : selectedTab} // Set active key based on fetching state
-          onChange={handleTabChange} // Handle tab change event
-        />
+        <Tabs tabPosition="right" items={xRayNavItems} style={{ flex: 1 }} />
       </ViewXRayContainer>
     </AnnotationProvider>
   );

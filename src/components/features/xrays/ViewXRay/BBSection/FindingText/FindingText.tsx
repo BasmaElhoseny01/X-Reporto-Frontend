@@ -5,10 +5,10 @@ import { Popover } from "antd";
 import Text from "antd/es/typography/Text";
 
 // Types
-import { Region } from "../../XRaySection.types";
+import { Region } from "../../XRay.types";
 
 // Theme
-import { palette } from "../../../../../../../styles/theme";
+import { palette } from "../../../../../../styles/theme";
 import { useAnnotations } from "../../AnnotationProvider";
 
 // props

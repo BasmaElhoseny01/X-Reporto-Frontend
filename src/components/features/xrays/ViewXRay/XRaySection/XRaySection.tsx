@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 // Context
 import ToolProvider from "./ToolProvider";
-import AnnotationProvider, { useAnnotations } from "./AnnotationProvider";
+import { useAnnotations } from "../AnnotationProvider";
 import StagePropertiesProvider from "./StagePropertiesProvider";
 import { useView } from "../ViewProvider";
 
@@ -12,7 +12,7 @@ import { useView } from "../ViewProvider";
 // Components
 import ToolBar from "./ToolBar/ToolBar";
 import CanvasSection from "./CanvasSection/CanvasSection";
-import BBFindings from "./BBFindings/BBFindings";
+// import BBFindings from "../BBSection/BBSection";
 
 // Styled Components
 import {
@@ -31,7 +31,7 @@ import { set } from "date-fns";
 import { anatomicalRegionsIndexToKey } from "../../../../../constants/anatomicalRegions";
 
 import LoadingOutlined from "@ant-design/icons/LoadingOutlined";
-import { Box, Region } from "./XRaySection.types";
+import { Box, Region } from "../XRay.types";
 // Interfaces
 interface XRaySectionProps {
   // Props Here
@@ -210,55 +210,60 @@ function XRaySection(props: XRaySectionProps) {
   const Body = () => {
     let content;
 
-    if (xRayPath && fetching) {
-      content = (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "80%",
-            width: "100%",
-          }}
-        >
-          {/* <Spin tip="Loading" size="small">
-            <div
-              style={{
-                padding: 50,
-                // background: "rgba(0, 0, 0, 0.05)",
-                borderRadius: 4,
-              }}
-            />
-          </Spin> */}
-          <Spin indicator={<LoadingOutlined spin />} />
-        </div>
-      );
-    } else if (error || !xRayURL) {
-      content = (
-        <Result
-          status="error"
-          title="There are some problems with loading x-ray."
-          extra={
-            null
-            //   <Button type="primary" key="console">
-            //     Go Console
-            //   </Button>
-          }
-        />
-      );
-    } else {
-      content = (
-        <>
-          <CanvasSection ImageURL={xRayURL} />
-          {/* {siderType !== "info" && siderType !== "report" && ( */}
-          {/* // <h1>Findings</h1> */}
-          {/* <BBFindingsContainer>
-            <BBFindings />
-          </BBFindingsContainer> */}
-          {/* )} */}
-        </>
-      );
-    }
+    // if (xRayPath && fetching) {
+    //   content = (
+    //     <div
+    //       style={{
+    //         display: "flex",
+    //         justifyContent: "center",
+    //         alignItems: "center",
+    //         height: "80%",
+    //         width: "100%",
+    //       }}
+    //     >
+    //       {/* <Spin tip="Loading" size="small">
+    //         <div
+    //           style={{
+    //             padding: 50,
+    //             // background: "rgba(0, 0, 0, 0.05)",
+    //             borderRadius: 4,
+    //           }}
+    //         />
+    //       </Spin> */}
+    //       <Spin indicator={<LoadingOutlined spin />} />
+    //     </div>
+    //   );
+    // } else if (error || !xRayURL) {
+    //   content = (
+    //     <Result
+    //       status="error"
+    //       title="There are some problems with loading x-ray."
+    //       extra={
+    //         null
+    //         //   <Button type="primary" key="console">
+    //         //     Go Console
+    //         //   </Button>
+    //       }
+    //     />
+    //   );
+    // } else {
+    //   content = (
+    //     <>
+    //       <CanvasSection ImageURL={xRayURL} />
+    //       {/* {siderType !== "info" && siderType !== "report" && ( */}
+    //       {/* // <h1>Findings</h1> */}
+    //       {/* <BBFindingsContainer>
+    //         <BBFindings />
+    //       </BBFindingsContainer> */}
+    //       {/* )} */}
+    //     </>
+    //   );
+    // }
+    content = (
+      <>
+        <CanvasSection ImageURL={xRayURL ?? ""} />
+      </>
+    );
 
     return (
       <XRayContainer>

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 // Types
-import { Region } from "./XRaySection.types";
+import { Region } from "./XRay.types";
 
 interface AnnotationsContextType {
   selectedAnnotation: Region | null;

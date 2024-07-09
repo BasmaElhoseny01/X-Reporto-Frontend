@@ -12,7 +12,7 @@ import { KonvaEventObject } from "konva/lib/Node";
 import { hexToRgba } from "../../../../../../../utils";
 
 // Types
-import { Box } from "../../XRaySection.types";
+import { Box } from "../../../XRay.types";
 
 // Context
 import { useTools } from "../../ToolProvider";

@@ -2,7 +2,7 @@ import React from "react";
 
 // Context
 import { useTools } from "../ToolProvider";
-import { useAnnotations } from "../AnnotationProvider";
+import { useAnnotations } from "../../AnnotationProvider";
 import { useStageProperties } from "../StagePropertiesProvider";
 
 // Styled Components

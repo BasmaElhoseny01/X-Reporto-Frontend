@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 
 // Types
-import { stagePropertiesType } from "./XRaySection.types";
+import { stagePropertiesType } from "../XRay.types";
 
 interface StagePropertiesContextType {
   stageProperties: stagePropertiesType;

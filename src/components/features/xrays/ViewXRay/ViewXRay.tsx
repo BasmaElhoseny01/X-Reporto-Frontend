@@ -43,7 +43,7 @@ import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
 import useCustomNavigate from "../../../../hooks/useCustomNavigate";
 import { ResultType } from "../../../../types/study";
 import HeatMapSection from "./HeatMapSection/HeatMapSection";
-import AnnotationProvider from "./XRaySection/AnnotationProvider";
+import AnnotationProvider from "./AnnotationProvider";
 import Test from "./Test";
 
 // Interfaces
