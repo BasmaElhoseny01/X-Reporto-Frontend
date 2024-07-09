@@ -14,8 +14,8 @@ import { useAnnotations } from "../AnnotationProvider";
 import { useStageProperties } from "../StagePropertiesProvider";
 import { useView } from "../../ViewProvider";
 
-// Assets
-import XRay from "../../../../../../assets/images/resized.jpg";
+// // Assets
+// import XRay from "../../../../../../assets/images/resized.jpg";
 
 // Types
 import { Region } from "../XRaySection.types";
@@ -24,7 +24,15 @@ import { Vector2d } from "konva/lib/types";
 let idCounter = 0;
 const generateId = () => (++idCounter).toString();
 
-function CanvasSection() {
+// interface
+interface CanvasSectionProps {
+  // Props Here
+  ImageURL: string;
+}
+
+function CanvasSection(props: CanvasSectionProps) {
+  const { ImageURL } = props;
+  
   // UseStates
   const [canvasMeasures, setCanvasMeasures] = useState({
     // width: window.innerWidth,
@@ -232,7 +240,7 @@ function CanvasSection() {
       <Layer>
         <ImageFromUrl
           setCanvasMeasures={setCanvasMeasures}
-          imageUrl={XRay}
+          imageUrl={ImageURL}
           onMouseDown={() => {
             // deselect when clicked on empty area
             handleSelectAnnotation(null);

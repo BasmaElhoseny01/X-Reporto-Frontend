@@ -248,7 +248,8 @@ function ViewXRay() {
     const RightSection = () => {
       // Show the Info Section only if the type is info
       if (siderType === "info") {
-        return <InfoSection study_case={caseData} />;
+        return null;
+        //  <InfoSection study_case={caseData} />;
       }
       // Show the Report Section only if the type is report
       else if (siderType === "report") {
@@ -260,12 +261,11 @@ function ViewXRay() {
       }
       // Show HeatMap Section only if the type is heatmap
       else if (siderType === "heat") {
-        return (
-          <HeatMapSection
-            templateResultData={templateResultData}
-            setTemplateResultData={setTemplateResultData}
-          />
-        );
+        return null;
+        // <HeatMapSection
+        //   templateResultData={templateResultData}
+        //   setTemplateResultData={setTemplateResultData}
+        // />
         // return <ReportSection />;
       }
       return null;

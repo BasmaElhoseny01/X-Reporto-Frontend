@@ -51,7 +51,11 @@ function SignIn() {
       .catch((err) => {
         ChangeToken("");
         console.error("Failed to Login:", err);
-        message.error("Login Failed");
+        if (err.response.status === 400) {
+          message.error(err.response.data.detail);
+        } else {
+          message.error("Login Failed");
+        }
       });
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
