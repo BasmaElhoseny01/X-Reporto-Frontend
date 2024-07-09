@@ -29,6 +29,7 @@ import { Menu, Tooltip } from "antd";
 // import HeartBeat from "../../../../assets/images/heart-beat.svg";
 // import MedicalReport from "../../../../assets/images/medical-report.svg";
 import {
+  InfoCircleOutlined,
   FileTextOutlined,
   PictureOutlined,
   BarsOutlined,
@@ -41,6 +42,7 @@ import { set } from "date-fns";
 import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
 import useCustomNavigate from "../../../../hooks/useCustomNavigate";
 import { ResultType } from "../../../../types/study";
+import HeatMapSection from "./HeatMapSection/HeatMapSection";
 
 // Interfaces
 interface RouteParams extends Record<string, string | undefined> {
@@ -92,7 +94,6 @@ function ViewXRay() {
     useState<ResultType>(null);
   const [fetching, setFetching] = useState(true); // Initially set fetching to true
   const [error, setError] = useState(false);
-  const [errorMessages, setErrorMessages] = useState<string[]>([]);
 
   // const [studyCase, setStudyCase] = useState<CaseType>(null);
   // const [xReportoResultId, setXReportoResultId] = useState<number | null>(null);
@@ -116,10 +117,6 @@ function ViewXRay() {
           } else {
             setError(true);
             message.error("Failed to fetch case data.");
-            // setErrorMessages((prevMessages) => [
-            //   ...prevMessages,
-            //   "Failed to fetch case data.",
-            // ]);
           }
         })
         .finally(() => {
@@ -172,109 +169,6 @@ function ViewXRay() {
     }
   }, [Id, token]);
 
-  // // Fetch Study Case Data
-  // useEffect(() => {
-  //   if (Id) {
-  //     setFetching(true);
-  //     setError(false); // Reset error state before starting the fetch
-
-  //     const fetchPromise = fetchStudy(Id, token).then((response) => {
-  //       if (response) {
-  //         setCaseData(response);
-  //       } else {
-  //         setError(true);
-  //         setErrorMessages((prevMessages) => [
-  //           ...prevMessages,
-  //           "Failed to fetch case data.",
-  //         ]);
-  //       }
-  //     });
-
-  //     const timeoutPromise = new Promise((resolve) =>
-  //       setTimeout(resolve, 1000)
-  //     );
-
-  //     Promise.all([fetchPromise, timeoutPromise]).finally(() => {
-  //       setFetching(false);
-  //     });
-  //   } else {
-  //     setFetching(false);
-  //   }
-  // }, [Id, token]);
-
-  // // Fetch Get result for the Case [LM and Template]
-  // useEffect(() => {
-  //   // fetchStudyResult;
-  //   if (Id && caseData && !fetching && !error) {
-  //     setFetching(true);
-  //     setError(false); // Reset error state before starting the fetch
-
-  //     const fetchPromise = fetchStudyResults(Id, token).then((response) => {
-  //       if (response) {
-  //         if (response.length == 0) {
-  //           message.info("No results found for this case generated yet.");
-  //         } else {
-  //           let lmResultFound = false;
-  //           let templateResultFound = false;
-
-  //           for (let i = 0; i < response.length; i++) {
-  //             if (response[i].type === "lm") {
-  //               setLmResultData(response[i]);
-  //               // lmResultFound = true;
-  //               lmResultFound = false;
-  //             } else if (response[i].type === "template") {
-  //               setTemplateResultData(response[i]);
-  //               // templateResultFound = true;
-  //               templateResultFound = false;
-  //             }
-  //           }
-
-  //           if (!lmResultFound) {
-  //             console.log("No LM results found for this case.");
-  //             setErrorMessages((prevMessages) => [
-  //               ...prevMessages,
-  //               "No LM results found for this case.",
-  //             ]);
-  //           }
-  //           if (!templateResultFound) {
-  //             console.log("No template results found for this case.");
-  //             setErrorMessages((prevMessages) => [
-  //               ...prevMessages,
-  //               "No template results found for this case.",
-  //             ]);
-  //           }
-  //         }
-  //       } else {
-  //         setError(true);
-  //         setErrorMessages((prevMessages) => [
-  //           ...prevMessages,
-  //           "Failed to fetch result data.",
-  //         ]);
-  //       }
-  //     });
-
-  //     const timeoutPromise = new Promise((resolve) =>
-  //       setTimeout(resolve, 1000)
-  //     );
-
-  //     Promise.all([fetchPromise, timeoutPromise]).finally(() => {
-  //       setFetching(false);
-  //     });
-  //   } else {
-  //     setFetching(false);
-  //   }
-  // }, []);
-
-  // // Use Effect for Error Handling
-  // useEffect(() => {
-  //   if (!fetching && (error || errorMessages.length > 0)) {
-  //     for (let i = 0; i < errorMessages.length; i++) {
-  //       message.error(errorMessages[i]);
-  //     }
-  //     setErrorMessages([]);
-  //   }
-  // }, [fetching, error, errorMessages]);
-
   // Context
   const { siderType, handleSetSiderType } = useView();
   // States for the Sider
@@ -300,12 +194,14 @@ function ViewXRay() {
       // Collapse Report
       handleSetSiderType("info");
       // setType("info");
-    } else if (e.key == "report") {
-      handleSetSiderType("report");
-      // setType("report");
     } else if (e.key == "x-ray") {
       handleSetSiderType("x-ray");
       // setType("x-ray");
+    } else if (e.key == "report") {
+      handleSetSiderType("report");
+      // setType("report");
+    } else if (e.key == "heat") {
+      handleSetSiderType("heat");
     }
   };
 
@@ -348,6 +244,33 @@ function ViewXRay() {
         />
       );
     }
+
+    const RightSection = () => {
+      // Show the Info Section only if the type is info
+      if (siderType === "info") {
+        return <InfoSection study_case={caseData} />;
+      }
+      // Show the Report Section only if the type is report
+      else if (siderType === "report") {
+        // return <ReportSection />;
+      }
+      // Show HeatMap Section only if the type is heatmap
+      else if (siderType === "heat") {
+        return <HeatMapSection templateResultData={templateResultData} />;
+        // return <ReportSection />;
+      }
+      return null;
+    };
+
+    return (
+      <>
+        <XRaySection
+          xRayPath={lmResultData ? lmResultData.xray_path : null}
+          regionPath={lmResultData ? lmResultData.region_path : null}
+        />
+        <RightSection />
+      </>
+    );
   };
 
   return (
@@ -355,20 +278,6 @@ function ViewXRay() {
       <Layout style={{ width: "100%", height: "100%" }}>
         <Content style={{ display: "flex", width: "100%" }}>
           <Body />
-          {/* <XRaySection xReportoResultId={xReportoResultId} />
-          {
-            // Show the Info Section only if the type is info
-            siderType === "info" ? (
-              // <InfoSection viewReport={() => setType("report")} />
-              <InfoSection />
-            ) : // Show the Report Section only if the type is report
-            siderType === "report" ? (
-              <ReportSection
-                xReportoResultId={xReportoResultId}
-                setXReportoResultId={setXReportoResultId}
-              />
-            ) : null
-          } */}
         </Content>
         <Sider
           width={isSmallScreen ? "10%" : "5%"}
@@ -386,6 +295,14 @@ function ViewXRay() {
             theme={websiteTheme}
           >
             <Menu.Item
+              key="info"
+              icon={
+                <Tooltip title="Info" placement="left">
+                  <InfoCircleOutlined />
+                </Tooltip>
+              }
+            ></Menu.Item>
+            <Menu.Item
               key="x-ray"
               icon={
                 <Tooltip title="X-Ray" placement="left">
@@ -396,18 +313,18 @@ function ViewXRay() {
               {/* Optionally, you can also wrap this label with Tooltip if needed */}
             </Menu.Item>
             <Menu.Item
-              key="info"
-              icon={
-                <Tooltip title="Info" placement="left">
-                  <BarsOutlined />
-                </Tooltip>
-              }
-            ></Menu.Item>
-            <Menu.Item
               key="report"
               icon={
                 <Tooltip title="Report" placement="left">
                   <FileTextOutlined />
+                </Tooltip>
+              }
+            ></Menu.Item>
+            <Menu.Item
+              key="heat"
+              icon={
+                <Tooltip title="Checklist Report" placement="left">
+                  <BarsOutlined />
                 </Tooltip>
               }
             ></Menu.Item>

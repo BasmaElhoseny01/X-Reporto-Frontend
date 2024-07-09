@@ -1,1 +1,1 @@
-export type SideBarTypes = "info" | "report" | "x-ray";
+export type SideBarTypes = "info" | "x-ray" | "report" | "heat";

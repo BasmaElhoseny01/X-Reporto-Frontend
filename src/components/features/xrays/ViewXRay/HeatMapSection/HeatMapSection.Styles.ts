@@ -3,12 +3,11 @@ import styled from "styled-components";
 // Theme
 // import { palette } from "../../../../styles/theme";
 
-
 // Ant Design
 import { Flex } from "antd";
 import { palette } from "../../../../../styles/theme";
 
-export const InfoSectionContainer = styled(Flex)`
+export const HeatMapSectionContainer = styled(Flex)`
   padding: 0px 10px 0 10px;
   width: 100%;
   height: 100%;

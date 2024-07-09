@@ -6,31 +6,29 @@ import {
   LineHeader,
   Title,
 } from "./InfoSection.Styles";
-import InputRow from "./InputRow";
 import PatientData from "./PatientData";
 import PatientHistory from "./PatientHistory";
 import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
-import SecondaryButton from "../../../../common/SecondaryButton/SecondaryButton";
 import { useView } from "../ViewProvider";
-import axios from "../../../../../services/apiService";
 import { MainState } from "../../../../../state";
 import { useSelector } from "react-redux";
+import { CaseType } from "../../../../../types/case";
 
-
-function InfoSection() {
+// Interface for InfoSection
+interface InfoSectionProps {
+  // Props Here
+  study_case: CaseType;
+}
+function InfoSection(props: InfoSectionProps) {
+  const { study_case } = props;
   // Context
   const { handleSetSiderType } = useView();
-  // const [data, setData] = useState<responseDataType>();
-  const study_case = useSelector((state: MainState) => state.case);
 
   // Get the Study Context
   useEffect(() => {}, []);
 
   return (
     <InfoSectionContainer>
-      <Title justify="flex-start">Findings</Title>
-      <LineHeader />
-      <InputRow />
       <Title justify="flex-start" style={{ marginTop: 5 }}>
         {" "}
         Info{" "}

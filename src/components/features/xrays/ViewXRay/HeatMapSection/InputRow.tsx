@@ -4,7 +4,7 @@ import {
   InputContainer,
   Row,
   SubTitle,
-} from "./InfoSection.Styles";
+} from "./HeatMapSection.Styles";
 import { Image, Progress } from "antd";
 
 function InputRow() {
