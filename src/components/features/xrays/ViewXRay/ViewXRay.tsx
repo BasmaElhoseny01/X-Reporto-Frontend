@@ -43,6 +43,7 @@ import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
 import useCustomNavigate from "../../../../hooks/useCustomNavigate";
 import { ResultType } from "../../../../types/study";
 import HeatMapSection from "./HeatMapSection/HeatMapSection";
+import AnnotationProvider from "./XRaySection/AnnotationProvider";
 
 // Interfaces
 interface RouteParams extends Record<string, string | undefined> {
@@ -284,11 +285,13 @@ function ViewXRay() {
 
     return (
       <>
-        <XRaySection
-          xRayPath={lmResultData ? lmResultData.xray_path : null}
-          regionPath={lmResultData ? lmResultData.region_path : null}
-        />
-        {/* <RightSection /> */}
+        <AnnotationProvider>
+          <XRaySection
+            xRayPath={lmResultData ? lmResultData.xray_path : null}
+            regionPath={lmResultData ? lmResultData.region_path : null}
+          />
+          {/* <RightSection /> */}
+        </AnnotationProvider>
       </>
     );
   };

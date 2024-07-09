@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 // Context
 import ToolProvider from "./ToolProvider";
-import AnnotationProvider from "./AnnotationProvider";
+import AnnotationProvider, { useAnnotations } from "./AnnotationProvider";
 import StagePropertiesProvider from "./StagePropertiesProvider";
 import { useView } from "../ViewProvider";
 
@@ -28,7 +28,10 @@ import { message, Result, Skeleton, Spin } from "antd";
 import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
 import { set } from "date-fns";
 
+import { anatomicalRegionsIndexToKey } from "../../../../../constants/anatomicalRegions";
+
 import LoadingOutlined from "@ant-design/icons/LoadingOutlined";
+import { Box, Region } from "./XRaySection.types";
 // Interfaces
 interface XRaySectionProps {
   // Props Here
@@ -63,23 +66,58 @@ const downloadXRayFile = async (file_path: string, token: string) => {
   }
 };
 
-// const downloadBBoxesFile = async (file_path: string, token: string) => {
-//   try {
-//     const response = await axios.get(`api/v1/results/download_file`, {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//       params: {
-//         file_path: file_path,
-//       },
-//       responseType: "text",
-//     });
-//     return response.data;
-//   } catch (error) {
-//     console.log("Error fetching Bounding Boxes: ", error);
-//     return null;
-//   }
-// };
+const downloadBBoxesFile = async (file_path: string, token: string) => {
+  try {
+    const response = await axios.get(`api/v1/results/download_file`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        file_path: file_path,
+      },
+      responseType: "text",
+    });
+
+    // Split the text into lines and trim any extra whitespace
+    const lines = response?.data?.trim().split("\n");
+    // console.log("lines", lines);
+
+    const regions: Region[] = [];
+
+    // Process each line to extract region ID and bounding box coordinates
+    lines.forEach((line: string) => {
+      const parts = line.trim().split(" ");
+
+      // Parse region ID and coordinates
+      const regionId = parseInt(parts[0]);
+      const x = parseFloat(parts[1]);
+      const y = parseFloat(parts[2]);
+      const width = parseFloat(parts[3]);
+      const height = parseFloat(parts[4]);
+
+      // Create object and push to boundingBoxes array
+      const boundingBox: Box = {
+        x,
+        y,
+        width,
+        height,
+      };
+
+      regions.push({
+        id: regionId.toString(),
+        title: anatomicalRegionsIndexToKey[regionId],
+        finding: "",
+        ai: false,
+        box: boundingBox,
+      });
+    });
+
+    return regions;
+  } catch (error) {
+    console.log("Error fetching Bounding Boxes: ", error);
+    return null;
+  }
+};
 
 function XRaySection(props: XRaySectionProps) {
   const { xRayPath, regionPath } = props;
@@ -95,7 +133,8 @@ function XRaySection(props: XRaySectionProps) {
 
   // const [xRayData, setXRayData] = useState(null);
   const [xRayURL, setXRayURL] = useState<string | null>(null);
-  const [bbData, setBBData] = useState(null);
+  const { handleSetAnnotations } = useAnnotations();
+  // const [bbData, setBBData] = useState(null);
 
   const [fetching, setFetching] = useState(true); // Initially set fetching to true
   const [error, setError] = useState(false);
@@ -105,8 +144,7 @@ function XRaySection(props: XRaySectionProps) {
 
     const fetchData = async () => {
       if (xRayPath) {
-        console.log("xRayPath", xRayPath);
-
+        // console.log("xRayPath", xRayPath);
         let fetchStartTime = Date.now(); // Record start time before fetch
         setFetching(true);
         setError(false); // Reset error state before starting the fetch
@@ -118,14 +156,25 @@ function XRaySection(props: XRaySectionProps) {
             // hasXRay = true;
 
             if (regionPath) {
-              console.log("regionPath", regionPath);
-              // const bbResponse = await downloadBBoxesFile(regionPath, token);
-              // if (bbResponse) {
-              //   setBBData(bbResponse);
-              // } else {
-              //   setError(true);
-              //   message.error("Failed to load bounding boxes");
-              // }
+              try {
+                // console.log("regionPath", regionPath);
+                const bBoxesResponse = await downloadBBoxesFile(
+                  regionPath,
+                  token
+                );
+                if (bBoxesResponse) {
+                  handleSetAnnotations(bBoxesResponse);
+                } else {
+                  // Don't Set Error to true
+                  // setError(true);
+                  message.error("Failed to load bounding boxes");
+                }
+              } catch (error: any) {
+                // Don't Set Error to true
+                // setError(true);
+                message.error("Failed to load bounding boxes");
+                console.log("Error fetching bounding boxes: ", error);
+              }
             }
           } else {
             setError(true);
@@ -262,9 +311,10 @@ function XRaySection(props: XRaySectionProps) {
         <>
           <CanvasSection ImageURL={xRayURL} />
           {siderType !== "info" && siderType !== "report" && (
-            <BBFindingsContainer>
-              <BBFindings />
-            </BBFindingsContainer>
+            <h1>Findings</h1>
+            // <BBFindingsContainer>
+            //   <BBFindings />
+            // </BBFindingsContainer>
           )}
         </>
       );
@@ -280,13 +330,13 @@ function XRaySection(props: XRaySectionProps) {
 
   return (
     <ToolProvider>
-      <AnnotationProvider>
-        <StagePropertiesProvider>
-          <XRaySectionContainer>
-            <Body />
-          </XRaySectionContainer>
-        </StagePropertiesProvider>
-      </AnnotationProvider>
+      {/* <AnnotationProvider> */}
+      <StagePropertiesProvider>
+        <XRaySectionContainer>
+          <Body />
+        </XRaySectionContainer>
+      </StagePropertiesProvider>
+      {/* </AnnotationProvider> */}
     </ToolProvider>
   );
 }

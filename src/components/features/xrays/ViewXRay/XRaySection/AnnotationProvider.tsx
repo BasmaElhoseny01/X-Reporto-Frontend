@@ -43,33 +43,35 @@ function AnnotationProvider(props: AnnotationsProviderProps) {
   const [annotations, setAnnotations] = useState<Region[]>([]);
 
   useEffect(() => {
-    const initialAnnotations = [
-      {
-        id: "01",
-        title: "Lung",
-        finding:
-          "Lung volumes are slightly lower with associated crowding of bronchovascular structures.",
-        ai: true,
-        box: {
-          x: 100,
-          y: 100,
-          width: 100,
-          height: 50,
-        },
-      },
-      {
-        id: "02",
-        title: "Heart",
-        finding: "Heart is slightly enlarged.",
-        ai: true,
-        box: {
-          x: 250,
-          y: 150,
-          width: 50,
-          height: 50,
-        },
-      },
-    ];
+    // const initialAnnotations = [
+    // {
+    //   id: "01",
+    //   title: "Lung",
+    //   finding:
+    //     "Lung volumes are slightly lower with associated crowding of bronchovascular structures.",
+    //   ai: true,
+    //   box: {
+    //     x: 100,
+    //     y: 100,
+    //     width: 100,
+    //     height: 50,
+    //   },
+    // },
+    // {
+    //   id: "02",
+    //   title: "Heart",
+    //   finding: "Heart is slightly enlarged.",
+    //   ai: true,
+    //   box: {
+    //     x: 250,
+    //     y: 150,
+    //     width: 50,
+    //     height: 50,
+    //   },
+    // },
+    // ];
+
+    const initialAnnotations: Region[] = []; // Explicitly specifying the type as Region[]
     setAnnotations(initialAnnotations);
   }, []);
 
