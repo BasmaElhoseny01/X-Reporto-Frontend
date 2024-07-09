@@ -24,9 +24,11 @@ import axios from "../../../../../services/apiService";
 import { MainState } from "../../../../../state";
 import { useSelector } from "react-redux";
 import useCustomNavigate from "../../../../../hooks/useCustomNavigate";
-import { message, Result, Spin } from "antd";
+import { message, Result, Skeleton, Spin } from "antd";
 import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
+import { set } from "date-fns";
 
+import LoadingOutlined from "@ant-design/icons/LoadingOutlined";
 // Interfaces
 interface XRaySectionProps {
   // Props Here
@@ -99,39 +101,89 @@ function XRaySection(props: XRaySectionProps) {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    let hasXRay = false;
+    // let hasXRay = false;
 
-    if (xRayPath) {
-      console.log("xRayPath", xRayPath);
-      // DownLoad Region Paths
-      setFetching(true);
-      setError(false); // Reset error state before starting the fetch
+    const fetchData = async () => {
+      if (xRayPath) {
+        console.log("xRayPath", xRayPath);
 
-      const fetchPromise = downloadXRayFile(xRayPath, token).then(
-        (response) => {
-          if (response) {
-            console.log("response", response);
+        let fetchStartTime = Date.now(); // Record start time before fetch
+        setFetching(true);
+        setError(false); // Reset error state before starting the fetch
 
-            // setXRayData(response);
-            setXRayURL(response);
-            hasXRay = true;
+        try {
+          const xRayResponse = await downloadXRayFile(xRayPath, token);
+          if (xRayResponse) {
+            setXRayURL(xRayResponse);
+            // hasXRay = true;
+
+            if (regionPath) {
+              console.log("regionPath", regionPath);
+              // const bbResponse = await downloadBBoxesFile(regionPath, token);
+              // if (bbResponse) {
+              //   setBBData(bbResponse);
+              // } else {
+              //   setError(true);
+              //   message.error("Failed to load bounding boxes");
+              // }
+            }
           } else {
             setError(true);
-            message.error("Failed to fetch X-Ray");
+            message.error("Failed to load X-Ray");
+          }
+        } catch (error: any) {
+          setError(true);
+          message.error("Error fetching X-Ray: " + error.message);
+        } finally {
+          // Calculate time elapsed since fetch started
+          let elapsedTime = Date.now() - fetchStartTime;
+          let delayTime = Math.max(0, 1000 - elapsedTime); // Ensure at least 1 second delay
+
+          if (delayTime === 0) {
+            // If fetch took longer than 1 second, set fetching to false immediately
+            setFetching(false);
+          } else {
+            // Otherwise, delay setting fetching to false by delayTime
+            setTimeout(() => {
+              setFetching(false);
+            }, delayTime);
           }
         }
-      );
-
-      const timeoutPromise = new Promise((resolve) =>
-        setTimeout(resolve, 1000)
-      );
-
-      Promise.all([fetchPromise, timeoutPromise]).finally(() => {
+      } else {
         setFetching(false);
-      });
-    } else {
-      setFetching(false);
-    }
+      }
+    };
+    // if (xRayPath) {
+    //   console.log("xRayPath", xRayPath);
+    //   // DownLoad Region Paths
+    //   setFetching(true);
+    //   setError(false); // Reset error state before starting the fetch
+
+    //   const fetchPromise = downloadXRayFile(xRayPath, token).then(
+    //     (response) => {
+    //       if (response) {
+    //         console.log("response", response);
+
+    //         // setXRayData(response);
+    //         setXRayURL(response);
+    //         hasXRay = true;
+    //       } else {
+    //         setError(true);
+    //         message.error("Failed to fetch X-Ray");
+    //       }
+    //     }
+    //   );
+
+    //   const timeoutPromise = new Promise((resolve) =>
+    //     setTimeout(resolve, 1000)
+    //   );
+
+    //   Promise.all([fetchPromise, timeoutPromise]).finally(() => {
+    //     setFetching(false);
+    //   });
+    // } else {
+    //   setFetching(false);
+    // }
 
     // if (hasXRay && regionPath) {
     //   // DownLoad Region Paths
@@ -161,12 +213,16 @@ function XRaySection(props: XRaySectionProps) {
     // } else {
     //   setFetching(false);
     // }
-  }, [xRayPath, regionPath]);
+
+    fetchData();
+  }, []);
 
   // Render Content based on the states
   const Body = () => {
+    let content;
+
     if (xRayPath && fetching) {
-      return (
+      content = (
         <div
           style={{
             display: "flex",
@@ -176,8 +232,7 @@ function XRaySection(props: XRaySectionProps) {
             width: "100%",
           }}
         >
-          {" "}
-          <Spin tip="Loading" size="small">
+          {/* <Spin tip="Loading" size="small">
             <div
               style={{
                 padding: 50,
@@ -185,42 +240,41 @@ function XRaySection(props: XRaySectionProps) {
                 borderRadius: 4,
               }}
             />
-          </Spin>
+          </Spin> */}
+          <Spin indicator={<LoadingOutlined spin />} />
         </div>
       );
-    }
-    if (error || !xRayURL) {
-      return (
-        <XRayContainer>
-          <ToolBar />
-          <Result
-            status="error"
-            title="There are some problems with loading x-ray."
-            extra={
-              null
-              //   <Button type="primary" key="console">
-              //     Go Console
-              //   </Button>
-            }
-          />
-        </XRayContainer>
+    } else if (error || !xRayURL) {
+      content = (
+        <Result
+          status="error"
+          title="There are some problems with loading x-ray."
+          extra={
+            null
+            //   <Button type="primary" key="console">
+            //     Go Console
+            //   </Button>
+          }
+        />
+      );
+    } else {
+      content = (
+        <>
+          <CanvasSection ImageURL={xRayURL} />
+          {siderType !== "info" && siderType !== "report" && (
+            <BBFindingsContainer>
+              <BBFindings />
+            </BBFindingsContainer>
+          )}
+        </>
       );
     }
 
     return (
-      <>
-        <XRayContainer>
-          <ToolBar />
-          <CanvasSection ImageURL={xRayURL} />
-        </XRayContainer>
-        {siderType != "info" && siderType != "report" && (
-          <>
-            <BBFindingsContainer>
-              <BBFindings />
-            </BBFindingsContainer>
-          </>
-        )}
-      </>
+      <XRayContainer>
+        <ToolBar />
+        {content}
+      </XRayContainer>
     );
   };
 

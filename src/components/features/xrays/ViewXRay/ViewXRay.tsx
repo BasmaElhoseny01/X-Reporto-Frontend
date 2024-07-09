@@ -1,5 +1,5 @@
 /*eslint-disable */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import axios from "../../../../services/apiService";
 import { useParams } from "react-router-dom";
@@ -88,6 +88,10 @@ function ViewXRay() {
   // Redux States
   const token = useSelector((state: MainState) => state.token);
 
+  // // Memoize Id and token to prevent unnecessary re-renders
+  // const memoizedId = useMemo(() => Id, [Id]);
+  // const memoizedToken = useMemo(() => token, [token]);
+
   const [caseData, setCaseData] = useState<CaseType>(null);
   const [lmResultData, setLmResultData] = useState<ResultType>(null);
   const [templateResultData, setTemplateResultData] =
@@ -103,72 +107,80 @@ function ViewXRay() {
   // const { ChangeCase } = bindActionCreators(actionsCreators, dispatch);
 
   useEffect(() => {
-    if (Id) {
-      setFetching(true);
-      setError(false); // Reset error state before starting the fetch
+    // console.log("UseEffect........")
+    const fetchData = async () => {
+      if (Id) {
+        let fetchStartTime = Date.now(); // Record start time before fetch
+        setFetching(true);
+        setError(false); // Reset error state before starting the fetch
 
-      let hasCaseData = false;
+        try {
+          const caseResponse = await fetchStudy(Id, token);
+          if (caseResponse) {
+            setCaseData(caseResponse);
 
-      const fetchPromise = fetchStudy(Id, token)
-        .then((response) => {
-          if (response) {
-            setCaseData(response);
-            hasCaseData = true;
+            const resultsResponse = await fetchStudyResults(Id, token);
+            if (resultsResponse) {
+              if (resultsResponse.length === 0) {
+                message.info("No results found for this case generated yet.");
+              } else {
+                let lmResultFound = false;
+                let templateResultFound = false;
+
+                for (let i = 0; i < resultsResponse.length; i++) {
+                  const result = resultsResponse[i];
+
+                  if (result.type === "llm") {
+                    setLmResultData(result);
+                    lmResultFound = true;
+                  } else if (result.type === "template") {
+                    setTemplateResultData(result);
+                    templateResultFound = true;
+                  }
+                }
+
+                if (!lmResultFound) {
+                  message.error("No LM results found for this case.");
+                }
+                if (!templateResultFound) {
+                  message.error("No template results found for this case.");
+                }
+              }
+            } else {
+              setError(true);
+              message.error("Failed to fetch result data.");
+            }
           } else {
             setError(true);
             message.error("Failed to fetch case data.");
           }
-        })
-        .finally(() => {
-          setFetching(false);
-        });
+        } catch (error: any) {
+          setError(true);
+          message.error("Error fetching data: " + error.message);
+        } finally {
+          // Calculate time elapsed since fetch started
+          let elapsedTime = Date.now() - fetchStartTime;
+          let delayTime = Math.max(0, 1000 - elapsedTime); // Ensure at least 1 second delay
 
-      const timeoutPromise = new Promise((resolve) =>
-        setTimeout(resolve, 1000)
-      );
-
-      fetchPromise.then(() => {
-        if (hasCaseData) {
-          Promise.all([fetchStudyResults(Id, token), timeoutPromise]).then(
-            ([response]) => {
-              if (response) {
-                if (response.length === 0) {
-                  message.info("No results found for this case generated yet.");
-                } else {
-                  let lmResultFound = false;
-                  let templateResultFound = false;
-
-                  for (let i = 0; i < response.length; i++) {
-                    console.log(response[i]);
-                    if (response[i].type === "llm") {
-                      setLmResultData(response[i]);
-                      lmResultFound = true;
-                    } else if (response[i].type === "template") {
-                      setTemplateResultData(response[i]);
-                      templateResultFound = true;
-                    }
-                  }
-
-                  if (!lmResultFound) {
-                    message.error("No LM results found for this case.");
-                  }
-                  if (!templateResultFound) {
-                    message.error("No template results found for this case.");
-                  }
-                }
-              } else {
-                setError(true);
-                message.error("Failed to fetch result data.");
-              }
-            }
-          );
+          if (delayTime === 0) {
+            // If fetch took longer than 1 second, set fetching to false immediately
+            setFetching(false);
+          } else {
+            // Otherwise, delay setting fetching to false by delayTime
+            setTimeout(() => {
+              setFetching(false);
+            }, delayTime);
+          }
         }
-      });
-    } else {
-      setFetching(false);
-    }
-  }, [Id, token]);
+      } else {
+        setFetching(false);
+      }
+    };
 
+    fetchData();
+  }, []);
+
+  // }, [Id, token]);
   // Context
   const { siderType, handleSetSiderType } = useView();
   // States for the Sider
@@ -218,7 +230,6 @@ function ViewXRay() {
             width: "100%",
           }}
         >
-          {" "}
           <Spin tip="Loading" size="large">
             <div
               style={{
@@ -277,7 +288,7 @@ function ViewXRay() {
           xRayPath={lmResultData ? lmResultData.xray_path : null}
           regionPath={lmResultData ? lmResultData.region_path : null}
         />
-        <RightSection />
+        {/* <RightSection /> */}
       </>
     );
   };
