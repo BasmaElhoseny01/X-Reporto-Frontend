@@ -62,7 +62,7 @@ const GeneralTable = (props: GeneralTableProps) => {
       .finally(() => {
         setLoading(false); // Set fetching to false after 0.5 seconds
       });
-  }, [page]);
+  }, []);
 
   const dispatch = useDispatch();
   const ChangeTable = bindActionCreators(ChangeTableSearch, dispatch);

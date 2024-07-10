@@ -43,7 +43,7 @@ export const SubTitle = styled(Flex)`
 export const InputContainer = styled(Flex)`
   align-items: center;
   width: 50%;
-  margin: 0 20px 0 0;
+  margin: 0 30px 0 0;
   justify-content: space-between;
   `;
 

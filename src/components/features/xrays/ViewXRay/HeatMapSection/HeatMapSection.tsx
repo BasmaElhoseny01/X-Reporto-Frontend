@@ -7,7 +7,7 @@ import { LineHeader, Title } from "./HeatMapSection.Styles";
 import InputRow from "./InputRow";
 import { ResultType } from "../../../../../types/Result";
 import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
-import { Flex, Spin, Typography } from "antd";
+import { Flex, message, Spin, Typography } from "antd";
 import axios from '../../../../../services/apiService';
 import { useSelector } from "react-redux";
 import { MainState } from "../../../../../state";
@@ -17,12 +17,12 @@ interface HeatMapSectionProps {
   // Props Here
   useAI: boolean;
   toggleUseAI: () => void;
-  bot_img_blue: string;
-  bot_img_grey: string;
+  botImgBlue: string;
+  botImgGrey: string;
 
   templateResultData: ResultType;
   customResultData: ResultType;
-  case_id: number | null;
+  caseId: number | null;
 }
 
 
@@ -31,11 +31,11 @@ function HeatMapSection(props: HeatMapSectionProps) {
   const {
     useAI,
     toggleUseAI,
-    bot_img_blue,
-    bot_img_grey,
+    botImgBlue,
+    botImgGrey,
     templateResultData,
     customResultData,
-    case_id,
+    caseId,
   } = props;
 
   const [atelectasis,setAtelectasis] = useState<string | null>("");
@@ -49,8 +49,76 @@ function HeatMapSection(props: HeatMapSectionProps) {
   const [probabilities,setProbabilities] = useState<number[] | null>(null);
   const [fetching, setFetching] = useState<boolean>(true);
   const [report,setReport]=useState<string>("");
-  const [reportPath,setReportPath]=useState<string>("");
+  const [data,setdata]=useState(templateResultData);
+  const [resId,setResId]=useState(templateResultData?.id);
 
+  const checkResultStatus = async (
+    result_id: number,
+    token: string
+  ): Promise<ResultType | null> => {
+    console.log("Checking report status... result_id", result_id);
+    try {
+      const response = await axios.get(`/api/v1/results/${result_id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.data.report_path) {
+        return response.data;
+      }
+      return null;
+    } catch (error) {
+      console.log("Error checking report status: ", error);
+      return null;
+    }
+  };
+  
+  const pollResultStatus = async (
+    result_id: number,
+    token: string,
+    setdata: (data: ResultType) => void,
+    setUseAI: (data: boolean) => void
+  ) => {
+    const interval = 5000; // Poll every 5 seconds
+    const maxAttempts = 20; // Maximum number of attempts before giving up
+    let attempts = 0;
+  
+    const hide = message.loading("Generating report...", 0); // Display loading message with spinner
+  
+    const poll = async () => {
+      if (attempts < maxAttempts) {
+        try {
+          const result = await checkResultStatus(result_id, token);
+          console.log("Report status:", result);
+          if (result) {
+            hide(); // Close loading message
+            message.success("Report is ready!");
+            setdata(result);
+            setProbabilities(result.confidence)
+            getHeatmapImages(result.id);
+            getReport(result.report_path);
+            setFetching(false)
+            // Handle the ready report (e.g., download it, display it, etc.)
+            console.log("Report is ready:", result);
+            return;
+          } else {
+            attempts++;
+            setTimeout(poll, interval);
+          }
+        } catch (error) {
+          console.error("Error checking report status:", error);
+          hide(); // Close loading message
+          message.error("Failed to check report status");
+        }
+      } else {
+        hide(); // Close loading message
+        message.error("Report generation timed out");
+        window.location.reload();
+      }
+    };
+  
+    poll();
+  };
   const getHeatmapImages = async (id:number) => {
     axios.get(`api/v1/results/${id}/get_heatmap/0`,{
       headers: {
@@ -156,36 +224,28 @@ function HeatMapSection(props: HeatMapSectionProps) {
     );
   }
   useEffect(() => {
-    if(templateResultData === null ) {
-      // run heatmap
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      axios.post(`api/v1/studies/${props.case_id}/run_heatmap`).then((response) => {
-      }).catch((error) => {
-        console.log("Error running heatmap: ", error);
-      });
-      setTimeout(() => {
-        if(props.case_id !== null) {
-          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-          getHeatmapImages(props.case_id);
-          axios.get(`api/v1/results/${props.case_id}`).then((response) => {
-            setProbabilities(response.data.confidence);
-            getReport(response.data.report_path);
-          }).catch((error) => {
-            console.log("Error getting heatmap: ", error);
-          });
-          setFetching(false);
-        }
-      }, 30000);
-    }
-    else {
-      setProbabilities(templateResultData.confidence);
-      if (props.case_id !== null) {
-        getHeatmapImages(templateResultData.id);
-        getReport(templateResultData.report_path);
-        setFetching(false)
+    console.log("props :",props)
+    if (data === null) {
+      if (props.caseId !== null) {
+        // run heatmap
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        axios.post(`api/v1/studies/${props.caseId}/run_heatmap`).then((response) => {
+          setResId(response.data.id);
+        }).catch((error) => {
+          console.log("Error running heatmap: ", error);
+        }).finally(() => {
+          if (resId !== undefined && resId !== null){
+            pollResultStatus(resId, token, setdata, toggleUseAI);
+            }
+        });
       }
+    }else{
+      setProbabilities(data.confidence)
+      getHeatmapImages(data.id);
+      getReport(data.report_path);
+      setFetching(false);
     }
-  }, []);
+  }, [resId,props.caseId]);
 
   return (
     fetching ? 

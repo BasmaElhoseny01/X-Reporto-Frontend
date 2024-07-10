@@ -358,16 +358,16 @@ function ViewXRay() {
       label: "",
       icon: <HeatMapOutlined style={{ fontSize: "16px" }} />,
       children: (
-        // <HeatMapSection
-        //   botImgBlue={BotBlue}
-        //   botImgGrey={BotGray}
-        //   useAI={useAI}
-        //   toggleUseAI={toggleUseAI}
-        //   templateResultData={templateResultData}
-        //   customResultData={customResultData}
-        //   case_id={caseData ? caseData.id : null}
-        // />
-        <h1>Heat Map</h1>
+        <HeatMapSection
+          caseId={caseData ? caseData.id : null}
+          botImgBlue={BotBlue}
+          botImgGrey={BotGray}
+          useAI={useAI}
+          toggleUseAI={toggleUseAI}
+          templateResultData={templateResultData}
+          customResultData={customResultData}
+        />
+        // <h1>Heat Map</h1>
       ),
     },
     {
