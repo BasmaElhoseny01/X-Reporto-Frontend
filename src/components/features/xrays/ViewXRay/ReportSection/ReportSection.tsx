@@ -1,24 +1,37 @@
-/*eslint-disable */
 import React, { useState, useRef, useMemo, useEffect } from "react";
-import { Typography, message, Spin } from "antd";
-const { Title } = Typography;
-import {
-  ReportHeader,
-  ButtonContainer,
-  ReportEditor,
-  // ReportDiv,
-  LoadingContainer,
-  ReportSectionContainer,
-} from "./ReportSection.Styles";
-import LineHeader from "../../../../common/LineHeader/LineHeader";
-import SelectionTemplate, {
-  defaultTemplate,
-} from "../../../../common/SelectionTemplate/SelectionTemplate";
-import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
+
+// services
+import axios from "../../../../../services/apiService";
+
+// Redux
 import { useSelector } from "react-redux";
 import { MainState } from "../../../../../state/Reducers";
-import axios from "../../../../../services/apiService";
+
+// Antd Design
+import { Typography, message } from "antd";
+const { Title } = Typography;
+
+// Styled Components
+import {
+  ButtonContainer,
+  ReportEditor,
+  ReportSectionContainer,
+} from "./ReportSection.Styles";
+
+// Components
+import LineHeader from "../../../../common/LineHeader/LineHeader";
+import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
+
+// ToDo Use SelectionTemplate
+// import SelectionTemplate, {
+//   defaultTemplate,
+// } from "../../../../common/SelectionTemplate/SelectionTemplate";
+import { defaultTemplate } from "../../../../common/SelectionTemplate/SelectionTemplate";
+
+// Types
 import { ResultType } from "../../../../../types/Result";
+
+// Server Fetch
 import {
   createCustomResult,
   GenerateReport,
@@ -31,15 +44,14 @@ interface ReportSectionProps {
   useAI: boolean;
   setUseAI: (data: boolean) => void;
   toggleUseAI: () => void;
-  bot_img_blue: string;
-  bot_img_grey: string;
+  botImgBlue: string;
+  botImgGrey: string;
 
   llmResultData: ResultType;
   customResultData: ResultType;
-  originalXRayPath: string | null;
 
   xRayPath: string | null;
-  case_id: number | null;
+  caseId: number | null;
 
   setLmResultData: (data: ResultType) => void;
 }
@@ -98,12 +110,11 @@ function ReportSection(props: ReportSectionProps) {
     useAI,
     setUseAI,
     toggleUseAI,
-    bot_img_blue,
-    bot_img_grey,
+    botImgBlue,
+    botImgGrey,
     llmResultData,
     customResultData,
-    originalXRayPath,
-    case_id,
+    caseId,
     xRayPath,
 
     setLmResultData,
@@ -113,22 +124,6 @@ function ReportSection(props: ReportSectionProps) {
 
   // Text Editor
   const editor = useRef(null);
-  const [content, setContent] = useState<string>(defaultTemplate); // Text Editor Content
-  const [reportContent, setReportContent] = useState<string>(""); // Finding Report Content
-
-  const [selectedValue, setSelectedValue] = useState<string>("-1");
-  const delay = (ms: number): Promise<void> =>
-    new Promise((resolve) => setTimeout(resolve, ms));
-  // const [resultId, setResultId] = useState<number>(0);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [reportNotExist, setReportNotExist] = useState<boolean>(true);
-  const [visible, setVisible] = useState<boolean>(true);
-
-  const handleSelectionChange = (value: string, labelValue: string): void => {
-    setSelectedValue(labelValue);
-    setContent(value);
-  };
-
   const config = useMemo(
     () => ({
       readonly: false,
@@ -136,6 +131,11 @@ function ReportSection(props: ReportSectionProps) {
     }),
     []
   );
+
+  // States
+  const [content, setContent] = useState<string>(defaultTemplate); // Text Editor Content
+  // const [reportContent, setReportContent] = useState<string>(""); // Finding Report Content
+  // const [selectedValue, setSelectedValue] = useState<string>("-1");
 
   useEffect(() => {
     // console.log("ReportSection.....", llmResultData, customResultData, useAI);
@@ -155,7 +155,7 @@ function ReportSection(props: ReportSectionProps) {
         }
 
         // parse the report content
-        setReportContent(reportResponse);
+        // setReportContent(reportResponse);
         setContent(
           content.replace(
             '<p id="findings"></p>',
@@ -217,10 +217,10 @@ function ReportSection(props: ReportSectionProps) {
       if (!result) {
         // Create New Custom Result
         console.log("Creating New Custom With image_path: ", xRayPath);
-        if (!case_id) throw new Error("Case ID is null");
+        if (!caseId) throw new Error("Case ID is null");
 
         const resultResponse = await createCustomResult(
-          case_id,
+          caseId,
           xRayPath,
           token
         );
@@ -235,7 +235,7 @@ function ReportSection(props: ReportSectionProps) {
         console.log("Result ID: ", result.id);
 
         // need to update the xray path
-        if (!case_id) throw new Error("Case ID is null");
+        if (!caseId) throw new Error("Case ID is null");
         const updatedResult = await updateCustomResult(
           // case_id,
           result.id,
@@ -268,59 +268,6 @@ function ReportSection(props: ReportSectionProps) {
       message.error("Failed to submit report");
       console.log("Error in handleSubmitReport(): ", error);
     }
-    // console.log("reportContent", reportContent);
-    // Create a new DOM parser
-    // const parser = new DOMParser();
-    // // Parse the HTML string into a document
-    // const doc = parser.parseFromString(content, "text/html");
-    // // Select the <p> element by its ID
-    // const findingsElement = doc.getElementById("findings");
-    // if (findingsElement) {
-    //   // Get the text content inside the <p> element
-    //   const findingsText = findingsElement.textContent;
-    //   if (!findingsText) {
-    //     message.error("Please fill in the findings section");
-    //     return;
-    //   }
-    // try {
-    //     let result: ResultType | null = customResultData;
-    //     if (!customResultData) {
-    //       // Create New Custom Result
-    //       console.log("Creating New Custom");
-    //       if (case_id) {
-    //         const response = await createCustomResult(
-    //           case_id,
-    //           llmResultData ? llmResultData.xray_path : originalXRayPath,
-    //           token
-    //         );
-    //         console.log("Response: ", response);
-    //         result = response;
-    //       } else {
-    //         throw new Error("Case ID is null");
-    //       }
-    //     }
-    //     // Upload the report to the result
-    //     console.log("Saving Result ......: ", result);
-    //     if (result) {
-    //       const uploadResponse = await uploadReportFile(
-    //         findingsText,
-    //         result.id,
-    //         token
-    //       );
-    //       console.log("Upload Response: ", uploadResponse);
-    //       if (uploadResponse) {
-    //         message.success("Report submitted successfully!");
-    //       }
-    //     } else {
-    //       throw new Error("Failed to create custom result");
-    //     }
-    //   } catch (error) {
-    //     console.error("Error uploading report:", error);
-    //     message.error("Failed to submit report");
-    //   }
-    // } else {
-    //   message.error("No Finding Section Found!");
-    // }
   };
 
   return (
@@ -335,7 +282,7 @@ function ReportSection(props: ReportSectionProps) {
       >
         <Title level={3}>Report</Title>
         <img
-          src={useAI ? bot_img_blue : bot_img_grey}
+          src={useAI ? botImgBlue : botImgGrey}
           alt="Bot"
           style={{ width: 40, height: 40, cursor: "pointer" }}
           onClick={toggleUseAI}
@@ -361,7 +308,7 @@ function ReportSection(props: ReportSectionProps) {
             )} */}
         <PrimaryButton
           onClick={() =>
-            GenerateReport(case_id, token, setLmResultData, setUseAI)
+            GenerateReport(caseId, token, setLmResultData, setUseAI)
           }
           size="large"
         >

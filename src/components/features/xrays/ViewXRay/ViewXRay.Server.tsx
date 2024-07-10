@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { message } from "antd";
 import axios from "../../../../services/apiService";
 import { ResultType } from "../../../../types/Result";

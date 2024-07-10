@@ -1,22 +1,23 @@
-/*eslint-disable*/
 import React, { useEffect } from "react";
 
 // Services
 import axios from "../../../../../services/apiService";
+
+// Redux
+import { useSelector } from "react-redux";
+import { MainState } from "../../../../../state";
 
 // Context
 import { useAnnotations } from "../AnnotationProvider";
 
 // Ant Design
 import Title from "antd/es/typography/Title";
-import Paragraph from "antd/es/typography/Paragraph";
-import Text from "antd/es/typography/Text";
+import { message, Select } from "antd";
 
 // Styled Components
 import {
   BBFindingsSectionContainer,
   BBFindingTitleContainer,
-  BBFindingButtonsContainer,
   BBAllFindingsContainer,
   BBFindingContainer,
   StyledTextArea,
@@ -27,20 +28,20 @@ import {
 // Components
 import LineHeader from "../../../../common/LineHeader/LineHeader";
 import FindingText from "./FindingText/FindingText";
-import SecondaryButton from "../../../../common/SecondaryButton/SecondaryButton";
-
-// Assets
-import BotBlue from "../../../../../assets/images/bot-blue.svg";
-import BotRed from "../../../../../assets/images/bot-red.svg";
-import BotGray from "../../../../../assets/images/bot-grey.svg";
-
-import { Empty, Input, message, Select } from "antd";
 import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
+
+// Types
 import { ResultType } from "../../../../../types/Result";
-import { useSelector } from "react-redux";
-import { MainState } from "../../../../../state";
 import { Region } from "../XRay.types";
-import { createCustomResult, GenerateReport, updateCustomResult } from "../ViewXRay.Server";
+
+// Server Fetch
+import {
+  createCustomResult,
+  GenerateReport,
+  updateCustomResult,
+} from "../ViewXRay.Server";
+
+// Constants
 import {
   anatomicalRegions,
   anatomicalRegionsIndexToKey,
@@ -52,8 +53,8 @@ interface BBSectionProps {
   useAI: boolean;
   setUseAI: (data: boolean) => void;
   toggleUseAI: () => void;
-  bot_img_blue: string;
-  bot_img_grey: string;
+  botImgBlue: string;
+  botImgGrey: string;
 
   llmResultData: ResultType;
   customResultData: ResultType;
@@ -61,7 +62,7 @@ interface BBSectionProps {
   setCustomResultData: (data: ResultType) => void;
   // originalXRayPath: string | null;
   xRayPath: string | null;
-  case_id: number | null;
+  caseId: number | null;
 }
 
 // Server APIS
@@ -77,8 +78,8 @@ const uploadBBoxesFile = async (
     const text = regions
       .map((region) => {
         const { x, y, width, height } = region.box;
-        const region_id = region.title_id;
-        return `${region_id} ${x} ${y} ${width} ${height}`;
+        const regionId = region.title_id;
+        return `${regionId} ${x} ${y} ${width} ${height}`;
       })
       .join("\n");
     // console.log("Text: ", text);
@@ -144,15 +145,15 @@ function BBSection(props: BBSectionProps) {
     useAI,
     setUseAI, // use this only after saving llm result
     toggleUseAI,
-    bot_img_blue,
-    bot_img_grey,
+    botImgBlue,
+    botImgGrey,
     llmResultData,
     customResultData,
     setLmResultData,
     setCustomResultData,
     // originalXRayPath,
     xRayPath,
-    case_id,
+    caseId,
   } = props;
 
   const token = useSelector((state: MainState) => state.token);
@@ -188,9 +189,9 @@ function BBSection(props: BBSectionProps) {
         // Create New Custom Result
         console.log("Creating New Custom With image_path: ", xRayPath);
 
-        if (!case_id) throw new Error("Case ID is null");
+        if (!caseId) throw new Error("Case ID is null");
         const resultResponse = await createCustomResult(
-          case_id,
+          caseId,
           xRayPath,
           token
         );
@@ -205,7 +206,7 @@ function BBSection(props: BBSectionProps) {
         console.log("Result ID: ", result.id);
 
         // need to update the xray path
-        if (!case_id) throw new Error("Case ID is null");
+        if (!caseId) throw new Error("Case ID is null");
         const updatedResult = await updateCustomResult(
           // case_id,
           result.id,
@@ -273,7 +274,7 @@ function BBSection(props: BBSectionProps) {
         >
           <Title level={3}>All Findings</Title>
           <img
-            src={useAI ? bot_img_blue : bot_img_grey}
+            src={useAI ? botImgBlue : botImgGrey}
             alt="Bot"
             style={{ width: 40, height: 40, cursor: "pointer" }}
             onClick={toggleUseAI}
@@ -304,17 +305,9 @@ function BBSection(props: BBSectionProps) {
           }}
         >
           <BBFindingTitleContainer>
-            <label
-            // style={{
-            // width: "100%",
-            // }}
-            >
-              Region
-            </label>
+            <label>Region</label>
             <Select
               showSearch
-              // style={{ width: "800px" }}
-              // value={selectedAnnotation?.title}
               value={
                 selectedAnnotation && selectedAnnotation?.title_id != -1
                   ? anatomicalRegionsIndexToKey[selectedAnnotation?.title_id]
@@ -367,7 +360,7 @@ function BBSection(props: BBSectionProps) {
         </PrimaryButton>{" "}
         <PrimaryButton
           onClick={() =>
-            GenerateReport(case_id, token, setLmResultData, setUseAI)
+            GenerateReport(caseId, token, setLmResultData, setUseAI)
           }
           size="large"
         >

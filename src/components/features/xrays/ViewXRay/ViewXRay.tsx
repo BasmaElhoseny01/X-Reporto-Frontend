@@ -338,8 +338,8 @@ function ViewXRay() {
       children: (
         // <h1>BBSection</h1>
         <BBSection
-          bot_img_blue={BotBlue}
-          bot_img_grey={BotGray}
+          botImgBlue={BotBlue}
+          botImgGrey={BotGray}
           useAI={useAI}
           setUseAI={setUseAI}
           toggleUseAI={toggleUseAI}
@@ -349,7 +349,7 @@ function ViewXRay() {
           setCustomResultData={setCustomResultData}
           // xRayPath={caseData ? caseData.xray_path : null}
           xRayPath={xRayPath}
-          case_id={caseData ? caseData.id : null}
+          caseId={caseData ? caseData.id : null}
         />
       ),
     },
@@ -359,8 +359,8 @@ function ViewXRay() {
       icon: <HeatMapOutlined style={{ fontSize: "16px" }} />,
       children: (
         // <HeatMapSection
-        //   bot_img_blue={BotBlue}
-        //   bot_img_grey={BotGray}
+        //   botImgBlue={BotBlue}
+        //   botImgGrey={BotGray}
         //   useAI={useAI}
         //   toggleUseAI={toggleUseAI}
         //   templateResultData={templateResultData}
@@ -376,16 +376,15 @@ function ViewXRay() {
       icon: <FileTextOutlined style={{ fontSize: "16px" }} />,
       children: (
         <ReportSection
-          bot_img_blue={BotBlue}
-          bot_img_grey={BotGray}
+          botImgBlue={BotBlue}
+          botImgGrey={BotGray}
           useAI={useAI}
           setUseAI={setUseAI}
           toggleUseAI={toggleUseAI}
           llmResultData={llmResultData}
           customResultData={customResultData}
-          originalXRayPath={caseData ? caseData.xray_path : null}
           xRayPath={xRayPath}
-          case_id={caseData ? caseData.id : null}
+          caseId={caseData ? caseData.id : null}
           setLmResultData={setllmResultData}
         />
       ),
