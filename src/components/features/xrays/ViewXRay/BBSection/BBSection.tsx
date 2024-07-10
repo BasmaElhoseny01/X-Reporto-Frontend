@@ -214,11 +214,13 @@ function BBSection(props: BBSectionProps) {
     annotations,
     handleCEditAnnotationTitle,
     handleEditAnnotationFinding,
+    handleSelectAnnotation,
   } = useAnnotations();
 
   useEffect(() => {
     console.log("BBSection ", props);
-  }, []);
+    handleSelectAnnotation(null);
+  }, [useAI, llmResultData, customResultData]);
 
   const handelSaveResult = async () => {
     try {

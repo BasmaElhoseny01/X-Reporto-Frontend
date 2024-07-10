@@ -211,7 +211,8 @@ function XRaySection(props: XRaySectionProps) {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    console.log("XRaySection .........", props);
+    // console.log("XRaySection .........", props);
+    console.log("XRaySection .........");
 
     const fetchOriginalXRay = async () => {
       try {
