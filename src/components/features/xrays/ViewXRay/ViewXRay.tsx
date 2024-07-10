@@ -276,7 +276,8 @@ function ViewXRay() {
         llmResultData={llmResultData}
         customResultData={customResultData}
         useAI={useAI}
-        originalXRayPath={caseData ? caseData.xray_path : null}
+        // originalXRayPath={caseData ? caseData.xray_path : null}
+        caseId={caseData ? caseData.id : null}
       />
     );
   };

@@ -36,7 +36,8 @@ import Test from "../Test";
 import { ResultType } from "../../../../../types/Result";
 // Interfaces
 interface XRaySectionProps {
-  originalXRayPath: string | null;
+  caseId: number | null;
+  // originalXRayPath: string | null;
   llmResultData: ResultType | null;
   customResultData: ResultType | null;
 
@@ -48,111 +49,135 @@ interface XRaySectionProps {
 }
 
 // Server Fetch
-// const downloadXRayFile = async (file_path: string, token: string) => {
-//   try {
-//     const response = await axios.get(`api/v1/results/download_file`, {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//       params: {
-//         file_path: file_path,
-//       },
-//       responseType: "blob", // Change responseType to "blob"
-//     });
+const downloadResizedOriginalXRayFile = async (id: number, token: string) => {
+  try {
+    const response = await axios.get(
+      `api/v1/studies/${id}/download_resized_image`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        responseType: "blob", // Change responseType to "blob"
+      }
+    );
 
-//     // const blob = await response.blob();
-//     // const url = URL.createObjectURL(blob);
+    // Create a URL for the image blob and set it to an <img> element
+    const imageURL = URL.createObjectURL(response.data);
+    // console.log(imageURL);
 
-//     // Create a URL for the image blob and set it to an <img> element
-//     const imageURL = URL.createObjectURL(response.data);
-//     console.log(imageURL);
+    return imageURL;
+  } catch (error) {
+    console.error("Error fetching Resized X-Ray: ", error);
+    return null;
+  }
+};
 
-//     return imageURL;
-//   } catch (error) {
-//     console.log("Error fetching X-Ray: ", error);
-//     return null;
-//   }
-// };
+// Server Fetch
+const downloadXRayFile = async (file_path: string, token: string) => {
+  try {
+    const response = await axios.get(`api/v1/results/download_file`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        file_path: file_path,
+      },
+      responseType: "blob", // Change responseType to "blob"
+    });
 
-// const downloadBBoxesFile = async (file_path: string, token: string) => {
-//   try {
-//     const response = await axios.get(`api/v1/results/download_file`, {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//       params: {
-//         file_path: file_path,
-//       },
-//       responseType: "text",
-//     });
+    // const blob = await response.blob();
+    // const url = URL.createObjectURL(blob);
 
-//     // Split the text into lines and trim any extra whitespace
-//     const lines = response?.data?.trim().split("\n");
-//     // console.log("lines", lines);
+    // Create a URL for the image blob and set it to an <img> element
+    const imageURL = URL.createObjectURL(response.data);
+    console.log(imageURL);
 
-//     const regions: Region[] = [];
+    return imageURL;
+  } catch (error) {
+    console.error("Error fetching X-Ray: ", error);
+    return null;
+  }
+};
 
-//     // Process each line to extract region ID and bounding box coordinates
-//     lines.forEach((line: string) => {
-//       const parts = line.trim().split(" ");
+const downloadBBoxesFile = async (file_path: string, token: string) => {
+  try {
+    const response = await axios.get(`api/v1/results/download_file`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        file_path: file_path,
+      },
+      responseType: "text",
+    });
 
-//       // Parse region ID and coordinates
-//       const regionId = parseInt(parts[0]);
-//       const x = parseFloat(parts[1]);
-//       const y = parseFloat(parts[2]);
-//       const width = parseFloat(parts[3]);
-//       const height = parseFloat(parts[4]);
+    // Split the text into lines and trim any extra whitespace
+    const lines = response?.data?.trim().split("\n");
+    // console.log("lines", lines);
 
-//       // Create object and push to boundingBoxes array
-//       const boundingBox: Box = {
-//         x,
-//         y,
-//         width,
-//         height,
-//       };
+    const regions: Region[] = [];
 
-//       regions.push({
-//         id: regionId.toString(),
-//         title: anatomicalRegionsIndexToKey[regionId],
-//         finding: "",
-//         // ai: false,
-//         box: boundingBox,
-//       });
-//     });
+    // Process each line to extract region ID and bounding box coordinates
+    lines.forEach((line: string) => {
+      const parts = line.trim().split(" ");
 
-//     return regions;
-//   } catch (error) {
-//     console.log("Error fetching Bounding Boxes: ", error);
-//     return null;
-//   }
-// };
+      // Parse region ID and coordinates
+      const regionId = parseInt(parts[0]);
+      const x = parseFloat(parts[1]);
+      const y = parseFloat(parts[2]);
+      const width = parseFloat(parts[3]);
+      const height = parseFloat(parts[4]);
 
-// const downloadBBoxesFindingsFile = async (file_path: string, token: string) => {
-//   try {
-//     const response = await axios.get(`api/v1/results/download_file`, {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//       params: {
-//         file_path: file_path,
-//       },
-//       responseType: "text",
-//     });
+      // Create object and push to boundingBoxes array
+      const boundingBox: Box = {
+        x,
+        y,
+        width,
+        height,
+      };
 
-//     // Split the text into lines and trim any extra whitespace
-//     const lines = response?.data?.trim().split("\n");
-//     // console.log("lines", lines);
+      regions.push({
+        id: regionId.toString(),
+        title: anatomicalRegionsIndexToKey[regionId],
+        finding: "",
+        // ai: false,
+        box: boundingBox,
+      });
+    });
 
-//     const findings: string[] = lines;
-//     return findings;
-//   } catch (error) {
-//     console.log("Error fetching Bounding Boxes Findings: ", error);
-//     return null;
-//   }
-// };
+    return regions;
+  } catch (error) {
+    console.error("Error fetching Bounding Boxes: ", error);
+    return null;
+  }
+};
+
+const downloadBBoxesFindingsFile = async (file_path: string, token: string) => {
+  try {
+    const response = await axios.get(`api/v1/results/download_file`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: {
+        file_path: file_path,
+      },
+      responseType: "text",
+    });
+
+    // Split the text into lines and trim any extra whitespace
+    const lines = response?.data?.trim().split("\n");
+    // console.log("lines", lines);
+
+    const findings: string[] = lines;
+    return findings;
+  } catch (error) {
+    console.error("Error fetching Bounding Boxes Findings: ", error);
+    return null;
+  }
+};
 
 function XRaySection(props: XRaySectionProps) {
-  const { originalXRayPath, llmResultData, customResultData, useAI } = props;
+  const { caseId, llmResultData, customResultData, useAI } = props;
 
   // Navigation
   const { navigateToHome } = useCustomNavigate();
@@ -171,105 +196,232 @@ function XRaySection(props: XRaySectionProps) {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    console.log("XRaySection", llmResultData, customResultData, useAI);
+    console.log("XRaySection", caseId, llmResultData, customResultData, useAI);
 
-    // const fetchData = async (xRayOnly: boolean) => {
-    //   if (xRayPath) {
-    //     // console.log("xRayPath", xRayPath);
-    //     let fetchStartTime = Date.now(); // Record start time before fetch
-    //     setFetching(true);
-    //     setError(false); // Reset error state before starting the fetch
+    const fetchOriginalXRay = async () => {
+      try {
+        if (!caseId) {
+          throw new Error("No case ID found");
+        }
 
+        const xRayResponse = await downloadResizedOriginalXRayFile(
+          caseId,
+          token
+        );
+        console.log("xRayResponse", xRayResponse);
+        setXRayURL(xRayResponse);
+      } catch (error: any) {
+        message.error("Error failed to load X-Ray");
+        console.error("Error fetching X-Ray: ", error);
+      }
+    };
+
+    const fetchXRayResultData = async () => {
+      try {
+        if (!xRayPath) {
+          message.error("Failed to load X-Ray");
+          throw new Error("No Xray Path Found");
+        }
+
+        // (1) Download XRay
+        const xRayResponse = await downloadXRayFile(xRayPath, token);
+        if (!xRayResponse) {
+          // setError(true);
+          message.error("Failed to load X-Ray");
+          throw new Error("Failed to load X-Ray");
+        }
+        setXRayURL(xRayResponse);
+
+        // (2) Download Bounding Boxes
+        if (!regionPath) {
+          message.error("Failed to load Bounding Boxes");
+          throw new Error("No Region Path Found");
+        }
+        const bBoxesResponse = await downloadBBoxesFile(regionPath, token);
+        if (!bBoxesResponse) {
+          // setError(true);
+          message.error("Failed to load Bounding Boxes");
+          throw new Error("Failed to load Bounding Boxes");
+        }
+
+        // (3) Download Bounding Boxes Findings
+        if (!regionSentencePath) {
+          message.error("Failed to load Bounding Boxes Findings");
+          throw new Error("No Region Sentence Path Found");
+        }
+        const bBoxesFindingsResponse = await downloadBBoxesFindingsFile(
+          regionSentencePath,
+          token
+        );
+        if (!bBoxesFindingsResponse) {
+          message.error("Failed to load Bounding Boxes Findings");
+          throw new Error("Failed to load Bounding Boxes Findings");
+        }
+        // Merge Bounding Boxes and Bounding Boxes Findings
+        bBoxesResponse.forEach((region, index) => {
+          region.finding = bBoxesFindingsResponse[index];
+        });
+        handleSetAnnotations(bBoxesResponse);
+      } catch (error: any) {
+        // setError(true);
+        console.error("Error in fetchXRayResultData() : ", error);
+      }
+    };
+
+    // const fetchData = async (xRayOnly: boolean,downloadOriginalResized:boolean) => {
+    // const fetchData = async (
+    //   downloadOriginalXRay: boolean,
+    //   xRayOnly?: boolean
+    // ) => {
+    //   if (downloadOriginalXRay) {
     //     try {
-    //       const xRayResponse = await downloadXRayFile(xRayPath, token);
-    //       if (xRayResponse) {
+    //       if (caseId) {
+    //         const xRayResponse = await downloadResizedOriginalXRayFile(
+    //           caseId,
+    //           token
+    //         );
+    //         console.log("xRayResponse", xRayResponse);
     //         setXRayURL(xRayResponse);
-    //         // hasXRay = true;
+    //         // only download x-ray
+    //         return;
+    //       } else {
+    //         console.error("No case ID found");
+    //       }
+    //     } catch (error: any) {
+    //       console.error("Error fetching X-Ray: ", error);
+    //     }
+    //   } else {
+    //   }
 
-    //         if (xRayOnly) {
-    //           // only download x-ray
-    //           return;
-    //         }
+    // if (xRayPath) {
+    //   // console.log("xRayPath", xRayPath);
+    //   let fetchStartTime = Date.now(); // Record start time before fetch
+    //   setFetching(true);
+    //   setError(false); // Reset error state before starting the fetch
 
-    //         if (regionPath) {
-    //           try {
-    //             // console.log("regionPath", regionPath);
-    //             const bBoxesResponse = await downloadBBoxesFile(
-    //               regionPath,
-    //               token
-    //             );
-    //             if (bBoxesResponse) {
-    //               // Download the BB Findings
-    //               if (regionSentencePath) {
-    //                 const bBoxesFindingsResponse =
-    //                   await downloadBBoxesFindingsFile(
-    //                     regionSentencePath,
-    //                     token
-    //                   );
-    //                 if (bBoxesFindingsResponse) {
-    //                   // console.log("bBoxesFindingsResponse", bBoxesFindingsResponse);
-    //                   bBoxesResponse.forEach((region, index) => {
-    //                     region.finding = bBoxesFindingsResponse[index];
-    //                   });
-    //                 } else {
-    //                   // Don't Set Error to true
-    //                   // setError(true);
-    //                   console.log("Error fetching bounding boxes findings");
-    //                 }
+    //   try {
+    //     const xRayResponse = await downloadXRayFile(xRayPath, token);
+    //     if (xRayResponse) {
+    //       setXRayURL(xRayResponse);
+    //       // hasXRay = true;
+
+    //       if (xRayOnly) {
+    //         // only download x-ray
+    //         return;
+    //       }
+
+    //       if (regionPath) {
+    //         try {
+    //           // console.log("regionPath", regionPath);
+    //           const bBoxesResponse = await downloadBBoxesFile(
+    //             regionPath,
+    //             token
+    //           );
+    //           if (bBoxesResponse) {
+    //             // Download the BB Findings
+    //             if (regionSentencePath) {
+    //               const bBoxesFindingsResponse =
+    //                 await downloadBBoxesFindingsFile(
+    //                   regionSentencePath,
+    //                   token
+    //                 );
+    //               if (bBoxesFindingsResponse) {
+    //                 // console.log("bBoxesFindingsResponse", bBoxesFindingsResponse);
+    //                 bBoxesResponse.forEach((region, index) => {
+    //                   region.finding = bBoxesFindingsResponse[index];
+    //                 });
+    //               } else {
+    //                 // Don't Set Error to true
+    //                 // setError(true);
+    //                 console.log("Error fetching bounding boxes findings");
     //               }
-    //               handleSetAnnotations(bBoxesResponse);
-    //               // console.log("bBoxesResponse", bBoxesResponse);
-    //             } else {
-    //               // Don't Set Error to true
-    //               // setError(true);
-    //               message.error("Failed to load bounding boxes");
     //             }
-    //           } catch (error: any) {
+    //             handleSetAnnotations(bBoxesResponse);
+    //             // console.log("bBoxesResponse", bBoxesResponse);
+    //           } else {
     //             // Don't Set Error to true
     //             // setError(true);
     //             message.error("Failed to load bounding boxes");
-    //             console.log("Error fetching bounding boxes: ", error);
     //           }
+    //         } catch (error: any) {
+    //           // Don't Set Error to true
+    //           // setError(true);
+    //           message.error("Failed to load bounding boxes");
+    //           console.log("Error fetching bounding boxes: ", error);
     //         }
-    //       } else {
-    //         setError(true);
-    //         message.error("Failed to load X-Ray");
     //       }
-    //     } catch (error: any) {
+    //     } else {
     //       setError(true);
-    //       message.error("Error fetching X-Ray: " + error.message);
-    //     } finally {
-    //       // Calculate time elapsed since fetch started
-    //       let elapsedTime = Date.now() - fetchStartTime;
-    //       let delayTime = Math.max(0, 1000 - elapsedTime); // Ensure at least 1 second delay
-
-    //       if (delayTime === 0) {
-    //         // If fetch took longer than 1 second, set fetching to false immediately
-    //         setFetching(false);
-    //       } else {
-    //         // Otherwise, delay setting fetching to false by delayTime
-    //         setTimeout(() => {
-    //           setFetching(false);
-    //         }, delayTime);
-    //       }
+    //       message.error("Failed to load X-Ray");
     //     }
-    //   } else {
-    //     setFetching(false);
+    //   } catch (error: any) {
+    //     setError(true);
+    //     message.error("Error fetching X-Ray: " + error.message);
+    //   } finally {
+    //     // Calculate time elapsed since fetch started
+    //     let elapsedTime = Date.now() - fetchStartTime;
+    //     let delayTime = Math.max(0, 1000 - elapsedTime); // Ensure at least 1 second delay
+
+    //     if (delayTime === 0) {
+    //       // If fetch took longer than 1 second, set fetching to false immediately
+    //       setFetching(false);
+    //     } else {
+    //       // Otherwise, delay setting fetching to false by delayTime
+    //       setTimeout(() => {
+    //         setFetching(false);
+    //       }, delayTime);
+    //     }
     //   }
+    // } else {
+    //   setFetching(false);
+    // }
     // };
 
-    // //   // let hasXRay = false;
-    // // defien XrayPatha s string or null
+    // // //   // let hasXRay = false;
+    // // // defien XrayPatha s string or null
 
     // let xRayPath: string | null = null;
     // let regionPath = "";
     // let regionSentencePath = "";
 
+    // Scenario(1) NoLLMResult and NoCustomResult
+    if (!llmResultData && !customResultData) {
+      fetchOriginalXRay();
+      return;
+    }
+
+    // Scenario(2) useAI = true and LLMResultData
+    let xRayPath: string | null = null;
+    let regionPath = "";
+    let regionSentencePath = "";
+
+    if (useAI) {
+      if (!llmResultData) {
+        message.info("No AI results found for this case.................. >>>");
+        return;
+      }
+      xRayPath = llmResultData?.xray_path;
+      regionPath = llmResultData?.region_path;
+      regionSentencePath = llmResultData?.region_sentence_path;
+      fetchXRayResultData();
+    } else {
+      if (!customResultData) {
+        message.info(
+          "No custom results found for this case.................. >>>"
+        );
+        return;
+      }
+      xRayPath = customResultData?.xray_path;
+      regionPath = customResultData?.region_path;
+      regionSentencePath = customResultData?.region_sentence_path;
+      fetchXRayResultData();
+    }
+
     // if (useAI) {
     //   if (!llmResultData) {
     //     message.info("No AI results found for this case.");
-    //     xRayPath = originalXRayPath;
-    //     fetchData(true);
+    //     // xRayPath = originalXRayPath;
+    //     // fetchData(true);
     //     return;
     //   }
     //   xRayPath = llmResultData?.xray_path;
@@ -278,8 +430,8 @@ function XRaySection(props: XRaySectionProps) {
     // } else {
     //   if (!customResultData) {
     //     message.info("No custom results found for this case.");
-    //     xRayPath = originalXRayPath;
-    //     fetchData(true);
+    //     // xRayPath = originalXRayPath;
+    //     // fetchData(true);
     //     return;
     //   }
     //   xRayPath = customResultData?.xray_path;
@@ -358,7 +510,7 @@ function XRaySection(props: XRaySectionProps) {
     <ToolProvider>
       <StagePropertiesProvider>
         <XRaySectionContainer>
-          <ToolBar disabled={!xRayURL}/>
+          <ToolBar disabled={!xRayURL} />
           {/* <Test /> */}
           <CanvasSection ImageURL={xRayURL ?? ""} />
         </XRaySectionContainer>
