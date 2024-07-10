@@ -85,6 +85,33 @@ const createCustomResult = async (
   }
 };
 
+// const updateCustomResult = async (
+//   study_id: number,
+//   xray_path: string | null,
+//   token: string
+// ): Promise<ResultType | null> => {
+//   try {
+//     const response = await axios.put(
+//       `api/v1/results`,
+//       {
+//         xray_path: xray_path,
+//         study_id: study_id,
+//       },
+//       {
+//         headers: {
+//           Authorization: `Bearer ${token}`, // Include the token in the headers
+//           "Content-Type": "application/json", // Optional: Include if required by your API
+//         },
+//       }
+//     );
+//     console.log("Custom Result Created: ", response.data);
+//     return response.data;
+//   } catch (error) {
+//     console.error("Error creating custom result: ", error);
+//     return null;
+//   }
+// };
+ 
 const uploadBBoxesFile = async (
   regions: Region[],
   resultId: string | number,
@@ -204,9 +231,9 @@ function BBSection(props: BBSectionProps) {
         result = resultResponse;
       }
       if (result.xray_path != xRayPath) {
+        // need to update the xray path
         console.log("Updating XRay Path");
       } else {
-        // need to update the xray path
         console.log("Same XRay Path");
       }
 
