@@ -41,7 +41,6 @@ import { useSelector } from "react-redux";
 import { MainState } from "../../../../../state";
 import { Region } from "../XRay.types";
 import { GenerateReport } from "../ViewXRay.Server";
-import { set } from "date-fns";
 
 // Interface
 interface BBSectionProps {

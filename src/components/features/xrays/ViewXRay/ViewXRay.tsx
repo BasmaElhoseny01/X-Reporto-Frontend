@@ -385,7 +385,7 @@ function ViewXRay() {
   return (
     <AnnotationProvider>
       <ViewXRayContainer>
-        <Button onClick={() => setUseAI(!useAI)}>Use AI</Button>
+        {/* <Button onClick={() => setUseAI(!useAI)}>Use AI</Button> */}
         {/* Content */}
         {content}
         {/* Tabs */}
