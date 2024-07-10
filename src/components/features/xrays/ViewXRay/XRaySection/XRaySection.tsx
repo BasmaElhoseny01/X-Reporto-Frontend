@@ -293,122 +293,6 @@ function XRaySection(props: XRaySectionProps) {
       }
     };
 
-    // // const fetchData = async (xRayOnly: boolean,downloadOriginalResized:boolean) => {
-    // // const fetchData = async (
-    // //   downloadOriginalXRay: boolean,
-    // //   xRayOnly?: boolean
-    // // ) => {
-    // //   if (downloadOriginalXRay) {
-    // //     try {
-    // //       if (caseId) {
-    // //         const xRayResponse = await downloadResizedOriginalXRayFile(
-    // //           caseId,
-    // //           token
-    // //         );
-    // //         console.log("xRayResponse", xRayResponse);
-    // //         setXRayURL(xRayResponse);
-    // //         // only download x-ray
-    // //         return;
-    // //       } else {
-    // //         console.error("No case ID found");
-    // //       }
-    // //     } catch (error: any) {
-    // //       console.error("Error fetching X-Ray: ", error);
-    // //     }
-    // //   } else {
-    // //   }
-
-    // // if (xRayPath) {
-    // //   // console.log("xRayPath", xRayPath);
-    // //   let fetchStartTime = Date.now(); // Record start time before fetch
-    // //   setFetching(true);
-    // //   setError(false); // Reset error state before starting the fetch
-
-    // //   try {
-    // //     const xRayResponse = await downloadXRayFile(xRayPath, token);
-    // //     if (xRayResponse) {
-    // //       setXRayURL(xRayResponse);
-    // //       // hasXRay = true;
-
-    // //       if (xRayOnly) {
-    // //         // only download x-ray
-    // //         return;
-    // //       }
-
-    // //       if (regionPath) {
-    // //         try {
-    // //           // console.log("regionPath", regionPath);
-    // //           const bBoxesResponse = await downloadBBoxesFile(
-    // //             regionPath,
-    // //             token
-    // //           );
-    // //           if (bBoxesResponse) {
-    // //             // Download the BB Findings
-    // //             if (regionSentencePath) {
-    // //               const bBoxesFindingsResponse =
-    // //                 await downloadBBoxesFindingsFile(
-    // //                   regionSentencePath,
-    // //                   token
-    // //                 );
-    // //               if (bBoxesFindingsResponse) {
-    // //                 // console.log("bBoxesFindingsResponse", bBoxesFindingsResponse);
-    // //                 bBoxesResponse.forEach((region, index) => {
-    // //                   region.finding = bBoxesFindingsResponse[index];
-    // //                 });
-    // //               } else {
-    // //                 // Don't Set Error to true
-    // //                 // setError(true);
-    // //                 console.log("Error fetching bounding boxes findings");
-    // //               }
-    // //             }
-    // //             handleSetAnnotations(bBoxesResponse);
-    // //             // console.log("bBoxesResponse", bBoxesResponse);
-    // //           } else {
-    // //             // Don't Set Error to true
-    // //             // setError(true);
-    // //             message.error("Failed to load bounding boxes");
-    // //           }
-    // //         } catch (error: any) {
-    // //           // Don't Set Error to true
-    // //           // setError(true);
-    // //           message.error("Failed to load bounding boxes");
-    // //           console.log("Error fetching bounding boxes: ", error);
-    // //         }
-    // //       }
-    // //     } else {
-    // //       setError(true);
-    // //       message.error("Failed to load X-Ray");
-    // //     }
-    // //   } catch (error: any) {
-    // //     setError(true);
-    // //     message.error("Error fetching X-Ray: " + error.message);
-    // //   } finally {
-    // //     // Calculate time elapsed since fetch started
-    // //     let elapsedTime = Date.now() - fetchStartTime;
-    // //     let delayTime = Math.max(0, 1000 - elapsedTime); // Ensure at least 1 second delay
-
-    // //     if (delayTime === 0) {
-    // //       // If fetch took longer than 1 second, set fetching to false immediately
-    // //       setFetching(false);
-    // //     } else {
-    // //       // Otherwise, delay setting fetching to false by delayTime
-    // //       setTimeout(() => {
-    // //         setFetching(false);
-    // //       }, delayTime);
-    // //     }
-    // //   }
-    // // } else {
-    // //   setFetching(false);
-    // // }
-    // // };
-
-    // // // //   // let hasXRay = false;
-    // // // // defien XrayPatha s string or null
-
-    // // let xRayPath: string | null = null;
-    // // let regionPath = "";
-    // // let regionSentencePath = "";
-
     // Scenario(1) NoLLMResult and NoCustomResult
     if (!llmResultData && !customResultData) {
       fetchOriginalXRay();
@@ -431,9 +315,7 @@ function XRaySection(props: XRaySectionProps) {
       fetchXRayResultData();
     } else {
       if (!customResultData) {
-        message.info(
-          "No custom (region) results found for this case"
-        );
+        message.info("No custom (region) results found for this case");
         return;
       }
       // Check if he wants to use the de-noised image
