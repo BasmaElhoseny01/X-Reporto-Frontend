@@ -37,7 +37,10 @@ import { ResultType } from "../../../../../types/Result";
 // Interfaces
 interface XRaySectionProps {
   caseId: number | null;
-  // originalXRayPath: string | null;
+  setXRayPath: (path: string) => void;
+  handleUseDeNoisedImage: () => void;
+  useDeNoisedImage: boolean;
+
   llmResultData: ResultType | null;
   customResultData: ResultType | null;
 
@@ -60,6 +63,7 @@ const downloadResizedOriginalXRayFile = async (id: number, token: string) => {
         responseType: "blob", // Change responseType to "blob"
       }
     );
+    console.log("downloadResizedOriginalXRayFile", response);
 
     // Create a URL for the image blob and set it to an <img> element
     const imageURL = URL.createObjectURL(response.data);
@@ -177,7 +181,15 @@ const downloadBBoxesFindingsFile = async (file_path: string, token: string) => {
 };
 
 function XRaySection(props: XRaySectionProps) {
-  const { caseId, llmResultData, customResultData, useAI } = props;
+  const {
+    caseId,
+    setXRayPath,
+    handleUseDeNoisedImage,
+    useDeNoisedImage,
+    llmResultData,
+    customResultData,
+    useAI,
+  } = props;
 
   // Navigation
   const { navigateToHome } = useCustomNavigate();
@@ -196,7 +208,7 @@ function XRaySection(props: XRaySectionProps) {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    console.log("XRaySection", caseId, llmResultData, customResultData, useAI);
+    console.log("XRaySection .........", props);
 
     const fetchOriginalXRay = async () => {
       try {
@@ -210,6 +222,7 @@ function XRaySection(props: XRaySectionProps) {
         );
         console.log("xRayResponse", xRayResponse);
         setXRayURL(xRayResponse);
+        // setXRayPath();  // Set X-Ray Path to the resized so that submission is done on the resized image
       } catch (error: any) {
         message.error("Error failed to load X-Ray");
         console.error("Error fetching X-Ray: ", error);
@@ -231,6 +244,7 @@ function XRaySection(props: XRaySectionProps) {
           throw new Error("Failed to load X-Ray");
         }
         setXRayURL(xRayResponse);
+        setXRayPath(xRayPath); // This is the X-Ray Path that will be used for submission
 
         // (2) Download Bounding Boxes
         if (!regionPath) {
@@ -510,7 +524,11 @@ function XRaySection(props: XRaySectionProps) {
     <ToolProvider>
       <StagePropertiesProvider>
         <XRaySectionContainer>
-          <ToolBar disabled={!xRayURL} />
+          <ToolBar
+            disabled={!xRayURL}
+            useDeNoisedImage={useDeNoisedImage}
+            handleUseDeNoisedImage={handleUseDeNoisedImage}
+          />
           {/* <Test /> */}
           <CanvasSection ImageURL={xRayURL ?? ""} />
         </XRaySectionContainer>

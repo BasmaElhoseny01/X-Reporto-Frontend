@@ -26,14 +26,19 @@ import Delete from "../../../../../../assets/images/delete.svg";
 import HideBoxes from "../../../../../../assets/images/hide-boxes.svg";
 import HideBoxesSelected from "../../../../../../assets/images/hide-boxes-selected.svg";
 
+import DeNoise from "../../../../../../assets/images/denoise.svg";
+import DeNoiseSelected from "../../../../../../assets/images/denoise-selected.svg";
+
 // interface
 interface ToolBarProps {
   disabled?: boolean;
+  handleUseDeNoisedImage: () => void;
+  useDeNoisedImage: boolean;
 }
 
 function ToolBar(props: ToolBarProps) {
   // Props
-  const { disabled } = props;
+  const { disabled, useDeNoisedImage, handleUseDeNoisedImage } = props;
 
   const { navTool, handleChangeNavTool, hideBoxes, handleToggleHideBoxes } =
     useTools();
@@ -127,6 +132,15 @@ function ToolBar(props: ToolBarProps) {
         onClick={() => {
           if (disabled) return;
           handleToggleHideBoxes();
+        }}
+      />
+      <ToolBarIcon
+        img={useDeNoisedImage ? DeNoiseSelected : DeNoise}
+        tip="show de-noised image"
+        selected={false}
+        onClick={() => {
+          if (disabled) return;
+          handleUseDeNoisedImage();
         }}
       />
     </ToolBarContainer>

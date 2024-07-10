@@ -105,10 +105,32 @@ function ViewXRay() {
   const [templateResultData, setTemplateResultData] =
     useState<ResultType>(null);
   const [customResultData, setCustomResultData] = useState<ResultType>(null);
+
+  const [xRayPath, setXRayPath] = useState<string>(""); // path of the image being displayed now (Path in the BE :D)
+  const [useDeNoisedImage, setUseDeNoisedImage] = useState<boolean>(false); // path of the image being displayed now (Path in the BE :D)
   const [useAI, setUseAI] = useState(false);
 
   const [fetching, setFetching] = useState(true); // Initially set fetching to true
   const [error, setError] = useState(false);
+
+  const handleUseDeNoisedImage = () => {
+    const next_state = !useDeNoisedImage;
+    // check if de-noised image is available
+    if (next_state && (!llmResultData || llmResultData?.xray_path === null)) {
+      // He wanted to use the de-noised(next_state=true ) and it is not available
+      message.info(
+        "No de-noised Image found for this case. [Run X-Ray AI first to get de-noised image.]"
+      );
+      return;
+    } else {
+      // Case(1) next_state is true and de-noised image is available
+      // Case(2) next_state is false and de-noised image is available
+      // Case(3) next_state is false and de-noised image is not available
+      message.info("Switching to De-Noised Image");
+      // Toggle the state to the next state :D
+      setUseDeNoisedImage(next_state);
+    }
+  };
 
   useEffect(() => {
     // console.log("UseEffect........")
@@ -278,6 +300,9 @@ function ViewXRay() {
         useAI={useAI}
         // originalXRayPath={caseData ? caseData.xray_path : null}
         caseId={caseData ? caseData.id : null}
+        setXRayPath={setXRayPath}
+        useDeNoisedImage={useDeNoisedImage}
+        handleUseDeNoisedImage={handleUseDeNoisedImage}
       />
     );
   };
@@ -303,17 +328,17 @@ function ViewXRay() {
       label: "",
       icon: <DropboxOutlined style={{ fontSize: "16px" }} />,
       children: (
-        // <BBSection
-        //   bot_img_blue={BotBlue}
-        //   bot_img_grey={BotGray}
-        //   useAI={useAI}
-        //   toggleUseAI={toggleUseAI}
-        //   llmResultData={llmResultData}
-        //   customResultData={customResultData}
-        //   originalXRayPath={caseData ? caseData.xray_path : null}
-        //   case_id={caseData ? caseData.id : null}
-        // />
-        <h2>BB</h2>
+        <BBSection
+          bot_img_blue={BotBlue}
+          bot_img_grey={BotGray}
+          useAI={useAI}
+          toggleUseAI={toggleUseAI}
+          llmResultData={llmResultData}
+          customResultData={customResultData}
+          // xRayPath={caseData ? caseData.xray_path : null}
+          xRayPath={xRayPath}
+          case_id={caseData ? caseData.id : null}
+        />
       ),
     },
     {

@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import React from "react";
+import React, { useEffect } from "react";
 
 // Services
 import axios from "../../../../../services/apiService";
@@ -50,7 +50,8 @@ interface BBSectionProps {
 
   llmResultData: ResultType;
   customResultData: ResultType;
-  originalXRayPath: string | null;
+  // originalXRayPath: string | null;
+  xRayPath: string | null;
   case_id: number | null;
 }
 
@@ -165,9 +166,14 @@ function BBSection(props: BBSectionProps) {
     bot_img_grey,
     llmResultData,
     customResultData,
-    originalXRayPath,
+    // originalXRayPath,
+    xRayPath,
     case_id,
   } = props;
+
+  useEffect(() => {
+    console.log("BBSection ", props);
+  }, []);
 
   const token = useSelector((state: MainState) => state.token);
 
@@ -179,48 +185,41 @@ function BBSection(props: BBSectionProps) {
   } = useAnnotations();
 
   const handelSaveResult = async () => {
+    console.log("Saving Result ......");
     try {
       let result: ResultType | null = customResultData;
-      if (!customResultData || true) {
+
+      if (!result) {
         // Create New Custom Result
         console.log("Creating New Custom");
-        if (case_id) {
-          const response = await createCustomResult(
-            case_id,
-            llmResultData ? llmResultData.xray_path : originalXRayPath,
-            token
-          );
-          console.log("Response: ", response);
-          result = response;
-        } else {
-          throw new Error("Case ID is null");
-        }
+        // if (!case_id) throw new Error("Case ID is null");
+        // const resultResponse = await createCustomResult(
+        // xRayPath, // use the global xRayPath for submission
+        //   case_id,
+        //   token
+        // );
+        // console.log("resultResponse: ", resultResponse);
+        // if(!resultResponse) throw new Error("Failed to create custom result");
+        // result = resultResponse;
       }
-      // Upload BBoxes to the result
-      console.log("Saving Result ......: ", result);
-      if (result) {
-        const BBoxesResponse = await uploadBBoxesFile(
-          annotations,
-          result.id,
-          token
-        );
-        console.log("BBoxesResponse: ", BBoxesResponse);
-        if (BBoxesResponse) {
-          message.success("Result saved successfully");
-
-          // Upload Region Sentences
-          const SentencesResponse = await uploadRegionSentences(
-            annotations,
-            result.id,
-            token
-          );
-          console.log("SentencesResponse: ", SentencesResponse);
-        } else {
-          throw new Error("Failed to upload BBoxes");
-        }
-      } else {
-        throw new Error("Failed to create custom result");
-      }
+      // (1) Upload BBoxes to the result
+      console.log("Saving to Custom Result ......: ", result);
+      // const BBoxesResponse = await uploadBBoxesFile(
+      //   annotations,
+      //   result.id,
+      //   token
+      // );
+      // console.log("BBoxesResponse: ", BBoxesResponse);
+      // if (!BBoxesResponse) throw new Error("Failed to upload BBoxes");
+      // (2) Upload Region Sentences to the result
+      // const SentencesResponse = await uploadRegionSentences(
+      //   annotations,
+      //   result.id,
+      //   token
+      // );
+      // console.log("SentencesResponse: ", SentencesResponse);
+      // if(!SentencesResponse) new Error("Failed to upload Sentences");
+      message.success("Result saved successfully");
     } catch (error) {
       message.error("failed to save result");
       console.error("Error Saving Result: ", error);
@@ -291,15 +290,6 @@ function BBSection(props: BBSectionProps) {
                 }}
               />
             </label>
-            {/* <img
-              src={
-                selectedAnnotation
-                  ? selectedAnnotation?.ai
-                    ? BotBlue
-                    : BotRed
-                  : BotGray
-              }
-            /> */}
           </BBFindingTitleContainer>
           <StyledTextArea
             value={selectedAnnotation?.finding}
