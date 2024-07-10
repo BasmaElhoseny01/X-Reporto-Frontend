@@ -56,7 +56,6 @@ interface BBSectionProps {
 }
 
 // Server APIS
-
 const createCustomResult = async (
   study_id: number,
   xray_path: string | null,
@@ -101,7 +100,7 @@ const uploadBBoxesFile = async (
         return `${index} ${x} ${y} ${width} ${height}`;
       })
       .join("\n");
-    console.log("Text: ", text);
+    // console.log("Text: ", text);
 
     const blob = new Blob([text], {
       type: "text/plain",
@@ -122,6 +121,39 @@ const uploadBBoxesFile = async (
     return response.data;
   } catch (error) {
     console.error("Error uploading BBoxes: ", error);
+    return null;
+  }
+};
+
+const uploadRegionSentences = async (
+  Regions: Region[],
+  resultId: string | number,
+  token: string
+) => {
+  try {
+    // console.log("Regions: ", Regions);
+    const sentences = Regions.map((region) => region.finding).join("\n");
+    // console.log("sentences: ", sentences);
+
+    const blob = new Blob([sentences], {
+      type: "text/plain",
+    });
+    const formData = new FormData();
+    formData.append("sentences", blob);
+
+    const response = await axios.post(
+      `api/v1/results/${resultId}/upload_sentences`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the headers
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error uploading Region Sentences: ", error);
     return null;
   }
 };
@@ -168,10 +200,27 @@ function BBSection(props: BBSectionProps) {
       // Upload BBoxes to the result
       console.log("Saving Result ......: ", result);
       if (result) {
-        const response = await uploadBBoxesFile(annotations, result.id, token);
-        console.log("Response: ", response);
+        const BBoxesResponse = await uploadBBoxesFile(
+          annotations,
+          result.id,
+          token
+        );
+        console.log("BBoxesResponse: ", BBoxesResponse);
+        if (BBoxesResponse) {
+          message.success("Result saved successfully");
+
+          // Upload Region Sentences
+          const SentencesResponse = await uploadRegionSentences(
+            annotations,
+            result.id,
+            token
+          );
+          console.log("SentencesResponse: ", SentencesResponse);
+        } else {
+          throw new Error("Failed to upload BBoxes");
+        }
       } else {
-        message.error("failed to save result");
+        throw new Error("Failed to create custom result");
       }
     } catch (error) {
       message.error("failed to save result");
