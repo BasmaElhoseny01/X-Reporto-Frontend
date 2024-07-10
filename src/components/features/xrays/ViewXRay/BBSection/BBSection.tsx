@@ -54,6 +54,7 @@ interface BBSectionProps {
   llmResultData: ResultType;
   customResultData: ResultType;
   setLmResultData: (data: ResultType) => void;
+  setCustomResultData: (data: ResultType) => void;
   // originalXRayPath: string | null;
   xRayPath: string | null;
   case_id: number | null;
@@ -200,6 +201,7 @@ function BBSection(props: BBSectionProps) {
     llmResultData,
     customResultData,
     setLmResultData,
+    setCustomResultData,
     // originalXRayPath,
     xRayPath,
     case_id,
@@ -252,10 +254,10 @@ function BBSection(props: BBSectionProps) {
         );
         console.log("updatedResult: ", updatedResult);
         if (!updatedResult) throw new Error("Failed to update custom result");
+        result = updatedResult;
       } else {
         console.log("Same XRay Path");
       }
-
       // (1) Upload BBoxes to the result
       console.log("Saving to Custom Result ......: ", result);
       const BBoxesResponse = await uploadBBoxesFile(
@@ -273,6 +275,7 @@ function BBSection(props: BBSectionProps) {
       );
       console.log("SentencesResponse: ", SentencesResponse);
       if (!SentencesResponse) new Error("Failed to upload Sentences");
+      setCustomResultData(SentencesResponse);
       message.success("Result saved successfully");
     } catch (error) {
       message.error("failed to save result");

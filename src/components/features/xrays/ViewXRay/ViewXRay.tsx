@@ -212,6 +212,7 @@ function ViewXRay() {
   // }, []);
 
   const toggleUseAI = () => {
+    console.log("toggleUseAI", useAI, llmResultData, customResultData);
     const prev_state = useAI;
     if (prev_state == false) {
       if (llmResultData) {
@@ -336,6 +337,7 @@ function ViewXRay() {
           llmResultData={llmResultData}
           customResultData={customResultData}
           setLmResultData={setllmResultData}
+          setCustomResultData={setCustomResultData}
           // xRayPath={caseData ? caseData.xray_path : null}
           xRayPath={xRayPath}
           case_id={caseData ? caseData.id : null}
