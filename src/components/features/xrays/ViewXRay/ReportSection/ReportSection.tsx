@@ -19,6 +19,7 @@ import { useSelector } from "react-redux";
 import { MainState } from "../../../../../state/Reducers";
 import axios from "../../../../../services/apiService";
 import { ResultType } from "../../../../../types/Result";
+import { GenerateReport } from "../ViewXRay.Server";
 
 // Interfaces
 interface ReportSectionProps {
@@ -84,23 +85,23 @@ const uploadReportFile = async (
   }
 };
 
-const generateReport = async (case_id: number, token: string) => {
-  try {
-    const response = await axios.post(
-      `api/v1/studies/${case_id}/run_llm`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    return response.data;
-  } catch (error) {
-    console.log("Error generating Report: ", error);
-    return null;
-  }
-};
+// const generateReport = async (case_id: number, token: string) => {
+//   try {
+//     const response = await axios.post(
+//       `api/v1/studies/${case_id}/run_llm`,
+//       {},
+//       {
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//         },
+//       }
+//     );
+//     return response.data;
+//   } catch (error) {
+//     console.log("Error generating Report: ", error);
+//     return null;
+//   }
+// };
 
 const createCustomResult = async (
   study_id: number,
@@ -405,26 +406,26 @@ function ReportSection(props: ReportSectionProps) {
     poll();
   };
 
-  const handleGenerateReport = async () => {
-    try {
-      if (case_id) {
-        const reportResponse = await generateReport(case_id, token);
-        console.log("reportResponse", reportResponse);
-        if (reportResponse) {
-          message.success("Report generation started successfully!");
-          pollReportStatus(reportResponse.id, token);
-          // message.success("report generated successfully!");
-        } else {
-          message.error("Failed to generate report");
-        }
-      } else {
-        throw new Error("Case ID is null");
-      }
-    } catch (error) {
-      console.error("Error generating report:", error);
-      message.error("Failed to generate report");
-    }
-  };
+  // const handleGenerateReport = async () => {
+  //   try {
+  //     if (case_id) {
+  //       const reportResponse = await generateReport(case_id, token);
+  //       console.log("reportResponse", reportResponse);
+  //       if (reportResponse) {
+  //         message.success("Report generation started successfully!");
+  //         pollReportStatus(reportResponse.id, token);
+  //         // message.success("report generated successfully!");
+  //       } else {
+  //         message.error("Failed to generate report");
+  //       }
+  //     } else {
+  //       throw new Error("Case ID is null");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error generating report:", error);
+  //     message.error("Failed to generate report");
+  //   }
+  // };
 
   return (
     <>
@@ -467,7 +468,10 @@ function ReportSection(props: ReportSectionProps) {
                 Generate Report
               </PrimaryButton>
             )} */}
-            <PrimaryButton onClick={handleGenerateReport} size="large">
+            <PrimaryButton
+              onClick={() => GenerateReport(case_id, token)}
+              size="large"
+            >
               Generate Report
             </PrimaryButton>
           </ButtonContainer>

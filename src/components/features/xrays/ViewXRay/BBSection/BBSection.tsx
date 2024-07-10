@@ -39,6 +39,7 @@ import { ResultType } from "../../../../../types/Result";
 import { useSelector } from "react-redux";
 import { MainState } from "../../../../../state";
 import { Region } from "../XRay.types";
+import { GenerateReport } from "../ViewXRay.Server";
 
 // Interface
 interface BBSectionProps {
@@ -111,7 +112,7 @@ const createCustomResult = async (
 //     return null;
 //   }
 // };
- 
+
 const uploadBBoxesFile = async (
   regions: Region[],
   resultId: string | number,
@@ -253,7 +254,7 @@ function BBSection(props: BBSectionProps) {
         token
       );
       console.log("SentencesResponse: ", SentencesResponse);
-      if(!SentencesResponse) new Error("Failed to upload Sentences");
+      if (!SentencesResponse) new Error("Failed to upload Sentences");
       message.success("Result saved successfully");
     } catch (error) {
       message.error("failed to save result");
@@ -348,6 +349,12 @@ function BBSection(props: BBSectionProps) {
       <ButtonContainer>
         <PrimaryButton onClick={handelSaveResult} size="large">
           Save
+        </PrimaryButton>{" "}
+        <PrimaryButton
+          onClick={() => GenerateReport(case_id, token)}
+          size="large"
+        >
+          Generate Report
         </PrimaryButton>
       </ButtonContainer>
     </BBFindingsSectionContainer>
