@@ -4,20 +4,27 @@ import styled from "styled-components";
 // import { palette } from "../../../../styles/theme";
 
 // Ant Design
-import { Flex } from "antd";
+import { Flex, Tabs } from "antd";
 
 export const ViewXRayContainer = styled(Flex)`
-  /* background-color: #ff0000; */
-
   display: flex;
   // flex-direction: row;
 
   flex: 1;
   height: 100%;
+`;
 
+export const StyledTabs = styled(Tabs)`
+  /* background-color: yellow; */
+  flex: 1.5;
+  height: 100%;
+
+  /* Children Tabs Full Height */
   .ant-tabs-content {
     height: 100%;
-    /* background-color: #ff0000; */
+  }
+  .ant-tabs-tabpane {
+    height: 100%;
   }
 `;
 

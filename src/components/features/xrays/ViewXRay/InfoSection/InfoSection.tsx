@@ -1,39 +1,36 @@
-/*eslint-disable */
-import React, { useEffect, useState } from "react";
-import {
-  ActionsContainer,
-  InfoSectionContainer,
-  LineHeader,
-  // Title,
-} from "./InfoSection.Styles";
+import React, { useEffect } from "react";
+
+// Antd Design
+import Title from "antd/es/typography/Title";
+
+// Styled Components
+import { InfoSectionContainer, LineHeader } from "./InfoSection.Styles";
+
+// Components
 import PatientData from "./PatientData";
 import PatientHistory from "./PatientHistory/PatientHistory";
-import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
-import { useView } from "../ViewProvider";
-import { MainState } from "../../../../../state";
-import { useSelector } from "react-redux";
+
+// Types
 import { CaseType } from "../../../../../types/case";
-import Title from "antd/es/typography/Title";
-import { Switch } from "antd";
 
 // Interface for InfoSection
 interface InfoSectionProps {
   // Props Here
-  study_case: CaseType;
+  studyCase: CaseType;
   useAI: boolean;
   toggleUseAI: () => void;
-  bot_img_blue: string;
-  bot_img_grey: string;
+  botImgBlue: string;
+  botImgGrey: string;
 }
+
 function InfoSection(props: InfoSectionProps) {
-  const { study_case, bot_img_blue, bot_img_grey, useAI, toggleUseAI } = props;
-  // Context
-  const { handleSetSiderType } = useView();
+  // Props
+  const { studyCase, botImgBlue, botImgGrey, useAI, toggleUseAI } = props;
 
   // Get the Study Context
   useEffect(() => {
     console.log("InfoSection.....");
-    console.log("Study Case: ", study_case);
+    console.log("Study Case: ", studyCase);
   }, []);
 
   return (
@@ -48,7 +45,7 @@ function InfoSection(props: InfoSectionProps) {
       >
         <Title level={4}>Info</Title>
         <img
-          src={useAI ? bot_img_blue : bot_img_grey}
+          src={useAI ? botImgBlue : botImgGrey}
           alt="Bot"
           style={{ width: 40, height: 40, cursor: "pointer" }}
           onClick={toggleUseAI}
@@ -56,42 +53,20 @@ function InfoSection(props: InfoSectionProps) {
       </div>
 
       <LineHeader />
-      {study_case && (
+      {studyCase && (
         <PatientData
-          name={study_case?.patient?.patient_name}
-          age={study_case?.patient.age}
-          dateOfBirth={study_case?.patient?.birth_date}
-          gender={study_case?.patient?.gender}
-          id={study_case?.patient?.id}
+          name={studyCase?.patient?.patient_name}
+          age={studyCase?.patient.age}
+          dateOfBirth={studyCase?.patient?.birth_date}
+          gender={studyCase?.patient?.gender}
+          id={studyCase?.patient?.id}
         />
       )}
 
       <Title level={4}>History</Title>
       <LineHeader />
 
-      {/* {study_case && <PatientHistory id={study_case.patient.id} />} */}
-
-      {/* <PrimaryButton
-        // style={{ margin: "10px 10px 0", padding: 5 }}
-        onClick={() => handleSetSiderType("report")}
-      >
-        View Report
-      </PrimaryButton> */}
-      {/* <LineHeader />
-      {study_case && <PatientHistory id={study_case.patient.id} />}
-      <ActionsContainer> */}
-      {/* <SecondaryButton style={{ margin: "10px 10px 0", padding: 5 }}>
-          {" "}
-          Save as draft{" "}
-        </SecondaryButton> */}
-      {/* <PrimaryButton
-          style={{ margin: "10px 10px 0", padding: 5 }}
-          onClick={() => handleSetSiderType("report")}
-        >
-          {" "}
-          View Report{" "}
-        </PrimaryButton> */}
-      {/* </ActionsContainer> */}
+      {studyCase && <PatientHistory id={studyCase.patient.id} />}
     </InfoSectionContainer>
   );
 }

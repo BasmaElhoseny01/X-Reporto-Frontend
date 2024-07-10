@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 // Redux
 
 // Ant Design
-import { Layout, message, Result, Spin, Tabs } from "antd";
+import { Button, Layout, message, Result, Spin, Tabs } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { Content } from "antd/es/layout/layout";
 import type { MenuProps, TabsProps } from "antd";
@@ -16,7 +16,7 @@ import type { MenuProps, TabsProps } from "antd";
 import { useView } from "./ViewProvider";
 
 // Styled Components
-import { ViewXRayContainer } from "./ViewXRay.Styles";
+import { StyledTabs, ViewXRayContainer } from "./ViewXRay.Styles";
 
 // Components
 import XRaySection from "./XRaySection/XRaySection";
@@ -101,17 +101,20 @@ function ViewXRay() {
   const [caseData, setCaseData] = useState<CaseType>(null);
 
   // Results States
-  const [lmResultData, setLmResultData] = useState<ResultType>(null);
+  const [llmResultData, setllmResultData] = useState<ResultType>(null);
   const [templateResultData, setTemplateResultData] =
     useState<ResultType>(null);
   const [customResultData, setCustomResultData] = useState<ResultType>(null);
+
+  const [xRayPath, setXRayPath] = useState<string>(""); // path of the image being displayed now (Path in the BE :D)
+  const [useDeNoisedImage, setUseDeNoisedImage] = useState<boolean>(false); // path of the image being displayed now (Path in the BE :D)
   const [useAI, setUseAI] = useState(false);
 
   const [fetching, setFetching] = useState(true); // Initially set fetching to true
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    // console.log("UseEffect........")
+    console.log("ViewXRay........");
     const fetchData = async () => {
       if (Id) {
         let fetchStartTime = Date.now(); // Record start time before fetch
@@ -135,7 +138,7 @@ function ViewXRay() {
                   const result = resultsResponse[i];
 
                   if (result.type === "llm") {
-                    setLmResultData(result);
+                    setllmResultData(result);
                     lmResultFound = true;
                   } else if (result.type === "template") {
                     setTemplateResultData(result);
@@ -190,7 +193,6 @@ function ViewXRay() {
     fetchData();
   }, []);
 
-  // }, [Id, token]);
   // Context
   // const { siderType, handleSetSiderType } = useView();
   // States for the Sider
@@ -200,85 +202,119 @@ function ViewXRay() {
   // const websiteTheme = useSelector((state: MainState) => state.theme);
 
   // Check screen size on component mount and window resize
-  useEffect(() => {
-    // function handleResize() {
-    //   setIsSmallScreen(window.innerWidth < 800); // Adjust breakpoint as needed
-    // }
-    // handleResize(); // Check initial size
-    // window.addEventListener("resize", handleResize); // Add resize listener
-    // return () => window.removeEventListener("resize", handleResize); // Clean up listener
-  }, []);
+  // useEffect(() => {
+  // function handleResize() {
+  //   setIsSmallScreen(window.innerWidth < 800); // Adjust breakpoint as needed
+  // }
+  // handleResize(); // Check initial size
+  // window.addEventListener("resize", handleResize); // Add resize listener
+  // return () => window.removeEventListener("resize", handleResize); // Clean up listener
+  // }, []);
 
   const toggleUseAI = () => {
-    if (lmResultData) {
-      setUseAI(!useAI);
+    console.log("toggleUseAI", useAI, llmResultData, customResultData);
+    // const prev_state = useAI;
+    const next_state = !useAI;
+    if (next_state == true) {
+      if (llmResultData) {
+        setUseAI(next_state); // true
+        setUseDeNoisedImage(true); //restore the de-noised image flag
+      } else {
+        message.info("No LM results found for this case.");
+      }
     } else {
-      message.info("No LM results found for this case.");
+      if (customResultData) {
+        setUseAI(next_state);
+      } else {
+        message.info("No custom results found for this case.");
+      }
+    }
+    // if (llmResultData) {
+    //   setUseAI(!useAI);
+    // } else {
+    //   message.info("No LM results found for this case.");
+    // }
+  };
+
+  const handleUseDeNoisedImage = () => {
+    const next_state = !useDeNoisedImage;
+    // check if de-noised image is available
+    if (next_state && (!llmResultData || llmResultData?.xray_path === null)) {
+      // He wanted to use the de-noised(next_state=true ) and it is not available
+      message.info(
+        "No de-noised Image found for this case. [Run X-Ray AI first to get de-noised image.]"
+      );
+      return;
+    } else {
+      // Case(1) next_state is true and de-noised image is available
+      // Case(2) next_state is false and de-noised image is available
+      // Case(3) next_state is false and de-noised image is not available
+      // if (next_state) {
+      //   message.info("Switching to De-Noised Image");
+      // } else {
+      //   message.info("Switching to Original Image");
+      // }
+      // Toggle the state to the next state :D
+      setUseDeNoisedImage(next_state);
+
+      // Reset useAI to false
+      setUseAI(false);
     }
   };
 
   // Render Content based on the states
-  const Body = () => {
-    if (fetching) {
-      return (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "80%",
-            // width: "100%",
-            flex: "1",
-          }}
-        >
-          <Spin tip="Loading" size="large">
-            <div
-              style={{
-                padding: 50,
-                // background: "rgba(0, 0, 0, 0.05)",
-                borderRadius: 4,
-              }}
-            />
-          </Spin>
-        </div>
-      );
-    }
-    if (error || !caseData) {
-      return (
-        <Result
-          style={{ width: "100%" }}
-          status="500"
-          title="500"
-          subTitle={"Sorry, something went wrong."}
-          extra={
-            <PrimaryButton onClick={navigateToHome}>Back Home</PrimaryButton>
-          }
-        />
-      );
-    }
-
-    return (
-      <XRaySection
-        llmResultData={lmResultData}
-        customResultData={customResultData}
-        useAI={useAI}
-        originalXRayPath={caseData ? caseData.xray_path : null}
-        // xRayPath={lmResultData ? lmResultData.xray_path : null}
-        // xRayPath={caseData ? caseData.xray_path : null}
-        // // regionPath={lmResultData ? lmResultData.region_path : null}
-        // regionPath={
-        //   customResultData
-        //     ? customResultData.region_path
-        //     : lmResultData
-        //     ? lmResultData.region_path
-        //     : null
-        // }
-        // regionSentencePath={
-        //   lmResultData ? lmResultData.region_sentence_path : null
-        // }
+  let content;
+  if (fetching) {
+    content = (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "80%",
+          // width: "100%",
+          flex: "1",
+        }}
+      >
+        <Spin tip="Loading" size="large">
+          <div
+            style={{
+              padding: 50,
+              // background: "rgba(0, 0, 0, 0.05)",
+              borderRadius: 4,
+            }}
+          />
+        </Spin>
+      </div>
+    );
+  } else if (error || !caseData) {
+    content = (
+      <Result
+        style={{ flex: "1" }}
+        status="500"
+        title="500"
+        subTitle={"Sorry, something went wrong."}
+        extra={
+          <PrimaryButton onClick={navigateToHome}>Back Home</PrimaryButton>
+        }
       />
     );
-  };
+  } else {
+    content = (
+      // <h1>XraySection</h1>
+      // <Test />
+      <XRaySection
+        llmResultData={llmResultData}
+        customResultData={customResultData}
+        useAI={useAI}
+        // originalXRayPath={caseData ? caseData.xray_path : null}
+        caseId={caseData ? caseData.id : null}
+        setXRayPath={setXRayPath}
+        useDeNoisedImage={useDeNoisedImage}
+        handleUseDeNoisedImage={handleUseDeNoisedImage}
+      />
+    );
+  }
 
   const xRayNavItems: TabsProps["items"] = [
     {
@@ -287,47 +323,51 @@ function ViewXRay() {
       icon: <InfoCircleOutlined style={{ fontSize: "16px" }} />,
       children: (
         <InfoSection
-          bot_img_blue={BotBlue}
-          bot_img_grey={BotGray}
+          botImgBlue={BotBlue}
+          botImgGrey={BotGray}
           useAI={useAI}
           toggleUseAI={toggleUseAI}
-          study_case={caseData}
+          studyCase={caseData}
         />
       ),
-      // <InfoSection study_case={caseData} />,
     },
     {
       key: "2",
       label: "",
       icon: <DropboxOutlined style={{ fontSize: "16px" }} />,
       children: (
+        // <h1>BBSection</h1>
         <BBSection
-          bot_img_blue={BotBlue}
-          bot_img_grey={BotGray}
+          botImgBlue={BotBlue}
+          botImgGrey={BotGray}
           useAI={useAI}
+          setUseAI={setUseAI}
           toggleUseAI={toggleUseAI}
-          lmResultData={lmResultData}
+          llmResultData={llmResultData}
           customResultData={customResultData}
-          case_id={caseData ? caseData.id : null}
+          setLmResultData={setllmResultData}
+          setCustomResultData={setCustomResultData}
+          // xRayPath={caseData ? caseData.xray_path : null}
+          xRayPath={xRayPath}
+          caseId={caseData ? caseData.id : null}
         />
       ),
-      // <InfoSection study_case={caseData} />,
-      // <HeatMapSection />,
     },
     {
       key: "3",
       label: "",
       icon: <HeatMapOutlined style={{ fontSize: "16px" }} />,
       children: (
-        <HeatMapSection
-          bot_img_blue={BotBlue}
-          bot_img_grey={BotGray}
-          useAI={useAI}
-          toggleUseAI={toggleUseAI}
-          templateResultData={templateResultData}
-          customResultData={customResultData}
-          case_id={caseData ? caseData.id : null}
-        />
+        // <HeatMapSection
+        //   botImgBlue={BotBlue}
+        //   botImgGrey={BotGray}
+        //   useAI={useAI}
+        //   toggleUseAI={toggleUseAI}
+        //   templateResultData={templateResultData}
+        //   customResultData={customResultData}
+        //   case_id={caseData ? caseData.id : null}
+        // />
+        <h1>Heat Map</h1>
       ),
     },
     {
@@ -336,8 +376,16 @@ function ViewXRay() {
       icon: <FileTextOutlined style={{ fontSize: "16px" }} />,
       children: (
         <ReportSection
-          lmResultData={lmResultData}
-          // setLmResultData={setLmResultData}
+          botImgBlue={BotBlue}
+          botImgGrey={BotGray}
+          useAI={useAI}
+          setUseAI={setUseAI}
+          toggleUseAI={toggleUseAI}
+          llmResultData={llmResultData}
+          customResultData={customResultData}
+          xRayPath={xRayPath}
+          caseId={caseData ? caseData.id : null}
+          setLmResultData={setllmResultData}
         />
       ),
     },
@@ -346,10 +394,11 @@ function ViewXRay() {
   return (
     <AnnotationProvider>
       <ViewXRayContainer>
-        {/* Body */}
-        <Body />
+        {/* <Button onClick={() => setUseAI(!useAI)}>Use AI</Button> */}
+        {/* Content */}
+        {content}
         {/* Tabs */}
-        <Tabs tabPosition="right" items={xRayNavItems} style={{ flex: 1.5 }} />
+        <StyledTabs tabPosition="right" items={xRayNavItems} />
       </ViewXRayContainer>
     </AnnotationProvider>
   );

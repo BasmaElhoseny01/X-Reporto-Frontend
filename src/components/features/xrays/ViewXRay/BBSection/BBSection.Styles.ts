@@ -6,6 +6,7 @@ import { palette } from "../../../../../styles/theme";
 // Ant Design
 import { Flex } from "antd";
 import TextArea from "antd/es/input/TextArea";
+import Paragraph from "antd/es/typography/Paragraph";
 
 export const BBFindingsSectionContainer = styled(Flex)`
   padding: 0px 5px;
@@ -40,6 +41,26 @@ export const BBAllFindingsContainer = styled(Flex)`
   flex: 2;
 `;
 
+export const StyledParagraph = styled(Paragraph)`
+  width: 100%;
+  /* background-color: ${palette.grey100}; */
+  height: 250px;
+
+  overflow-y: scroll;
+
+  /* Customize scrollbar */
+  &::-webkit-scrollbar {
+    width: 6px; /* Width of the scrollbar */
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent; /* Track color */
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2); /* Thumb color */
+    border-radius: 3px; /* Rounded corners of the thumb */
+  }
+`;
+
 export const StyledTextArea = styled(TextArea)`
   width: 95%;
   border-radius: 1%;
@@ -68,13 +89,14 @@ export const VerticalDivider = styled.div`
 export const BBFindingTitleContainer = styled(Flex)`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
 
   width: 100%;
 
-  input {
-    width: 50%;
+  .ant-select {
+    width: 100%;
+    max-width: 300px;
 
     margin: 10px;
   }

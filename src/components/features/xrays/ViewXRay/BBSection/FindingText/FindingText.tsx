@@ -10,6 +10,7 @@ import { Region } from "../../XRay.types";
 // Theme
 import { palette } from "../../../../../../styles/theme";
 import { useAnnotations } from "../../AnnotationProvider";
+import { anatomicalRegionsIndexToKey } from "../../../../../../constants/anatomicalRegions";
 
 // props
 type FindingTextProps = {
@@ -45,7 +46,13 @@ function FindingText(props: FindingTextProps) {
       //   title={region.title}
       trigger="hover"
       placement="bottom"
-      content={<Text>{region.title}</Text>}
+      content={
+        <Text>
+          {region.title_id != -1
+            ? anatomicalRegionsIndexToKey[region.title_id]
+            : "UNASSIGNED"}
+        </Text>
+      }
     >
       <Text
         onClick={() => handleSelectAnnotation(region.id)}

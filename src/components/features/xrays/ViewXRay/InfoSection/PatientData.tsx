@@ -1,12 +1,17 @@
 import React from "react";
+
+// Antd Design
+import { Flex } from "antd";
+
+// Styled Components
 import {
   InputRowContainer,
   InputText,
   InputTitle,
   PatientDataContainer,
 } from "./InfoSection.Styles";
-import { Flex } from "antd";
 
+// Types
 type PatientDataProps = {
   name: string;
   id: number;
@@ -14,6 +19,7 @@ type PatientDataProps = {
   dateOfBirth: string;
   age: number;
 };
+
 function PatientData(props: PatientDataProps) {
   return (
     <Flex vertical>

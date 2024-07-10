@@ -104,7 +104,6 @@ function NewXRay() {
           notes: formValues.notes,
           xray_path: responseUpload.data.xray_path,
           employee_id: user?.id ?? 0,
-          doctor_id: user?.id ?? 0,
         },
         {
           headers: {

@@ -8,10 +8,12 @@ import { Flex } from "antd";
 import { palette } from "../../../../../styles/theme";
 
 export const InfoSectionContainer = styled(Flex)`
-  /* padding: 0px 10px 0 10px; */
-  /* width: 100%; */
-  /* height: 100%; */
   flex-direction: column;
+  /* background-color: red; */
+
+  /* Take Full Height (VIP) */
+  width: 100%;
+  height: 100%;
 `;
 
 export const LineHeader = styled.hr`
@@ -20,13 +22,6 @@ export const LineHeader = styled.hr`
   margin-bottom: 5px;
   margin-left: 0px;
 `;
-
-// export const Title = styled(Flex)`
-//   font-size: 20px;
-//   font-weight: bold;
-//   width: 100%;
-//   padding: 3px 0 0 0;
-// `;
 
 export const Row = styled(Flex)`
   width: 100%;
@@ -83,19 +78,32 @@ export const ActionsContainer = styled(Flex)`
   align-items: flex-end;
   flex-direction: row;
 `;
-export const HostoryContainer = styled(Flex)`
-  width: 100%;
-  padding: 5px 5px 0 5px;
+export const HistoryContainer = styled(Flex)`
+  display: flex;
+  flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  flex-direction: column;
-  scrollbar-width: thin;
+
+  /* background-color: green; */
+  height: 100%;
+  flex: 1;
+
   overflow-y: scroll;
-  margin-bottom: 15px;
+  /* Customize scrollbar */
+  &::-webkit-scrollbar {
+    width: 6px; /* Width of the scrollbar */
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent; /* Track color */
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2); /* Thumb color */
+    border-radius: 3px; /* Rounded corners of the thumb */
+  }
 `;
 
 export const CardContainer = styled(Flex)`
-  width: 70%;
+  width: 100%;
   padding: 4px 15px;
   justify-content: flex-start;
   align-items: center;
