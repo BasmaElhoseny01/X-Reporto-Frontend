@@ -301,11 +301,11 @@ function ViewXRay() {
       icon: <InfoCircleOutlined style={{ fontSize: "16px" }} />,
       children: (
         <InfoSection
-          bot_img_blue={BotBlue}
-          bot_img_grey={BotGray}
+          botImgBlue={BotBlue}
+          botImgGrey={BotGray}
           useAI={useAI}
           toggleUseAI={toggleUseAI}
-          study_case={caseData}
+          studyCase={caseData}
         />
       ),
       // <InfoSection study_case={caseData} />,

@@ -16,21 +16,21 @@ import { CaseType } from "../../../../../types/case";
 // Interface for InfoSection
 interface InfoSectionProps {
   // Props Here
-  study_case: CaseType;
+  studyCase: CaseType;
   useAI: boolean;
   toggleUseAI: () => void;
-  bot_img_blue: string;
-  bot_img_grey: string;
+  botImgBlue: string;
+  botImgGrey: string;
 }
 
 function InfoSection(props: InfoSectionProps) {
   // Props
-  const { study_case, bot_img_blue, bot_img_grey, useAI, toggleUseAI } = props;
+  const { studyCase, botImgBlue, botImgGrey, useAI, toggleUseAI } = props;
 
   // Get the Study Context
   useEffect(() => {
     console.log("InfoSection.....");
-    console.log("Study Case: ", study_case);
+    console.log("Study Case: ", studyCase);
   }, []);
 
   return (
@@ -45,7 +45,7 @@ function InfoSection(props: InfoSectionProps) {
       >
         <Title level={4}>Info</Title>
         <img
-          src={useAI ? bot_img_blue : bot_img_grey}
+          src={useAI ? botImgBlue : botImgGrey}
           alt="Bot"
           style={{ width: 40, height: 40, cursor: "pointer" }}
           onClick={toggleUseAI}
@@ -53,20 +53,20 @@ function InfoSection(props: InfoSectionProps) {
       </div>
 
       <LineHeader />
-      {study_case && (
+      {studyCase && (
         <PatientData
-          name={study_case?.patient?.patient_name}
-          age={study_case?.patient.age}
-          dateOfBirth={study_case?.patient?.birth_date}
-          gender={study_case?.patient?.gender}
-          id={study_case?.patient?.id}
+          name={studyCase?.patient?.patient_name}
+          age={studyCase?.patient.age}
+          dateOfBirth={studyCase?.patient?.birth_date}
+          gender={studyCase?.patient?.gender}
+          id={studyCase?.patient?.id}
         />
       )}
 
       <Title level={4}>History</Title>
       <LineHeader />
 
-      {study_case && <PatientHistory id={study_case.patient.id} />}
+      {studyCase && <PatientHistory id={studyCase.patient.id} />}
     </InfoSectionContainer>
   );
 }
