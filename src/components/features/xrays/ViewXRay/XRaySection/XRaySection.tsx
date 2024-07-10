@@ -63,13 +63,16 @@ const downloadResizedOriginalXRayFile = async (id: number, token: string) => {
         responseType: "blob", // Change responseType to "blob"
       }
     );
-    console.log("downloadResizedOriginalXRayFile", response);
+    // console.log("downloadResizedOriginalXRayFile", response);
 
     // Create a URL for the image blob and set it to an <img> element
     const imageURL = URL.createObjectURL(response.data);
-    // console.log(imageURL);
+    // console.log("imageURL", imageURL);
 
-    return imageURL;
+    const resizedXRayPath = response.headers.resized_xray_path;
+    // console.log("xRayPath", resizedXRayPath);
+
+    return { imageURL, resizedXRayPath };
   } catch (error) {
     console.error("Error fetching Resized X-Ray: ", error);
     return null;
@@ -220,12 +223,16 @@ function XRaySection(props: XRaySectionProps) {
           caseId,
           token
         );
-        console.log("xRayResponse", xRayResponse);
-        setXRayURL(xRayResponse);
-        // setXRayPath();  // Set X-Ray Path to the resized so that submission is done on the resized image
+        if (!xRayResponse) {
+          // setError(true);
+          throw new Error("Failed to load Resized X-Ray");
+        }
+        // console.log("xRayResponse", xRayResponse);
+        setXRayURL(xRayResponse.imageURL);
+        setXRayPath(xRayResponse.resizedXRayPath); // Set X-Ray Path to the resized so that submission is done on the resized image
       } catch (error: any) {
-        message.error("Error failed to load X-Ray");
-        console.error("Error fetching X-Ray: ", error);
+        message.error("failed to load X-Ray");
+        console.error("Error in fetchOriginalXRay(): ", error);
       }
     };
 
