@@ -338,7 +338,14 @@ function ViewXRay() {
       icon: <FileTextOutlined style={{ fontSize: "16px" }} />,
       children: (
         <ReportSection
+          bot_img_blue={BotBlue}
+          bot_img_grey={BotGray}
+          useAI={useAI}
+          toggleUseAI={toggleUseAI}
           lmResultData={lmResultData}
+          customResultData={customResultData}
+          originalXRayPath={caseData ? caseData.xray_path : null}
+          case_id={caseData ? caseData.id : null}
           // setLmResultData={setLmResultData}
         />
       ),

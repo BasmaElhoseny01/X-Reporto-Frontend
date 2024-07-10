@@ -43,7 +43,6 @@ import { Region } from "../XRay.types";
 // Interface
 interface BBSectionProps {
   // Props Here
-  // isAIResult: boolean;
   useAI: boolean;
   toggleUseAI: () => void;
   bot_img_blue: string;

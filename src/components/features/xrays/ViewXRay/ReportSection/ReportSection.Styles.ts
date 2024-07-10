@@ -3,6 +3,14 @@ import { Row, Flex } from "antd";
 import styled from "styled-components";
 import JoditEditor from "jodit-react";
 
+export const ReportSectionContainer = styled(Flex)`
+  /* padding: 0px 10px 0 10px; */
+  /* width: 100%; */
+  /* height: 100%; */
+  flex-direction: column;
+`;
+
+
 // export const ReportDiv = styled.div`
 //     // display: flex;
 //     width: 50vw;

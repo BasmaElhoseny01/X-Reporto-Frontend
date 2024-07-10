@@ -8,6 +8,7 @@ import {
   ReportEditor,
   // ReportDiv,
   LoadingContainer,
+  ReportSectionContainer,
 } from "./ReportSection.Styles";
 import LineHeader from "../../../../common/LineHeader/LineHeader";
 import SelectionTemplate, {
@@ -22,8 +23,15 @@ import { ResultType } from "../../../../../types/Result";
 // Interfaces
 interface ReportSectionProps {
   // Props Here
+  useAI: boolean;
+  toggleUseAI: () => void;
+  bot_img_blue: string;
+  bot_img_grey: string;
+
   lmResultData: ResultType;
-  // setLmResultData: (value: ResultType) => void;
+  customResultData: ResultType;
+  originalXRayPath: string | null;
+  case_id: number | null;
 }
 
 // Server Fetch
@@ -74,9 +82,39 @@ const uploadReportFile = async (
   }
 };
 
+const generateReport = async (case_id: number, token: string) => {
+  try {
+    const response = await axios.post(
+      `api/v1/studies/${case_id}/run_llm`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log("Error generating Report: ", error);
+    return null;
+  }
+};
+
 function ReportSection(props: ReportSectionProps) {
   // Props
-  const { lmResultData } = props;
+  const {
+    useAI,
+    toggleUseAI,
+    bot_img_blue,
+    bot_img_grey,
+    lmResultData,
+    customResultData,
+    originalXRayPath,
+    case_id,
+  } = props;
+
+  const token = useSelector((state: MainState) => state.token);
+
   // useEffect(() => {
   //   console.log("ReportSection.....");
   //   console.log("LM Result Data: ", props.lmResultData);
@@ -84,17 +122,15 @@ function ReportSection(props: ReportSectionProps) {
 
   // const [xReportoResultId, setXReportoResultId] = useState<number>(0);
 
-  // Text Editor Content
+  // Text Editor
+  const editor = useRef(null);
   const [content, setContent] = useState<string>(defaultTemplate); // Text Editor Content
   const [reportContent, setReportContent] = useState<string>(""); // Finding Report Content
 
   const [selectedValue, setSelectedValue] = useState<string>("-1");
-  const editor = useRef(null);
-  const token = useSelector((state: MainState) => state.token);
   const delay = (ms: number): Promise<void> =>
     new Promise((resolve) => setTimeout(resolve, ms));
   // const [resultId, setResultId] = useState<number>(0);
-  const studyCase = useSelector((state: MainState) => state.case);
   const [loading, setLoading] = useState<boolean>(false);
   const [reportNotExist, setReportNotExist] = useState<boolean>(true);
   const [visible, setVisible] = useState<boolean>(true);
@@ -262,6 +298,25 @@ function ReportSection(props: ReportSectionProps) {
     }
   };
 
+  const handleGenerateReport = async () => {
+    try {
+      if (case_id) {
+        const reportResponse = await generateReport(case_id, token);
+        console.log("reportResponse", reportResponse);
+        if (reportResponse) {
+          message.success("report generated successfully!");
+        } else {
+          message.error("Failed to generate report");
+        }
+      } else {
+        throw new Error("Case ID is null");
+      }
+    } catch (error) {
+      console.error("Error generating report:", error);
+      message.error("Failed to generate report");
+    }
+  };
+
   // useEffect(() => {
   //   const fetchReportPath = async () => {
   //     if (studyCase?.id) {
@@ -319,16 +374,23 @@ function ReportSection(props: ReportSectionProps) {
           <Spin size="large" />
         </LoadingContainer>
       ) : (
-        <>
-          <ReportHeader>
+        <ReportSectionContainer>
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
             <Title level={3}>Report</Title>
-            {/* {reportNotExist ? (
-              <SelectionTemplate
-                selectedValue={selectedValue}
-                handleSelectionChange={handleSelectionChange}
-              />
-            ) : null} */}
-          </ReportHeader>
+            <img
+              src={useAI ? bot_img_blue : bot_img_grey}
+              alt="Bot"
+              style={{ width: 40, height: 40, cursor: "pointer" }}
+              onClick={toggleUseAI}
+            />
+          </div>
           <LineHeader />
           <ReportEditor
             ref={editor}
@@ -338,12 +400,11 @@ function ReportSection(props: ReportSectionProps) {
             onChange={handleContentChange}
           />
           <ButtonContainer>
-            <PrimaryButton
-              onClick={handleSubmitReport}
-              // onClick={() => console.log("Submit Report")}
-              size="large"
-            >
+            <PrimaryButton onClick={handleSubmitReport} size="large">
               Submit Report
+            </PrimaryButton>
+            <PrimaryButton onClick={handleGenerateReport} size="large">
+              Generate Report
             </PrimaryButton>
           </ButtonContainer>
 
@@ -367,7 +428,7 @@ function ReportSection(props: ReportSectionProps) {
               ) : null}
             </ButtonContainer>
           ) : null} */}
-        </>
+        </ReportSectionContainer>
       )}
     </>
   );
