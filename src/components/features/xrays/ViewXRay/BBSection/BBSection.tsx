@@ -142,7 +142,7 @@ const uploadRegionSentences = async (
     formData.append("sentences", blob);
 
     const response = await axios.post(
-      `api/v1/results/${resultId}/upload_sentences`,
+      `api/v1/results/${resultId}/upload_boxes_sentences`,
       formData,
       {
         headers: {
@@ -191,34 +191,42 @@ function BBSection(props: BBSectionProps) {
 
       if (!result) {
         // Create New Custom Result
-        console.log("Creating New Custom");
-        // if (!case_id) throw new Error("Case ID is null");
-        // const resultResponse = await createCustomResult(
-        // xRayPath, // use the global xRayPath for submission
-        //   case_id,
-        //   token
-        // );
-        // console.log("resultResponse: ", resultResponse);
-        // if(!resultResponse) throw new Error("Failed to create custom result");
-        // result = resultResponse;
+        console.log("Creating New Custom With image_path: ", xRayPath);
+
+        if (!case_id) throw new Error("Case ID is null");
+        const resultResponse = await createCustomResult(
+          case_id,
+          xRayPath,
+          token
+        );
+        console.log("resultResponse: ", resultResponse);
+        if (!resultResponse) throw new Error("Failed to create custom result");
+        result = resultResponse;
       }
+      if (result.xray_path != xRayPath) {
+        console.log("Updating XRay Path");
+      } else {
+        // need to update the xray path
+        console.log("Same XRay Path");
+      }
+
       // (1) Upload BBoxes to the result
       console.log("Saving to Custom Result ......: ", result);
-      // const BBoxesResponse = await uploadBBoxesFile(
-      //   annotations,
-      //   result.id,
-      //   token
-      // );
-      // console.log("BBoxesResponse: ", BBoxesResponse);
-      // if (!BBoxesResponse) throw new Error("Failed to upload BBoxes");
+      const BBoxesResponse = await uploadBBoxesFile(
+        annotations,
+        result.id,
+        token
+      );
+      console.log("BBoxesResponse: ", BBoxesResponse);
+      if (!BBoxesResponse) throw new Error("Failed to upload BBoxes");
       // (2) Upload Region Sentences to the result
-      // const SentencesResponse = await uploadRegionSentences(
-      //   annotations,
-      //   result.id,
-      //   token
-      // );
-      // console.log("SentencesResponse: ", SentencesResponse);
-      // if(!SentencesResponse) new Error("Failed to upload Sentences");
+      const SentencesResponse = await uploadRegionSentences(
+        annotations,
+        result.id,
+        token
+      );
+      console.log("SentencesResponse: ", SentencesResponse);
+      if(!SentencesResponse) new Error("Failed to upload Sentences");
       message.success("Result saved successfully");
     } catch (error) {
       message.error("failed to save result");
