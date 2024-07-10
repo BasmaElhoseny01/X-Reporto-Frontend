@@ -40,7 +40,11 @@ import { ResultType } from "../../../../../types/Result";
 import { useSelector } from "react-redux";
 import { MainState } from "../../../../../state";
 import { Region } from "../XRay.types";
-import { GenerateReport } from "../ViewXRay.Server";
+import {
+  createCustomResult,
+  GenerateReport,
+  updateCustomResult,
+} from "../ViewXRay.Server";
 import {
   anatomicalRegions,
   anatomicalRegionsIndexToKey,
@@ -65,63 +69,6 @@ interface BBSectionProps {
 }
 
 // Server APIS
-const createCustomResult = async (
-  study_id: number,
-  xray_path: string | null,
-  token: string
-): Promise<ResultType | null> => {
-  try {
-    const response = await axios.post(
-      `api/v1/results`,
-      {
-        result_name: "Custom Result",
-        type: "custom",
-        xray_path: xray_path,
-        study_id: study_id,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`, // Include the token in the headers
-          "Content-Type": "application/json", // Optional: Include if required by your API
-        },
-      }
-    );
-    // console.log("Custom Result Created: ", response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Error creating custom result: ", error);
-    return null;
-  }
-};
-
-const updateCustomResult = async (
-  // study_id: number,
-  result_id: number,
-  new_xray_path: string | null,
-  token: string
-): Promise<ResultType | null> => {
-  try {
-    const response = await axios.put(
-      `api/v1/results/${result_id}`,
-      {
-        xray_path: new_xray_path,
-        // study_id: study_id, // Add study_id to the request body
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`, // Include the token in the headers
-          "Content-Type": "application/json", // Optional: Include if required by your API
-        },
-      }
-    );
-    console.log("Custom Result Updated: ", response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Error updating custom result (xray_path): ", error);
-    return null;
-  }
-};
-
 const uploadBBoxesFile = async (
   regions: Region[],
   resultId: string | number,
@@ -227,7 +174,7 @@ function BBSection(props: BBSectionProps) {
   useEffect(() => {
     console.log("BBSection....");
     // console.log("BBSection ", props);
-    
+
     // Deselect Annotation when switching between AI and Custom
     handleSelectAnnotation(null);
   }, [useAI, llmResultData, customResultData]);
@@ -296,7 +243,7 @@ function BBSection(props: BBSectionProps) {
       message.success("Result saved successfully");
     } catch (error) {
       message.error("failed to save result");
-      console.error("Error Saving Result: ", error);
+      console.error("Error in handelSaveResult(): ", error);
     }
   };
 

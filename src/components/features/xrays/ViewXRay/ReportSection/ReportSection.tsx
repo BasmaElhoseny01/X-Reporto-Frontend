@@ -19,7 +19,11 @@ import { useSelector } from "react-redux";
 import { MainState } from "../../../../../state/Reducers";
 import axios from "../../../../../services/apiService";
 import { ResultType } from "../../../../../types/Result";
-import { GenerateReport } from "../ViewXRay.Server";
+import {
+  createCustomResult,
+  GenerateReport,
+  updateCustomResult,
+} from "../ViewXRay.Server";
 
 // Interfaces
 interface ReportSectionProps {
@@ -32,6 +36,8 @@ interface ReportSectionProps {
   llmResultData: ResultType;
   customResultData: ResultType;
   originalXRayPath: string | null;
+
+  xRayPath: string | null;
   case_id: number | null;
 
   setLmResultData: (data: ResultType) => void;
@@ -143,6 +149,7 @@ function ReportSection(props: ReportSectionProps) {
     customResultData,
     originalXRayPath,
     case_id,
+    xRayPath,
 
     setLmResultData,
   } = props;
@@ -265,8 +272,79 @@ function ReportSection(props: ReportSectionProps) {
   };
 
   const handleSubmitReport = async () => {
-    // // console.log("reportContent", reportContent);
-    // // Create a new DOM parser
+    let findingsText: string | null = null;
+    // (1) Check if the findings section is empty
+    const parser = new DOMParser();
+    // Parse the HTML string into a document
+    const doc = parser.parseFromString(content, "text/html");
+    // Select the <p> element by its ID
+    const findingsElement = doc.getElementById("findings");
+    if (findingsElement) {
+      // Get the text content inside the <p> element
+      findingsText = findingsElement.textContent;
+      if (!findingsText) {
+        message.error("Please fill in the findings section");
+        return;
+      }
+    }
+    try {
+      let result: ResultType | null = customResultData;
+      if (!result) {
+        // Create New Custom Result
+        console.log("Creating New Custom With image_path: ", xRayPath);
+        if (!case_id) throw new Error("Case ID is null");
+
+        const resultResponse = await createCustomResult(
+          case_id,
+          xRayPath,
+          token
+        );
+        console.log("Result Response: ", resultResponse);
+        if (!resultResponse) throw new Error("Failed to create custom result");
+        result = resultResponse;
+      }
+      if (result.xray_path != xRayPath) {
+        console.log("Updating XRay Path");
+        console.log("Old XRay Path: ", result.xray_path);
+        console.log("New XRay Path: ", xRayPath);
+        console.log("Result ID: ", result.id);
+
+        // need to update the xray path
+        if (!case_id) throw new Error("Case ID is null");
+        const updatedResult = await updateCustomResult(
+          // case_id,
+          result.id,
+          xRayPath,
+          token
+        );
+
+        console.log("updatedResult: ", updatedResult);
+        if (!updatedResult) throw new Error("Failed to update custom result");
+        result = updatedResult;
+      } else {
+        console.log("Same XRay Path");
+      }
+
+      //(2) Upload the report to the result
+      console.log("Saving Custom Result ......: ", result);
+      if (!findingsText) {
+        message.error("Please fill in the findings section");
+        return;
+      }
+      const uploadResponse = await uploadReportFile(
+        findingsText,
+        result.id,
+        token
+      );
+      console.log("Upload Response: ", uploadResponse);
+
+      message.success("Report saved successfully!");
+    } catch (error) {
+      message.error("Failed to submit report");
+      console.log("Error in handleSubmitReport(): ", error);
+    }
+    // console.log("reportContent", reportContent);
+    // Create a new DOM parser
     // const parser = new DOMParser();
     // // Parse the HTML string into a document
     // const doc = parser.parseFromString(content, "text/html");
@@ -279,7 +357,7 @@ function ReportSection(props: ReportSectionProps) {
     //     message.error("Please fill in the findings section");
     //     return;
     //   }
-    //   try {
+    // try {
     //     let result: ResultType | null = customResultData;
     //     if (!customResultData) {
     //       // Create New Custom Result

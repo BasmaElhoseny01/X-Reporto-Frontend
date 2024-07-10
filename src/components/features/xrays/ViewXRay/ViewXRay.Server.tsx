@@ -106,3 +106,61 @@ export const GenerateReport = async (
     message.error("Failed to generate report");
   }
 };
+
+// Submitting Custom Results
+export const createCustomResult = async (
+  study_id: number,
+  xray_path: string | null,
+  token: string
+): Promise<ResultType | null> => {
+  try {
+    const response = await axios.post(
+      `api/v1/results`,
+      {
+        result_name: "Custom Result",
+        type: "custom",
+        xray_path: xray_path,
+        study_id: study_id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the headers
+          "Content-Type": "application/json", // Optional: Include if required by your API
+        },
+      }
+    );
+    // console.log("Custom Result Created: ", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating custom result: ", error);
+    return null;
+  }
+};
+
+export const updateCustomResult = async (
+  // study_id: number,
+  result_id: number,
+  new_xray_path: string | null,
+  token: string
+): Promise<ResultType | null> => {
+  try {
+    const response = await axios.put(
+      `api/v1/results/${result_id}`,
+      {
+        xray_path: new_xray_path,
+        // study_id: study_id, // Add study_id to the request body
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the headers
+          "Content-Type": "application/json", // Optional: Include if required by your API
+        },
+      }
+    );
+    console.log("Custom Result Updated: ", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating custom result (xray_path): ", error);
+    return null;
+  }
+};
