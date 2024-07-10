@@ -101,8 +101,8 @@ function AnnotationBox(props: AnnotationBoxProps) {
               x: node.x(),
               y: node.y(),
               // set minimal value
-              // set minimal value
               width: Math.max(5, (node.width() ?? 5) * scaleX),
+              // set minimal value
               height: Math.max(5, (node.height() ?? 5) * scaleY),
             });
           }

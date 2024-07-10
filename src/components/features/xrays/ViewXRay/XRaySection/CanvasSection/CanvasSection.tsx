@@ -21,6 +21,7 @@ import { useView } from "../../ViewProvider";
 // Types
 import { Region } from "../../XRay.types";
 import { Vector2d } from "konva/lib/types";
+import { anatomicalRegionsIndexToKey } from "../../../../../../constants/anatomicalRegions";
 
 let idCounter = 0;
 const generateId = () => (++idCounter).toString();
@@ -55,7 +56,7 @@ function CanvasSection(props: CanvasSectionProps) {
   } = useAnnotations();
 
   useEffect(() => {
-    console.log("Canvas Section ........",ImageURL);
+    console.log("Canvas Section ........", ImageURL);
   }, []);
 
   // const { handleSetInfoCollapsed, handleSetReportCollapsed } = useView();
@@ -101,7 +102,9 @@ function CanvasSection(props: CanvasSectionProps) {
         setNewAnnotation([
           {
             id,
-            title: `Region(${id})`,
+            // title: `Region(${id})`,
+            // : `Region(${id})`,
+            title_id: -1, // Default title_id (Not assigned to any region)
             finding: "",
             // ai: false,
             box: {
@@ -112,17 +115,17 @@ function CanvasSection(props: CanvasSectionProps) {
             },
           },
         ]);
-        console.log("Down: newAnnotation", newAnnotation);
+        // console.log("Down: newAnnotation", newAnnotation);
         // }
       }
-      if (pointerPosition && navTool === "zoom") {
-        console.log("Zoom in", pointerPosition);
-        const stage = event.target.getStage();
-        if (stage) {
-          stage.setPointersPositions(event.evt);
-          stage.startDrag();
-        }
-      }
+      // if (pointerPosition && navTool === "zoom") {
+      //   console.log("Zoom in", pointerPosition);
+      //   const stage = event.target.getStage();
+      //   if (stage) {
+      //     stage.setPointersPositions(event.evt);
+      //     stage.startDrag();
+      //   }
+      // }
     }
   };
 
@@ -132,15 +135,24 @@ function CanvasSection(props: CanvasSectionProps) {
       newAnnotation.length === 1 &&
       navTool === "draw"
     ) {
+      // check if width or height is 0
+      // if (newAnnotation[0].box.width === 0 || newAnnotation[0].box.height === 0) {
+      //   // console.error("Width or height cannot be 0");
+      //   console.log("Width or height cannot be 0");
+      //   return;
+      // }
+      // console.log("**Up: annotations", annotations);
+
       handleAddAnnotation(newAnnotation[0]);
       setNewAnnotation([]);
-      console.log("Up: annotations", annotations);
-    } else if (navTool === "zoom") {
-      const stage = event.target.getStage();
-      if (stage && stage.isDragging()) {
-        stage.stopDrag();
-      }
+      // console.log("Up: annotations", annotations);
     }
+    // else if (navTool === "zoom") {
+    //   const stage = event.target.getStage();
+    //   if (stage && stage.isDragging()) {
+    //     stage.stopDrag();
+    //   }
+    // }
   };
 
   const handleMouseMove = (event: KonvaEventObject<MouseEvent>) => {
@@ -168,7 +180,8 @@ function CanvasSection(props: CanvasSectionProps) {
         setNewAnnotation([
           {
             id,
-            title: `Region(${id})`,
+            // title: `Region(${id})`,
+            title_id: -1, // Default title_id (Not assigned to any region)
             finding: "",
             // ai: false,
             box: {
@@ -181,49 +194,59 @@ function CanvasSection(props: CanvasSectionProps) {
         ]);
         // }
       }
-    } else if (navTool === "zoom") {
-      const stage = event.target.getStage();
-      if (stage && stage.isDragging()) {
-        const dragMoveDist = stage.getPointerPosition() || { x: 0, y: 0 };
-        handleSetStageProperties({
-          stageScale: stageProperties.stageScale,
-          stageX: dragMoveDist.x,
-          stageY: dragMoveDist.y,
-        });
-      }
     }
+    // else if (navTool === "zoom") {
+    //   const stage = event.target.getStage();
+    //   if (stage && stage.isDragging()) {
+    //     const dragMoveDist = stage.getPointerPosition() || { x: 0, y: 0 };
+    //     handleSetStageProperties({
+    //       stageScale: stageProperties.stageScale,
+    //       stageX: dragMoveDist.x,
+    //       stageY: dragMoveDist.y,
+    //     });
+    //   }
+    // }
   };
 
-  const handleWheel = (event: KonvaEventObject<WheelEvent>) => {
-    if (navTool !== "zoom") return;
-    // Prevent default zoom
-    event.evt.preventDefault();
-    const scaleBy = 1.02;
-    const stage = event.target.getStage();
-    if (stage) {
-      const oldScale = stage.scaleX();
+  // const handleWheel = (event: KonvaEventObject<WheelEvent>) => {
+  //   if (navTool !== "zoom") return;
+  //   // Prevent default zoom
+  //   event.evt.preventDefault();
+  //   const scaleBy = 1.02;
+  //   const stage = event.target.getStage();
+  //   if (stage) {
+  //     const oldScale = stage.scaleX();
 
-      const pointerPosition = stage.getPointerPosition();
-      if (pointerPosition) {
-        const mousePointTo = {
-          x: pointerPosition.x / oldScale - stage.x() / oldScale,
-          y: pointerPosition.y / oldScale - stage.y() / oldScale,
-        };
+  //     const pointerPosition = stage.getPointerPosition();
+  //     if (pointerPosition) {
+  //       const mousePointTo = {
+  //         x: pointerPosition.x / oldScale - stage.x() / oldScale,
+  //         y: pointerPosition.y / oldScale - stage.y() / oldScale,
+  //       };
 
-        const newScale =
-          event.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+  //       const newScale =
+  //         event.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
 
-        // Set stage properties
-        handleSetStageProperties({
-          stageScale: newScale,
-          stageX: -(mousePointTo.x - pointerPosition.x / newScale) * newScale,
-          stageY: -(mousePointTo.y - pointerPosition.y / newScale) * newScale,
-        });
-      }
-    }
-  };
+  //       // Set stage properties
+  //       handleSetStageProperties({
+  //         stageScale: newScale,
+  //         stageX: -(mousePointTo.x - pointerPosition.x / newScale) * newScale,
+  //         stageY: -(mousePointTo.y - pointerPosition.y / newScale) * newScale,
+  //       });
+  //     }
+  //   }
+  // };
 
-  const annotationsToDraw = [...annotations, ...newAnnotation];
+  // useEffect(() => {
+  //   console.log("Canvas Section ........", annotations);
+  // }, [annotations]);
+
+  // const annotationsToDraw = [...annotations, ...newAnnotation];
+  const annotationsToDraw = [
+    ...annotations.filter((annotation) => !isNaN(parseInt(annotation.id))), // Filter out annotations with NaN id
+    ...newAnnotation,
+  ];
+
   return (
     <Stage
       width={canvasMeasures.width}
@@ -232,11 +255,11 @@ function CanvasSection(props: CanvasSectionProps) {
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseMove={handleMouseMove}
-      scaleX={stageProperties.stageScale}
-      scaleY={stageProperties.stageScale}
+      // scaleX={stageProperties.stageScale}
+      // scaleY={stageProperties.stageScale}
       x={stageProperties.stageX}
       y={stageProperties.stageY}
-      onWheel={handleWheel}
+      // onWheel={handleWheel}
     >
       <Layer>
         <ImageFromUrl
@@ -253,25 +276,24 @@ function CanvasSection(props: CanvasSectionProps) {
               <AnnotationBox
                 key={i}
                 shapeProps={annotation.box}
-                title={annotation.title}
+                // title={annotation.title}
+                title={
+                  annotation.title_id != -1
+                    ? anatomicalRegionsIndexToKey[annotation.title_id]
+                    : "UNASSIGNED"
+                }
                 isSelected={annotation.id === selectedAnnotation?.id}
                 onSelect={() => {
                   if (navTool !== "draw" && navTool !== "zoom") {
                     handleSelectAnnotation(annotation.id);
 
                     handleSetSiderType("info");
-
-                    // Collapse Info
-                    // handleSetInfoCollapsed(true);
-                    // UnCollapse Report
-                    // handleSetReportCollapsed(true);
                   }
                 }}
                 onMouseLeave={handleMouseEnter}
                 onChange={(newAttrs) => {
                   const rects = annotations.slice();
                   rects[i].box = newAttrs;
-                  // setAnnotations(rects);
                   handleSetAnnotations(rects);
                 }}
               />

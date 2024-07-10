@@ -14,7 +14,8 @@ export type Box = {
 
 export type Region = {
   id: string;
-  title: string;
+  // title: string;
+  title_id: number;
   finding?: string;
   box: Box;
 };

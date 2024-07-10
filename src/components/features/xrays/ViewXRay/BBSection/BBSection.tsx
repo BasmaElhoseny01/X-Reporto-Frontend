@@ -41,7 +41,10 @@ import { useSelector } from "react-redux";
 import { MainState } from "../../../../../state";
 import { Region } from "../XRay.types";
 import { GenerateReport } from "../ViewXRay.Server";
-import { anatomicalRegions } from "../../../../../constants/anatomicalRegions";
+import {
+  anatomicalRegions,
+  anatomicalRegionsIndexToKey,
+} from "../../../../../constants/anatomicalRegions";
 
 // Interface
 interface BBSectionProps {
@@ -129,9 +132,10 @@ const uploadBBoxesFile = async (
     // console.log("Text: ", regions);
 
     const text = regions
-      .map((region, index) => {
+      .map((region) => {
         const { x, y, width, height } = region.box;
-        return `${index} ${x} ${y} ${width} ${height}`;
+        const region_id = region.title_id;
+        return `${region_id} ${x} ${y} ${width} ${height}`;
       })
       .join("\n");
     // console.log("Text: ", text);
@@ -213,9 +217,11 @@ function BBSection(props: BBSectionProps) {
   const {
     selectedAnnotation,
     annotations,
-    handleCEditAnnotationTitle,
+    // handleCEditAnnotationTitle,
+    handleEditAnnotationRegionMapping,
     handleEditAnnotationFinding,
     handleSelectAnnotation,
+    existUnassigned,
   } = useAnnotations();
 
   useEffect(() => {
@@ -226,6 +232,11 @@ function BBSection(props: BBSectionProps) {
 
   const handelSaveResult = async () => {
     try {
+      // check if there exist unassigned regions
+      if (existUnassigned()) {
+        message.error("Some boxes are not assigned to any region");
+        return;
+      }
       let result: ResultType | null = customResultData;
 
       if (!result) {
@@ -295,10 +306,12 @@ function BBSection(props: BBSectionProps) {
 
   const regionSelectOptions: OptionType[] = Object.entries(
     anatomicalRegions
-  ).map(([key, value]) => ({
-    value,
-    label: key,
-    disabled: annotations.some((annotation) => annotation.title === key),
+  ).map(([region_name, region_index]) => ({
+    value: region_index,
+    label: region_name,
+    disabled: annotations.some(
+      (annotation) => annotation.title_id === region_index
+    ),
   }));
 
   return (
@@ -352,7 +365,7 @@ function BBSection(props: BBSectionProps) {
               }}
             >
               Region
-              <Input
+              {/* <Input
                 value={selectedAnnotation?.title}
                 disabled={!selectedAnnotation}
                 onChange={(e) => {
@@ -363,13 +376,18 @@ function BBSection(props: BBSectionProps) {
                     );
                   }
                 }}
-              />
+              /> */}
             </label>
           </BBFindingTitleContainer>
           <Select
             showSearch
             style={{ width: 200 }}
-            value={selectedAnnotation?.title}
+            // value={selectedAnnotation?.title}
+            value={
+              selectedAnnotation && selectedAnnotation?.title_id != -1
+                ? anatomicalRegionsIndexToKey[selectedAnnotation?.title_id]
+                : undefined
+            }
             optionFilterProp="label"
             filterSort={(optionA, optionB) =>
               (optionA?.label ?? "")
@@ -378,9 +396,14 @@ function BBSection(props: BBSectionProps) {
             }
             disabled={!selectedAnnotation}
             options={regionSelectOptions}
-            onChange={(e) => {
+            onChange={(value, option) => {
               if (selectedAnnotation) {
-                console.log("Selected: ", e);
+                console.log("Selected: ", value);
+                console.log("Option: ", option);
+                handleEditAnnotationRegionMapping(
+                  selectedAnnotation.id,
+                  Number(value)
+                );
                 // handleCEditAnnotationTitle(
                 //   selectedAnnotation?.id,
                 //   e.target.value

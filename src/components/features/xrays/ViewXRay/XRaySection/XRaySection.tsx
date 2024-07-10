@@ -145,7 +145,8 @@ const downloadBBoxesFile = async (file_path: string, token: string) => {
 
       regions.push({
         id: regionId.toString(),
-        title: anatomicalRegionsIndexToKey[regionId],
+        // title: anatomicalRegionsIndexToKey[regionId],
+        title_id: regionId,
         finding: "",
         // ai: false,
         box: boundingBox,
