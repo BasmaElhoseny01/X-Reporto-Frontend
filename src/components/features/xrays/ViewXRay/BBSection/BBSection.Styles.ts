@@ -43,7 +43,7 @@ export const BBAllFindingsContainer = styled(Flex)`
 
 export const StyledParagraph = styled(Paragraph)`
   width: 100%;
-  background-color: ${palette.grey100};
+  /* background-color: ${palette.grey100}; */
   height: 250px;
 
   overflow-y: scroll;
@@ -89,13 +89,14 @@ export const VerticalDivider = styled.div`
 export const BBFindingTitleContainer = styled(Flex)`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
 
   width: 100%;
 
-  input {
-    width: 50%;
+  .ant-select {
+    width: 100%;
+    max-width: 300px;
 
     margin: 10px;
   }

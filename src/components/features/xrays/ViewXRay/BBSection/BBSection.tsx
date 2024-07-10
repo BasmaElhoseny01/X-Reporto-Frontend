@@ -360,57 +360,43 @@ function BBSection(props: BBSectionProps) {
         >
           <BBFindingTitleContainer>
             <label
-              style={{
-                width: "100%",
-              }}
+              // style={{
+                // width: "100%",
+              // }}
             >
               Region
-              {/* <Input
-                value={selectedAnnotation?.title}
-                disabled={!selectedAnnotation}
-                onChange={(e) => {
-                  if (selectedAnnotation) {
-                    handleCEditAnnotationTitle(
-                      selectedAnnotation?.id,
-                      e.target.value
-                    );
-                  }
-                }}
-              /> */}
             </label>
-          </BBFindingTitleContainer>
-          <Select
-            showSearch
-            style={{ width: 200 }}
-            // value={selectedAnnotation?.title}
-            value={
-              selectedAnnotation && selectedAnnotation?.title_id != -1
-                ? anatomicalRegionsIndexToKey[selectedAnnotation?.title_id]
-                : undefined
-            }
-            optionFilterProp="label"
-            filterSort={(optionA, optionB) =>
-              (optionA?.label ?? "")
-                .toLowerCase()
-                .localeCompare((optionB?.label ?? "").toLowerCase())
-            }
-            disabled={!selectedAnnotation}
-            options={regionSelectOptions}
-            onChange={(value, option) => {
-              if (selectedAnnotation) {
-                console.log("Selected: ", value);
-                console.log("Option: ", option);
-                handleEditAnnotationRegionMapping(
-                  selectedAnnotation.id,
-                  Number(value)
-                );
-                // handleCEditAnnotationTitle(
-                //   selectedAnnotation?.id,
-                //   e.target.value
-                // );
+            <Select
+              showSearch
+              // style={{ width: "800px" }}
+              // value={selectedAnnotation?.title}
+              value={
+                selectedAnnotation && selectedAnnotation?.title_id != -1
+                  ? anatomicalRegionsIndexToKey[selectedAnnotation?.title_id]
+                  : undefined
               }
-            }}
-          />
+              optionFilterProp="label"
+              filterSort={(optionA, optionB) =>
+                (optionA?.label ?? "")
+                  .toLowerCase()
+                  .localeCompare((optionB?.label ?? "").toLowerCase())
+              }
+              disabled={!selectedAnnotation}
+              options={regionSelectOptions}
+              /*eslint-disable-next-line*/
+              onChange={(value, option) => {
+                if (selectedAnnotation) {
+                  // console.log("Selected: ", value);
+                  // console.log("Option: ", option);
+                  handleEditAnnotationRegionMapping(
+                    selectedAnnotation.id,
+                    Number(value)
+                  );
+                }
+              }}
+            />
+          </BBFindingTitleContainer>
+
           <StyledTextArea
             value={selectedAnnotation?.finding}
             disabled={!selectedAnnotation}
