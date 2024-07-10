@@ -379,6 +379,7 @@ function ViewXRay() {
           bot_img_blue={BotBlue}
           bot_img_grey={BotGray}
           useAI={useAI}
+          setUseAI={setUseAI}
           toggleUseAI={toggleUseAI}
           llmResultData={llmResultData}
           customResultData={customResultData}

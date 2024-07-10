@@ -40,11 +40,7 @@ import { ResultType } from "../../../../../types/Result";
 import { useSelector } from "react-redux";
 import { MainState } from "../../../../../state";
 import { Region } from "../XRay.types";
-import {
-  createCustomResult,
-  GenerateReport,
-  updateCustomResult,
-} from "../ViewXRay.Server";
+import { createCustomResult, GenerateReport, updateCustomResult } from "../ViewXRay.Server";
 import {
   anatomicalRegions,
   anatomicalRegionsIndexToKey,

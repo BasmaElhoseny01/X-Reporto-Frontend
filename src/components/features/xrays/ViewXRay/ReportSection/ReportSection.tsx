@@ -29,6 +29,7 @@ import {
 interface ReportSectionProps {
   // Props Here
   useAI: boolean;
+  setUseAI: (data: boolean) => void;
   toggleUseAI: () => void;
   bot_img_blue: string;
   bot_img_grey: string;
@@ -91,57 +92,11 @@ const uploadReportFile = async (
   }
 };
 
-// const generateReport = async (case_id: number, token: string) => {
-//   try {
-//     const response = await axios.post(
-//       `api/v1/studies/${case_id}/run_llm`,
-//       {},
-//       {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//         },
-//       }
-//     );
-//     return response.data;
-//   } catch (error) {
-//     console.log("Error generating Report: ", error);
-//     return null;
-//   }
-// };
-
-// const createCustomResult = async (
-//   study_id: number,
-//   xray_path: string | null,
-//   token: string
-// ): Promise<ResultType | null> => {
-//   try {
-//     const response = await axios.post(
-//       `api/v1/results`,
-//       {
-//         result_name: "Custom Result",
-//         type: "custom",
-//         xray_path: xray_path,
-//         study_id: study_id,
-//       },
-//       {
-//         headers: {
-//           Authorization: `Bearer ${token}`, // Include the token in the headers
-//           "Content-Type": "application/json", // Optional: Include if required by your API
-//         },
-//       }
-//     );
-//     console.log("Custom Result Created: ", response.data);
-//     return response.data;
-//   } catch (error) {
-//     console.error("Error creating custom result: ", error);
-//     return null;
-//   }
-// };
-
 function ReportSection(props: ReportSectionProps) {
   // Props
   const {
     useAI,
+    setUseAI,
     toggleUseAI,
     bot_img_blue,
     bot_img_grey,
@@ -211,36 +166,6 @@ function ReportSection(props: ReportSectionProps) {
       } catch (error) {
         console.log("Error in fetchReportData(): ", error);
       }
-      //   if (reportPath) {
-      //     const reportResponse = await downloadReportFile(reportPath, token);
-      //     // console.log("reportResponse: ", reportResponse);
-      //     if (reportResponse) {
-      //       setReportContent(reportResponse);
-      //       setContent(
-      //         content.replace(
-      //           '<p id="findings"></p>',
-      //           `<p id="findings">${reportResponse}</p>`
-      //         )
-      //       );
-      //       message.success("Report loaded successfully!");
-      //     }
-      //   } else {
-      //     message.error("Failed to load report");
-      //   }
-      // };
-      // let reportPath: string | null = null;
-      // if (useAI) {
-      //   if (!llmResultData) {
-      //     message.info("No AI results found for this case.");
-      //     return;
-      //   }
-      //   reportPath = llmResultData.report_path;
-      // } else {
-      //   if (!customResultData) {
-      //     message.info("No custom results found for this case.");
-      //     return;
-      //   }
-      //   reportPath = customResultData.report_path;
     };
 
     // Scenario(1) NoLLMResulT and NoCustomResult
@@ -435,7 +360,9 @@ function ReportSection(props: ReportSectionProps) {
               </PrimaryButton>
             )} */}
         <PrimaryButton
-          // onClick={() => GenerateReport(case_id, token)}
+          onClick={() =>
+            GenerateReport(case_id, token, setLmResultData, setUseAI)
+          }
           size="large"
         >
           Generate Report
