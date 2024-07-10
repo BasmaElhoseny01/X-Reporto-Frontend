@@ -34,13 +34,14 @@ import BotBlue from "../../../../../assets/images/bot-blue.svg";
 import BotRed from "../../../../../assets/images/bot-red.svg";
 import BotGray from "../../../../../assets/images/bot-grey.svg";
 
-import { Empty, Input, message } from "antd";
+import { Empty, Input, message, Select } from "antd";
 import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
 import { ResultType } from "../../../../../types/Result";
 import { useSelector } from "react-redux";
 import { MainState } from "../../../../../state";
 import { Region } from "../XRay.types";
 import { GenerateReport } from "../ViewXRay.Server";
+import { anatomicalRegions } from "../../../../../constants/anatomicalRegions";
 
 // Interface
 interface BBSectionProps {
@@ -286,6 +287,20 @@ function BBSection(props: BBSectionProps) {
     }
   };
 
+  type OptionType = {
+    value: number;
+    label: string;
+    disabled?: boolean;
+  };
+
+  const regionSelectOptions: OptionType[] = Object.entries(
+    anatomicalRegions
+  ).map(([key, value]) => ({
+    value,
+    label: key,
+    disabled: annotations.some((annotation) => annotation.title === key),
+  }));
+
   return (
     <BBFindingsSectionContainer>
       {/* All findings in 1 paragraph */}
@@ -351,6 +366,28 @@ function BBSection(props: BBSectionProps) {
               />
             </label>
           </BBFindingTitleContainer>
+          <Select
+            showSearch
+            style={{ width: 200 }}
+            value={selectedAnnotation?.title}
+            optionFilterProp="label"
+            filterSort={(optionA, optionB) =>
+              (optionA?.label ?? "")
+                .toLowerCase()
+                .localeCompare((optionB?.label ?? "").toLowerCase())
+            }
+            disabled={!selectedAnnotation}
+            options={regionSelectOptions}
+            onChange={(e) => {
+              if (selectedAnnotation) {
+                console.log("Selected: ", e);
+                // handleCEditAnnotationTitle(
+                //   selectedAnnotation?.id,
+                //   e.target.value
+                // );
+              }
+            }}
+          />
           <StyledTextArea
             value={selectedAnnotation?.finding}
             disabled={!selectedAnnotation}
