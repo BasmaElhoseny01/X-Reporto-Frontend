@@ -28,7 +28,7 @@ interface ReportSectionProps {
   bot_img_blue: string;
   bot_img_grey: string;
 
-  lmResultData: ResultType;
+  llmResultData: ResultType;
   customResultData: ResultType;
   originalXRayPath: string | null;
   case_id: number | null;
@@ -107,7 +107,7 @@ function ReportSection(props: ReportSectionProps) {
     toggleUseAI,
     bot_img_blue,
     bot_img_grey,
-    lmResultData,
+    llmResultData,
     customResultData,
     originalXRayPath,
     case_id,
@@ -149,11 +149,13 @@ function ReportSection(props: ReportSectionProps) {
   );
 
   useEffect(() => {
+    console.log("ReportSection", llmResultData, customResultData, useAI);
+
     // Download the report content :D
     const fetchData = async () => {
-      if (lmResultData?.report_path) {
+      if (llmResultData?.report_path) {
         const reportResponse = await downloadReportFile(
-          lmResultData.report_path,
+          llmResultData.report_path,
           token
         );
         // console.log("reportResponse: ", reportResponse);
@@ -172,6 +174,20 @@ function ReportSection(props: ReportSectionProps) {
       }
     };
 
+    let reportPath: string | null = null;
+    if (useAI) {
+      if (!llmResultData) {
+        message.info("No AI results found for this case.");
+        return;
+      }
+      reportPath = llmResultData.report_path;
+    } else {
+      if (!customResultData) {
+        message.info("No custom results found for this case.");
+        return;
+      }
+      reportPath = customResultData.report_path;
+    }
     fetchData();
   }, []);
 

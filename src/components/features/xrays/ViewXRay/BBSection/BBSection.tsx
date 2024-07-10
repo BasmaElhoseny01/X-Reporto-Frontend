@@ -48,7 +48,7 @@ interface BBSectionProps {
   bot_img_blue: string;
   bot_img_grey: string;
 
-  lmResultData: ResultType;
+  llmResultData: ResultType;
   customResultData: ResultType;
   originalXRayPath: string | null;
   case_id: number | null;
@@ -163,7 +163,7 @@ function BBSection(props: BBSectionProps) {
     toggleUseAI,
     bot_img_blue,
     bot_img_grey,
-    lmResultData,
+    llmResultData,
     customResultData,
     originalXRayPath,
     case_id,
@@ -187,7 +187,7 @@ function BBSection(props: BBSectionProps) {
         if (case_id) {
           const response = await createCustomResult(
             case_id,
-            lmResultData ? lmResultData.xray_path : originalXRayPath,
+            llmResultData ? llmResultData.xray_path : originalXRayPath,
             token
           );
           console.log("Response: ", response);

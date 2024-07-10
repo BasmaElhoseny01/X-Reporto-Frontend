@@ -101,7 +101,7 @@ function ViewXRay() {
   const [caseData, setCaseData] = useState<CaseType>(null);
 
   // Results States
-  const [lmResultData, setLmResultData] = useState<ResultType>(null);
+  const [llmResultData, setllmResultData] = useState<ResultType>(null);
   const [templateResultData, setTemplateResultData] =
     useState<ResultType>(null);
   const [customResultData, setCustomResultData] = useState<ResultType>(null);
@@ -135,7 +135,7 @@ function ViewXRay() {
                   const result = resultsResponse[i];
 
                   if (result.type === "llm") {
-                    setLmResultData(result);
+                    setllmResultData(result);
                     lmResultFound = true;
                   } else if (result.type === "template") {
                     setTemplateResultData(result);
@@ -211,7 +211,7 @@ function ViewXRay() {
   }, []);
 
   const toggleUseAI = () => {
-    if (lmResultData) {
+    if (llmResultData) {
       setUseAI(!useAI);
     } else {
       message.info("No LM results found for this case.");
@@ -260,7 +260,7 @@ function ViewXRay() {
 
     return (
       <XRaySection
-        llmResultData={lmResultData}
+        llmResultData={llmResultData}
         customResultData={customResultData}
         useAI={useAI}
         originalXRayPath={caseData ? caseData.xray_path : null}
@@ -307,7 +307,7 @@ function ViewXRay() {
           bot_img_grey={BotGray}
           useAI={useAI}
           toggleUseAI={toggleUseAI}
-          lmResultData={lmResultData}
+          llmResultData={llmResultData}
           customResultData={customResultData}
           originalXRayPath={caseData ? caseData.xray_path : null}
           case_id={caseData ? caseData.id : null}
@@ -342,7 +342,7 @@ function ViewXRay() {
           bot_img_grey={BotGray}
           useAI={useAI}
           toggleUseAI={toggleUseAI}
-          lmResultData={lmResultData}
+          llmResultData={llmResultData}
           customResultData={customResultData}
           originalXRayPath={caseData ? caseData.xray_path : null}
           case_id={caseData ? caseData.id : null}
