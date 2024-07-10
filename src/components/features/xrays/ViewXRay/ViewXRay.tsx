@@ -331,9 +331,11 @@ function ViewXRay() {
           bot_img_blue={BotBlue}
           bot_img_grey={BotGray}
           useAI={useAI}
+          setUseAI={setUseAI}
           toggleUseAI={toggleUseAI}
           llmResultData={llmResultData}
           customResultData={customResultData}
+          setLmResultData={setllmResultData}
           // xRayPath={caseData ? caseData.xray_path : null}
           xRayPath={xRayPath}
           case_id={caseData ? caseData.id : null}

@@ -469,7 +469,7 @@ function ReportSection(props: ReportSectionProps) {
               </PrimaryButton>
             )} */}
             <PrimaryButton
-              onClick={() => GenerateReport(case_id, token)}
+              // onClick={() => GenerateReport(case_id, token)}
               size="large"
             >
               Generate Report

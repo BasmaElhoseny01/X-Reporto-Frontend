@@ -40,17 +40,20 @@ import { useSelector } from "react-redux";
 import { MainState } from "../../../../../state";
 import { Region } from "../XRay.types";
 import { GenerateReport } from "../ViewXRay.Server";
+import { set } from "date-fns";
 
 // Interface
 interface BBSectionProps {
   // Props Here
   useAI: boolean;
+  setUseAI: (data: boolean) => void;
   toggleUseAI: () => void;
   bot_img_blue: string;
   bot_img_grey: string;
 
   llmResultData: ResultType;
   customResultData: ResultType;
+  setLmResultData: (data: ResultType) => void;
   // originalXRayPath: string | null;
   xRayPath: string | null;
   case_id: number | null;
@@ -189,19 +192,17 @@ const uploadRegionSentences = async (
 function BBSection(props: BBSectionProps) {
   const {
     useAI,
+    setUseAI, // use this only after saving llm result
     toggleUseAI,
     bot_img_blue,
     bot_img_grey,
     llmResultData,
     customResultData,
+    setLmResultData,
     // originalXRayPath,
     xRayPath,
     case_id,
   } = props;
-
-  useEffect(() => {
-    console.log("BBSection ", props);
-  }, []);
 
   const token = useSelector((state: MainState) => state.token);
 
@@ -211,6 +212,10 @@ function BBSection(props: BBSectionProps) {
     handleCEditAnnotationTitle,
     handleEditAnnotationFinding,
   } = useAnnotations();
+
+  useEffect(() => {
+    console.log("BBSection ", props);
+  }, []);
 
   const handelSaveResult = async () => {
     console.log("Saving Result ......");
@@ -351,7 +356,9 @@ function BBSection(props: BBSectionProps) {
           Save
         </PrimaryButton>{" "}
         <PrimaryButton
-          onClick={() => GenerateReport(case_id, token)}
+          onClick={() =>
+            GenerateReport(case_id, token, setLmResultData, setUseAI)
+          }
           size="large"
         >
           Generate Report

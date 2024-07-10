@@ -463,6 +463,7 @@ function XRaySection(props: XRaySectionProps) {
     // // }
     // // fetchData(false);
     // }, [llmResultData, customResultData]);
+    // }, [useAI, llmResultData, customResultData]);
   }, [useAI, llmResultData, customResultData]);
 
   // Render Content based on the states
