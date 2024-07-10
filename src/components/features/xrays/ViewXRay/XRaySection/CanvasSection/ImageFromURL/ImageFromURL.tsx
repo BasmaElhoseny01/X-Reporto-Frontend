@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Image } from "react-konva";
 import { KonvaEventObject } from "konva/lib/Node";
 
+import NotFoundImage from "../../../../../../../assets/images/not-found-image.jpg";
 interface ImageFromUrlProps {
   imageUrl: string;
   setCanvasMeasures: (measures: { width: number; height: number }) => void;
@@ -20,6 +21,9 @@ const ImageFromUrl: React.FC<ImageFromUrlProps> = ({
   const [image, setImage] = useState<HTMLImageElement | undefined>(undefined);
 
   useEffect(() => {
+    if (!imageUrl) {
+      imageUrl = NotFoundImage;
+    }
     const imageToLoad = new window.Image();
     imageToLoad.src = imageUrl;
     imageToLoad.addEventListener("load", () => {

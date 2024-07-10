@@ -55,7 +55,7 @@ function CanvasSection(props: CanvasSectionProps) {
   } = useAnnotations();
 
   useEffect(() => {
-    console.log("Canvas Section ........");
+    console.log("Canvas Section ........",ImageURL);
   }, []);
 
   // const { handleSetInfoCollapsed, handleSetReportCollapsed } = useView();

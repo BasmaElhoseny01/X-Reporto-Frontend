@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import React from "react";
 
 // Context
@@ -25,7 +26,15 @@ import Delete from "../../../../../../assets/images/delete.svg";
 import HideBoxes from "../../../../../../assets/images/hide-boxes.svg";
 import HideBoxesSelected from "../../../../../../assets/images/hide-boxes-selected.svg";
 
-function ToolBar() {
+// interface
+interface ToolBarProps {
+  disabled?: boolean;
+}
+
+function ToolBar(props: ToolBarProps) {
+  // Props
+  const { disabled } = props;
+
   const { navTool, handleChangeNavTool, hideBoxes, handleToggleHideBoxes } =
     useTools();
   const { selectedAnnotation, handleSelectAnnotation, handleRemoveAnnotation } =
@@ -53,14 +62,18 @@ function ToolBar() {
       <ToolBarIcon
         img={navTool == "select" ? SelectSelected : Select}
         tip="select"
-        selected={navTool == "select"}
-        onClick={() => updateNavTool("select")}
+        selected={navTool == "select" && !disabled}
+        onClick={() => {
+          if (disabled) return;
+          updateNavTool("select");
+        }}
       />
       <ToolBarIcon
         img={navTool == "zoom" ? ZoomSelected : Zoom}
         tip="zoom"
         selected={navTool == "zoom"}
         onClick={() => {
+          if (disabled) return;
           // Deselect annotation
           handleSelectAnnotation(null);
           updateNavTool("zoom");
@@ -69,8 +82,9 @@ function ToolBar() {
       <ToolBarIcon
         img={navTool == "draw" ? DrawSelected : Draw}
         tip="draw"
-        selected={navTool == "draw"}
+        selected={navTool == "draw" && !disabled}
         onClick={() => {
+          if (disabled) return;
           // Deselect annotation
           handleSelectAnnotation(null);
           updateNavTool("draw");
@@ -79,8 +93,9 @@ function ToolBar() {
       <ToolBarIcon
         img={navTool == "move" ? MoveSelected : Move}
         tip="move"
-        selected={navTool == "move"}
+        selected={navTool == "move" && !disabled}
         onClick={() => {
+          if (disabled) return;
           // Deselect annotation
           handleSelectAnnotation(null);
           updateNavTool("move");
@@ -95,6 +110,7 @@ function ToolBar() {
         tip="delete"
         selected={false}
         onClick={() => {
+          if (disabled) return;
           if (selectedAnnotation) {
             handleRemoveAnnotation(selectedAnnotation.id);
           }
@@ -109,6 +125,7 @@ function ToolBar() {
         tip="hide boxes"
         selected={false}
         onClick={() => {
+          if (disabled) return;
           handleToggleHideBoxes();
         }}
       />

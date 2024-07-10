@@ -260,7 +260,7 @@ function ViewXRay() {
     if (error || !caseData) {
       return (
         <Result
-          style={{ width: "100%" }}
+          style={{ flex: "1" }}
           status="500"
           title="500"
           subTitle={"Sorry, something went wrong."}
@@ -277,19 +277,6 @@ function ViewXRay() {
         customResultData={customResultData}
         useAI={useAI}
         originalXRayPath={caseData ? caseData.xray_path : null}
-        // xRayPath={lmResultData ? lmResultData.xray_path : null}
-        // xRayPath={caseData ? caseData.xray_path : null}
-        // // regionPath={lmResultData ? lmResultData.region_path : null}
-        // regionPath={
-        //   customResultData
-        //     ? customResultData.region_path
-        //     : lmResultData
-        //     ? lmResultData.region_path
-        //     : null
-        // }
-        // regionSentencePath={
-        //   lmResultData ? lmResultData.region_sentence_path : null
-        // }
       />
     );
   };
@@ -315,16 +302,17 @@ function ViewXRay() {
       label: "",
       icon: <DropboxOutlined style={{ fontSize: "16px" }} />,
       children: (
-        <BBSection
-          bot_img_blue={BotBlue}
-          bot_img_grey={BotGray}
-          useAI={useAI}
-          toggleUseAI={toggleUseAI}
-          llmResultData={llmResultData}
-          customResultData={customResultData}
-          originalXRayPath={caseData ? caseData.xray_path : null}
-          case_id={caseData ? caseData.id : null}
-        />
+        // <BBSection
+        //   bot_img_blue={BotBlue}
+        //   bot_img_grey={BotGray}
+        //   useAI={useAI}
+        //   toggleUseAI={toggleUseAI}
+        //   llmResultData={llmResultData}
+        //   customResultData={customResultData}
+        //   originalXRayPath={caseData ? caseData.xray_path : null}
+        //   case_id={caseData ? caseData.id : null}
+        // />
+        <h2>BB</h2>
       ),
     },
     {
@@ -332,15 +320,16 @@ function ViewXRay() {
       label: "",
       icon: <HeatMapOutlined style={{ fontSize: "16px" }} />,
       children: (
-        <HeatMapSection
-          bot_img_blue={BotBlue}
-          bot_img_grey={BotGray}
-          useAI={useAI}
-          toggleUseAI={toggleUseAI}
-          templateResultData={templateResultData}
-          customResultData={customResultData}
-          case_id={caseData ? caseData.id : null}
-        />
+        // <HeatMapSection
+        //   bot_img_blue={BotBlue}
+        //   bot_img_grey={BotGray}
+        //   useAI={useAI}
+        //   toggleUseAI={toggleUseAI}
+        //   templateResultData={templateResultData}
+        //   customResultData={customResultData}
+        //   case_id={caseData ? caseData.id : null}
+        // />
+        <h1>Heat Map</h1>
       ),
     },
     {
@@ -348,17 +337,18 @@ function ViewXRay() {
       label: "",
       icon: <FileTextOutlined style={{ fontSize: "16px" }} />,
       children: (
-        <ReportSection
-          bot_img_blue={BotBlue}
-          bot_img_grey={BotGray}
-          useAI={useAI}
-          toggleUseAI={toggleUseAI}
-          llmResultData={llmResultData}
-          customResultData={customResultData}
-          originalXRayPath={caseData ? caseData.xray_path : null}
-          case_id={caseData ? caseData.id : null}
-          setLmResultData={setllmResultData}
-        />
+        // <ReportSection
+        //   bot_img_blue={BotBlue}
+        //   bot_img_grey={BotGray}
+        //   useAI={useAI}
+        //   toggleUseAI={toggleUseAI}
+        //   llmResultData={llmResultData}
+        //   customResultData={customResultData}
+        //   originalXRayPath={caseData ? caseData.xray_path : null}
+        //   case_id={caseData ? caseData.id : null}
+        //   setLmResultData={setllmResultData}
+        // />
+        <h1>Report</h1>
       ),
     },
   ];

@@ -16,11 +16,11 @@ export const XRaySectionContainer = styled(Flex)`
 
   flex: 1;
   height: 100%; */
-  padding: 5px;
+  padding: 30px 5px;
 
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: flex-start;
   align-items: center;
 
   flex: 1;
