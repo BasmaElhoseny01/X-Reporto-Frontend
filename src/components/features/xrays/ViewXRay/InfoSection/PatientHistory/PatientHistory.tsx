@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { HostoryContainer } from "../InfoSection.Styles";
-import Card from "../Card";
-import { FileSearchOutlined } from "@ant-design/icons";
-import { NotFoundContainer, SubTitle } from "../InfoSection.Styles";
+// Services
+import axios from "../../../../../../services/apiService";
+
+// Redux
 import { useSelector } from "react-redux";
 import { MainState } from "../../../../../../state";
-import axios from "../../../../../../services/apiService";
+
+// Antd Design
+import { FileSearchOutlined } from "@ant-design/icons";
+import { message } from "antd";
+
+// Styled Components
+import { HistoryContainer } from "../InfoSection.Styles";
+import { NotFoundContainer, SubTitle } from "../InfoSection.Styles";
+
+// Components
+import Card from "../Card";
 
 type responseDataType = {
   study_name: string;
@@ -28,36 +38,44 @@ type PatientHistoryProps = {
 };
 
 // Server Fetch
-// const fetchPatient = async (id: string, token: string) => {
-//   try {
-//     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-//     const response = axios.get(`/api/v1/patients/${id}/studies`); // setData(response.data);
-
-//     console.log("response", response);
-//   } catch (error) {
-//     console.log("Error fetching Patient: ", error);
-//     return null;
-//   }
-// };
+const fetchPatient = async (id: number, token: string) => {
+  try {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    const response = await axios.get(`/api/v1/patients/${id}/studies`); // setData(response.data);
+    return response.data;
+  } catch (error) {
+    console.log("Error fetching Patient: ", error);
+    return null;
+  }
+};
 
 function PatientHistory(props: PatientHistoryProps) {
+  const { id } = props;
+  // Use States
   const [data, setData] = useState<responseDataType[]>([]);
+
+  // Redux State
   const token = useSelector((state: MainState) => state.token);
+
   useEffect(() => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    axios
-      .get(`/api/v1/patients/${props.id}/studies`)
-      .then((response) => {
-        console.log("props.id", props.id);
-        console.log("response", response.data);
-        setData(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    const fetchData = async () => {
+      try {
+        if (id) {
+          const response = await fetchPatient(id, token);
+          setData(response);
+        } else {
+          throw new Error("No Patient ID Provided");
+        }
+      } catch (error) {
+        console.error("Error Fetching Patient: ", error);
+        message.error("failed to load patient history");
+      }
+    };
+    fetchData();
   }, []);
-  return data.length > 0 ? (
-    <HostoryContainer>
+
+  return data.length < 0 ? (
+    <HistoryContainer>
       {data.map((item) => (
         <Card
           key={item.id}
@@ -67,7 +85,7 @@ function PatientHistory(props: PatientHistoryProps) {
           status={item.status}
         />
       ))}
-    </HostoryContainer>
+    </HistoryContainer>
   ) : (
     <NotFoundContainer>
       <FileSearchOutlined style={{ fontSize: 70 }} />

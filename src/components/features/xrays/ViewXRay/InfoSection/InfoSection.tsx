@@ -1,20 +1,17 @@
-/*eslint-disable */
-import React, { useEffect, useState } from "react";
-import {
-  ActionsContainer,
-  InfoSectionContainer,
-  LineHeader,
-  // Title,
-} from "./InfoSection.Styles";
+import React, { useEffect } from "react";
+
+// Antd Design
+import Title from "antd/es/typography/Title";
+
+// Styled Components
+import { InfoSectionContainer, LineHeader } from "./InfoSection.Styles";
+
+// Components
 import PatientData from "./PatientData";
 import PatientHistory from "./PatientHistory/PatientHistory";
-import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
-import { useView } from "../ViewProvider";
-import { MainState } from "../../../../../state";
-import { useSelector } from "react-redux";
+
+// Types
 import { CaseType } from "../../../../../types/case";
-import Title from "antd/es/typography/Title";
-import { Switch } from "antd";
 
 // Interface for InfoSection
 interface InfoSectionProps {
@@ -27,9 +24,8 @@ interface InfoSectionProps {
 }
 
 function InfoSection(props: InfoSectionProps) {
+  // Props
   const { study_case, bot_img_blue, bot_img_grey, useAI, toggleUseAI } = props;
-  // Context
-  const { handleSetSiderType } = useView();
 
   // Get the Study Context
   useEffect(() => {
@@ -71,28 +67,6 @@ function InfoSection(props: InfoSectionProps) {
       <LineHeader />
 
       {study_case && <PatientHistory id={study_case.patient.id} />}
-
-      {/* <PrimaryButton
-        // style={{ margin: "10px 10px 0", padding: 5 }}
-        onClick={() => handleSetSiderType("report")}
-      >
-        View Report
-      </PrimaryButton> */}
-      {/* <LineHeader />
-      {study_case && <PatientHistory id={study_case.patient.id} />}
-      <ActionsContainer> */}
-      {/* <SecondaryButton style={{ margin: "10px 10px 0", padding: 5 }}>
-          {" "}
-          Save as draft{" "}
-        </SecondaryButton> */}
-      {/* <PrimaryButton
-          style={{ margin: "10px 10px 0", padding: 5 }}
-          onClick={() => handleSetSiderType("report")}
-        >
-          {" "}
-          View Report{" "}
-        </PrimaryButton> */}
-      {/* </ActionsContainer> */}
     </InfoSectionContainer>
   );
 }

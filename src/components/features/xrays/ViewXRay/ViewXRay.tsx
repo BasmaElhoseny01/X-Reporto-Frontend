@@ -16,7 +16,7 @@ import type { MenuProps, TabsProps } from "antd";
 import { useView } from "./ViewProvider";
 
 // Styled Components
-import { ViewXRayContainer } from "./ViewXRay.Styles";
+import { StyledTabs, ViewXRayContainer } from "./ViewXRay.Styles";
 
 // Components
 import XRaySection from "./XRaySection/XRaySection";
@@ -326,8 +326,6 @@ function ViewXRay() {
           case_id={caseData ? caseData.id : null}
         />
       ),
-      // <InfoSection study_case={caseData} />,
-      // <HeatMapSection />,
     },
     {
       key: "3",
@@ -371,7 +369,7 @@ function ViewXRay() {
         {/* Body */}
         <Body />
         {/* Tabs */}
-        <Tabs tabPosition="right" items={xRayNavItems} style={{ flex: 1.5 }} />
+        <StyledTabs tabPosition="right" items={xRayNavItems} />
       </ViewXRayContainer>
     </AnnotationProvider>
   );
