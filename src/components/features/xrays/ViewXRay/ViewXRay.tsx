@@ -133,7 +133,7 @@ function ViewXRay() {
   };
 
   useEffect(() => {
-    console.log("UseEffect........");
+    console.log("ViewXRay........");
     const fetchData = async () => {
       if (Id) {
         let fetchStartTime = Date.now(); // Record start time before fetch
@@ -209,11 +209,9 @@ function ViewXRay() {
       }
     };
 
-    console.log("Fetching........");
     fetchData();
   }, []);
 
-  // }, [Id, token]);
   // Context
   // const { siderType, handleSetSiderType } = useView();
   // States for the Sider
@@ -223,15 +221,14 @@ function ViewXRay() {
   // const websiteTheme = useSelector((state: MainState) => state.theme);
 
   // Check screen size on component mount and window resize
-  useEffect(() => {
-    console.log("View XRay........");
-    // function handleResize() {
-    //   setIsSmallScreen(window.innerWidth < 800); // Adjust breakpoint as needed
-    // }
-    // handleResize(); // Check initial size
-    // window.addEventListener("resize", handleResize); // Add resize listener
-    // return () => window.removeEventListener("resize", handleResize); // Clean up listener
-  }, []);
+  // useEffect(() => {
+  // function handleResize() {
+  //   setIsSmallScreen(window.innerWidth < 800); // Adjust breakpoint as needed
+  // }
+  // handleResize(); // Check initial size
+  // window.addEventListener("resize", handleResize); // Add resize listener
+  // return () => window.removeEventListener("resize", handleResize); // Clean up listener
+  // }, []);
 
   const toggleUseAI = () => {
     const prev_state = useAI;
@@ -323,7 +320,6 @@ function ViewXRay() {
           studyCase={caseData}
         />
       ),
-      // <InfoSection study_case={caseData} />,
     },
     {
       key: "2",
