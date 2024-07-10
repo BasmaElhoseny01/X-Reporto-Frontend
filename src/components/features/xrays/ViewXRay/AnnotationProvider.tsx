@@ -95,6 +95,7 @@ function AnnotationProvider(props: AnnotationsProviderProps) {
       setAnnotations([...annotations]);
     }
   };
+  
 
   const handleEditAnnotationFinding = (id: string, finding: string) => {
     const annotation = annotations.find((annotation) => annotation.id === id);
