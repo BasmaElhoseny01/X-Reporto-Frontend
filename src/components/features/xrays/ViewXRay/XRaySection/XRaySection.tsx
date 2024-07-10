@@ -285,6 +285,8 @@ function XRaySection(props: XRaySectionProps) {
         handleSetAnnotations(bBoxesResponse);
       } catch (error: any) {
         // setError(true);
+        setXRayURL(null);
+        setXRayPath("");
         console.error("Error in fetchXRayResultData() : ", error);
       }
     };
