@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 // Redux
 
 // Ant Design
-import { Layout, message, Result, Spin, Tabs } from "antd";
+import { Button, Layout, message, Result, Spin, Tabs } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { Content } from "antd/es/layout/layout";
 import type { MenuProps, TabsProps } from "antd";
@@ -133,7 +133,7 @@ function ViewXRay() {
   };
 
   useEffect(() => {
-    // console.log("UseEffect........")
+    console.log("UseEffect........");
     const fetchData = async () => {
       if (Id) {
         let fetchStartTime = Date.now(); // Record start time before fetch
@@ -209,6 +209,7 @@ function ViewXRay() {
       }
     };
 
+    console.log("Fetching........");
     fetchData();
   }, []);
 
@@ -223,6 +224,7 @@ function ViewXRay() {
 
   // Check screen size on component mount and window resize
   useEffect(() => {
+    console.log("View XRay........");
     // function handleResize() {
     //   setIsSmallScreen(window.innerWidth < 800); // Adjust breakpoint as needed
     // }
@@ -254,46 +256,46 @@ function ViewXRay() {
   };
 
   // Render Content based on the states
-  const Body = () => {
-    if (fetching) {
-      return (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "80%",
-            // width: "100%",
-            flex: "1",
-          }}
-        >
-          <Spin tip="Loading" size="large">
-            <div
-              style={{
-                padding: 50,
-                // background: "rgba(0, 0, 0, 0.05)",
-                borderRadius: 4,
-              }}
-            />
-          </Spin>
-        </div>
-      );
-    }
-    if (error || !caseData) {
-      return (
-        <Result
-          style={{ flex: "1" }}
-          status="500"
-          title="500"
-          subTitle={"Sorry, something went wrong."}
-          extra={
-            <PrimaryButton onClick={navigateToHome}>Back Home</PrimaryButton>
-          }
-        />
-      );
-    }
-
-    return (
+  let content;
+  if (fetching) {
+    content = (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "80%",
+          // width: "100%",
+          flex: "1",
+        }}
+      >
+        <Spin tip="Loading" size="large">
+          <div
+            style={{
+              padding: 50,
+              // background: "rgba(0, 0, 0, 0.05)",
+              borderRadius: 4,
+            }}
+          />
+        </Spin>
+      </div>
+    );
+  } else if (error || !caseData) {
+    content = (
+      <Result
+        style={{ flex: "1" }}
+        status="500"
+        title="500"
+        subTitle={"Sorry, something went wrong."}
+        extra={
+          <PrimaryButton onClick={navigateToHome}>Back Home</PrimaryButton>
+        }
+      />
+    );
+  } else {
+    content = (
+      // <h1>XraySection</h1>
+      // <Test />
       <XRaySection
         llmResultData={llmResultData}
         customResultData={customResultData}
@@ -305,7 +307,7 @@ function ViewXRay() {
         handleUseDeNoisedImage={handleUseDeNoisedImage}
       />
     );
-  };
+  }
 
   const xRayNavItems: TabsProps["items"] = [
     {
@@ -328,6 +330,7 @@ function ViewXRay() {
       label: "",
       icon: <DropboxOutlined style={{ fontSize: "16px" }} />,
       children: (
+        // <h1>BBSection</h1>
         <BBSection
           bot_img_blue={BotBlue}
           bot_img_grey={BotGray}
@@ -382,8 +385,9 @@ function ViewXRay() {
   return (
     <AnnotationProvider>
       <ViewXRayContainer>
-        {/* Body */}
-        <Body />
+        <Button onClick={() => setUseAI(!useAI)}>Use AI</Button>
+        {/* Content */}
+        {content}
         {/* Tabs */}
         <StyledTabs tabPosition="right" items={xRayNavItems} />
       </ViewXRayContainer>
