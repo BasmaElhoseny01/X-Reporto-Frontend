@@ -29,13 +29,18 @@ type GeneralTableProps = {
   // eslint-disable-next-line
   action: (record: any, rowIndex: any) => void;
   addNew: () => void;
+  header?: boolean;
+  addNewButton?: boolean;
 };
 
 const GeneralTable = (props: GeneralTableProps) => {
+
   const [page, setPage] = useState(1);
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(true);
   const token = useSelector((state: MainState) => state.token);
+  const header = props?.header??true;
+  const addNewButton = props?.addNewButton??false;
 
   useEffect(() => {
     setLoading(true);
@@ -64,10 +69,14 @@ const GeneralTable = (props: GeneralTableProps) => {
 
   return (
     <Flex vertical>
-      <Flex style={{ justifyContent: "space-between" }}>
-        <Typography.Title level={3}>{props.title}</Typography.Title>
-      </Flex>
-      <LineHeader />
+      {header && (
+      <>
+        <Flex style={{ justifyContent: "space-between" }}>
+          <Typography.Title level={3}>{props.title}</Typography.Title>
+        </Flex>
+        <LineHeader />
+      </>
+      )}
       <Flex
         style={{
           padding: "0px 20px",
@@ -86,7 +95,7 @@ const GeneralTable = (props: GeneralTableProps) => {
         </Flex>
         <Flex style={{ justifyContent: "space-between" }}>
           <PrimaryButton onClick={() => props.addNew()}>
-            <PlusOutlined /> Add New
+            <PlusOutlined  disabled={addNewButton}/> Add New
           </PrimaryButton>
         </Flex>
       </Flex>

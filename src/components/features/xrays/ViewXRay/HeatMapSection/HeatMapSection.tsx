@@ -7,7 +7,7 @@ import { LineHeader, Title } from "./HeatMapSection.Styles";
 import InputRow from "./InputRow";
 import { ResultType } from "../../../../../types/Result";
 import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
-import { Flex, Spin } from "antd";
+import { Flex, Spin, Typography } from "antd";
 import axios from '../../../../../services/apiService';
 import { useSelector } from "react-redux";
 import { MainState } from "../../../../../state";
@@ -27,7 +27,6 @@ interface HeatMapSectionProps {
 
 
 function HeatMapSection(props: HeatMapSectionProps) {
-  console.log("HeatMapSection Props: ", props);
   const token  = useSelector((state: MainState) => state.token);
   const {
     useAI,
@@ -49,28 +48,8 @@ function HeatMapSection(props: HeatMapSectionProps) {
   const [supportDevices,setSupportDevices] = useState<string | null>("");
   const [probabilities,setProbabilities] = useState<number[] | null>(null);
   const [fetching, setFetching] = useState<boolean>(true);
-
-  const downloadXRayFile = async (file_path: string) => {
-    try {
-      const response = await axios.get(`api/v1/results/download_file`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        params: {
-          file_path: file_path,
-        },
-        responseType: "blob", // Change responseType to "blob"
-      });
-  
-      // Create a URL for the image blob and set it to an <img> element
-      const imageURL = URL.createObjectURL(response.data).toString();
-  
-      return imageURL;
-    } catch (error) {
-      console.log("Error fetching X-Ray: ", error);
-      return null;
-    }
-  };
+  const [report,setReport]=useState<string>("");
+  const [reportPath,setReportPath]=useState<string>("");
 
   const getHeatmapImages = async (id:number) => {
     axios.get(`api/v1/results/${id}/get_heatmap/0`,{
@@ -162,22 +141,35 @@ function HeatMapSection(props: HeatMapSectionProps) {
     }
     );
   }
+
+  const getReport=async (path:string)=>{
+    axios.get(`http://localhost:8000/api/v1/results/download_file?file_path=${path}`,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((response) => {
+      console.log("Report Response: ", response);
+      setReport(response.data);
+    }).catch((error) => {
+      console.log("Error getting report: ", error);
+    }
+    );
+  }
   useEffect(() => {
     if(templateResultData === null ) {
       // run heatmap
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      console.log("token: ", token);
-
       axios.post(`api/v1/studies/${props.case_id}/run_heatmap`).then((response) => {
-        console.log("Heatmap Response: ", response);
       }).catch((error) => {
         console.log("Error running heatmap: ", error);
       });
       setTimeout(() => {
         if(props.case_id !== null) {
+          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
           getHeatmapImages(props.case_id);
           axios.get(`api/v1/results/${props.case_id}`).then((response) => {
             setProbabilities(response.data.confidence);
+            getReport(response.data.report_path);
           }).catch((error) => {
             console.log("Error getting heatmap: ", error);
           });
@@ -189,10 +181,10 @@ function HeatMapSection(props: HeatMapSectionProps) {
       setProbabilities(templateResultData.confidence);
       if (props.case_id !== null) {
         getHeatmapImages(templateResultData.id);
+        getReport(templateResultData.report_path);
         setFetching(false)
       }
     }
-    // read result data
   }, []);
 
   return (
@@ -211,7 +203,7 @@ function HeatMapSection(props: HeatMapSectionProps) {
         <Spin tip="Loading" size="large">
           <div
             style={{
-              padding: 50,
+              padding: 200,
               // background: "rgba(0, 0, 0, 0.05)",
               borderRadius: 4,
             }} />
@@ -231,9 +223,9 @@ function HeatMapSection(props: HeatMapSectionProps) {
             Pneumonia={pneumonia}
             SupportDevices={supportDevices}
             probabilities={probabilities} />
-          {/* <Flex justify="flex-end" style={{flexGrow:1}} align="flex-end">
-              <PrimaryButton>Generate</PrimaryButton>
-            </Flex> */}
+            <LineHeader />
+            <Title justify="flex-start">Report</Title>
+            <Typography style={{marginTop: 20, marginBottom: 20}}>{report}</Typography>
         </HeatMapSectionContainer>
   );
 }

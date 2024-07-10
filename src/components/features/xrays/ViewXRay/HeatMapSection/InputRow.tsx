@@ -28,7 +28,7 @@ function InputRow(props: InputRowProps) {
           <ImageCaintainer>
             {/* <Image width={40} src={process.env.REACT_APP_BASE_URL + "/download/" + props.xray_path} /> */}
             <Image
-              width={30}
+              width={40}
               src={props?.Atelectasis??""}
               style={{ paddingRight: 5 }}
             />
@@ -45,7 +45,7 @@ function InputRow(props: InputRowProps) {
           <ImageCaintainer>
             {/* <Image width={40} src={process.env.REACT_APP_BASE_URL + "/download/" + props.xray_path} /> */}
             <Image
-              width={30}
+              width={40}
               src={props?.Cardiomegaly ?? ""}
               style={{ paddingRight: 5 }}
             />
@@ -64,7 +64,7 @@ function InputRow(props: InputRowProps) {
           <ImageCaintainer>
             {/* <Image width={40} src={process.env.REACT_APP_BASE_URL + "/download/" + props.xray_path} /> */}
             <Image
-              width={30}
+              width={40}
               src={props?.Edema??""}
               style={{ paddingRight: 5 }}
             />
@@ -81,7 +81,7 @@ function InputRow(props: InputRowProps) {
           <ImageCaintainer>
             {/* <Image width={40} src={process.env.REACT_APP_BASE_URL + "/download/" + props.xray_path} /> */}
             <Image
-              width={30}
+              width={40}
               src={props?.LungOpacity??""}
               style={{ paddingRight: 5 }}
             />
@@ -100,7 +100,7 @@ function InputRow(props: InputRowProps) {
           <ImageCaintainer>
             {/* <Image width={40} src={process.env.REACT_APP_BASE_URL + "/download/" + props.xray_path} /> */}
             <Image
-              width={30}
+              width={40}
               src={props?.NoFinding??""}
               style={{ paddingRight: 5 }}
             />
@@ -117,7 +117,7 @@ function InputRow(props: InputRowProps) {
           <ImageCaintainer>
             {/* <Image width={40} src={process.env.REACT_APP_BASE_URL + "/download/" + props.xray_path} /> */}
             <Image
-              width={30}
+              width={40}
               src={props?.PleuralEffusion??""}
               style={{ paddingRight: 5 }}
             />
@@ -136,7 +136,7 @@ function InputRow(props: InputRowProps) {
           <ImageCaintainer>
             {/* <Image width={40} src={process.env.REACT_APP_BASE_URL + "/download/" + props.xray_path} /> */}
             <Image
-              width={30}
+              width={40}
               src={props?.Pneumonia??""}
               style={{ paddingRight: 5 }}
             />
@@ -153,7 +153,7 @@ function InputRow(props: InputRowProps) {
           <ImageCaintainer>
             {/* <Image width={40} src={process.env.REACT_APP_BASE_URL + "/download/" + props.xray_path} /> */}
             <Image
-              width={30}
+              width={40}
               src={props?.SupportDevices??""}
               style={{ paddingRight: 5 }}
             />
