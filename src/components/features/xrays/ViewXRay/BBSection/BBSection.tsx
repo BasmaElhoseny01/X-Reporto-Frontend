@@ -21,6 +21,7 @@ import {
   BBFindingContainer,
   StyledTextArea,
   ButtonContainer,
+  StyledParagraph,
 } from "./BBSection.Styles";
 
 // Components
@@ -219,6 +220,7 @@ function BBSection(props: BBSectionProps) {
 
   useEffect(() => {
     console.log("BBSection ", props);
+    // Deselect Annotation when switching between AI and Custom
     handleSelectAnnotation(null);
   }, [useAI, llmResultData, customResultData]);
 
@@ -306,7 +308,7 @@ function BBSection(props: BBSectionProps) {
           />
         </div>
         <LineHeader />
-        <Paragraph>
+        <StyledParagraph>
           {annotations.map((region) => (
             <FindingText
               key={region.id}
@@ -314,7 +316,7 @@ function BBSection(props: BBSectionProps) {
               selected={region.id == selectedAnnotation?.id}
             />
           ))}
-        </Paragraph>
+        </StyledParagraph>
       </BBAllFindingsContainer>
       <BBFindingContainer>
         <Title level={3}>Region Finding</Title>
