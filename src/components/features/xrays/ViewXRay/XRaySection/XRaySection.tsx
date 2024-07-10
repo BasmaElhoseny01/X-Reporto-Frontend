@@ -213,83 +213,83 @@ function XRaySection(props: XRaySectionProps) {
   useEffect(() => {
     console.log("XRaySection .........", props);
 
-    // const fetchOriginalXRay = async () => {
-    //   try {
-    //     if (!caseId) {
-    //       throw new Error("No case ID found");
-    //     }
+    const fetchOriginalXRay = async () => {
+      try {
+        if (!caseId) {
+          throw new Error("No case ID found");
+        }
 
-    //     const xRayResponse = await downloadResizedOriginalXRayFile(
-    //       caseId,
-    //       token
-    //     );
-    //     if (!xRayResponse) {
-    //       // setError(true);
-    //       throw new Error("Failed to load Resized X-Ray");
-    //     }
-    //     // console.log("xRayResponse", xRayResponse);
-    //     setXRayURL(xRayResponse.imageURL);
-    //     setXRayPath(xRayResponse.resizedXRayPath); // Set X-Ray Path to the resized so that submission is done on the resized image
-    //   } catch (error: any) {
-    //     message.error("failed to load X-Ray");
-    //     console.error("Error in fetchOriginalXRay(): ", error);
-    //   }
-    // };
+        const xRayResponse = await downloadResizedOriginalXRayFile(
+          caseId,
+          token
+        );
+        if (!xRayResponse) {
+          // setError(true);
+          throw new Error("Failed to load Resized X-Ray");
+        }
+        // console.log("xRayResponse", xRayResponse);
+        setXRayURL(xRayResponse.imageURL);
+        setXRayPath(xRayResponse.resizedXRayPath); // Set X-Ray Path to the resized so that submission is done on the resized image
+      } catch (error: any) {
+        message.error("failed to load X-Ray");
+        console.error("Error in fetchOriginalXRay(): ", error);
+      }
+    };
 
-    // const fetchXRayResultData = async () => {
-    //   try {
-    //     if (!xRayPath) {
-    //       message.error("Failed to load X-Ray");
-    //       throw new Error("No Xray Path Found");
-    //     }
+    const fetchXRayResultData = async () => {
+      try {
+        if (!xRayPath) {
+          message.error("Failed to load X-Ray");
+          throw new Error("No Xray Path Found");
+        }
 
-    //     // (1) Download XRay
-    //     const xRayResponse = await downloadXRayFile(xRayPath, token);
-    //     if (!xRayResponse) {
-    //       // setError(true);
-    //       message.error("Failed to load X-Ray");
-    //       throw new Error("Failed to load X-Ray");
-    //     }
-    //     setXRayURL(xRayResponse);
-    //     setXRayPath(xRayPath); // This is the X-Ray Path that will be used for submission
+        // (1) Download XRay
+        const xRayResponse = await downloadXRayFile(xRayPath, token);
+        if (!xRayResponse) {
+          // setError(true);
+          message.error("Failed to load X-Ray");
+          throw new Error("Failed to load X-Ray");
+        }
+        setXRayURL(xRayResponse);
+        setXRayPath(xRayPath); // This is the X-Ray Path that will be used for submission
 
-    //     // (2) Download Bounding Boxes
-    //     if (!regionPath) {
-    //       message.error("Failed to load Bounding Boxes");
-    //       throw new Error("No Region Path Found");
-    //     }
-    //     const bBoxesResponse = await downloadBBoxesFile(regionPath, token);
-    //     if (!bBoxesResponse) {
-    //       // setError(true);
-    //       message.error("Failed to load Bounding Boxes");
-    //       throw new Error("Failed to load Bounding Boxes");
-    //     }
+        // (2) Download Bounding Boxes
+        if (!regionPath) {
+          message.error("Failed to load Bounding Boxes");
+          throw new Error("No Region Path Found");
+        }
+        const bBoxesResponse = await downloadBBoxesFile(regionPath, token);
+        if (!bBoxesResponse) {
+          // setError(true);
+          message.error("Failed to load Bounding Boxes");
+          throw new Error("Failed to load Bounding Boxes");
+        }
 
-    //     // (3) Download Bounding Boxes Findings
-    //     if (!regionSentencePath) {
-    //       message.error("Failed to load Bounding Boxes Findings");
-    //       throw new Error("No Region Sentence Path Found");
-    //     }
-    //     const bBoxesFindingsResponse = await downloadBBoxesFindingsFile(
-    //       regionSentencePath,
-    //       token
-    //     );
-    //     if (!bBoxesFindingsResponse) {
-    //       message.error("Failed to load Bounding Boxes Findings");
-    //       throw new Error("Failed to load Bounding Boxes Findings");
-    //     }
-    //     // Merge Bounding Boxes and Bounding Boxes Findings
-    //     bBoxesResponse.forEach((region, index) => {
-    //       region.finding = bBoxesFindingsResponse[index];
-    //     });
-    //     handleSetAnnotations(bBoxesResponse);
-    //   } catch (error: any) {
-    //     // setError(true);
-    //     setXRayURL(null);
-    //     setXRayPath("");
-    //     console.error("Error in fetchXRayResultData() : ", error);
-    //   }
-    // };
+        // (3) Download Bounding Boxes Findings
+        if (!regionSentencePath) {
+          message.error("Failed to load Bounding Boxes Findings");
+          throw new Error("No Region Sentence Path Found");
+        }
+        const bBoxesFindingsResponse = await downloadBBoxesFindingsFile(
+          regionSentencePath,
+          token
+        );
+        if (!bBoxesFindingsResponse) {
+          message.error("Failed to load Bounding Boxes Findings");
+          throw new Error("Failed to load Bounding Boxes Findings");
+        }
+        // Merge Bounding Boxes and Bounding Boxes Findings
+        bBoxesResponse.forEach((region, index) => {
+          region.finding = bBoxesFindingsResponse[index];
+        });
+        handleSetAnnotations(bBoxesResponse);
+      } catch (error: any) {
+        // setError(true);
+        setXRayURL(null);
+        setXRayPath("");
+        console.error("Error in fetchXRayResultData() : ", error);
+      }
+    };
 
     // // const fetchData = async (xRayOnly: boolean,downloadOriginalResized:boolean) => {
     // // const fetchData = async (
@@ -407,38 +407,38 @@ function XRaySection(props: XRaySectionProps) {
     // // let regionPath = "";
     // // let regionSentencePath = "";
 
-    // // Scenario(1) NoLLMResult and NoCustomResult
-    // if (!llmResultData && !customResultData) {
-    //   fetchOriginalXRay();
-    //   return;
-    // }
+    // Scenario(1) NoLLMResult and NoCustomResult
+    if (!llmResultData && !customResultData) {
+      fetchOriginalXRay();
+      return;
+    }
 
-    // // Scenario(2) useAI = true and LLMResultData
-    // let xRayPath: string | null = null;
-    // let regionPath = "";
-    // let regionSentencePath = "";
+    // Scenario(2) useAI = true and LLMResultData
+    let xRayPath: string | null = null;
+    let regionPath = "";
+    let regionSentencePath = "";
 
-    // if (useAI) {
-    //   if (!llmResultData) {
-    //     message.info("No AI results found for this case.................. >>>");
-    //     return;
-    //   }
-    //   xRayPath = llmResultData?.xray_path;
-    //   regionPath = llmResultData?.region_path;
-    //   regionSentencePath = llmResultData?.region_sentence_path;
-    //   fetchXRayResultData();
-    // } else {
-    //   if (!customResultData) {
-    //     message.info(
-    //       "No custom results found for this case.................. >>>"
-    //     );
-    //     return;
-    //   }
-    //   xRayPath = customResultData?.xray_path;
-    //   regionPath = customResultData?.region_path;
-    //   regionSentencePath = customResultData?.region_sentence_path;
-    //   fetchXRayResultData();
-    // }
+    if (useAI) {
+      if (!llmResultData) {
+        message.info("No AI results found for this case.................. >>>");
+        return;
+      }
+      xRayPath = llmResultData?.xray_path;
+      regionPath = llmResultData?.region_path;
+      regionSentencePath = llmResultData?.region_sentence_path;
+      fetchXRayResultData();
+    } else {
+      if (!customResultData) {
+        message.info(
+          "No custom results found for this case.................. >>>"
+        );
+        return;
+      }
+      xRayPath = customResultData?.xray_path;
+      regionPath = customResultData?.region_path;
+      regionSentencePath = customResultData?.region_sentence_path;
+      fetchXRayResultData();
+    }
 
     // // if (useAI) {
     // //   if (!llmResultData) {
@@ -463,7 +463,7 @@ function XRaySection(props: XRaySectionProps) {
     // // }
     // // fetchData(false);
     // }, [llmResultData, customResultData]);
-  }, []);
+  }, [useAI, llmResultData, customResultData]);
 
   // Render Content based on the states
   // const Body = () => {

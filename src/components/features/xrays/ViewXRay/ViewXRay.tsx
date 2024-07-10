@@ -113,25 +113,6 @@ function ViewXRay() {
   const [fetching, setFetching] = useState(true); // Initially set fetching to true
   const [error, setError] = useState(false);
 
-  const handleUseDeNoisedImage = () => {
-    const next_state = !useDeNoisedImage;
-    // check if de-noised image is available
-    if (next_state && (!llmResultData || llmResultData?.xray_path === null)) {
-      // He wanted to use the de-noised(next_state=true ) and it is not available
-      message.info(
-        "No de-noised Image found for this case. [Run X-Ray AI first to get de-noised image.]"
-      );
-      return;
-    } else {
-      // Case(1) next_state is true and de-noised image is available
-      // Case(2) next_state is false and de-noised image is available
-      // Case(3) next_state is false and de-noised image is not available
-      message.info("Switching to De-Noised Image");
-      // Toggle the state to the next state :D
-      setUseDeNoisedImage(next_state);
-    }
-  };
-
   useEffect(() => {
     console.log("ViewXRay........");
     const fetchData = async () => {
@@ -250,6 +231,25 @@ function ViewXRay() {
     // } else {
     //   message.info("No LM results found for this case.");
     // }
+  };
+
+  const handleUseDeNoisedImage = () => {
+    const next_state = !useDeNoisedImage;
+    // check if de-noised image is available
+    if (next_state && (!llmResultData || llmResultData?.xray_path === null)) {
+      // He wanted to use the de-noised(next_state=true ) and it is not available
+      message.info(
+        "No de-noised Image found for this case. [Run X-Ray AI first to get de-noised image.]"
+      );
+      return;
+    } else {
+      // Case(1) next_state is true and de-noised image is available
+      // Case(2) next_state is false and de-noised image is available
+      // Case(3) next_state is false and de-noised image is not available
+      message.info("Switching to De-Noised Image");
+      // Toggle the state to the next state :D
+      setUseDeNoisedImage(next_state);
+    }
   };
 
   // Render Content based on the states
