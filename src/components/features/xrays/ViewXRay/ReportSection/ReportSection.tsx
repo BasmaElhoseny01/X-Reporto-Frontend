@@ -100,6 +100,35 @@ const generateReport = async (case_id: number, token: string) => {
   }
 };
 
+const createCustomResult = async (
+  study_id: number,
+  xray_path: string | null,
+  token: string
+): Promise<ResultType | null> => {
+  try {
+    const response = await axios.post(
+      `api/v1/results`,
+      {
+        result_name: "Custom Result",
+        type: "custom",
+        xray_path: xray_path,
+        study_id: study_id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the headers
+          "Content-Type": "application/json", // Optional: Include if required by your API
+        },
+      }
+    );
+    console.log("Custom Result Created: ", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating custom result: ", error);
+    return null;
+  }
+};
+
 function ReportSection(props: ReportSectionProps) {
   // Props
   const {
@@ -152,12 +181,9 @@ function ReportSection(props: ReportSectionProps) {
     console.log("ReportSection", llmResultData, customResultData, useAI);
 
     // Download the report content :D
-    const fetchData = async () => {
-      if (llmResultData?.report_path) {
-        const reportResponse = await downloadReportFile(
-          llmResultData.report_path,
-          token
-        );
+    const fetchData = async (reportPath: string) => {
+      if (reportPath) {
+        const reportResponse = await downloadReportFile(reportPath, token);
         // console.log("reportResponse: ", reportResponse);
         if (reportResponse) {
           setReportContent(reportResponse);
@@ -188,7 +214,7 @@ function ReportSection(props: ReportSectionProps) {
       }
       reportPath = customResultData.report_path;
     }
-    fetchData();
+    fetchData(reportPath);
   }, []);
 
   const handleContentChange = (value: string) => {
@@ -259,7 +285,7 @@ function ReportSection(props: ReportSectionProps) {
   // };
 
   const handleSubmitReport = async () => {
-    console.log("reportContent", reportContent);
+    // console.log("reportContent", reportContent);
 
     // Create a new DOM parser
     const parser = new DOMParser();
@@ -278,39 +304,43 @@ function ReportSection(props: ReportSectionProps) {
       }
 
       try {
-        // Upload the report
-        const uploadResponse = await uploadReportFile(findingsText, -1, token); // FIX BASMAAA
-        if (uploadResponse) {
-          message.success("Report submitted successfully!");
-          // setReportNotExist(false);
-        } else {
-          message.error("Failed to submit report");
-        }
-
-        // console.log("findingsText", findingsText);
-
-        const blob = new Blob([findingsText], {
-          type: "text/plain",
-        });
-        const formData = new FormData();
-        formData.append("report", blob);
-        const responseUpload = await axios.post(
-          // `api/v1/results/${resultId}/upload_report`,
-          `api/v1/results/${5}/upload_report`,
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "multipart/form-data",
-            },
+        let result: ResultType | null = customResultData;
+        if (!customResultData) {
+          // Create New Custom Result
+          console.log("Creating New Custom");
+          if (case_id) {
+            const response = await createCustomResult(
+              case_id,
+              llmResultData ? llmResultData.xray_path : originalXRayPath,
+              token
+            );
+            console.log("Response: ", response);
+            result = response;
+          } else {
+            throw new Error("Case ID is null");
           }
-        );
+        }
+        // Upload the report to the result
+        console.log("Saving Result ......: ", result);
+        if (result) {
+          const uploadResponse = await uploadReportFile(
+            findingsText,
+            result.id,
+            token
+          );
+          console.log("Upload Response: ", uploadResponse);
+          if (uploadResponse) {
+            message.success("Report submitted successfully!");
+          }
+        } else {
+          throw new Error("Failed to create custom result");
+        }
       } catch (error) {
         console.error("Error uploading report:", error);
         message.error("Failed to submit report");
       }
     } else {
-      message.error("Failed to submit report");
+      message.error("No Finding Section Found!");
     }
   };
 
@@ -332,56 +362,6 @@ function ReportSection(props: ReportSectionProps) {
       message.error("Failed to generate report");
     }
   };
-
-  // useEffect(() => {
-  //   const fetchReportPath = async () => {
-  //     if (studyCase?.id) {
-  //       setLoading(true);
-  //       try {
-  //         console.log("path", `api/v1/studies/${studyCase.id}/results`);
-  //         const responseRequestReportPath = await axios.get(
-  //           `api/v1/studies/${studyCase.id}/results`,
-  //           {
-  //             headers: {
-  //               Authorization: `Bearer ${token}`,
-  //             },
-  //           }
-  //         );
-  //         console.log("API response:", responseRequestReportPath.data);
-  //         const reportPaths = responseRequestReportPath.data;
-  //         if (reportPaths.length > 0) {
-  //           setReportNotExist(false);
-  //           const reportPath = reportPaths[0];
-  //           const responseGetReport = await axios.get(
-  //             `api/v1/results/download_file`,
-  //             {
-  //               headers: {
-  //                 Authorization: `Bearer ${token}`,
-  //               },
-  //               params: {
-  //                 file_path: reportPath.report_path,
-  //               },
-  //               responseType: "text",
-  //             }
-  //           );
-  //           setContent(
-  //             content.replace(
-  //               '<p id="findings"></p>',
-  //               `<p id="findings">${responseGetReport.data}</p>`
-  //             )
-  //           );
-  //         }
-  //       } catch (error) {
-  //         console.error("Error fetching report path:", error);
-  //         message.error("Failed to fetch report path");
-  //       } finally {
-  //         setLoading(false);
-  //       }
-  //     }
-  //   };
-
-  //   fetchReportPath();
-  // }, [reportNotExist, studyCase?.id, token]);
 
   return (
     <>
