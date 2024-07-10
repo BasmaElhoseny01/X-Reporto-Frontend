@@ -211,11 +211,25 @@ function ViewXRay() {
   }, []);
 
   const toggleUseAI = () => {
-    if (llmResultData) {
-      setUseAI(!useAI);
+    const prev_state = useAI;
+    if (prev_state == false) {
+      if (llmResultData) {
+        setUseAI(!useAI);
+      } else {
+        message.info("No LM results found for this case.");
+      }
     } else {
-      message.info("No LM results found for this case.");
+      if (customResultData) {
+        setUseAI(!useAI);
+      } else {
+        message.info("No custom results found for this case.");
+      }
     }
+    // if (llmResultData) {
+    //   setUseAI(!useAI);
+    // } else {
+    //   message.info("No LM results found for this case.");
+    // }
   };
 
   // Render Content based on the states
