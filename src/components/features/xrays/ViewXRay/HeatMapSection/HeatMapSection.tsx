@@ -73,79 +73,101 @@ function HeatMapSection(props: HeatMapSectionProps) {
   };
 
   const getHeatmapImages = async (id:number) => {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    axios.get(`api/v1/results/${id}/get_heatmap/0`).then((response) => {
-      console.log("Response: ", response);
-      setAtelectasis(response.data);
-      // downloadXRayFile(response.data).then((url) => {
-      //   setAtelectasis(url);
-      // });
+    axios.get(`api/v1/results/${id}/get_heatmap/0`,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      responseType: "blob",
+    }
+    ).then((response) => {
+      setAtelectasis(URL.createObjectURL(response.data));
+    }).catch((error) => {
+      console.log("Error getting heatmap: ", error);
+    });
+    axios.get(`api/v1/results/${id}/get_heatmap/1`,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      responseType: "blob",
+    }).then((response) => {
+      setCardiomegaly(URL.createObjectURL(response.data).toString());
     }).catch((error) => {
       console.log("Error getting heatmap: ", error);
     }
     );
-    axios.get(`api/v1/results/${id}/get_heatmap/1`).then((response) => {
-      downloadXRayFile(response.data).then((url) => {
-        setCardiomegaly(url);
-      });
+    axios.get(`api/v1/results/${id}/get_heatmap/2`,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      responseType: "blob",
+    }).then((response) => {
+      setEdema(URL.createObjectURL(response.data).toString());
     }).catch((error) => {
       console.log("Error getting heatmap: ", error);
     }
     );
-    axios.get(`api/v1/results/${id}/get_heatmap/2`).then((response) => {
-      downloadXRayFile(response.data).then((url) => {
-        setEdema(url);
-      });
+    axios.get(`api/v1/results/${id}/get_heatmap/3`,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      responseType: "blob",
+    }).then((response) => {
+      setLungOpacity(URL.createObjectURL(response.data).toString());
     }).catch((error) => {
       console.log("Error getting heatmap: ", error);
     }
     );
-    axios.get(`api/v1/results/${id}/get_heatmap/3`).then((response) => {
-      downloadXRayFile(response.data).then((url) => {
-        setLungOpacity(url);
-      });
+    axios.get(`api/v1/results/${id}/get_heatmap/4`,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      responseType: "blob",
+    }).then((response) => {
+      setNoFinding(URL.createObjectURL(response.data).toString());
     }).catch((error) => {
       console.log("Error getting heatmap: ", error);
     }
     );
-    axios.get(`api/v1/results/${id}/get_heatmap/4`).then((response) => {
-      downloadXRayFile(response.data).then((url) => {
-        setNoFinding(url);
-      });
+    axios.get(`api/v1/results/${id}/get_heatmap/5`,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      responseType: "blob",
+    }).then((response) => {
+      setPleuralEffusion(URL.createObjectURL(response.data).toString());
     }).catch((error) => {
       console.log("Error getting heatmap: ", error);
     }
     );
-    axios.get(`api/v1/results/${id}/get_heatmap/5`).then((response) => {
-      downloadXRayFile(response.data).then((url) => {
-        setPleuralEffusion(url);
-      });
+    axios.get(`api/v1/results/${id}/get_heatmap/6`,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      responseType: "blob",
+    }).then((response) => {
+      setPneumonia(URL.createObjectURL(response.data).toString());
     }).catch((error) => {
       console.log("Error getting heatmap: ", error);
     }
     );
-    axios.get(`api/v1/results/${id}/get_heatmap/6`).then((response) => {
-      downloadXRayFile(response.data).then((url) => {
-        setPneumonia(url);
-      });
+    axios.get(`api/v1/results/${id}/get_heatmap/7`,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      responseType: "blob",
+    }).then((response) => {
+      setSupportDevices(URL.createObjectURL(response.data).toString());
     }).catch((error) => {
       console.log("Error getting heatmap: ", error);
     }
     );
-    axios.get(`api/v1/results/${id}/get_heatmap/7`).then((response) => {
-      downloadXRayFile(response.data).then((url) => {
-        setSupportDevices(url);
-      });
-    }).catch((error) => {
-      console.log("Error getting heatmap: ", error);
-    }
-    );
-    
   }
   useEffect(() => {
     if(templateResultData === null ) {
       // run heatmap
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      console.log("token: ", token);
+
       axios.post(`api/v1/studies/${props.case_id}/run_heatmap`).then((response) => {
         console.log("Heatmap Response: ", response);
       }).catch((error) => {
@@ -161,7 +183,7 @@ function HeatMapSection(props: HeatMapSectionProps) {
           });
           setFetching(false);
         }
-      }, 10000);
+      }, 30000);
     }
     else {
       setProbabilities(templateResultData.confidence);
