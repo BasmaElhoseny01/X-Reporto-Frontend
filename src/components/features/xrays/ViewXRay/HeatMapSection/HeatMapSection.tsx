@@ -143,7 +143,7 @@ function HeatMapSection(props: HeatMapSectionProps) {
   }
 
   const getReport=async (path:string)=>{
-    axios.get(`http://localhost:8000/api/v1/results/download_file?file_path=${path}`,{
+    axios.get(`/api/v1/results/download_file?file_path=${path}`,{
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -223,10 +223,10 @@ function HeatMapSection(props: HeatMapSectionProps) {
             Pneumonia={pneumonia}
             SupportDevices={supportDevices}
             probabilities={probabilities} />
-            <LineHeader />
-            <Title justify="flex-start">Report</Title>
-            <Typography style={{marginTop: 20, marginBottom: 20}}>{report}</Typography>
-        </HeatMapSectionContainer>
+          <LineHeader />
+          <Title justify="flex-start">Report</Title>
+          <Typography style={{marginTop: 20, marginBottom: 20}}>{report}</Typography>
+      </HeatMapSectionContainer>
   );
 }
 
