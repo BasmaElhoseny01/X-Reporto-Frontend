@@ -81,7 +81,7 @@ const createCustomResult = async (
         },
       }
     );
-    console.log("Custom Result Created: ", response.data);
+    // console.log("Custom Result Created: ", response.data);
     return response.data;
   } catch (error) {
     console.error("Error creating custom result: ", error);
@@ -89,32 +89,33 @@ const createCustomResult = async (
   }
 };
 
-// const updateCustomResult = async (
-//   study_id: number,
-//   xray_path: string | null,
-//   token: string
-// ): Promise<ResultType | null> => {
-//   try {
-//     const response = await axios.put(
-//       `api/v1/results`,
-//       {
-//         xray_path: xray_path,
-//         study_id: study_id,
-//       },
-//       {
-//         headers: {
-//           Authorization: `Bearer ${token}`, // Include the token in the headers
-//           "Content-Type": "application/json", // Optional: Include if required by your API
-//         },
-//       }
-//     );
-//     console.log("Custom Result Created: ", response.data);
-//     return response.data;
-//   } catch (error) {
-//     console.error("Error creating custom result: ", error);
-//     return null;
-//   }
-// };
+const updateCustomResult = async (
+  // study_id: number,
+  result_id: number,
+  new_xray_path: string | null,
+  token: string
+): Promise<ResultType | null> => {
+  try {
+    const response = await axios.put(
+      `api/v1/results/${result_id}`,
+      {
+        xray_path: new_xray_path,
+        // study_id: study_id, // Add study_id to the request body
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the headers
+          "Content-Type": "application/json", // Optional: Include if required by your API
+        },
+      }
+    );
+    console.log("Custom Result Updated: ", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating custom result (xray_path): ", error);
+    return null;
+  }
+};
 
 const uploadBBoxesFile = async (
   regions: Region[],
@@ -218,7 +219,6 @@ function BBSection(props: BBSectionProps) {
   }, []);
 
   const handelSaveResult = async () => {
-    console.log("Saving Result ......");
     try {
       let result: ResultType | null = customResultData;
 
@@ -237,8 +237,21 @@ function BBSection(props: BBSectionProps) {
         result = resultResponse;
       }
       if (result.xray_path != xRayPath) {
-        // need to update the xray path
         console.log("Updating XRay Path");
+        console.log("Old XRay Path: ", result.xray_path);
+        console.log("New XRay Path: ", xRayPath);
+        console.log("Result ID: ", result.id);
+
+        // need to update the xray path
+        if (!case_id) throw new Error("Case ID is null");
+        const updatedResult = await updateCustomResult(
+          // case_id,
+          result.id,
+          xRayPath,
+          token
+        );
+        console.log("updatedResult: ", updatedResult);
+        if (!updatedResult) throw new Error("Failed to update custom result");
       } else {
         console.log("Same XRay Path");
       }
