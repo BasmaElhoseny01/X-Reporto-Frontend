@@ -346,7 +346,7 @@ function ViewXRay() {
           customResultData={customResultData}
           originalXRayPath={caseData ? caseData.xray_path : null}
           case_id={caseData ? caseData.id : null}
-          // setLmResultData={setLmResultData}
+          setLmResultData={setllmResultData}
         />
       ),
     },

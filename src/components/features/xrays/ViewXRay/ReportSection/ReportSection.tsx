@@ -32,6 +32,8 @@ interface ReportSectionProps {
   customResultData: ResultType;
   originalXRayPath: string | null;
   case_id: number | null;
+
+  setLmResultData: (data: ResultType) => void;
 }
 
 // Server Fetch
@@ -140,6 +142,8 @@ function ReportSection(props: ReportSectionProps) {
     customResultData,
     originalXRayPath,
     case_id,
+
+    setLmResultData,
   } = props;
 
   const token = useSelector((state: MainState) => state.token);
@@ -344,13 +348,72 @@ function ReportSection(props: ReportSectionProps) {
     }
   };
 
+  const checkResultStatus = async (
+    result_id: number,
+    token: string
+  ): Promise<ResultType | null> => {
+    console.log("Checking report status...");
+    console.log("result_id", result_id);
+    try {
+      // Implement your API call to check the report status
+      const response = await axios.get(`/api/v1/results/${result_id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("Response: ", response.data);
+      if (response.data.report_path) {
+        return response.data;
+      }
+      return null;
+    } catch (error) {
+      console.log("Error checking report status: ", error);
+      return null;
+    }
+  };
+
+  const pollReportStatus = async (result_id: number, token: string) => {
+    const interval = 5000; // Poll every 5 seconds
+    // const interval = 10; // Poll every 5 seconds
+    const maxAttempts = 20; // Maximum number of attempts before giving up
+    let attempts = 0;
+
+    const poll = async () => {
+      if (attempts < maxAttempts) {
+        try {
+          const result = await checkResultStatus(result_id, token);
+          console.log("Report status:", result);
+          if (result) {
+            message.success("Report is ready!");
+            console.log("Report is ready!", result);
+            setLmResultData(result);
+            // Handle the ready report (e.g., download it, display it, etc.)
+          } else {
+            attempts++;
+            setTimeout(poll, interval);
+            message.info("Checking report status...");
+          }
+        } catch (error) {
+          console.error("Error checking report status:", error);
+          message.error("Failed to check report status");
+        }
+      } else {
+        message.error("Report generation timed out");
+      }
+    };
+
+    poll();
+  };
+
   const handleGenerateReport = async () => {
     try {
       if (case_id) {
         const reportResponse = await generateReport(case_id, token);
         console.log("reportResponse", reportResponse);
         if (reportResponse) {
-          message.success("report generated successfully!");
+          message.success("Report generation started successfully!");
+          pollReportStatus(reportResponse.id, token);
+          // message.success("report generated successfully!");
         } else {
           message.error("Failed to generate report");
         }
@@ -399,6 +462,11 @@ function ReportSection(props: ReportSectionProps) {
             <PrimaryButton onClick={handleSubmitReport} size="large">
               Submit Report
             </PrimaryButton>
+            {/* {llmResultData && llmResultData.report_path ? null : (
+              <PrimaryButton onClick={handleGenerateReport} size="large">
+                Generate Report
+              </PrimaryButton>
+            )} */}
             <PrimaryButton onClick={handleGenerateReport} size="large">
               Generate Report
             </PrimaryButton>
