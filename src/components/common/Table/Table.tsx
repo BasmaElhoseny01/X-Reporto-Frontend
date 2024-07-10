@@ -41,7 +41,7 @@ const GeneralTable = (props: GeneralTableProps) => {
     setLoading(true);
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     axios
-      .get(`${props.api}skip=${5 * (page - 1)}&limit=5`)
+      .get(`${props.api}skip=${5 * (page - 1)}&limit=500`)
       .then((response) => {
         console.log("Response for", props.api, response.data);
         response.data.map((ele: any) => {
