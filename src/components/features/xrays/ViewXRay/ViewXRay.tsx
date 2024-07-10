@@ -213,16 +213,18 @@ function ViewXRay() {
 
   const toggleUseAI = () => {
     console.log("toggleUseAI", useAI, llmResultData, customResultData);
-    const prev_state = useAI;
-    if (prev_state == false) {
+    // const prev_state = useAI;
+    const next_state = !useAI;
+    if (next_state == true) {
       if (llmResultData) {
-        setUseAI(!useAI);
+        setUseAI(next_state); // true
+        setUseDeNoisedImage(true); //restore the de-noised image flag
       } else {
         message.info("No LM results found for this case.");
       }
     } else {
       if (customResultData) {
-        setUseAI(!useAI);
+        setUseAI(next_state);
       } else {
         message.info("No custom results found for this case.");
       }
@@ -247,9 +249,16 @@ function ViewXRay() {
       // Case(1) next_state is true and de-noised image is available
       // Case(2) next_state is false and de-noised image is available
       // Case(3) next_state is false and de-noised image is not available
-      message.info("Switching to De-Noised Image");
+      // if (next_state) {
+      //   message.info("Switching to De-Noised Image");
+      // } else {
+      //   message.info("Switching to Original Image");
+      // }
       // Toggle the state to the next state :D
       setUseDeNoisedImage(next_state);
+
+      // Reset useAI to false
+      setUseAI(false);
     }
   };
 

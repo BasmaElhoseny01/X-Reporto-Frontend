@@ -435,7 +435,14 @@ function XRaySection(props: XRaySectionProps) {
         );
         return;
       }
-      xRayPath = customResultData?.xray_path;
+      // Check if he wants to use the de-noised image
+      if (useDeNoisedImage && llmResultData?.xray_path) {
+        message.info("Using De-Noised Image");
+        xRayPath = llmResultData?.xray_path;
+      } else {
+        xRayPath = customResultData?.xray_path;
+        message.info("Using Original Image");
+      }
       regionPath = customResultData?.region_path;
       regionSentencePath = customResultData?.region_sentence_path;
       fetchXRayResultData();
@@ -465,7 +472,7 @@ function XRaySection(props: XRaySectionProps) {
     // // fetchData(false);
     // }, [llmResultData, customResultData]);
     // }, [useAI, llmResultData, customResultData]);
-  }, [useAI, llmResultData, customResultData]);
+  }, [useAI, llmResultData, customResultData, useDeNoisedImage]);
 
   // Render Content based on the states
   // const Body = () => {
