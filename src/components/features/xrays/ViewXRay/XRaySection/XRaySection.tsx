@@ -432,7 +432,7 @@ function XRaySection(props: XRaySectionProps) {
     } else {
       if (!customResultData) {
         message.info(
-          "No custom results found for this case.................. >>>"
+          "No custom (region) results found for this case.................. >>>"
         );
         return;
       }

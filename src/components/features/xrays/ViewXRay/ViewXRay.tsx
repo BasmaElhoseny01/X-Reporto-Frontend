@@ -375,18 +375,17 @@ function ViewXRay() {
       label: "",
       icon: <FileTextOutlined style={{ fontSize: "16px" }} />,
       children: (
-        // <ReportSection
-        //   bot_img_blue={BotBlue}
-        //   bot_img_grey={BotGray}
-        //   useAI={useAI}
-        //   toggleUseAI={toggleUseAI}
-        //   llmResultData={llmResultData}
-        //   customResultData={customResultData}
-        //   originalXRayPath={caseData ? caseData.xray_path : null}
-        //   case_id={caseData ? caseData.id : null}
-        //   setLmResultData={setllmResultData}
-        // />
-        <h1>Report</h1>
+        <ReportSection
+          bot_img_blue={BotBlue}
+          bot_img_grey={BotGray}
+          useAI={useAI}
+          toggleUseAI={toggleUseAI}
+          llmResultData={llmResultData}
+          customResultData={customResultData}
+          originalXRayPath={caseData ? caseData.xray_path : null}
+          case_id={caseData ? caseData.id : null}
+          setLmResultData={setllmResultData}
+        />
       ),
     },
   ];

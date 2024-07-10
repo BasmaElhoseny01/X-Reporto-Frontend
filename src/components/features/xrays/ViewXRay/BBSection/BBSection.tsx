@@ -225,7 +225,9 @@ function BBSection(props: BBSectionProps) {
   } = useAnnotations();
 
   useEffect(() => {
-    console.log("BBSection ", props);
+    console.log("BBSection....");
+    // console.log("BBSection ", props);
+    
     // Deselect Annotation when switching between AI and Custom
     handleSelectAnnotation(null);
   }, [useAI, llmResultData, customResultData]);
@@ -360,9 +362,9 @@ function BBSection(props: BBSectionProps) {
         >
           <BBFindingTitleContainer>
             <label
-              // style={{
-                // width: "100%",
-              // }}
+            // style={{
+            // width: "100%",
+            // }}
             >
               Region
             </label>
