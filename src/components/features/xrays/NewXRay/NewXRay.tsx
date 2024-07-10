@@ -103,7 +103,7 @@ function NewXRay() {
           patient_id: formValues.patient_id,
           notes: formValues.notes,
           xray_path: responseUpload.data.xray_path,
-          doctor_id: user?.id ?? 0,
+          employee_id: user?.id ?? 0,
         },
         {
           headers: {
@@ -130,7 +130,7 @@ function NewXRay() {
           study_name: formValues.study_name,
           patient_id: formValues.patient_id,
           notes: formValues.notes,
-          doctor_id: user?.id ?? 0,
+          employee_id: user?.id ?? 0,
         },
         {
           headers: {

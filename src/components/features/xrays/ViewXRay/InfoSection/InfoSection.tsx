@@ -25,6 +25,7 @@ interface InfoSectionProps {
   bot_img_blue: string;
   bot_img_grey: string;
 }
+
 function InfoSection(props: InfoSectionProps) {
   const { study_case, bot_img_blue, bot_img_grey, useAI, toggleUseAI } = props;
   // Context
@@ -69,7 +70,7 @@ function InfoSection(props: InfoSectionProps) {
       <Title level={4}>History</Title>
       <LineHeader />
 
-      {/* {study_case && <PatientHistory id={study_case.patient.id} />} */}
+      {study_case && <PatientHistory id={study_case.patient.id} />}
 
       {/* <PrimaryButton
         // style={{ margin: "10px 10px 0", padding: 5 }}

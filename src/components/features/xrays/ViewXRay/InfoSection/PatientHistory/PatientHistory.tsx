@@ -26,6 +26,20 @@ type responseDataType = {
 type PatientHistoryProps = {
   id: number;
 };
+
+// Server Fetch
+// const fetchPatient = async (id: string, token: string) => {
+//   try {
+//     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+//     const response = axios.get(`/api/v1/patients/${id}/studies`); // setData(response.data);
+
+//     console.log("response", response);
+//   } catch (error) {
+//     console.log("Error fetching Patient: ", error);
+//     return null;
+//   }
+// };
+
 function PatientHistory(props: PatientHistoryProps) {
   const [data, setData] = useState<responseDataType[]>([]);
   const token = useSelector((state: MainState) => state.token);
