@@ -5,6 +5,7 @@ import {
   BrowserRouter,
   Routes,
   Route,
+  redirect,
   useLocation,
 } from "react-router-dom";
 
@@ -77,7 +78,8 @@ import ViewTemplate from "./components/features/templates/ViewTemplate/ViewTempl
 
 // 404
 import NotFoundPage from "./pages/NotFoundPage";
-import useCustomNavigate from "./hooks/useCustomNavigate";
+// import useCustomNavigate from "./hooks/useCustomNavigate";
+import { reDirectToLogin } from "./pages/paths.utils";
 
 // interface AppProps {
 //   // Define props here
@@ -107,6 +109,7 @@ function App() {
   // Dispatchers
   const dispatch = useDispatch();
   const { ChangeUser } = bindActionCreators(actionsCreators, dispatch);
+
   // Redux states
   const token = useSelector((state: MainState) => state.token);
   const currentTheme = useSelector((state: RootState) => state.theme);
@@ -115,8 +118,7 @@ function App() {
   useEffect(() => {
     console.log("Token: ", token);
     if (token === "") {
-      // reDirectToLogin();
-      window.location.pathname = "/";
+      reDirectToLogin();
     } else {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       axios

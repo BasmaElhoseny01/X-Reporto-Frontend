@@ -27,7 +27,7 @@ import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
 import { EmployeeType } from "../../../../types/employee";
 
 // Utils
-import useCustomNavigate from "../../../../hooks/useCustomNavigate";
+import { reDirectToHome } from "../../../../utils";
 
 // Interfaces
 interface RouteParams extends Record<string, string | undefined> {
@@ -67,7 +67,7 @@ function ViewEmployee(props: ViewEmployeeProps) {
   const [employeeData, setEmployeeData] = useState<EmployeeType | null>(null);
   const [fetching, setFetching] = useState(true); // Initially set fetching to true
   const [error, setError] = useState(false);
-  const customNavigate = useCustomNavigate();
+
   useEffect(() => {
     if (Id) {
       setError(false); // Reset error state
@@ -166,10 +166,7 @@ function ViewEmployee(props: ViewEmployeeProps) {
           title="500"
           subTitle={"Sorry, something went wrong."}
           extra={
-            <PrimaryButton 
-            // onClick={reDirectToHome}>
-            onClick={() => customNavigate.navigateToHome()}
-            >Back Home</PrimaryButton>
+            <PrimaryButton onClick={reDirectToHome}>Back Home</PrimaryButton>
           }
         />
       </ViewContainer>

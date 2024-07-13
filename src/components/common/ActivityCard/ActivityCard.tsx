@@ -21,6 +21,7 @@ import { Activity } from "../../../types/activity";
 
 // Utils
 import { formatDate, timeAgo } from "../../../utils/dateUtils";
+import { reDirectToCases } from "../../../pages/paths.utils";
 
 // Assets
 import View from "../../../assets/images/view.svg";
@@ -35,7 +36,7 @@ import Archive from "../../../assets/images/archive.svg";
 import ArchiveDark from "../../../assets/images/archive-dark.svg";
 import Restore from "../../../assets/images/restore.svg";
 import RestoreDark from "../../../assets/images/restore-dark.svg";
-import useCustomNavigate from "../../../hooks/useCustomNavigate";
+
 // Interface props for ActivityCard
 interface ActivityCardProps {
   activity: Activity;
@@ -116,13 +117,11 @@ function ActivityCard(props: ActivityCardProps) {
       return "Error";
     }
   };
-  const CustomNavigate = useCustomNavigate();
 
   return (
     <ActivityCardContainer
       isDarkTheme={currentTheme == "dark"}
-      // onClick={() => reDirectToCases("view", activity.study_id)}
-      onClick={() => CustomNavigate.navigateToCases("view", activity.study_id)}
+      onClick={() => reDirectToCases("view", activity.study_id)}
     >
       {/* Icon */}
       <Icon />
@@ -131,10 +130,7 @@ function ActivityCard(props: ActivityCardProps) {
         <Typography>
           {/* You <ActionText /> X-Ray <Link>{activity.study_id}</Link> at {12-03-2024 04:00PM} */}
           You <ActionText /> Study Case{" "}
-          <Link
-          //  onClick={() => reDirectToCases("view", activity.study_id)}
-          onClick={() => CustomNavigate.navigateToCases("view", activity.study_id)}
-          >
+          <Link onClick={() => reDirectToCases("view", activity.study_id)}>
             {activity.study_id}
           </Link>{" "}
           at {formatDate(activity.created_at)}
@@ -143,9 +139,7 @@ function ActivityCard(props: ActivityCardProps) {
       </ActivityCardMiddleContainer>
 
       {/* View Button */}
-      <LinkButton 
-      onClick={() => CustomNavigate.navigateToCases("view", activity.study_id)}
-      >
+      <LinkButton onClick={() => reDirectToCases("view", activity.study_id)}>
         View
       </LinkButton>
     </ActivityCardContainer>

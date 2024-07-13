@@ -8,10 +8,9 @@ import { MainState } from "../state";
 import GeneralTable from "../components/common/Table/Table";
 
 // Utils
-import useCustomNavigate from "../hooks/useCustomNavigate";
+import { reDirectToDoctors } from "./paths.utils";
 
 function AllDoctors() {
-  const customNavigate = useCustomNavigate();
   const tableSearch = useSelector((state: MainState) => state.tableSearch);
   const GeneralTableData = {
     columns: [
@@ -90,12 +89,10 @@ function AllDoctors() {
     filterColumns: ["role", "type", "phone_number", "email", "employee_id"],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
-      // reDirectToDoctors("view", record.id);
-      customNavigate.navigateToDoctors("view", record.id);
+      reDirectToDoctors("view", record.id);
     },
     addNew: () => {
-      // reDirectToDoctors("new");
-      customNavigate.navigateToDoctors("new");
+      reDirectToDoctors("new");
     },
   };
 

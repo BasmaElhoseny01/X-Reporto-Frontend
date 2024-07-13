@@ -11,7 +11,11 @@ import GeneralTable from "../../common/Table/Table";
 // Styled Components
 import { HistoryContainer } from "./ViewHistory.style";
 
-import useCustomNavigate from "../../../hooks/useCustomNavigate";
+// Utils
+import {
+  reDirectToCases,
+  reDirectToPatients,
+} from "../../../pages/paths.utils";
 
 interface ViewHistoryProps {
   api: string;
@@ -22,7 +26,6 @@ function ViewHistory(props: ViewHistoryProps) {
     console.log("ViewHistory.....");
   }, []);
   const tableSearch = useSelector((state: MainState) => state.tableSearch);
-  const customNavigate = useCustomNavigate()
   const GeneralTableData = {
     columns: [
       {
@@ -89,12 +92,10 @@ function ViewHistory(props: ViewHistoryProps) {
     ],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
-      // reDirectToCases("view", record.id);
-      customNavigate.navigateToCases("view", record.id)
+      reDirectToCases("view", record.id);
     },
     addNew: () => {
-      // reDirectToCases("new");
-      customNavigate.navigateToCases("new")
+      reDirectToCases("new");
     },
   };
 
