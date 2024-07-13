@@ -1,4 +1,4 @@
-import { Flex, Input, Table, Typography } from "antd";
+import { Flex, Input, message, Table, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import axios from "../../../services/apiService";
 import PrimaryButton from "../PrimaryButton/PrimaryButton";
@@ -34,7 +34,7 @@ type GeneralTableProps = {
 };
 
 const GeneralTable = (props: GeneralTableProps) => {
-
+  const type= useSelector((state: MainState) => state.user)?.type;
   const [page, setPage] = useState(1);
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -117,6 +117,10 @@ const GeneralTable = (props: GeneralTableProps) => {
         onRow={(record, rowIndex) => {
           return {
             onClick: (event) => {
+              if (type != "doctor"){
+                message.error("You are not doctor");
+                return;
+              }
               // check if the click is on the row or on the action button
               const target = event.target as HTMLElement;
               if (target.tagName === "TD") {
