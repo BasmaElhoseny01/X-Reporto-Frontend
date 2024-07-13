@@ -8,9 +8,10 @@ import { MainState } from "../state";
 import GeneralTable from "../components/common/Table/Table";
 
 // Utils
-import { reDirectToEmployees } from "./paths.utils";
+import useCustomNavigate from "../hooks/useCustomNavigate";
 
 function AllEmployees() {
+  const customNavigate = useCustomNavigate();
   const tableSearch = useSelector((state: MainState) => state.tableSearch);
   const GeneralTableData = {
     columns: [
@@ -102,10 +103,12 @@ function AllEmployees() {
     filterColumns: ["type", "phone_number", "email", "employee_id"],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
-      reDirectToEmployees("view", record.id);
+      // reDirectToEmployees("view", record.id);
+      customNavigate.navigateToEmployees("view", record.id);
     },
     addNew: () => {
-      reDirectToEmployees("new");
+      // reDirectToEmployees("new");
+      customNavigate.navigateToEmployees("new");
     },
   };
 

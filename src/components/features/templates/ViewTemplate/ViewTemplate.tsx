@@ -1,7 +1,6 @@
 /* eslint-disable*/
 import React, { useState, useEffect } from "react";
-import { redirect, useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom"; // Import useNavigate hook for navigation
+import {  useParams } from "react-router-dom";
 
 // Services
 import axios from "../../../../services/apiService";
@@ -13,7 +12,7 @@ import { MainState } from "../../../../state/Reducers";
 // Antd Design
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 import Title from "antd/es/typography/Title";
-import { message, Result, Spin } from "antd";
+import {  Result, Spin } from "antd";
 
 // Styled Components
 import { ButtonContainer, ViewContainer } from "./ViewTemplate.style";
@@ -25,12 +24,9 @@ import LineHeader from "../../../common/LineHeader/LineHeader";
 
 // Types
 import { TemplateType } from "../../../../types/template";
-import {
-  reDirectToHome,
-  reDirectToTemplates,
-} from "../../../../pages/paths.utils";
 import { EmployeeType } from "../../../../types/employee";
 import EditInfoTemplate from "./EditInfoTemplate/EditInfoTemplate";
+import useCustomNavigate from "../../../../hooks/useCustomNavigate";
 
 // Interfaces
 interface RouteParams extends Record<string, string | undefined> {
@@ -115,7 +111,7 @@ function ViewTemplate() {
   const [templateData, setTemplateData] = useState<TemplateObject | null>(null);
   const [fetching, setFetching] = useState(true); // Initially set fetching to true
   const [error, setError] = useState(false);
-
+  const customNavigate = useCustomNavigate();
   useEffect(() => {
     const fetchData = async () => {
       if (Id) {
@@ -241,7 +237,10 @@ function ViewTemplate() {
           title="404"
           subTitle="No Template exists with this ID."
           extra={
-            <PrimaryButton onClick={reDirectToHome}>Back Home</PrimaryButton>
+            <PrimaryButton 
+            // onClick={reDirectToHome}
+            onClick={() => customNavigate.navigateToHome()}
+            >Back Home</PrimaryButton>
           }
         />
       </ViewContainer>

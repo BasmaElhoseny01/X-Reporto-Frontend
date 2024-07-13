@@ -9,12 +9,13 @@ import axios from "../services/apiService";
 // Redux
 import { useSelector } from "react-redux";
 import { MainState } from "../state";
-import { reDirectToCases } from "./paths.utils";
 
 // Components
 import GeneralTable from "../components/common/Table/Table";
+import useCustomNavigate from "../hooks/useCustomNavigate";
 
 function DoctorPendingCases() {
+  const customNavigate = useCustomNavigate();
   const token = useSelector((state: MainState) => state.token);
   const tableSearch = useSelector((state: MainState) => state.tableSearch);
 
@@ -130,7 +131,8 @@ function DoctorPendingCases() {
     ],
     // eslint-disable-next-line
     action: (record: any, rowIndex: any) => {
-      reDirectToCases("view", record.id);
+      // reDirectToCases("view", record.id);
+      customNavigate.navigateToCases("view", record.id);
     },
     addNew: () => {
       window.location.pathname = "reports/new";

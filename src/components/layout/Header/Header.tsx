@@ -25,8 +25,8 @@ import Sun from "../../../assets/images/sun.svg";
 import Moon from "../../../assets/images/moon.svg";
 
 // Utils
-import { reDirectToAccount, reDirectToHome } from "../../../pages/paths.utils";
 import paths from "../../../pages/paths";
+import useCustomNavigate from "../../../hooks/useCustomNavigate";
 
 function Header() {
   const dispatch = useDispatch();
@@ -44,7 +44,7 @@ function Header() {
 
     // console.log("Theme changed to: ", newTheme);
   };
-
+  const customNavigate = useCustomNavigate();
   return (
     <HeaderContainer>
       <HeaderLeftContainer>
@@ -55,7 +55,8 @@ function Header() {
             alt="logo"
             height="40px"
             style={{ cursor: "pointer" }}
-            onClick={reDirectToHome}
+            // onClick={reDirectToHome}
+            onClick={customNavigate.navigateToHome}
           />
         ) : (
           <img
@@ -63,7 +64,8 @@ function Header() {
             alt="logo-dark"
             height="40px"
             style={{ cursor: "pointer" }}
-            onClick={reDirectToHome}
+            // onClick={reDirectToHome}
+            onClick={customNavigate.navigateToHome}
           />
         )}
 
@@ -85,7 +87,10 @@ function Header() {
       {isLoginPage ? null : (
         <HeaderRightContainer>
           {/* Avatar */}
-          <StyledAvatar size="large" onClick={reDirectToAccount}>
+          <StyledAvatar size="large" 
+          // onClick={reDirectToAccount}
+          onClick={customNavigate.navigateToAccount}
+          >
             {user?.username.charAt(0).toUpperCase()}
           </StyledAvatar>
         </HeaderRightContainer>

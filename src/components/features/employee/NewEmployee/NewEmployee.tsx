@@ -28,11 +28,7 @@ import {
   SubmitContainer,
 } from "./NewEmployee.style";
 
-// Utils
-import {
-  reDirectToDoctors,
-  reDirectToEmployees,
-} from "../../../../pages/paths.utils";
+import useCustomNavigate from "../../../../hooks/useCustomNavigate";
 
 // Interface
 interface NewEmployeeFormValues {
@@ -60,7 +56,7 @@ function NewEmployee(props: NewEmployeeProps) {
   // Redux
   const token = useSelector((state: MainState) => state.token);
   const user = useSelector((state: MainState) => state.user);
-
+  const customNavigate = useCustomNavigate();
   const onFinish = async (values: unknown) => {
     const formValues = values as NewEmployeeFormValues;
     formValues.phone_number =
@@ -83,9 +79,11 @@ function NewEmployee(props: NewEmployeeProps) {
       );
       // Redirect to view Page
       if (props.type == "doctors") {
-        reDirectToDoctors("all");
+        // reDirectToDoctors("all");
+        customNavigate.navigateToDoctors("all");
       } else {
-        reDirectToEmployees("all");
+        // reDirectToEmployees("all");
+        customNavigate.navigateToEmployees("all");
       }
     } catch (error) {
       console.error("API error:", error);

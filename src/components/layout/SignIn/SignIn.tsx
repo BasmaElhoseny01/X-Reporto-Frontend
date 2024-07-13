@@ -24,12 +24,12 @@ import Header from "../Header/Header";
 import PrimaryButton from "../../common/PrimaryButton/PrimaryButton";
 
 // Utils
-import { reDirectToHome } from "../../../pages/paths.utils";
+import useCustomNavigate from "../../../hooks/useCustomNavigate";
 
 function SignIn() {
   const dispatch = useDispatch();
   const { ChangeToken } = bindActionCreators(actionsCreators, dispatch);
-
+  const customNavigate = useCustomNavigate();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onFinish = (values: any) => {
     axios
@@ -41,7 +41,8 @@ function SignIn() {
         if (res.status === 200) {
           ChangeToken(res.data.access_token);
           message.success("Login Successful");
-          reDirectToHome();
+          // reDirectToHome();
+          customNavigate.navigateToHome();
         } else {
           ChangeToken("");
           console.error("Failed to Login:", res);

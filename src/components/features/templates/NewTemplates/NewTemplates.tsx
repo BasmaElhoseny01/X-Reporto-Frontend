@@ -27,7 +27,7 @@ import SelectionTemplate, {
   defaultTemplate,
 } from "../../../../components/common/SelectionTemplate/SelectionTemplate";
 import Unauthorized from "../../../layout/unauthorized/Unauthorized";
-import { reDirectToTemplates } from "../../../../pages/paths.utils";
+import useCustomNavigate from "../../../../hooks/useCustomNavigate";
 
 // Interface
 interface FormValues {
@@ -47,7 +47,7 @@ function NewTemplates() {
   // Use States
   const [selectedValue, setSelectedValue] = useState<string>("-1");
   const [content, setContent] = useState<string>(defaultTemplate); // Initialize with defaultTemplate
-
+  const customNavigate = useCustomNavigate();
   const onFinish = async (values: FormValues) => {
     // Add Content to the template
     // console.log("Content", content);
@@ -120,7 +120,8 @@ function NewTemplates() {
 
       setTimeout(() => {
         // Redirect to the template list page
-        reDirectToTemplates("all");
+        // reDirectToTemplates("all");
+        customNavigate.navigateToTemplates("all");
       }, 500); // 1 second delay
     } catch (error) {
       console.error("Error creating or updating template:", error);
