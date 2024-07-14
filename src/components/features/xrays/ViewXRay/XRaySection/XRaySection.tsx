@@ -355,18 +355,32 @@ function XRaySection(props: XRaySectionProps) {
         regionSentencePath = llmResultData.region_sentence_path;
         fetchXRayResultData();
       } else {
-        // Check if he wants to use the de-noised image
+        console.log(customResultData);
+        console.log(llmResultData);
+        // // Check if he wants to use the de-noised image
         if (useDeNoisedImage) {
           xRayPath = llmResultData.xray_path;
           message.info("Using De-Noised Image");
           regionPath = customResultData.region_path;
           regionSentencePath = customResultData.region_sentence_path;
+          // console.log(
+          //   "regionPath",
+          //   customResultData,
+          //   customResultData.region_path
+          // );
+          // console.log("regionSentencePath", customResultData.region_sentence_path);
           fetchXRayResultData();
         } else {
           message.info("Using Original Image");
+          fetchOriginalXRay();
           regionPath = customResultData.region_path;
           regionSentencePath = customResultData.region_sentence_path;
-          fetchOriginalXRay();
+          // console.log(
+          //   "regionPath",
+          //   customResultData,
+          //   customResultData.region_path
+          // );
+          // // console.log("regionSentencePath", regionSentencePath);
           fetchXRayResultRegions();
         }
       }
