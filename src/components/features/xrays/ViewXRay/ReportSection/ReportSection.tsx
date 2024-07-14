@@ -1,3 +1,4 @@
+/* eslint-disable*/
 import React, { useState, useRef, useMemo, useEffect } from "react";
 
 // services
@@ -42,7 +43,7 @@ import {
 interface ReportSectionProps {
   // Props Here
   useAI: boolean;
-  setUseAI: (data: boolean) => void;
+  setUseAITrue: () => void; // use this only after saving llm result
   toggleUseAI: () => void;
   botImgBlue: string;
   botImgGrey: string;
@@ -108,8 +109,9 @@ function ReportSection(props: ReportSectionProps) {
   // Props
   const {
     useAI,
-    setUseAI,
     toggleUseAI,
+    setUseAITrue,
+
     botImgBlue,
     botImgGrey,
     llmResultData,
@@ -308,7 +310,7 @@ function ReportSection(props: ReportSectionProps) {
             )} */}
         <PrimaryButton
           onClick={() =>
-            GenerateReport(caseId, token, setLmResultData, setUseAI)
+            GenerateReport(caseId, token, setLmResultData, setUseAITrue)
           }
           size="large"
         >

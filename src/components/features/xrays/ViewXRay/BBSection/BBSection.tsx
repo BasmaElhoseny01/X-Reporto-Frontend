@@ -1,3 +1,4 @@
+/* eslint-disable*/
 import React, { useEffect } from "react";
 
 // Services
@@ -51,7 +52,7 @@ import {
 interface BBSectionProps {
   // Props Here
   useAI: boolean;
-  setUseAI: (data: boolean) => void;
+  setUseAITrue: () => void;
   toggleUseAI: () => void;
   botImgBlue: string;
   botImgGrey: string;
@@ -143,7 +144,7 @@ const uploadRegionSentences = async (
 function BBSection(props: BBSectionProps) {
   const {
     useAI,
-    setUseAI, // use this only after saving llm result
+    setUseAITrue, // use this only after saving llm result
     toggleUseAI,
     botImgBlue,
     botImgGrey,
@@ -151,7 +152,6 @@ function BBSection(props: BBSectionProps) {
     customResultData,
     setLmResultData,
     setCustomResultData,
-    // originalXRayPath,
     xRayPath,
     caseId,
   } = props;
@@ -360,7 +360,7 @@ function BBSection(props: BBSectionProps) {
         </PrimaryButton>{" "}
         <PrimaryButton
           onClick={() =>
-            GenerateReport(caseId, token, setLmResultData, setUseAI)
+            GenerateReport(caseId, token, setLmResultData, setUseAITrue)
           }
           size="large"
         >

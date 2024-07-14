@@ -107,8 +107,8 @@ function ViewXRay() {
   const [customResultData, setCustomResultData] = useState<ResultType>(null);
 
   const [xRayPath, setXRayPath] = useState<string>(""); // path of the image being displayed now (Path in the BE :D)
-  const [useDeNoisedImage, setUseDeNoisedImage] = useState<boolean>(false); // path of the image being displayed now (Path in the BE :D)
   const [useAI, setUseAI] = useState(false);
+  const [useDeNoisedImage, setUseDeNoisedImage] = useState<boolean>(false); // path of the image being displayed now (Path in the BE :D)
 
   const [fetching, setFetching] = useState(true); // Initially set fetching to true
   const [error, setError] = useState(false);
@@ -213,7 +213,6 @@ function ViewXRay() {
 
   const toggleUseAI = () => {
     console.log("toggleUseAI", useAI, llmResultData, customResultData);
-    // const prev_state = useAI;
     const next_state = !useAI;
     if (next_state == true) {
       if (llmResultData) {
@@ -236,30 +235,59 @@ function ViewXRay() {
     // }
   };
 
-  const handleUseDeNoisedImage = () => {
-    const next_state = !useDeNoisedImage;
-    // check if de-noised image is available
-    if (next_state && (!llmResultData || llmResultData?.xray_path === null)) {
-      // He wanted to use the de-noised(next_state=true ) and it is not available
-      message.info(
-        "No de-noised Image found for this case. [Run X-Ray AI first to get de-noised image.]"
-      );
-      return;
-    } else {
-      // Case(1) next_state is true and de-noised image is available
-      // Case(2) next_state is false and de-noised image is available
-      // Case(3) next_state is false and de-noised image is not available
-      // if (next_state) {
-      //   message.info("Switching to De-Noised Image");
-      // } else {
-      //   message.info("Switching to Original Image");
-      // }
-      // Toggle the state to the next state :D
-      setUseDeNoisedImage(next_state);
+  const setUseAITrue = () => {
+    // Just use that only after getting the AI (VIP)
+    setUseAI(true);
+    setUseDeNoisedImage(true);
+  };
 
-      // Reset useAI to false
-      setUseAI(false);
+  const handleUseDeNoisedImage = () => {
+    // this works only if nit using AI
+    if (useAI) {
+      return;
     }
+    const next_state = !useDeNoisedImage;
+    console.log("next_state", next_state);
+
+    if (next_state) {
+      // Required to use De-Noised Image
+      if (!llmResultData) {
+        // Scenario(1) llmResultData is not available
+        message.info(
+          "No de-noised Image found for this case. [Run X-Ray AI first to get de-noised image.]"
+        );
+        return;
+      }
+      // Scenario(2) llmResultData is  available
+      setUseDeNoisedImage(next_state);
+    } else {
+      // Required to not use De-Noised Image
+      // Loading the original image
+      console.log("llmResultData used original", next_state);
+      setUseDeNoisedImage(next_state);
+    }
+    // // check if de-noised image is available
+    // if (next_state && (!llmResultData || llmResultData?.xray_path === null)) {
+    //   // He wanted to use the de-noised(next_state=true ) and it is not available
+    //   message.info(
+    //     "No de-noised Image found for this case. [Run X-Ray AI first to get de-noised image.]"
+    //   );
+    //   return;
+    // } else {
+    //   // Case(1) next_state is true and de-noised image is available
+    //   // Case(2) next_state is false and de-noised image is available
+    //   // Case(3) next_state is false and de-noised image is not available
+    //   // if (next_state) {
+    //   //   message.info("Switching to De-Noised Image");
+    //   // } else {
+    //   //   message.info("Switching to Original Image");
+    //   // }
+    //   // Toggle the state to the next state :D
+    //   setUseDeNoisedImage(next_state);
+
+    //   // Reset useAI to false
+    //   // setUseAI(false);
+    // }
   };
 
   // Render Content based on the states
@@ -341,7 +369,7 @@ function ViewXRay() {
           botImgBlue={BotBlue}
           botImgGrey={BotGray}
           useAI={useAI}
-          setUseAI={setUseAI}
+          setUseAITrue={setUseAITrue}
           toggleUseAI={toggleUseAI}
           llmResultData={llmResultData}
           customResultData={customResultData}
@@ -379,7 +407,7 @@ function ViewXRay() {
           botImgBlue={BotBlue}
           botImgGrey={BotGray}
           useAI={useAI}
-          setUseAI={setUseAI}
+          setUseAITrue={setUseAITrue}
           toggleUseAI={toggleUseAI}
           llmResultData={llmResultData}
           customResultData={customResultData}

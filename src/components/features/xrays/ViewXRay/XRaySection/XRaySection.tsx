@@ -45,6 +45,7 @@ interface XRaySectionProps {
   customResultData: ResultType | null;
 
   useAI: boolean;
+  // setUseAI: (data: boolean) => void;
   // Props Here
   // xRayPath: string | null;
   // regionPath: string | null;
@@ -213,7 +214,7 @@ function XRaySection(props: XRaySectionProps) {
 
   useEffect(() => {
     // console.log("XRaySection .........", props);
-    console.log("XRaySection .........");
+    console.log("XRaySection .........", useAI, useDeNoisedImage);
 
     const fetchOriginalXRay = async () => {
       try {
@@ -238,7 +239,7 @@ function XRaySection(props: XRaySectionProps) {
       }
     };
 
-    const fetchXRayResultData = async () => {
+    const fetchXRayResultData = async (download_image_only = false) => {
       try {
         if (!xRayPath) {
           message.error("Failed to load X-Ray");
@@ -254,6 +255,7 @@ function XRaySection(props: XRaySectionProps) {
         }
         setXRayURL(xRayResponse);
         setXRayPath(xRayPath); // This is the X-Ray Path that will be used for submission
+        if (download_image_only) return;
 
         // (2) Download Bounding Boxes
         if (!regionPath) {
@@ -295,6 +297,7 @@ function XRaySection(props: XRaySectionProps) {
 
     // Scenario(1) NoLLMResult and NoCustomResult
     if (!llmResultData && !customResultData) {
+      message.info("Using Original Image");
       fetchOriginalXRay();
       return;
     }
@@ -306,23 +309,38 @@ function XRaySection(props: XRaySectionProps) {
 
     if (useAI) {
       if (!llmResultData) {
-        message.info("No AI results found for this case.................. >>>");
+        message.info("using Original image");
+        fetchOriginalXRay();
         return;
       }
+      message.info("Using De-Noised Image");
       xRayPath = llmResultData?.xray_path;
       regionPath = llmResultData?.region_path;
       regionSentencePath = llmResultData?.region_sentence_path;
       fetchXRayResultData();
     } else {
+      // Scenario useAI = false
+      // Scenario(1) no CustomResultData
       if (!customResultData) {
-        message.info("No custom (region) results found for this case");
-        return;
+        // Check if he wants to use the de-noised image and LLMResultData is present
+        if (useDeNoisedImage && llmResultData?.xray_path) {
+          message.info("Using De-Noised Image");
+          xRayPath = llmResultData?.xray_path;
+          fetchXRayResultData(true);
+          return;
+        } else {
+          message.info("Using Original Image");
+          fetchOriginalXRay();
+          return;
+        }
       }
       // Check if he wants to use the de-noised image
       if (useDeNoisedImage && llmResultData?.xray_path) {
+        // Scenario(2) CustomResultData && llmResultData
         message.info("Using De-Noised Image");
         xRayPath = llmResultData?.xray_path;
       } else {
+        // Scenario(2) CustomResultData && !llmResultData || !useDeNoisedImage
         xRayPath = customResultData?.xray_path;
         message.info("Using Original Image");
       }
@@ -330,97 +348,7 @@ function XRaySection(props: XRaySectionProps) {
       regionSentencePath = customResultData?.region_sentence_path;
       fetchXRayResultData();
     }
-
-    // // if (useAI) {
-    // //   if (!llmResultData) {
-    // //     message.info("No AI results found for this case.");
-    // //     // xRayPath = originalXRayPath;
-    // //     // fetchData(true);
-    // //     return;
-    // //   }
-    // //   xRayPath = llmResultData?.xray_path;
-    // //   regionPath = llmResultData?.region_path;
-    // //   regionSentencePath = llmResultData?.region_sentence_path;
-    // // } else {
-    // //   if (!customResultData) {
-    // //     message.info("No custom results found for this case.");
-    // //     // xRayPath = originalXRayPath;
-    // //     // fetchData(true);
-    // //     return;
-    // //   }
-    // //   xRayPath = customResultData?.xray_path;
-    // //   regionPath = customResultData?.region_path;
-    // //   regionSentencePath = customResultData?.region_sentence_path;
-    // // }
-    // // fetchData(false);
-    // }, [llmResultData, customResultData]);
-    // }, [useAI, llmResultData, customResultData]);
   }, [useAI, llmResultData, customResultData, useDeNoisedImage]);
-
-  // Render Content based on the states
-  // const Body = () => {
-  //   let content;
-
-  // if (xRayPath && fetching) {
-  //   content = (
-  //     <div
-  //       style={{
-  //         display: "flex",
-  //         justifyContent: "center",
-  //         alignItems: "center",
-  //         height: "80%",
-  //         width: "100%",
-  //       }}
-  //     >
-  //       {/* <Spin tip="Loading" size="small">
-  //         <div
-  //           style={{
-  //             padding: 50,
-  //             // background: "rgba(0, 0, 0, 0.05)",
-  //             borderRadius: 4,
-  //           }}
-  //         />
-  //       </Spin> */}
-  //       <Spin indicator={<LoadingOutlined spin />} />
-  //     </div>
-  //   );
-  // } else if (error || !xRayURL) {
-  //   content = (
-  //     <Result
-  //       status="error"
-  //       title="There are some problems with loading x-ray."
-  //       extra={
-  //         null
-  //         //   <Button type="primary" key="console">
-  //         //     Go Console
-  //         //   </Button>
-  //       }
-  //     />
-  //   );
-  // } else {
-  //   content = (
-  //     <>
-  //       <CanvasSection ImageURL={xRayURL} />
-  //       {/* {siderType !== "info" && siderType !== "report" && ( */}
-  //       {/* // <h1>Findings</h1> */}
-  //       {/* <BBFindingsContainer>
-  //         <BBFindings />
-  //       </BBFindingsContainer> */}
-  //       {/* )} */}
-  //     </>
-  //   );
-  // }
-  // content = <>{/* <CanvasSection ImageURL={xRayURL ?? ""} /> */}</>;
-
-  // return (
-  // <XRayContainer>
-  //   <ToolBar />
-  //   {/* {content} */}
-  //   {/* <Test /> */}
-  //   {/* <CanvasSection ImageURL={xRayURL ?? ""} /> */}
-  // </XRayContainer>
-  // );
-  // };
 
   return (
     <ToolProvider>
