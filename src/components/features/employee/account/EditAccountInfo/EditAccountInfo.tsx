@@ -136,7 +136,7 @@ function EditAccountInfo(props: EditAccountInfoProps) {
                 wrapperCol={{ span: 24 }}
                 rules={[{ required: true, message: "Username is required" }]}
               >
-                <Input placeholder="Employee Username" />
+                <Input placeholder="Employee Username" disabled />
               </Form.Item>
 
               <Form.Item

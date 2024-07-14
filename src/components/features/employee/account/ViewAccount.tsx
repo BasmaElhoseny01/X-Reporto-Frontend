@@ -46,13 +46,18 @@ const fetchEmployeeData = async (id: number, token: string) => {
   }
 };
 
+/*eslint-disable-next-line*/
 const Header = ({ type }: { type: string }) => (
-  <Title level={3}>{type === "doctors" ? "Doctor" : "Employee"}</Title>
+  // <Title level={3}>{type === "doctors" ? "Doctor" : "Employee"}</Title>
+  // <Title level={3}>{type === "doctors" ? "Doctor" : "Employee"}</Title>
+  <Title level={3}>Account</Title>
 );
 
 function ViewAccount(props: ViewAccountProps) {
   // Get the ID value from the URL
-  const { Id }: { Id: number | null } = useSelector((state: MainState) => ({ Id: state.user?.id || null }));
+  const { Id }: { Id: number | null } = useSelector((state: MainState) => ({
+    Id: state.user?.id || null,
+  }));
 
   // Redux States
   const token = useSelector((state: MainState) => state.token);
@@ -121,7 +126,9 @@ function ViewAccount(props: ViewAccountProps) {
     {
       key: "2",
       label: "History",
-      children: employeeData ? <ViewHistory api={`api/v1/employees/${Id}/studies/?`} /> : null,
+      children: employeeData ? (
+        <ViewHistory api={`api/v1/employees/${Id}/studies/?`} />
+      ) : null,
     },
   ];
 

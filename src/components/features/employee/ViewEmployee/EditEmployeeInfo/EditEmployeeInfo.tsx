@@ -212,7 +212,11 @@ function EditEmployeeInfo(props: EditEmployeeInfoProps) {
           <>
             <Descriptions layout="vertical" colon={false}>
               {employee?.id && (
-                <Descriptions.Item label="ID" style={{ width: "20%" }} span={0.5}>
+                <Descriptions.Item
+                  label="ID"
+                  style={{ width: "20%" }}
+                  span={0.5}
+                >
                   {employee?.id}
                 </Descriptions.Item>
               )}
