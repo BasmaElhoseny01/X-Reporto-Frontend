@@ -60,7 +60,11 @@ function UnAssigned() {
         title: "created_at",
         dataIndex: "created_at",
         // eslint-disable-next-line
-        sorter: (a: any, b: any) => a.created_at - b.created_at,
+        sorter: (a: any, b: any) => {
+          const dateA = new Date(a.created_at);
+          const dateB = new Date(b.created_at);
+          return dateA.getTime() - dateB.getTime();
+        },
       },
       {
         title: "Severity",

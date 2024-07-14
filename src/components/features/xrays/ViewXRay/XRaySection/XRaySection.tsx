@@ -253,6 +253,7 @@ function XRaySection(props: XRaySectionProps) {
           message.error("Failed to load X-Ray");
           throw new Error("Failed to load X-Ray");
         }
+        console.log("xRayResponse", xRayResponse);
         setXRayURL(xRayResponse);
         setXRayPath(xRayPath); // This is the X-Ray Path that will be used for submission
         if (download_image_only) return;
@@ -348,7 +349,8 @@ function XRaySection(props: XRaySectionProps) {
       regionSentencePath = customResultData?.region_sentence_path;
       fetchXRayResultData();
     }
-  }, [useAI, llmResultData, customResultData, useDeNoisedImage]);
+  // }, [useAI, llmResultData, customResultData, useDeNoisedImage]);
+}, [useAI, useDeNoisedImage]);
 
   return (
     <ToolProvider>

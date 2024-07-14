@@ -138,6 +138,7 @@ function ViewXRay() {
                   const result = resultsResponse[i];
 
                   if (result.type === "llm") {
+                    console.log("llm result found",result);
                     setllmResultData(result);
                     lmResultFound = true;
                   } else if (result.type === "template") {
@@ -242,13 +243,12 @@ function ViewXRay() {
   };
 
   const handleUseDeNoisedImage = () => {
-    // this works only if nit using AI
+    // This works only if not using AI (VIP)
     if (useAI) {
       return;
     }
-    const next_state = !useDeNoisedImage;
-    console.log("next_state", next_state);
 
+    const next_state = !useDeNoisedImage;
     if (next_state) {
       // Required to use De-Noised Image
       if (!llmResultData) {
@@ -262,32 +262,8 @@ function ViewXRay() {
       setUseDeNoisedImage(next_state);
     } else {
       // Required to not use De-Noised Image
-      // Loading the original image
-      console.log("llmResultData used original", next_state);
       setUseDeNoisedImage(next_state);
     }
-    // // check if de-noised image is available
-    // if (next_state && (!llmResultData || llmResultData?.xray_path === null)) {
-    //   // He wanted to use the de-noised(next_state=true ) and it is not available
-    //   message.info(
-    //     "No de-noised Image found for this case. [Run X-Ray AI first to get de-noised image.]"
-    //   );
-    //   return;
-    // } else {
-    //   // Case(1) next_state is true and de-noised image is available
-    //   // Case(2) next_state is false and de-noised image is available
-    //   // Case(3) next_state is false and de-noised image is not available
-    //   // if (next_state) {
-    //   //   message.info("Switching to De-Noised Image");
-    //   // } else {
-    //   //   message.info("Switching to Original Image");
-    //   // }
-    //   // Toggle the state to the next state :D
-    //   setUseDeNoisedImage(next_state);
-
-    //   // Reset useAI to false
-    //   // setUseAI(false);
-    // }
   };
 
   // Render Content based on the states

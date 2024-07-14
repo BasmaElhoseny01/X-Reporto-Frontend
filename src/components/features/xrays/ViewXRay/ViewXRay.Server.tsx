@@ -33,6 +33,7 @@ const checkResultStatus = async (
       },
     });
     if (response.data.report_path) {
+      // if (response.data.is_ready) {
       return response.data;
     }
     return null;
@@ -61,8 +62,9 @@ const pollResultStatus = async (
         console.log("Report status:", result);
         if (result) {
           hide(); // Close loading message
-          message.success("Report is ready!");
           setLmResultData(result);
+          console.log("Report is ready:...................", result);
+          message.success("Report is ready!");
 
           // Very important to set the AI flag to true [to display the AI report]
           setUseAITrue();
