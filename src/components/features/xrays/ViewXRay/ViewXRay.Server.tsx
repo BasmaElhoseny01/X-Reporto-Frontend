@@ -32,8 +32,7 @@ const checkResultStatus = async (
         Authorization: `Bearer ${token}`,
       },
     });
-    if (response.data.report_path) {
-      // if (response.data.is_ready) {
+    if (response.data.is_ready) {
       return response.data;
     }
     return null;

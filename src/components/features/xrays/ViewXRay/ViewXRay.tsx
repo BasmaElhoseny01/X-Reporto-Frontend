@@ -114,7 +114,6 @@ function ViewXRay() {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    console.log("ViewXRay........");
     const fetchData = async () => {
       if (Id) {
         let fetchStartTime = Date.now(); // Record start time before fetch
@@ -138,7 +137,7 @@ function ViewXRay() {
                   const result = resultsResponse[i];
 
                   if (result.type === "llm") {
-                    console.log("llm result found",result);
+                    console.log("llm result found", result);
                     setllmResultData(result);
                     lmResultFound = true;
                   } else if (result.type === "template") {
@@ -216,6 +215,7 @@ function ViewXRay() {
     console.log("toggleUseAI", useAI, llmResultData, customResultData);
     const next_state = !useAI;
     if (next_state == true) {
+      // Required to use AI (true)
       if (llmResultData) {
         setUseAI(next_state); // true
         setUseDeNoisedImage(true); //restore the de-noised image flag
@@ -223,11 +223,15 @@ function ViewXRay() {
         message.info("No LM results found for this case.");
       }
     } else {
-      if (customResultData) {
-        setUseAI(next_state);
-      } else {
-        message.info("No custom results found for this case.");
-      }
+      // Required to not use AI (false)
+      setUseAI(next_state);
+      
+      // if (customResultData) {
+      //   setUseAI(next_state);
+      // }
+      // } else {
+      //   message.info("No custom results found for this case.");
+      // }
     }
     // if (llmResultData) {
     //   setUseAI(!useAI);
