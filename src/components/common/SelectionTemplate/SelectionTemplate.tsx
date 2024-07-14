@@ -175,6 +175,7 @@ function SelectionTemplate({ selectedValue, handleSelectionChange }: Props) {
         handleChange(value as string, option as Option)
       }
       options={options}
+      style={{ width: "50%" }}
     />
   );
 }

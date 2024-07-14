@@ -24,10 +24,9 @@ import LineHeader from "../../../../common/LineHeader/LineHeader";
 import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
 
 // ToDo Use SelectionTemplate
-// import SelectionTemplate, {
-//   defaultTemplate,
-// } from "../../../../common/SelectionTemplate/SelectionTemplate";
-import { defaultTemplate } from "../../../../common/SelectionTemplate/SelectionTemplate";
+import SelectionTemplate, {
+  defaultTemplate,
+} from "../../../../common/SelectionTemplate/SelectionTemplate";
 
 // Types
 import { ResultType } from "../../../../../types/Result";
@@ -138,8 +137,12 @@ function ReportSection(props: ReportSectionProps) {
 
   // States
   const [content, setContent] = useState<string>(defaultTemplate); // Text Editor Content
-  // const [reportContent, setReportContent] = useState<string>(""); // Finding Report Content
-  // const [selectedValue, setSelectedValue] = useState<string>("-1");
+  const [selectedValue, setSelectedValue] = useState<string>("-1");
+
+  const handleSelectionChange = (value: string, labelValue: string): void => {
+    setSelectedValue(labelValue); // Update selected value
+    setContent(value); // Update content with selected template value
+  };
 
   useEffect(() => {
     // console.log("ReportSection.....", llmResultData, customResultData, useAI);
@@ -286,6 +289,10 @@ function ReportSection(props: ReportSectionProps) {
         }}
       >
         <Title level={3}>Report</Title>
+        <SelectionTemplate
+          selectedValue={selectedValue}
+          handleSelectionChange={handleSelectionChange}
+        />
         <img
           src={useAI ? botImgBlue : botImgGrey}
           alt="Bot"
@@ -306,11 +313,6 @@ function ReportSection(props: ReportSectionProps) {
           Save
         </PrimaryButton>
         {/* BackDoor for code :D  */}
-        {/* {llmResultData && llmResultData.report_path ? null : (
-              <PrimaryButton onClick={handleGenerateReport} size="large">
-                Generate Report
-              </PrimaryButton>
-            )} */}
         <PrimaryButton
           onClick={() =>
             GenerateReport(caseId, token, setLmResultData, setUseAITrue)

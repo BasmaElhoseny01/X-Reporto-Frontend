@@ -241,10 +241,10 @@ function EditInfoTemplate(props: EditInfoTemplateProps) {
             <ReportEditor
               ref={editor}
               // value={content} // Bind value to content state
-              // value={template?.content} // Bind value to content state
-              value={
-                "<h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1>"
-              } // Bind value to content state
+              value={template?.content} // Bind value to content state
+              // value={
+              //   "<h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1><h1>aaa</h1>"
+              // } // Bind value to content state
               config={config}
               onBlur={handleContentChange} // You can choose to keep onBlur or onChange based on performance considerations
               onChange={handleContentChange}

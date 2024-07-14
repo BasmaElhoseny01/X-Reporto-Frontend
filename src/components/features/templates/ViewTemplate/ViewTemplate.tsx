@@ -31,6 +31,7 @@ import {
 } from "../../../../pages/paths.utils";
 import { EmployeeType } from "../../../../types/employee";
 import EditInfoTemplate from "./EditInfoTemplate/EditInfoTemplate";
+import useCustomNavigate from "../../../../hooks/useCustomNavigate";
 
 // Interfaces
 interface RouteParams extends Record<string, string | undefined> {
@@ -89,24 +90,26 @@ const downloadTemplateContent = async (id: string, token: string) => {
   }
 };
 
-// const deleteTemplate = async (id: string, token: string) => {
-//   try {
-//     const response = await axios.get(`api/v1/templates/${id}`, {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     });
-//     console.log(response.data);
-//     return response.data;
-//   } catch (error) {
-//     console.error("Error Deleting Template:", error);
-//     throw error;
-//   }
-// };
+const deleteTemplate = async (id: string, token: string) => {
+  try {
+    const response = await axios.delete(`api/v1/templates/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error Deleting Template:", error);
+    throw error;
+  }
+};
 
 function ViewTemplate() {
   // Get the ID value from the URL
   const { Id } = useParams<RouteParams>();
+
+  const { navigateToTemplates } = useCustomNavigate();
 
   // Redux States
   const token = useSelector((state: MainState) => state.token);
@@ -178,33 +181,33 @@ function ViewTemplate() {
     }
   }, [Id, token]);
 
-  // // const handleNewTemplate = () => {
-  // //   // Navigate to the desired route using history.push
-  // //   navigate("/templates/new"); // Replace with your actual route
-  // // };
+  const handleNewTemplate = () => {
+    navigateToTemplates("new");
+  };
 
-  // const handleDeleteTemplate = () => {
-  //   if (Id) {
-  //     deleteTemplate(Id, token)
-  //       .then((response) => {
-  //         if (response) {
-  //           // setTemplateData(response);
-  //           message.success("Template deleted successfully");
-  //           // Redirect to Template
-  //           reDirectToTemplates("all");
-  //         }
-  //       })
-  //       .catch(() => {
-  //         message.error(`Failed to delete template`);
-  //       });
-  //     // .finally(() => {
-  //     //   setTimeout(() => {
-  //     //     // setFetching(false); // Set fetching to false after 0.5 seconds
-  //     //   }, 1000); // 1 second delay
-  //     // });
-  //   } else {
-  //     // setFetching(false); // Set fetching to false if Id is not provided
-  //   }
+  const handleDeleteTemplate = () => {
+    if (Id) {
+      deleteTemplate(Id, token)
+        .then((response) => {
+          if (response) {
+            // setTemplateData(response);
+            message.success("Template deleted successfully");
+            // Redirect to Template
+            navigateToTemplates("all");
+          }
+        })
+        .catch(() => {
+          message.error(`Failed to delete template`);
+        });
+      // .finally(() => {
+      //   setTimeout(() => {
+      //     // setFetching(false); // Set fetching to false after 0.5 seconds
+      //   }, 1000); // 1 second delay
+      // });
+    } else {
+      // setFetching(false); // Set fetching to false if Id is not provided
+    }
+  };
 
   if (fetching) {
     return (
@@ -259,16 +262,13 @@ function ViewTemplate() {
       >
         <Title level={3}>Template</Title>
         <ButtonContainer>
-          <PrimaryButton
-            icon={<PlusOutlined />}
-            //  onClick={handleNewTemplate}
-          >
+          <PrimaryButton icon={<PlusOutlined />} onClick={handleNewTemplate}>
             New Template
           </PrimaryButton>
           <PrimaryButton
             danger
             icon={<DeleteOutlined />}
-            // onClick={handleDeleteTemplate}
+            onClick={handleDeleteTemplate}
           >
             Delete Template
           </PrimaryButton>
