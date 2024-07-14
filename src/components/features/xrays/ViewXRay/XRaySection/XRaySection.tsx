@@ -45,7 +45,6 @@ interface XRaySectionProps {
   customResultData: ResultType | null;
 
   useAI: boolean;
-  // setUseAI: (data: boolean) => void;
   // Props Here
   // xRayPath: string | null;
   // regionPath: string | null;
@@ -194,7 +193,6 @@ function XRaySection(props: XRaySectionProps) {
     llmResultData,
     customResultData,
     useAI,
-    // setUseAI,
   } = props;
 
   // Navigation
@@ -309,7 +307,6 @@ function XRaySection(props: XRaySectionProps) {
 
     if (useAI) {
       if (!llmResultData) {
-        // setUseAI(false); //reset useAI to false  // BASMA CHECCK
         message.info("using Original image");
         fetchOriginalXRay();
         return;

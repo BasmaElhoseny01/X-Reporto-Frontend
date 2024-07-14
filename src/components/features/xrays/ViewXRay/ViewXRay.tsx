@@ -346,9 +346,8 @@ function ViewXRay() {
           botImgBlue={BotBlue}
           botImgGrey={BotGray}
           useAI={useAI}
-          setUseAI={setUseAI}
-          toggleUseAI={setUseAITrue}
-          // setUseAITrue={setUseAITrue}
+          setUseAITrue={setUseAITrue}
+          toggleUseAI={toggleUseAI}
           llmResultData={llmResultData}
           customResultData={customResultData}
           setLmResultData={setllmResultData}
@@ -385,7 +384,7 @@ function ViewXRay() {
           botImgBlue={BotBlue}
           botImgGrey={BotGray}
           useAI={useAI}
-          setUseAI={setUseAI}
+          setUseAITrue={setUseAITrue}
           toggleUseAI={toggleUseAI}
           llmResultData={llmResultData}
           customResultData={customResultData}

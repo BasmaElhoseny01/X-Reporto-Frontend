@@ -43,7 +43,7 @@ import {
 interface ReportSectionProps {
   // Props Here
   useAI: boolean;
-  setUseAI: (data: boolean) => void;
+  setUseAITrue: () => void; // use this only after saving llm result
   toggleUseAI: () => void;
   botImgBlue: string;
   botImgGrey: string;
@@ -109,8 +109,9 @@ function ReportSection(props: ReportSectionProps) {
   // Props
   const {
     useAI,
-    setUseAI,
     toggleUseAI,
+    setUseAITrue,
+
     botImgBlue,
     botImgGrey,
     llmResultData,
@@ -308,9 +309,8 @@ function ReportSection(props: ReportSectionProps) {
               </PrimaryButton>
             )} */}
         <PrimaryButton
-          onClick={
-            () => GenerateReport(caseId, token, setLmResultData, toggleUseAI)
-            // GenerateReport(caseId, token, setLmResultData, setUseAI)
+          onClick={() =>
+            GenerateReport(caseId, token, setLmResultData, setUseAITrue)
           }
           size="large"
         >

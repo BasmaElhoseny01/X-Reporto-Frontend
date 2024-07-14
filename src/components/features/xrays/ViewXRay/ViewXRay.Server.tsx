@@ -46,8 +46,7 @@ const pollResultStatus = async (
   result_id: number,
   token: string,
   setLmResultData: (data: ResultType) => void,
-  // setUseAI: (data: boolean) => void
-  toggleUseAI: () => void
+  setUseAITrue: () => void
 ) => {
   const interval = 5000; // Poll every 5 seconds
   const maxAttempts = 20; // Maximum number of attempts before giving up
@@ -64,8 +63,10 @@ const pollResultStatus = async (
           hide(); // Close loading message
           message.success("Report is ready!");
           setLmResultData(result);
-          // setUseAI(true);  // BOSSS
-          toggleUseAI(); // BOSSS
+
+          // Very important to set the AI flag to true [to display the AI report]
+          setUseAITrue();
+
           // Handle the ready report (e.g., download it, display it, etc.)
           console.log("Report is ready:", result);
         } else {
@@ -90,8 +91,7 @@ export const GenerateReport = async (
   case_id: number | null,
   token: string,
   setLmResultData: (data: ResultType) => void,
-  // setUseAI: (data: boolean) => void
-  toggleUseAI: () => void
+  setUseAITrue: () => void
 ) => {
   try {
     if (!case_id) {
@@ -105,8 +105,7 @@ export const GenerateReport = async (
 
     message.success("Report generation started successfully!");
     // Polling the report status
-    // pollResultStatus(reportResponse.id, token, setLmResultData, setUseAI);
-    pollResultStatus(reportResponse.id, token, setLmResultData, toggleUseAI);
+    pollResultStatus(reportResponse.id, token, setLmResultData, setUseAITrue);
   } catch (error) {
     console.error("Error in GenerateReport():", error);
     message.error("Failed to generate report");
