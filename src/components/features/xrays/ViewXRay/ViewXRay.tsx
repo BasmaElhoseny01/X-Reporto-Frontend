@@ -213,7 +213,6 @@ function ViewXRay() {
 
   const toggleUseAI = () => {
     console.log("toggleUseAI", useAI, llmResultData, customResultData);
-    // const prev_state = useAI;
     const next_state = !useAI;
     if (next_state == true) {
       if (llmResultData) {
@@ -234,6 +233,12 @@ function ViewXRay() {
     // } else {
     //   message.info("No LM results found for this case.");
     // }
+  };
+
+  const setUseAITrue = () => {
+    // Just use that only after getting the AI (VIP)
+    setUseAI(true);
+    setUseDeNoisedImage(true);
   };
 
   const handleUseDeNoisedImage = () => {
@@ -342,7 +347,8 @@ function ViewXRay() {
           botImgGrey={BotGray}
           useAI={useAI}
           setUseAI={setUseAI}
-          toggleUseAI={toggleUseAI}
+          toggleUseAI={setUseAITrue}
+          // setUseAITrue={setUseAITrue}
           llmResultData={llmResultData}
           customResultData={customResultData}
           setLmResultData={setllmResultData}

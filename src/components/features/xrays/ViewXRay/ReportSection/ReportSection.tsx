@@ -1,3 +1,4 @@
+/* eslint-disable*/
 import React, { useState, useRef, useMemo, useEffect } from "react";
 
 // services
@@ -307,8 +308,9 @@ function ReportSection(props: ReportSectionProps) {
               </PrimaryButton>
             )} */}
         <PrimaryButton
-          onClick={() =>
-            GenerateReport(caseId, token, setLmResultData, setUseAI)
+          onClick={
+            () => GenerateReport(caseId, token, setLmResultData, toggleUseAI)
+            // GenerateReport(caseId, token, setLmResultData, setUseAI)
           }
           size="large"
         >

@@ -341,31 +341,6 @@ function XRaySection(props: XRaySectionProps) {
       regionSentencePath = customResultData?.region_sentence_path;
       fetchXRayResultData();
     }
-
-    // // if (useAI) {
-    // //   if (!llmResultData) {
-    // //     message.info("No AI results found for this case.");
-    // //     // xRayPath = originalXRayPath;
-    // //     // fetchData(true);
-    // //     return;
-    // //   }
-    // //   xRayPath = llmResultData?.xray_path;
-    // //   regionPath = llmResultData?.region_path;
-    // //   regionSentencePath = llmResultData?.region_sentence_path;
-    // // } else {
-    // //   if (!customResultData) {
-    // //     message.info("No custom results found for this case.");
-    // //     // xRayPath = originalXRayPath;
-    // //     // fetchData(true);
-    // //     return;
-    // //   }
-    // //   xRayPath = customResultData?.xray_path;
-    // //   regionPath = customResultData?.region_path;
-    // //   regionSentencePath = customResultData?.region_sentence_path;
-    // // }
-    // // fetchData(false);
-    // }, [llmResultData, customResultData]);
-    // }, [useAI, llmResultData, customResultData]);
   }, [useAI, llmResultData, customResultData, useDeNoisedImage]);
 
   return (

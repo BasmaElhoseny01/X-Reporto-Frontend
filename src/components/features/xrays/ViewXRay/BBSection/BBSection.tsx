@@ -1,3 +1,4 @@
+/* eslint-disable*/
 import React, { useEffect } from "react";
 
 // Services
@@ -359,8 +360,9 @@ function BBSection(props: BBSectionProps) {
           Save
         </PrimaryButton>{" "}
         <PrimaryButton
-          onClick={() =>
-            GenerateReport(caseId, token, setLmResultData, setUseAI)
+          onClick={
+            () => GenerateReport(caseId, token, setLmResultData, toggleUseAI)
+            // GenerateReport(caseId, token, setLmResultData, setUseAI)
           }
           size="large"
         >
