@@ -174,7 +174,6 @@ function BBSection(props: BBSectionProps) {
 
     // Deselect Annotation when switching between AI and Custom
     handleSelectAnnotation(null);
-    // }, [useAI, llmResultData, customResultData]);
   }, [useAI]);
 
   const handelSaveResult = async () => {

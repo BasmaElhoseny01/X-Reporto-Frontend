@@ -192,7 +192,6 @@ function ReportSection(props: ReportSectionProps) {
     }
 
     fetchReportData();
-  // }, [useAI, llmResultData, customResultData]);
 }, [useAI]);
 
   const handleContentChange = (value: string) => {
