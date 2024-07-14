@@ -211,35 +211,53 @@ function EditEmployeeInfo(props: EditEmployeeInfoProps) {
         ) : (
           <>
             <Descriptions layout="vertical" colon={false}>
-              <Descriptions.Item label="ID" style={{ width: "20%" }} span={0.5}>
-                {employee?.id}
-              </Descriptions.Item>
+              {employee?.id && (
+                <Descriptions.Item label="ID" style={{ width: "20%" }} span={0.5}>
+                  {employee?.id}
+                </Descriptions.Item>
+              )}
 
-              <Descriptions.Item label="Name">
-                {employee?.employee_name}
-              </Descriptions.Item>
+              {employee?.employee_name && (
+                <Descriptions.Item label="Name">
+                  {employee?.employee_name}
+                </Descriptions.Item>
+              )}
 
-              <Descriptions.Item label="Username">
-                {employee?.username}
-              </Descriptions.Item>
+              {employee?.username && (
+                <Descriptions.Item label="Username">
+                  {employee?.username}
+                </Descriptions.Item>
+              )}
 
-              <Descriptions.Item label="Date of Birth">
-                {employee?.birth_date}
-              </Descriptions.Item>
+              {employee?.birth_date && (
+                <Descriptions.Item label="Date of Birth">
+                  {employee?.birth_date}
+                </Descriptions.Item>
+              )}
 
-              <Descriptions.Item label="Age" span={0.5}>
-                {employee?.age}
-              </Descriptions.Item>
+              {ageValue !== -1 && (
+                <Descriptions.Item label="Age" span={0.5}>
+                  {ageValue}
+                </Descriptions.Item>
+              )}
 
-              <Descriptions.Item label="Email">
-                {employee?.email}
-              </Descriptions.Item>
-              <Descriptions.Item label="Phone">
-                {employee?.phone_number}
-              </Descriptions.Item>
-              <Descriptions.Item label="Gender">
-                {employee?.gender}
-              </Descriptions.Item>
+              {employee?.email && (
+                <Descriptions.Item label="Email">
+                  {employee?.email}
+                </Descriptions.Item>
+              )}
+
+              {employee?.phone_number && (
+                <Descriptions.Item label="Phone">
+                  {employee?.phone_number}
+                </Descriptions.Item>
+              )}
+
+              {employee?.gender && (
+                <Descriptions.Item label="Gender">
+                  {employee?.gender}
+                </Descriptions.Item>
+              )}
             </Descriptions>
             <ButtonContainer>
               <PrimaryButton size="large" onClick={handleEdit}>

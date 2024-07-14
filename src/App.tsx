@@ -215,9 +215,9 @@ function App() {
                     <Route index element={<AllEmployees />} />
                     <Route
                       path={paths.employees.types.new}
-                      element={<NewEmployee type="" />}
+                      element={<NewEmployee type="employee" />}
                     />
-                    <Route path=":Id" element={<ViewEmployee type={""} />} />
+                    <Route path=":Id" element={<ViewEmployee type={"doctor"} />} />
                   </Route>
 
                   {/* Templates */}

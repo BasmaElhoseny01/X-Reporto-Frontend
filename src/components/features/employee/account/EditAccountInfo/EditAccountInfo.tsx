@@ -1,31 +1,51 @@
-/*eslint-disable */
 import React, { useState, useEffect } from "react";
-import { Form, Input, Radio, message } from "antd";
+
+// Services
 import axios from "../../../../../services/apiService";
-import { Descriptions } from "antd";
 
-import {
-  ButtonContainer,
-  InfoContainer,
-  FormInputsContainer,
-} from "./EditPatientInfo.Styles";
-import SecondaryButton from "../../../../common/SecondaryButton/SecondaryButton";
-import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
-import { calculateAge } from "../../../../../utils/dateUtils";
-
-// Types
-import { PatientType } from "../../../../../types/patient";
+// Redux
 import { useSelector } from "react-redux";
-import { MainState } from "../../../../../state";
+import { MainState } from "../../../../../state/Reducers";
 
-// Interfaces
-interface EditEmployeeInfoProps {
-  patient: PatientType;
-  setPatientData: (value: PatientType) => void;
+// Third Party
+
+// Ant Design
+import { Descriptions, Form, Input, Radio, message } from "antd";
+
+// Styled Components
+import { ButtonContainer, FormInputsContainer } from "./EditAccountInfostyle";
+
+// Components
+import PrimaryButton from "../../../../common/PrimaryButton/PrimaryButton";
+import SecondaryButton from "../../../../common/SecondaryButton/SecondaryButton";
+
+// Styled Components
+import { InfoContainer } from "./EditAccountInfostyle";
+
+//Types
+import { EmployeeType } from "../../../../../types/employee";
+
+interface EditAccountInfoProps {
+  type: string;
+  employee: EmployeeType;
+  setEmployeeData: (value: EmployeeType) => void;
 }
 
-function EditPatientInfo(props: EditEmployeeInfoProps) {
-  const { patient, setPatientData } = props;
+function calculateAge(birthDate: string): number {
+  const today = new Date();
+  const birth = new Date(birthDate);
+  let age = today.getFullYear() - birth.getFullYear();
+  const monthDiff = today.getMonth() - birth.getMonth();
+
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+    age--;
+  }
+
+  return age;
+}
+
+function EditAccountInfo(props: EditAccountInfoProps) {
+  const { employee, setEmployeeData } = props;
   const [form] = Form.useForm();
 
   // Redux
@@ -37,14 +57,12 @@ function EditPatientInfo(props: EditEmployeeInfoProps) {
   const [ageValue, setAgeValue] = useState<number>(-1); // State to hold calculated age
 
   useEffect(() => {
-    console.log("ViewInfo.....");
-
-    // Calculate age initially when patient data is loaded
-    if (patient?.birth_date) {
-      const age = calculateAge(patient.birth_date);
+    // Calculate age initially when employee data is loaded
+    if (employee?.birth_date) {
+      const age = calculateAge(employee?.birth_date);
       setAgeValue(age);
     }
-  }, [patient?.birth_date]);
+  }, [employee?.birth_date]);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -56,18 +74,17 @@ function EditPatientInfo(props: EditEmployeeInfoProps) {
     const date = event.target.value;
     const age = calculateAge(date);
     setAgeValue(age); // Update age in state
-    form.setFieldsValue({ age }); // Update age field in form
+    form.setFieldsValue({ age });
   };
 
   const onFinish = async (values: any) => {
     // Add employee_id to the values [This Employee Has Edited]
     values.employee_id = user?.id ?? -1;
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
     await axios
-      .put(`api/v1/patients/${patient?.id}`, { ...values })
+      .put(`api/v1/employees/${employee?.id}`, { ...values })
       .then((response) => {
-        setPatientData(response.data);
+        setEmployeeData(response.data);
         message.success("Data successfully updated!");
       })
       .catch((error) => {
@@ -83,13 +100,13 @@ function EditPatientInfo(props: EditEmployeeInfoProps) {
   };
 
   return (
-    patient && (
+    employee && (
       <InfoContainer>
         {isEditing ? (
           <Form
             form={form}
             layout="vertical"
-            initialValues={patient}
+            initialValues={employee}
             onFinish={onFinish}
           >
             <FormInputsContainer>
@@ -104,22 +121,33 @@ function EditPatientInfo(props: EditEmployeeInfoProps) {
 
               <Form.Item
                 label="Name"
-                name="patient_name"
+                name="employee_name"
                 labelCol={{ span: 24 }}
                 wrapperCol={{ span: 24 }}
                 rules={[{ required: true, message: "Name is required" }]}
               >
-                <Input placeholder="Patient Name" />
+                <Input placeholder="Employee Name" />
               </Form.Item>
+
               <Form.Item
-                label="Birth Date"
+                label="Username"
+                name="username"
+                labelCol={{ span: 24 }}
+                wrapperCol={{ span: 24 }}
+                rules={[{ required: true, message: "Username is required" }]}
+              >
+                <Input placeholder="Employee Username" />
+              </Form.Item>
+
+              <Form.Item
+                label="Date of Birth"
                 name="birth_date"
                 labelCol={{ span: 24 }}
                 wrapperCol={{ span: 24 }}
                 rules={[{ required: true, message: "Birth Date is required" }]}
               >
                 <Input
-                  placeholder="Birth Date"
+                  placeholder="Date of Birth"
                   type="date"
                   onChange={handleBirthDateChange}
                 />
@@ -139,7 +167,10 @@ function EditPatientInfo(props: EditEmployeeInfoProps) {
                 name="email"
                 labelCol={{ span: 24 }}
                 wrapperCol={{ span: 24 }}
-                rules={[{ required: true, message: "Email is required" }]}
+                rules={[
+                  { required: true, message: "Email is required" },
+                  { type: "email", message: "Email is invalid" },
+                ]}
               >
                 <Input />
               </Form.Item>
@@ -180,21 +211,27 @@ function EditPatientInfo(props: EditEmployeeInfoProps) {
         ) : (
           <>
             <Descriptions layout="vertical" colon={false}>
-              {patient?.id && (
-                <Descriptions.Item label="ID" style={{ width:"20%" }} span={0.5}>
-                  {patient.id}
+              {employee?.id && (
+                <Descriptions.Item label="ID" style={{ width: "20%" }} span={0.5}>
+                  {employee?.id}
                 </Descriptions.Item>
               )}
 
-              {patient?.patient_name && (
+              {employee?.employee_name && (
                 <Descriptions.Item label="Name">
-                  {patient.patient_name}
+                  {employee?.employee_name}
                 </Descriptions.Item>
               )}
 
-              {patient?.birth_date && (
+              {employee?.username && (
+                <Descriptions.Item label="Username">
+                  {employee?.username}
+                </Descriptions.Item>
+              )}
+
+              {employee?.birth_date && (
                 <Descriptions.Item label="Date of Birth">
-                  {patient.birth_date}
+                  {employee?.birth_date}
                 </Descriptions.Item>
               )}
 
@@ -204,21 +241,21 @@ function EditPatientInfo(props: EditEmployeeInfoProps) {
                 </Descriptions.Item>
               )}
 
-              {patient?.email && (
+              {employee?.email && (
                 <Descriptions.Item label="Email">
-                  {patient.email}
+                  {employee?.email}
                 </Descriptions.Item>
               )}
 
-              {patient?.phone_number && (
+              {employee?.phone_number && (
                 <Descriptions.Item label="Phone">
-                  {patient.phone_number}
+                  {employee?.phone_number}
                 </Descriptions.Item>
               )}
 
-              {patient?.gender && (
+              {employee?.gender && (
                 <Descriptions.Item label="Gender">
-                  {patient.gender}
+                  {employee?.gender}
                 </Descriptions.Item>
               )}
             </Descriptions>
@@ -234,4 +271,4 @@ function EditPatientInfo(props: EditEmployeeInfoProps) {
   );
 }
 
-export default EditPatientInfo;
+export default EditAccountInfo;

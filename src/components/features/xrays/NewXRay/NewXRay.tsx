@@ -121,7 +121,9 @@ function NewXRay() {
 
   const onFinish = async (values: FormValues) => {
     const formValues = values as FormValues;
-    formValues.study_name = "Chest X-Ray";
+    // name the study by the patient id and the current date and time
+    formValues.study_name = `ChestX-Ray_${formValues.patient_id}_${new Date().toLocaleString().replace(/[,]/g, '_')}`;
+    // formValues.study_name = `Chest_X-Ray_${formValues.patient_id}_${new Date().toLocaleDateString()}`;
     console.log("Form values:", formValues);
     try {
       const response = await axios.post(

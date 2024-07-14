@@ -12,13 +12,13 @@ import PhoneInput from "antd-phone-input";
 
 // Ant Design
 import Title from "antd/es/typography/Title";
-import { Form, Input, Radio, message } from "antd";
+import { Form, Input, Radio, Select, message } from "antd";
 
 // Components
 import LineHeader from "../../../common/LineHeader/LineHeader";
 import SecondaryButton from "../../../common/SecondaryButton/SecondaryButton";
 import PrimaryButton from "../../../common/PrimaryButton/PrimaryButton";
-import Unauthorized from "../../../layout/unauthorized/Unauthorized";
+// import Unauthorized from "../../../layout/unauthorized/Unauthorized";
 
 // Styled Components
 import {
@@ -37,7 +37,7 @@ import {
 // Interface
 interface NewEmployeeFormValues {
   employee_name: string;
-  role: "user";
+  role: string;
   type: "employee" | "doctor";
   age: number;
   birth_date: string;
@@ -68,8 +68,9 @@ function NewEmployee(props: NewEmployeeProps) {
       (formValues.phone_number as any).areaCode +
       (formValues.phone_number as any).phoneNumber;
     formValues.type = props.type == "doctors" ? "doctor" : "employee";
+    // formValues.role =  "user";
     formValues.employee_id = user ? user.id : null; // Add Employee Id to track Activities
-
+    console.log("Form Values:", formValues);
     try {
       /*eslint-disable-next-line*/
       const response = await axios.post(`api/v1/employees`, formValues, {
@@ -123,11 +124,11 @@ function NewEmployee(props: NewEmployeeProps) {
 
   return (
     <>
-      {user?.type != "employee" ? (
+      {/* {user?.type != "employee" ? (
         <Unauthorized />
       ) : user?.role != "admin" ? (
         <Unauthorized />
-      ) : (
+      ) : ( */}
         <NewEmployeeContainer>
           <Title level={3}>
             New {props.type == "doctors" ? "Doctor" : "Employee"}
@@ -215,6 +216,33 @@ function NewEmployee(props: NewEmployeeProps) {
               </Form.Item>
 
               <Form.Item
+                name="type"
+                label="Type"
+                labelCol={{ span: 24 }}
+                wrapperCol={{ span: 24 }}
+                rules={[{ required: true, message: "Type is required" }]}
+              >
+                <Radio.Group buttonStyle="solid">
+                  <Radio.Button value="doctor">doctor</Radio.Button>
+                  <Radio.Button value="employee">employee</Radio.Button>
+                </Radio.Group>
+              </Form.Item>
+              
+              <Form.Item
+                name="role"
+                label="Role"
+                labelCol={{ span: 24 }}
+                wrapperCol={{ span: 24 }}
+                rules={[{ required: true, message: "Role is required" }]}
+              >
+                <Select placeholder="Select a role">
+                  <Select.Option value="user">User</Select.Option>
+                  <Select.Option value="manager">Manager</Select.Option>
+                  <Select.Option value="admin">Admin</Select.Option>
+                </Select>
+              </Form.Item>
+
+              <Form.Item
                 name="username"
                 label="Username"
                 labelCol={{ span: 24 }}
@@ -254,7 +282,7 @@ function NewEmployee(props: NewEmployeeProps) {
             </SubmitContainer>
           </FormContainer>
         </NewEmployeeContainer>
-      )}
+      {/* )} */}
     </>
   );
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import ViewEmployee from "../components/features/employee/ViewEmployee/ViewEmployee";
+import ViewAccount from "../components/features/employee/account/ViewAccount";
 import { useSelector } from "react-redux";
 import { MainState } from "../state/Reducers";
 function AccountPage() {
@@ -7,7 +7,7 @@ function AccountPage() {
   const userType = user?.type || ""; // Set a default value for userType if it's undefined
 
   return <div>
-    <ViewEmployee type={userType} />
+    <ViewAccount type={userType} />
   </div>;
 }
 
