@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import React, { useState } from "react";
 
 // Hooks
@@ -95,23 +96,24 @@ function NewXRay() {
           },
         }
       );
-      /*eslint-disable-next-line*/
-      const response = await axios.put(
-        `api/v1/studies/${studyId}`,
-        {
-          study_name: formValues.study_name,
-          patient_id: formValues.patient_id,
-          notes: formValues.notes,
-          xray_path: responseUpload.data.xray_path,
-          employee_id: user?.id ?? 0,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      // console.log("responseUpload",responseUpload)
+      // /*eslint-disable-next-line*/
+      // const response = await axios.put(
+      //   `api/v1/studies/${studyId}`,
+      //   {
+      //     study_name: formValues.study_name,
+      //     patient_id: formValues.patient_id,
+      //     notes: formValues.notes,
+      //     xray_path: responseUpload.data.xray_path,
+      //     employee_id: user?.id ?? 0,
+      //   },
+      //   {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //       "Content-Type": "application/json",
+      //     },
+      //   }
+      // );
       message.success("X-Ray File uploaded successfully");
     } catch (error) {
       console.error("Upload error:", error);
@@ -144,7 +146,7 @@ function NewXRay() {
       const studyId = response.data.id; // Assuming the response contains the study ID
       await uploadXRayFile(studyId, formValues);
 
-      message.success("Case added successfully");
+      message.success("Case added successfully..........");
       navigateToCases("unassigned");
     } catch (error) {
       console.error("API error:", error);
