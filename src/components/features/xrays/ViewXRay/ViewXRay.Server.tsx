@@ -63,7 +63,7 @@ const pollResultStatus = async (
         if (result) {
           hide(); // Close loading message
           setLmResultData(result);
-          console.log("Report is ready:...................", result);
+          // console.log("Report is ready:...................", result);
           message.success("Report is ready!");
 
           // Very important to set the AI flag to true [to display the AI report]
@@ -103,7 +103,7 @@ export const GenerateReport = async (
     const reportResponse = await runLLM(case_id, token);
     if (!reportResponse) throw new Error("Failed to generate report");
 
-    console.log("reportResponse", reportResponse);
+    // console.log("reportResponse", reportResponse);
 
     message.success("Report generation started successfully!");
     // Polling the report status
