@@ -97,6 +97,8 @@ export const GenerateReport = async (
     const reportResponse = await runLLM(case_id, token);
     if (!reportResponse) throw new Error("Failed to generate report");
 
+    console.log("reportResponse", reportResponse);
+
     message.success("Report generation started successfully!");
     // Polling the report status
     pollResultStatus(reportResponse.id, token, setLmResultData, setUseAI);
