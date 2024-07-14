@@ -310,10 +310,11 @@ function XRaySection(props: XRaySectionProps) {
     if (useAI) {
       if (!llmResultData) {
         // setUseAI(false); //reset useAI to false  // BASMA CHECCK
+        message.info("using Original image");
         fetchOriginalXRay();
-        message.info("..........................");
         return;
       }
+      message.info("Using De-Noised Image");
       xRayPath = llmResultData?.xray_path;
       regionPath = llmResultData?.region_path;
       regionSentencePath = llmResultData?.region_sentence_path;
