@@ -225,7 +225,7 @@ function ViewXRay() {
     } else {
       // Required to not use AI (false)
       setUseAI(next_state);
-      
+
       // if (customResultData) {
       //   setUseAI(next_state);
       // }
@@ -244,6 +244,12 @@ function ViewXRay() {
     // Just use that only after getting the AI (VIP)
     setUseAI(true);
     setUseDeNoisedImage(true);
+  };
+
+  const setUseAIFalse = () => {
+    // Just use that only after creating custom result (VIP)
+    setUseAI(false);
+    // setUseDeNoisedImage(false);  // don't change the de-noised image flag  because we want to use the image attached to the custom result
   };
 
   const handleUseDeNoisedImage = () => {
@@ -350,6 +356,7 @@ function ViewXRay() {
           botImgGrey={BotGray}
           useAI={useAI}
           setUseAITrue={setUseAITrue}
+          setUseAIFalse={setUseAIFalse}
           toggleUseAI={toggleUseAI}
           llmResultData={llmResultData}
           customResultData={customResultData}

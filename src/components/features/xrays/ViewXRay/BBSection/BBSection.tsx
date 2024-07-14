@@ -53,6 +53,7 @@ interface BBSectionProps {
   // Props Here
   useAI: boolean;
   setUseAITrue: () => void;
+  setUseAIFalse: () => void;
   toggleUseAI: () => void;
   botImgBlue: string;
   botImgGrey: string;
@@ -145,6 +146,7 @@ function BBSection(props: BBSectionProps) {
   const {
     useAI,
     setUseAITrue, // use this only after saving llm result
+    setUseAIFalse,
     toggleUseAI,
     botImgBlue,
     botImgGrey,
@@ -238,6 +240,8 @@ function BBSection(props: BBSectionProps) {
       if (!SentencesResponse) new Error("Failed to upload Sentences");
       setCustomResultData(SentencesResponse);
       message.success("Result saved successfully");
+
+      // setUseAIFalse(); // Very important to set the AI flag to true [to display the AI report]
     } catch (error) {
       message.error("failed to save result");
       console.error("Error in handelSaveResult(): ", error);
