@@ -45,6 +45,7 @@ interface XRaySectionProps {
   customResultData: ResultType | null;
 
   useAI: boolean;
+  // setUseAI: (data: boolean) => void;
   // Props Here
   // xRayPath: string | null;
   // regionPath: string | null;
@@ -238,7 +239,7 @@ function XRaySection(props: XRaySectionProps) {
       }
     };
 
-    const fetchXRayResultData = async () => {
+    const fetchXRayResultData = async (download_image_only = false) => {
       try {
         if (!xRayPath) {
           message.error("Failed to load X-Ray");
@@ -254,6 +255,7 @@ function XRaySection(props: XRaySectionProps) {
         }
         setXRayURL(xRayResponse);
         setXRayPath(xRayPath); // This is the X-Ray Path that will be used for submission
+        if (download_image_only) return;
 
         // (2) Download Bounding Boxes
         if (!regionPath) {
@@ -320,9 +322,17 @@ function XRaySection(props: XRaySectionProps) {
       // Scenario useAI = false
       // Scenario(1) no CustomResultData
       if (!customResultData) {
-        message.info("using Original image");
-        fetchOriginalXRay();
-        return;
+        // Check if he wants to use the de-noised image and LLMResultData is present
+        if (useDeNoisedImage && llmResultData?.xray_path) {
+          message.info("Using De-Noised Image");
+          xRayPath = llmResultData?.xray_path;
+          fetchXRayResultData(true);
+          return;
+        } else {
+          message.info("Using Original Image");
+          fetchOriginalXRay();
+          return;
+        }
       }
       // Check if he wants to use the de-noised image
       if (useDeNoisedImage && llmResultData?.xray_path) {
