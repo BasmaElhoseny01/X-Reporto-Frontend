@@ -363,24 +363,12 @@ function XRaySection(props: XRaySectionProps) {
           message.info("Using De-Noised Image");
           regionPath = customResultData.region_path;
           regionSentencePath = customResultData.region_sentence_path;
-          // console.log(
-          //   "regionPath",
-          //   customResultData,
-          //   customResultData.region_path
-          // );
-          // console.log("regionSentencePath", customResultData.region_sentence_path);
           fetchXRayResultData();
         } else {
           message.info("Using Original Image");
           fetchOriginalXRay();
           regionPath = customResultData.region_path;
           regionSentencePath = customResultData.region_sentence_path;
-          // console.log(
-          //   "regionPath",
-          //   customResultData,
-          //   customResultData.region_path
-          // );
-          // // console.log("regionSentencePath", regionSentencePath);
           fetchXRayResultRegions();
         }
       }
@@ -409,7 +397,6 @@ function XRaySection(props: XRaySectionProps) {
           fetchOriginalXRay();
         }
       }
-      // message.error("No LM Result (<>)");
       return;
     }
 
@@ -423,66 +410,6 @@ function XRaySection(props: XRaySectionProps) {
       regionSentencePath = customResultData.region_sentence_path;
       fetchXRayResultData();
     }
-
-    // if (llmResultData) {
-    //   return;
-    // }
-
-    // if (customResultData) {
-    //   return;
-    // }
-
-    // // Scenario(2) useAI = true and LLMResultData
-    // let xRayPath: string | null = null;
-    // let regionPath = "";
-    // let regionSentencePath = "";
-
-    // if (useAI) {
-    //   if (!llmResultData) {
-    //     message.info("using Original image");
-    //     fetchOriginalXRay();
-    //     return;
-    //   }
-    //   message.info("Using De-Noised Image");
-    //   xRayPath = llmResultData?.xray_path;
-    //   regionPath = llmResultData?.region_path;
-    //   regionSentencePath = llmResultData?.region_sentence_path;
-    //   fetchXRayResultData();
-    // } else {
-    //   // Scenario useAI = false
-    //   // Scenario(1) no CustomResultData
-    //   if (!customResultData) {
-    //     // Check if he wants to use the de-noised image and LLMResultData is present
-    //     if (useDeNoisedImage && llmResultData?.xray_path) {
-    //       message.info("Using De-Noised Image");
-    //       xRayPath = llmResultData?.xray_path;
-    //       fetchXRayResultData(true);
-    //       return;
-    //     } else {
-    //       message.info("Using Original Image");
-    //       fetchOriginalXRay();
-    //       return;
-    //     }
-    //   }
-    //   // Check if he wants to use the de-noised image
-    //   if (useDeNoisedImage && llmResultData?.xray_path) {
-    //     // Scenario(2) CustomResultData && llmResultData
-    //     message.info("Using De-Noised Image");
-    //     fetchOriginalXRay();
-
-    //     // xRayPath = llmResultData?.xray_path;
-    //     console.log(llmResultData);
-    //   } else {
-    //     // Scenario(2) CustomResultData && !llmResultData || !useDeNoisedImage
-    //     console.log(customResultData);
-    //     xRayPath = customResultData?.xray_path;
-    //     message.info("Using Original Image");
-    //   }
-    //   regionPath = customResultData?.region_path;
-    //   regionSentencePath = customResultData?.region_sentence_path;
-    //   fetchXRayResultData();
-    // }
-    // // }, [useAI, llmResultData, customResultData, useDeNoisedImage]);
   }, [useAI, useDeNoisedImage]);
 
   return (

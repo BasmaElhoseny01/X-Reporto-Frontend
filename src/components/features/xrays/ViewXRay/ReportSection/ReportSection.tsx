@@ -44,6 +44,7 @@ interface ReportSectionProps {
   // Props Here
   useAI: boolean;
   setUseAITrue: () => void; // use this only after saving llm result
+  setUseAIFalse: () => void;
   toggleUseAI: () => void;
   botImgBlue: string;
   botImgGrey: string;
@@ -111,6 +112,7 @@ function ReportSection(props: ReportSectionProps) {
     useAI,
     toggleUseAI,
     setUseAITrue,
+    setUseAIFalse,
 
     botImgBlue,
     botImgGrey,
@@ -156,11 +158,9 @@ function ReportSection(props: ReportSectionProps) {
           throw new Error("Failed to load report");
         }
 
-        // parse the report content
-        // setReportContent(reportResponse);
         setContent(
           content.replace(
-            '<p id="findings"></p>',
+            /<p id="findings">[\s\S.]*?<\/p>/,
             `<p id="findings">${reportResponse}</p>`
           )
         );
@@ -183,16 +183,18 @@ function ReportSection(props: ReportSectionProps) {
         return;
       }
       reportPath = llmResultData.report_path;
+      console.log("Report Path: ", reportPath);
     } else {
       if (!customResultData || !customResultData.report_path) {
         message.info("No custom (report) results found for this case");
         return;
       }
       reportPath = customResultData.report_path;
+      console.log("Report Path: ", reportPath);
     }
 
     fetchReportData();
-}, [useAI]);
+  }, [useAI]);
 
   const handleContentChange = (value: string) => {
     setContent(value);
@@ -266,6 +268,7 @@ function ReportSection(props: ReportSectionProps) {
       console.log("Upload Response: ", uploadResponse);
 
       message.success("Report saved successfully!");
+      setUseAIFalse(); // Very important to set the AI flag to true [to display the AI report]
     } catch (error) {
       message.error("Failed to submit report");
       console.log("Error in handleSubmitReport(): ", error);

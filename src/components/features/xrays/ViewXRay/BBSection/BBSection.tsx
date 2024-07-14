@@ -241,7 +241,7 @@ function BBSection(props: BBSectionProps) {
       setCustomResultData(SentencesResponse);
       message.success("Result saved successfully");
 
-      // setUseAIFalse(); // Very important to set the AI flag to true [to display the AI report]
+      setUseAIFalse(); // Very important to set the AI flag to true [to display the AI report]
     } catch (error) {
       message.error("failed to save result");
       console.error("Error in handelSaveResult(): ", error);
