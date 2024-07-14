@@ -15,6 +15,8 @@ function AllPatient() {
   const { navigateToPatients } = useCustomNavigate();
 
   const tableSearch = useSelector((state: MainState) => state.tableSearch);
+  const user = useSelector((state: MainState) => state.user);
+
   const GeneralTableData = {
     columns: [
       {
@@ -83,6 +85,7 @@ function AllPatient() {
       action={GeneralTableData.action}
       addNew={GeneralTableData.addNew}
       filterColumns={GeneralTableData.filterColumns}
+      addNewButton={user?.type === "doctor" }
     />
   );
 }

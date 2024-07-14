@@ -1,3 +1,4 @@
+/*eslint-disable */
 import React from "react";
 
 // Hooks
@@ -20,7 +21,9 @@ function XRayWorkList() {
   // Navigate
   const { navigateToCases } = useCustomNavigate();
 
+  // Redux
   const tableSearch = useSelector((state: MainState) => state.tableSearch);
+  const user = useSelector((state: MainState) => state.user);
 
   const token = useSelector((state: MainState) => state.token);
   const GeneralTableData = {
@@ -140,6 +143,7 @@ function XRayWorkList() {
     addNew: () => {
       navigateToCases("new");
     },
+    // button
   };
 
   return (
@@ -151,6 +155,7 @@ function XRayWorkList() {
       action={GeneralTableData.action}
       addNew={GeneralTableData.addNew}
       filterColumns={GeneralTableData.filterColumns}
+      addNewButton={user?.type === "doctor"}
     />
   );
 }

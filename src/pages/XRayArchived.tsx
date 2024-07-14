@@ -21,6 +21,7 @@ function XRayArchived() {
   const { navigateToCases } = useCustomNavigate();
 
   const tableSearch = useSelector((state: MainState) => state.tableSearch);
+  const user = useSelector((state: MainState) => state.user);
 
   const token = useSelector((state: MainState) => state.token);
   const GeneralTableData = {
@@ -151,6 +152,7 @@ function XRayArchived() {
       action={GeneralTableData.action}
       addNew={GeneralTableData.addNew}
       filterColumns={GeneralTableData.filterColumns}
+      addNewButton={user?.type === "doctor"}
     />
   );
 }

@@ -152,6 +152,7 @@ function UnAssigned() {
       action={GeneralTableData.action}
       addNew={GeneralTableData.addNew}
       filterColumns={GeneralTableData.filterColumns}
+      addNewButton={user?.type === "doctor"}
     />
   );
 }

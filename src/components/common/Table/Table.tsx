@@ -39,8 +39,8 @@ const GeneralTable = (props: GeneralTableProps) => {
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(true);
   const token = useSelector((state: MainState) => state.token);
-  const header = props?.header??true;
-  const addNewButton = props?.addNewButton??false;
+  const header = props?.header ?? true;
+  const addNewButton = props?.addNewButton ?? false;
 
   useEffect(() => {
     setLoading(true);
@@ -70,12 +70,12 @@ const GeneralTable = (props: GeneralTableProps) => {
   return (
     <Flex vertical>
       {header && (
-      <>
-        <Flex style={{ justifyContent: "space-between" }}>
-          <Typography.Title level={3}>{props.title}</Typography.Title>
-        </Flex>
-        <LineHeader />
-      </>
+        <>
+          <Flex style={{ justifyContent: "space-between" }}>
+            <Typography.Title level={3}>{props.title}</Typography.Title>
+          </Flex>
+          <LineHeader />
+        </>
       )}
       <Flex
         style={{
@@ -94,8 +94,8 @@ const GeneralTable = (props: GeneralTableProps) => {
           />
         </Flex>
         <Flex style={{ justifyContent: "space-between" }}>
-          <PrimaryButton onClick={() => props.addNew()}>
-            <PlusOutlined  disabled={addNewButton}/> Add New
+          <PrimaryButton disabled={addNewButton} onClick={() => props.addNew()}>
+            <PlusOutlined /> Add New
           </PrimaryButton>
         </Flex>
       </Flex>
