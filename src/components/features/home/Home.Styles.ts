@@ -4,7 +4,7 @@ import styled from "styled-components";
 // import { palette } from "../../../../styles/theme";
 
 // Ant Design
-import { Flex } from "antd";
+import { Flex ,Row } from "antd";
 
 export const HomeContainer = styled(Flex)`
   /* background-color: aliceblue; */
@@ -49,7 +49,7 @@ export const HomeTopRightContainer = styled(Flex)`
   flex-direction: column;
 
   height: 100%;
-  width: 50%;
+  width: 40%;
 
   z-index: 10;
 `;
@@ -81,5 +81,14 @@ export const ActivityCardsContainer = styled(Flex)`
   &::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.2); /* Thumb color */
     border-radius: 3px; /* Rounded corners of the thumb */
+  }
+`;
+export const RunBackGroundRow = styled(Row)`
+  display: flex;
+  justify-content: space-between;
+  }
+`;
+export const RunBackGroundButton = styled.div`
+  Margin-top: 2%;
   }
 `;

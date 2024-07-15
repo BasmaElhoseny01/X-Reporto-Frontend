@@ -4,8 +4,12 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { MainState } from "../../../state";
 
+// Services
+import axios from "../../../services/apiService";
+
 // Ant Design
 import Title from "antd/es/typography/Title";
+import { message } from "antd";
 
 // Styled Components
 import {
@@ -15,19 +19,36 @@ import {
   HomeTopTitleContainer,
   HomeTopLeftContainer,
   HomeTopRightContainer,
+  RunBackGroundButton
 } from "./Home.Styles";
 
 // Components
 import LineHeader from "../../common/LineHeader/LineHeader";
 import Statistics from "./Statistics/Statistics";
 import RecentActivity from "./RecentActivity/RecentActivity";
+import PrimaryButton from "../../common/PrimaryButton/PrimaryButton";
 
 // Assets
 import Poster from "../../../assets/images/home_poster.svg";
 
 function Home() {
   const user = useSelector((state: MainState) => state.user);
+  const token = useSelector((state: MainState) => state.token);
 
+  const handleRunBackGound = async () => {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    await axios
+    .post(`api/v1/studies/run_backgroud`,{ })
+    .then((response) => {
+      console.log("Run Background Response", response);
+      message.success("Running Background updated!",);
+    })
+    .catch((error) => {
+      console.error("Error updating user data:", error);
+      message.error("Failed to update data. Please try again.");
+    });
+    console.log("Run Background");
+  };
   return (
     <HomeContainer>
       <HomeTopContainer>
@@ -45,9 +66,12 @@ function Home() {
           {/* Statistics */}
           <Statistics />
         </HomeTopLeftContainer>
-        <HomeTopRightContainer>
-          <img src={Poster} alt="poster" height={"100%"} />
-        </HomeTopRightContainer>
+          <HomeTopRightContainer>
+            <img src={Poster} alt="poster" height={"100%"} />
+          </HomeTopRightContainer>
+        <RunBackGroundButton>
+          <PrimaryButton onClick={handleRunBackGound}>Run Background</PrimaryButton>
+        </RunBackGroundButton>
       </HomeTopContainer>
 
       {user?.type == "doctor" && (
