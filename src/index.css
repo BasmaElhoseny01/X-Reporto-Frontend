@@ -2,5 +2,28 @@ body {
   margin: 0;
   padding: 0;
 
+  height: 100vh;
+
+  /* TODO: Remove */
+  /* overflow-y: hidden; */
+
   box-sizing: border-box;
+}
+
+.jodit-react-container {
+  /* display: none; */
+  height: 80%;
+  overflow-y: scroll;
+
+  /* Customize scrollbar */
+  &::-webkit-scrollbar {
+    width: 6px; /* Width of the scrollbar */
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent; /* Track color */
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2); /* Thumb color */
+    border-radius: 3px; /* Rounded corners of the thumb */
+  }
 }

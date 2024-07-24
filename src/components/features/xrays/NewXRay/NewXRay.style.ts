@@ -1,79 +1,97 @@
-import { palette } from "../../../../styles/theme";
 import styled from "styled-components";
-import { Col, Row, Input, Form ,Flex,Upload} from "antd";
-import Button from "antd-button-color";
+import { Row, Input, Form, Flex, Upload } from "antd";
+
 const { TextArea } = Input;
 const { Dragger } = Upload;
 
-// const NewXRayDiv = styled.div`
-//     // width: 100vw;
-//     // height: 100vh;
-// `;
-const LineHeader = styled.hr`
-    border-top: 1px solid  ${palette.grey50};
-    margin-right:2%;
+export const NewXRayContainer = styled(Flex)`
+  display: flex;
+  flex-direction: column;
 
+  height: 100%;
 `;
-const InputRow = styled(Row)`
-    width: 100%;
-    display: flex;
-    border-radius: 1%;
 
+export const FormContainer = styled(Form)`
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+  /* flex: 1;
+  height: 70vh;
+  align-items: start;
+  justify-content: start; */
 `;
-const InputCol = styled(Input)`
-        border-radius: 1%;
+
+export const ButtonContainer = styled(Flex)`
+  display: flex;
+  flex-direction: row;
+
+  justify-content: flex-end;
+
+  flex: 1;
+  width: 100%;
+
+  & > * {
+    margin: 0px 0px;
+  }
 `;
-const FormItem = styled(Form.Item)`
-   margin-right: 30%;
+
+export const InputRow = styled(Row)`
+  width: 100%;
+  display: flex;
+  border-radius: 1%;
 `;
-const TextAreaRow = styled(TextArea)`
-    width: 95%;
-    border-radius: 1%;
-    // background-color: green;
+
+export const FormItem = styled(Form.Item)`
+  margin-right: 30px;
 `;
-const NoteItem = styled(Form.Item)`
-width: 100vw;
+export const TextAreaRow = styled(TextArea)`
+  width: 95%;
+  border-radius: 1%;
+
+  /* Customize scrollbar */
+  &::-webkit-scrollbar {
+    width: 6px; /* Width of the scrollbar */
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent; /* Track color */
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2); /* Thumb color */
+    border-radius: 3px; /* Rounded corners of the thumb */
+  }
 `;
-const NoteCol = styled(Col)`
-width: 95%;
+export const NoteItem = styled(Form.Item)`
+  width: 95vw;
 `;
-const UploadRow = styled(Row)`
-    width: 100%;
-    display: flex;
-    border-radius: 1%;
-    height: 50vh;
+export const UploadRow = styled(Row)`
+  width: 95%;
+  display: flex;
+  border-radius: 1%;
+  /* height: 37vh; */
 `;
-const UploadItem = styled(Form.Item)`
-    width: 100%;
-    height: 50vh;
+
+export const UploadItem = styled(Form.Item)`
+  width: 100%;
 `;
-const UploadCol = styled(Col)`
-display: flex;
-width: 95%;
-height: 40vh;
+
+export const SubmitContainer = styled(Flex)`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  flex: 1;
 `;
-const ButtonRow = styled(Row)`
-    width: 40%;
-    margin-left: 55%;
+
+export const FlexButton = styled(Flex)`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
 `;
-const ButtonCol = styled(Col)`
-    width: 100%;
-    display: flex;
-    justify-content:end;
-    margin-top: 10%;
+export const StyledDragger = styled(Dragger)`
+  display: flex;
+  width: 100%;
+  /* height: 30vh; */
+  border-radius: 1%;
 `;
-const FlexButton = styled(Flex)`
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-`;
-const AddButton = styled(Button)`
-width: 17%;
-`;
-const StyledDragger = styled(Dragger)`
-    display: flex;
-    width: 100%;
-    height: 40vh;
-    border-radius: 1%;
-`;
-export { LineHeader, InputRow, InputCol, FormItem, TextAreaRow, NoteItem, NoteCol, UploadRow, ButtonCol, AddButton, FlexButton, ButtonRow,UploadItem,UploadCol,StyledDragger};

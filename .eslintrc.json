@@ -20,10 +20,10 @@
         // Additional rules or overrides here
         // console warning
         "no-console": "off",
-        "quotes": [
-            "error",
-            "double"
-        ],
+        // "quotes": [
+        //     "error",
+        //     "double"
+        // ],
         "semi": [
             "error",
             "always"
@@ -47,7 +47,8 @@
             }
         ],
         "no-empty-pattern": "off",
-        "@typescript-eslint/no-empty-interface": "off"
+        "@typescript-eslint/no-empty-interface": "off",
+        "@typescript-eslint/no-explicit-any": "off"
     },
     "overrides": [
         // {

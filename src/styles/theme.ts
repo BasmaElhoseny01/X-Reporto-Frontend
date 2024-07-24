@@ -1,9 +1,10 @@
-// https://ant.design/docs/react/customize-theme#seedtoken
-
 export const palette = {
   primary: "#1890FF",
   secondary: "#E6F7FF",
-  dark: "#001529",
+  // dark: "#001529",
+  // dark: "#1C2222",
+  dark: "#000C17",
+  navy: "#001529",
 
   success: "#389E0D", // Success
   error: "#FF4D4F", // Error
@@ -22,12 +23,43 @@ export const palette = {
   grey300: "#9e9e9e", // Dark grey (e.g., for disabled elements)
 
   white: "#ffffff", // White (e.g., for backgrounds, text)
-  // Add more colors as needed for your design system
+};
+
+const baseTheme = {
+  borderRadius: 2,
+
+  // Typography
+  fontFamily: "Arial",
+  fontSize: 14,
 };
 
 // // Create the theme object
-export const theme = {
+export const lightTheme = {
   token: {
+    ...baseTheme,
+
+    // // Seed Token
+    colorPrimary: palette.primary,
+
+    colorSuccess: palette.success,
+    colorError: palette.error,
+    colorWarning: palette.warn,
+    colorInfo: palette.info,
+    colorLink: palette.link,
+
+    // Text Colors
+    colorTextBase: palette.black,
+
+    // Background and Component Colors
+    colorBgLayout: palette.white, // Light mode background
+    colorBgContainer: palette.white, // Light mode container background
+    colorBgNavBar: palette.dark, // Light mode navbar background
+  },
+};
+
+export const darkTheme = {
+  token: {
+    ...baseTheme,
     // Seed Token
     colorPrimary: palette.primary,
 
@@ -37,27 +69,12 @@ export const theme = {
     colorInfo: palette.info,
     colorLink: palette.link,
 
-    colorTextBase: palette.black,
+    // Text Colors
+    colorTextBase: palette.white,
 
-    borderRadius: 2, // border-radius for base components default[6]
-
-    fontFamily: "Roboto", 
-    // [Defaults]
-    fontSize: 14, // base font size default[14]
-
-    // Alias Token
-    // colorBgContainer: "#f6ffed",
-
-    // [Defaults]
-    // fontSizeHeading1:38,
-    // fontSizeHeading2:30,
-    // fontSizeHeading3:24,
-    // fontSizeHeading4:20,
-    // fontSizeHeading5:16,
-    // fontSizeSM:12,
-    // fontSizeLG:16,
-    // fontSizeXL:20,
+    // Background and Component Colors
+    colorBgLayout: palette.dark, // Dark mode layout background
+    colorBgContainer: palette.dark, // Dark mode container background
+    colorBgNavBar: palette.primary, // Dark mode navbar background
   },
 };
-
-export default theme;

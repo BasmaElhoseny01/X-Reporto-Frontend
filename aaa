@@ -1,0 +1,52 @@
+<Route path={paths.account} element={<AccountPage />} />
+
+{/* Patients */}
+<Route path={paths.patients.base}>
+  <Route index element={<AllPatient />} />
+  <Route
+    path={paths.patients.types.new}
+    element={<NewPatientPage />}
+  />
+  <Route path=":Id" element={<ViewPatientPage />} />
+</Route>
+
+{/* <Route path="doctors">
+  <Route index element={<AllDoctors />} />
+  <Route
+    path="new"
+    element={<NewEmployee type="doctors" />}
+  />
+  <Route
+    path=":Id"
+    element={<ViewEmployee type="doctors" />}
+  />
+</Route> */}
+
+<Route path={paths.templates.base}>
+  <Route index element={<AllTemplates />} />
+  <Route
+    path={paths.templates.types.new}
+    element={<NewTemplates />}
+  />
+  <Route path=":Id" element={<ViewTemplate />} />
+</Route>
+
+{/* <Route path="annotation" element={<Annotation />} /> */}
+{/* <Route path="drawer" element={<DrawarPage />} />
+<Route path="examples" element={<Examples />} />
+<Route
+  path="about"
+  element={
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+        justifyContent: "flex-end",
+      }}
+    >
+      <div>basma</div>
+      <div>basma</div>
+    </div>
+  }
+/> */}
