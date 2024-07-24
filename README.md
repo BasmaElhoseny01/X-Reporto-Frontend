@@ -1,6 +1,6 @@
 # <img align="center" width="60px" src="https://github.com/user-attachments/assets/1ae2a162-f969-4475-9618-7f16bdb24d98"> X-Reporto Frontend
 <div align="center">
-    <img src="https://github.com/user-attachments/assets/b54cdd8b-c180-4af8-8b85-31ef40c283e4"/>
+    <img src="https://i.pinimg.com/originals/bb/37/5c/bb375cdd655184ca2715ac5059e73651.gif"/>
 </div>
 
 ## <img align="center" width="60px" src="https://i.pinimg.com/originals/a0/45/ec/a045ece00adca277d0c18a42e025c76d.gif"> Table of Contents
@@ -90,8 +90,7 @@ By integrating these features, **X-Reporto** aims to reduce report generation ti
 
 <!-- Demo -->
 ## <img align="center" width="80px" src="https://cdn.dribbble.com/users/346181/screenshots/2332299/rf-icon-_premium-quality-videos_.gif"> Demo <a id="demo"></a>
-
-
+[screen-capture.webm](https://github.com/user-attachments/assets/74407828-0ec1-4122-bef9-8e66e0edeb76)
 
 ## <img align="center" width="60px" height="60px" src="https://media3.giphy.com/media/wuZWV7keWqi2jJGzdB/giphy.gif?cid=6c09b952wp4ev7jtywg3j6tt7ec7vr3piiwql2vhrlsgydyz&ep=v1_internal_gif_by_id&rid=giphy.gif&ct=s"> Get Started <a id="started"></a>
 
